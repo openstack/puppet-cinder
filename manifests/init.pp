@@ -29,6 +29,13 @@ class cinder (
   file { $::cinder::params::cinder_conf: }
   file { $::cinder::params::cinder_paste_api_ini: }
 
+  # Temporary fixes
+  file { ['/var/log/cinder', '/var/lib/cinder']:
+    ensure => directory,
+    owner  => 'cinder',
+    group  => 'adm',
+  }
+
   if $cinder_settings {
     multini($::cinder::params::cinder_conf, $cinder_settings)
   }

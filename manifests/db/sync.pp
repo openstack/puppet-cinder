@@ -9,5 +9,6 @@ class cinder::db::sync {
     user        => 'cinder',
     refreshonly => true,
     require     => [File[$::cinder::params::cinder_conf], Class['cinder']],
+    logoutput   => 'on_failure',
   }
 }
