@@ -18,10 +18,12 @@ class cinder::api (
     $ensure = 'stopped'
   }
 
-  service { $::cinder::params::api_service:
+  service { 'cinder-api':
+    name      => $::cinder::params::api_service,
     enable    => $enabled,
     ensure    => $ensure,
     require   => Package[$::cinder::params::api_package],
-    subscribe => File[$::cinder::params::cinder_conf],
   }
+
+  Ini_setting<| tag == $::cinder::params::cinder_conf_tag |> ~> Service['cinder-api']
 }

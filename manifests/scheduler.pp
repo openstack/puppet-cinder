@@ -18,10 +18,13 @@ class cinder::scheduler (
     $ensure = 'stopped'
   }
 
-  service { $::cinder::params::scheduler_service:
+  service { 'cinder-scheduler':
+    name      => $::cinder::params::scheduler_service,
     enable    => $enabled,
     ensure    => $ensure,
     require   => Package[$::cinder::params::scheduler_package],
     subscribe => File[$::cinder::params::cinder_conf],
   }
+
+  Ini_setting<| tag == $::cinder::params::cinder_conf_tag |> ~> Service['cinder-scheduler']
 }

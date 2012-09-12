@@ -18,10 +18,14 @@ class cinder::volume (
     $ensure = 'stopped'
   }
 
-  service { $::cinder::params::volume_service:
+  service { 'cinder-volume':
+    name      => $::cinder::params::volume_service,
     enable    => $enabled,
     ensure    => $ensure,
     require   => Package[$::cinder::params::volume_package],
     subscribe => File[$::cinder::params::cinder_conf],
   }
+
+  Ini_setting<| tag == $::cinder::params::cinder_conf_tag |> ~> Service['cinder-volume']
+
 }
