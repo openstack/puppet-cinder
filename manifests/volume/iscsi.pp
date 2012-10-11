@@ -1,14 +1,15 @@
 #
 class cinder::volume::iscsi (
-  $iscsi_settings   = false,
-  $iscsi_helper     = 'tgtadm'
+  $volume_group = 'stack-volumes',
+  $iscsi_helper = 'tgtadm'
 ) {
 
   include cinder::params
 
-  if $iscsi_settings {
-    multini($::cinder::params::cinder_conf, $iscsi_settings)
-  }
+  cinder_config {
+    'DEFAULT/iscsi_helper': value => $iscsi_helper;
+    'DEFAULT/volume_group': value => $volume_group;
+   }
 
   case $iscsi_helper {
     'tgtadm': {
@@ -23,12 +24,11 @@ class cinder::volume::iscsi (
         require => Class['cinder::volume'],
       }
 
-      multini($::cinder::params::cinder_conf, { 'DEFAULT' => { 'iscsi_helper' => 'tgtadm' } } )
     }
 
     default: {
       fail("Unsupported iscsi helper: ${iscsi_helper}.")
     }
   }
-  
+
 }

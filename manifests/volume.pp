@@ -1,4 +1,4 @@
-#
+# $volume_name_template = volume-%s
 class cinder::volume (
   $package_ensure = 'latest',
   $enabled        = true
@@ -6,10 +6,15 @@ class cinder::volume (
 
   include cinder::params
 
+  Package['cinder-volume'] -> Cinder_config<||>
+  Package['cinder-volume'] -> Cinder_api_paste_ini<||>
+  Package['cinder']        -> Package['cinder-volume']
+  Cinder_config<||> ~> Service['cinder-volume']
+  Cinder_api_paste_ini<||> ~> Service['cinder-volume']
+
   package { 'cinder-volume':
     name   => $::cinder::params::volume_package,
     ensure => $package_ensure,
-    require => Class['cinder'],
   }
 
   if $enabled {
@@ -25,7 +30,5 @@ class cinder::volume (
     require   => Package[$::cinder::params::volume_package],
     subscribe => File[$::cinder::params::cinder_conf],
   }
-
-  Ini_setting<| tag == $::cinder::params::cinder_conf_tag |> ~> Service['cinder-volume']
 
 }

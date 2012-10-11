@@ -2,9 +2,7 @@
 class cinder::params {
 
   $cinder_conf = '/etc/cinder/cinder.conf'
-  $cinder_conf_tag = regsubst($cinder_conf, '/', '_', 'G')
   $cinder_paste_api_ini = '/etc/cinder/api-paste.ini'
-  $cinder_paste_api_ini_tag = regsubst($cinder_paste_api_ini, '/', '_', 'G')
 
   case $::osfamily {
     'Debian': {

@@ -13,9 +13,7 @@ class cinder::keystone::auth (
   $region             = 'RegionOne'
 ) {
 
-  Class['keystone::db::sync'] -> Class['cinder::keystone::auth']
-
-  Keystone_user_role["${auth_name}@services"] ~> Service <| name == 'cinder-api' |>
+  Keystone_user_role["${auth_name}@${tenant}"] ~> Service <| name == 'cinder-api' |>
 
   keystone_user { $auth_name:
     ensure   => present,
@@ -23,7 +21,7 @@ class cinder::keystone::auth (
     email    => $email,
     tenant   => $tenant,
   }
-  keystone_user_role { "${auth_name}@services":
+  keystone_user_role { "${auth_name}@${tenant}":
     ensure  => present,
     roles   => 'admin',
   }

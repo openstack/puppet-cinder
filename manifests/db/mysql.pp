@@ -12,7 +12,7 @@ class cinder::db::mysql (
   include cinder::params
 
   Class['mysql::server'] -> Class['cinder::db::mysql']
-  Class['cinder::db::mysql'] -> Class['cinder::db::sync']
+  Class['cinder::db::mysql'] -> Exec<| title == 'cinder-manage db_sync' |>
   Database[$dbname] ~> Exec<| title == 'cinder-manage db_sync' |>
 
   mysql::db { $dbname:
