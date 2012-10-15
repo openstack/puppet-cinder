@@ -1,6 +1,6 @@
 #
 class cinder::volume::iscsi (
-  $volume_group = 'stack-volumes',
+  $volume_group = 'cinder-volumes',
   $iscsi_helper = 'tgtadm'
 ) {
 
@@ -22,6 +22,16 @@ class cinder::volume::iscsi (
         ensure  => running,
         enable  => true,
         require => Class['cinder::volume'],
+      }
+      # Ubuntu/Debian specific :(
+      file { '/etc/tgt/conf.d/cinder.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => 'include /var/lib/cinder/volumes/*',
+        notify  => Service['tgtd'],
+        require => Package['tgt'],
       }
 
     }
