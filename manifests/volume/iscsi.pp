@@ -23,17 +23,6 @@ class cinder::volume::iscsi (
         enable  => true,
         require => Class['cinder::volume'],
       }
-      # Ubuntu/Debian specific :(
-      file { '/etc/tgt/conf.d/cinder.conf':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => 'include /var/lib/cinder/volumes/*',
-        notify  => Service['tgtd'],
-        require => Package['tgt'],
-      }
-
     }
 
     default: {
