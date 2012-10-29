@@ -2,7 +2,7 @@
 class cinder::volume::iscsi (
   $iscsi_ip_address,
   $volume_group      = 'cinder-volumes',
-  $iscsi_helper      = 'tgtadm',
+  $iscsi_helper      = 'tgtadm'
 ) {
 
   include cinder::params
