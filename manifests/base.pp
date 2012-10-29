@@ -11,7 +11,7 @@ class cinder::base (
   $rabbit_virtual_host    = '/',
   $rabbit_userid          = 'nova',
   $package_ensure         = 'present',
-  $verbose                = 'True'
+  $verbose                = 'False'
 ) {
 
   include cinder::params
