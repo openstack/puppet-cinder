@@ -19,6 +19,17 @@ class cinder::volume::iscsi (
         name   => $::cinder::params::tgt_package_name,
         ensure => present,
       }
+
+      if($::osfamily == 'RedHat') {
+        file_line { 'cinder include':
+          path => '/etc/tgt/targets.conf',
+          line => "include /etc/cinder/volumes/*",
+          match => '#?include /',
+          require => Package['tgt'],
+          notify => Service['tgtd'],
+        }
+      }
+
       service { 'tgtd':
         name    => $::cinder::params::tgt_service_name,
         ensure  => running,

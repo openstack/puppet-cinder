@@ -28,4 +28,21 @@ describe 'cinder::volume::iscsi' do
 
   end
 
+  describe 'with RedHat' do
+
+    let :params do
+      req_params
+    end
+
+    let :facts do
+      {:osfamily => 'RedHat'}
+    end
+
+    it { should contain_file_line('cinder include').with(
+      :line => 'include /etc/cinder/volumes/*',
+      :path => '/etc/tgt/targets.conf'
+    ) }
+
+  end
+
 end
