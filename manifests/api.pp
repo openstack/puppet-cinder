@@ -16,12 +16,15 @@ class cinder::api (
   Cinder_config<||> ~> Service['cinder-api']
   Cinder_config<||> ~> Exec['cinder-manage db_sync']
   Cinder_api_paste_ini<||> ~> Service['cinder-api']
-  Package['cinder-api'] -> Cinder_config<||>
-  Package['cinder-api'] -> Cinder_api_paste_ini<||>
 
-  package { 'cinder-api':
-    name    => $::cinder::params::api_package,
-    ensure  => $package_ensure,
+  if $::cinder::params::api_package {
+    Package['cinder-api'] -> Cinder_config<||>
+    Package['cinder-api'] -> Cinder_api_paste_ini<||>
+    Package['cinder-api'] -> Service['cinder-api']
+    package { 'cinder-api':
+      name    => $::cinder::params::api_package,
+      ensure  => $package_ensure,
+    }
   }
 
   if $enabled {
@@ -34,7 +37,7 @@ class cinder::api (
     name      => $::cinder::params::api_service,
     enable    => $enabled,
     ensure    => $ensure,
-    require   => Package[$::cinder::params::api_package],
+    require   => Package['cinder'],
   }
 
   if $keystone_enabled {

@@ -1,0 +1,12 @@
+name    'puppet-cinder'
+version '1.0.1'
+source  'https://github.com/puppetlabs/puppetlabs-cinder'
+author  'Joe Topjian, Dan Bode'
+license 'Apache License 2.0'
+summary 'installs openstack cinder'
+description 'installs openstack cinder'
+project_page 'https://github.com/puppetlabs/puppetlabs-cinder'
+
+dependency 'cprice404/inifile', '>= 0.9.0'
+dependency 'puppetlabs/mysql', '>= 0.5.0'
+dependency 'puppetlabs/stdlib', '>= 2.4.0'
