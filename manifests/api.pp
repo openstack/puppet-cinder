@@ -8,6 +8,7 @@ class cinder::api (
   $keystone_auth_port     = '35357',
   $keystone_auth_protocol = 'http',
   $package_ensure         = 'latest',
+  $bind_host              = '0.0.0.0',
   $enabled                = true
 ) {
 
@@ -38,6 +39,10 @@ class cinder::api (
     enable    => $enabled,
     ensure    => $ensure,
     require   => Package['cinder'],
+  }
+
+  cinder_config {
+    'DEFAULT/bind_host': value => $bind_host
   }
 
   if $keystone_enabled {
