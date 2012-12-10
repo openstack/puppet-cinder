@@ -10,7 +10,8 @@ class cinder::keystone::auth (
   $internal_address   = '127.0.0.1',
   $port               = '8776',
   $volume_version     = 'v1',
-  $region             = 'RegionOne'
+  $region             = 'RegionOne',
+  $public_protocol    = 'http'
 ) {
 
   Keystone_user_role["${auth_name}@${tenant}"] ~> Service <| name == 'cinder-api' |>
@@ -34,7 +35,7 @@ class cinder::keystone::auth (
   if $configure_endpoint {
     keystone_endpoint { "${region}/$auth_name":
       ensure       => present,
-      public_url   => "http://${public_address}:${port}/${volume_version}/%(tenant_id)s",
+      public_url   => "${public_protocol}://${public_address}:${port}/${volume_version}/%(tenant_id)s",
       admin_url    => "http://${admin_address}:${port}/${volume_version}/%(tenant_id)s",
       internal_url => "http://${internal_address}:${port}/${volume_version}/%(tenant_id)s",
     }
