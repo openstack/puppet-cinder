@@ -32,7 +32,10 @@ class cinder::base (
     require => Package[$::cinder::params::package_name],
   }
 
-  file { $::cinder::params::cinder_conf: }
+  file { $::cinder::params::cinder_conf:
+    mode => '0600',
+  }
+
   file { $::cinder::params::cinder_paste_api_ini: }
 
   # Temporary fixes
