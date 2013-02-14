@@ -1,4 +1,4 @@
-name    'puppet-cinder'
+name    'puppetlabs-cinder'
 version '1.0.1'
 source  'https://github.com/puppetlabs/puppetlabs-cinder'
 author  'Joe Topjian, Dan Bode'
