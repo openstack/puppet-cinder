@@ -33,6 +33,6 @@ class cinder::params {
     $tgt_service_name  = 'tgtd'
 
   } else {
-    fail("unsuported osfamily ${::osfamily}, currently Debian is the only supported platform")
+    fail("unsuported osfamily ${::osfamily}, currently Debian and Redhat are the only supported platforms")
   }
 }
