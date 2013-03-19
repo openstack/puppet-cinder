@@ -7,7 +7,9 @@ class cinder::api (
   $keystone_auth_host     = 'localhost',
   $keystone_auth_port     = '35357',
   $keystone_auth_protocol = 'http',
+  $service_port           = '5000',
   $package_ensure         = 'latest',
+  $bind_host              = '0.0.0.0',
   $enabled                = true
 ) {
 
@@ -40,6 +42,10 @@ class cinder::api (
     require   => Package['cinder'],
   }
 
+  cinder_config {
+    'DEFAULT/bind_host': value => $bind_host
+  }
+
   if $keystone_enabled {
     cinder_config {
       'DEFAULT/auth_strategy':     value => 'keystone' ;
@@ -47,7 +53,7 @@ class cinder::api (
     cinder_api_paste_ini {
       'filter:authtoken/service_protocol':  value => $keystone_auth_protocol;
       'filter:authtoken/service_host':      value => $keystone_auth_host;
-      'filter:authtoken/service_port':      value => '5000';
+      'filter:authtoken/service_port':      value => $service_port;
       'filter:authtoken/auth_protocol':     value => $keystone_auth_protocol;
       'filter:authtoken/auth_host':         value => $keystone_auth_host;
       'filter:authtoken/auth_port':         value => $keystone_auth_port;

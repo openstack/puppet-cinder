@@ -17,6 +17,9 @@ describe 'cinder::api' do
       should contain_cinder_config('DEFAULT/auth_strategy').with(
        :value => 'keystone'
       )
+      should contain_cinder_config('DEFAULT/bind_host').with(
+       :value => '0.0.0.0'
+      )
       should contain_cinder_api_paste_ini('filter:authtoken/service_protocol').with(
         :value => 'http'
       )
@@ -47,4 +50,14 @@ describe 'cinder::api' do
     end
   end
 
+  describe 'with only required params' do
+    let :params do
+      req_params.merge({'bind_host' => '192.168.1.3'})
+    end
+    it 'should configure cinder api correctly' do
+      should contain_cinder_config('DEFAULT/bind_host').with(
+       :value => '192.168.1.3'
+      )
+    end
+  end
 end

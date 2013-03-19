@@ -11,6 +11,7 @@ class cinder::base (
   $rabbit_virtual_host    = '/',
   $rabbit_userid          = 'nova',
   $package_ensure         = 'present',
+  $api_paste_config       = '/etc/cinder/api-paste.ini',
   $verbose                = 'False'
 ) {
 
@@ -32,7 +33,10 @@ class cinder::base (
     require => Package[$::cinder::params::package_name],
   }
 
-  file { $::cinder::params::cinder_conf: }
+  file { $::cinder::params::cinder_conf:
+    mode => '0600',
+  }
+
   file { $::cinder::params::cinder_paste_api_ini: }
 
   # Temporary fixes
@@ -50,7 +54,7 @@ class cinder::base (
     'DEFAULT/rabbit_userid':       value => $rabbit_userid;
     'DEFAULT/sql_connection':      value => $sql_connection;
     'DEFAULT/verbose':             value => $verbose;
-    'DEFAULT/api_paste_config':    value => '/etc/cinder/api-paste.ini';
+    'DEFAULT/api_paste_config':    value => $api_paste_config;
   }
 
 }
