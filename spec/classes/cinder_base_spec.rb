@@ -40,5 +40,13 @@ describe 'cinder::base' do
       )
     end
 
+    it { should contain_file('/etc/cinder/cinder.conf').with(
+      :mode => '0600'
+    ) }
+
+    it { should contain_file('/etc/cinder/api-paste.ini').with(
+      :mode => '0600'
+    ) }
+
   end
 end

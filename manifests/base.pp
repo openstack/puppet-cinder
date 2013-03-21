@@ -37,7 +37,9 @@ class cinder::base (
     mode => '0600',
   }
 
-  file { $::cinder::params::cinder_paste_api_ini: }
+  file { $::cinder::params::cinder_paste_api_ini:
+    mode => '0600',
+  }
 
   # Temporary fixes
   file { ['/var/log/cinder', '/var/lib/cinder']:

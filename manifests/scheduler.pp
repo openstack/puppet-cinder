@@ -1,13 +1,21 @@
 #
 class cinder::scheduler (
-  $package_ensure = 'latest',
-  $enabled        = true
+  $scheduler_driver = false,
+  $package_ensure   = 'latest',
+  $enabled          = true
 ) {
 
   include cinder::params
 
+  Cinder_config<||> ~> Service['cinder-scheduler']
   Cinder_api_paste_ini<||> ~> Service['cinder-scheduler']
   Exec<| title == 'cinder-manage db_sync' |> ~> Service['cinder-scheduler']
+
+  if $scheduler_driver {
+    cinder_config {
+      'DEFAULT/scheduler_driver': value => $scheduler_driver;
+    }
+  }
 
   if $::cinder::params::scheduler_package {
     Package['cinder-scheduler'] -> Cinder_config<||>
