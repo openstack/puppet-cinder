@@ -1,5 +1,5 @@
 name    'puppetlabs-cinder'
-version '1.1.0'
+version '1.1.1'
 source  'https://github.com/puppetlabs/puppetlabs-cinder'
 author  'Joe Topjian, Dan Bode'
 license 'Apache License 2.0'
