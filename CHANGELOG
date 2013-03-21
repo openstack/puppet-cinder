@@ -1,3 +1,5 @@
+* 2013-03-21 1.1.1
+- fix permission of paste config file
 * 2013-03-19 1.1.0
 - Added include statement to client.pp
 - Restrict permissions on cinder configuration
