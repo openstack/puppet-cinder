@@ -12,6 +12,8 @@ describe 'cinder::base' do
     let :params do
       req_params
     end
+    
+    it { should contain_class('cinder::params') }
 
     it 'should contain default config' do
       should contain_cinder_config('DEFAULT/rabbit_password').with(
@@ -41,11 +43,17 @@ describe 'cinder::base' do
     end
 
     it { should contain_file('/etc/cinder/cinder.conf').with(
-      :mode => '0600'
+      :owner   => 'cinder',
+      :group   => 'cinder',
+      :mode    => '0600',
+      :require => 'Package[cinder-common]'
     ) }
 
     it { should contain_file('/etc/cinder/api-paste.ini').with(
-      :mode => '0600'
+      :owner   => 'cinder',
+      :group   => 'cinder',
+      :mode    => '0600',
+      :require => 'Package[cinder-common]'
     ) }
 
   end
