@@ -25,27 +25,20 @@ class cinder::base (
     ensure => $package_ensure,
   }
 
-  File {
+  file { $::cinder::params::cinder_conf:
     ensure  => present,
     owner   => 'cinder',
     group   => 'cinder',
-    mode    => '0644',
+    mode    => '0600',
     require => Package[$::cinder::params::package_name],
   }
 
-  file { $::cinder::params::cinder_conf:
-    mode => '0600',
-  }
-
   file { $::cinder::params::cinder_paste_api_ini:
-    mode => '0600',
-  }
-
-  # Temporary fixes
-  file { ['/var/log/cinder', '/var/lib/cinder']:
-    ensure => directory,
-    owner  => 'cinder',
-    group  => 'cinder',
+    ensure  => present,
+    owner   => 'cinder',
+    group   => 'cinder',
+    mode    => '0600',
+    require => Package[$::cinder::params::package_name],
   }
 
   cinder_config {
