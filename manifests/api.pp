@@ -69,6 +69,7 @@ class cinder::api (
     user        => 'cinder',
     refreshonly => true,
     logoutput   => 'on_failure',
+    require     => Package['cinder'],
   }
 
 }
