@@ -25,6 +25,12 @@ describe 'cinder::base' do
       should contain_cinder_config('DEFAULT/rabbit_port').with(
         :value => '5672'
       )
+      should contain_cinder_config('DEFAULT/rabbit_hosts').with(
+        :value => '127.0.0.1:5672'
+      )
+      should contain_cinder_config('DEFAULT/rabbit_ha_queues').with(
+        :value => 'false'
+      )
       should contain_cinder_config('DEFAULT/rabbit_virtual_host').with(
         :value => '/'
       )
@@ -56,5 +62,21 @@ describe 'cinder::base' do
       :require => 'Package[cinder-common]'
     ) }
 
+  end
+  describe 'with modified rabbit_hosts' do
+    let :params do
+      req_params.merge({'rabbit_hosts' => ['rabbit1:5672', 'rabbit2:5672']})
+    end
+
+    it 'should contain many' do
+      should_not contain_cinder_config('DEFAULT/rabbit_host')
+      should_not contain_cinder_config('DEFAULT/rabbit_port')
+      should contain_cinder_config('DEFAULT/rabbit_hosts').with(
+        :value => 'rabbit1:5672,rabbit2:5672'
+      )
+      should contain_cinder_config('DEFAULT/rabbit_ha_queues').with(
+          :value => 'true'
+      )
+    end
   end
 end
