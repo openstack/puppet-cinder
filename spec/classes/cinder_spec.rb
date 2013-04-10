@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'cinder::base' do
+describe 'cinder' do
   let :req_params do
     {:rabbit_password => 'rpw', :sql_connection => 'mysql://user:password@host/database'}
   end
