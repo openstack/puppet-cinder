@@ -11,5 +11,8 @@ describe 'cinder::volume' do
   end
 
   it { should contain_package('cinder-volume') }
-  it { should contain_service('cinder-volume') }
+  it { should contain_service('cinder-volume').with(
+      'hasstatus' => 'true'
+  )}
+
 end

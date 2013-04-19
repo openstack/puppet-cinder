@@ -23,6 +23,7 @@ describe 'cinder::scheduler' do
         :enable    => true,
         :ensure    => 'running',
         :require   => 'Package[cinder]',
+        :hasstatus => 'true',
         :subscribe => 'File[/etc/cinder/cinder.conf]'
       ) }
     end

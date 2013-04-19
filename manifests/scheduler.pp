@@ -37,6 +37,7 @@ class cinder::scheduler (
     name      => $::cinder::params::scheduler_service,
     enable    => $enabled,
     ensure    => $ensure,
+    hasstatus => true,
     require   => Package['cinder'],
     subscribe => File[$::cinder::params::cinder_conf],
   }

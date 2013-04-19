@@ -13,6 +13,11 @@ describe 'cinder::api' do
     let :params do
       req_params
     end
+
+    it { should contain_service('cinder-api').with(
+      'hasstatus' => 'true'
+    )}
+
     it 'should configure cinder api correctly' do
       should contain_cinder_config('DEFAULT/auth_strategy').with(
        :value => 'keystone'

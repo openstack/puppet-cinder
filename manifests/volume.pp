@@ -30,6 +30,7 @@ class cinder::volume (
     name      => $::cinder::params::volume_service,
     enable    => $enabled,
     ensure    => $ensure,
+    hasstatus => true,
     require   => Package['cinder'],
     subscribe => File[$::cinder::params::cinder_conf],
   }
