@@ -1,8 +1,7 @@
 # The cinder module
 
-This module allows for the configuration and management of [cinder](http://wiki.openstack.org/Cinder)
+This module can be used to flexibly configure [cinder](http://wiki.openstack.org/Cinder), the Block Storage Service of OpenStack.
 
-It has been tested in combination with the other openstack components in [Puppetlab's Openstack module](https://github.com/puppetlabs/puppetlabs-openstack/).
+It has been tested with a combination of other modules, and has primarily been developed as a subcomponent of the [openstack module](https://github.com/stackforge/puppet-openstack)
 
-[![Unit Test Status](https://secure.travis-ci.org/puppetlabs/puppetlabs-cinder.png?branch=master)](http://travis-ci.org/puppetlabs/puppetlabs-cinder)
-
+This version of the module is targeted at Folsom and Grizzly.
