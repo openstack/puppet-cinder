@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe 'cinder' do
   let :req_params do
-    {:rabbit_password => 'rpw', :sql_connection => 'mysql://user:password@host/database'}
+    {:rabbit_password => 'guest', :sql_connection => 'mysql://user:password@host/database'}
   end
 
   let :facts do
@@ -16,8 +16,11 @@ describe 'cinder' do
     it { should contain_class('cinder::params') }
 
     it 'should contain default config' do
+      should contain_cinder_config('DEFAULT/rpc_backend').with(
+        :value => 'cinder.openstack.common.rpc.impl_kombu'
+      )
       should contain_cinder_config('DEFAULT/rabbit_password').with(
-        :value => 'rpw'
+        :value => 'guest'
       )
       should contain_cinder_config('DEFAULT/rabbit_host').with(
         :value => '127.0.0.1'
@@ -79,4 +82,33 @@ describe 'cinder' do
       )
     end
   end
+
+  describe 'with qpid rpc supplied' do
+
+    let :params do
+      {
+        :sql_connection      => 'mysql://user:password@host/database',
+        :qpid_password       => 'guest',
+        :rpc_backend         => 'cinder.openstack.common.rpc.impl_qpid'
+      }
+    end
+
+    it { should contain_cinder_config('DEFAULT/sql_connection').with_value('mysql://user:password@host/database') }
+    it { should contain_cinder_config('DEFAULT/rpc_backend').with_value('cinder.openstack.common.rpc.impl_qpid') }
+    it { should contain_cinder_config('DEFAULT/qpid_hostname').with_value('localhost') }
+    it { should contain_cinder_config('DEFAULT/qpid_port').with_value('5672') }
+    it { should contain_cinder_config('DEFAULT/qpid_username').with_value('guest') }
+    it { should contain_cinder_config('DEFAULT/qpid_password').with_value('guest') }
+    it { should contain_cinder_config('DEFAULT/qpid_reconnect').with_value('true') }
+    it { should contain_cinder_config('DEFAULT/qpid_reconnect_timeout').with_value('0') }
+    it { should contain_cinder_config('DEFAULT/qpid_reconnect_limit').with_value('0') }
+    it { should contain_cinder_config('DEFAULT/qpid_reconnect_interval_min').with_value('0') }
+    it { should contain_cinder_config('DEFAULT/qpid_reconnect_interval_max').with_value('0') }
+    it { should contain_cinder_config('DEFAULT/qpid_reconnect_interval').with_value('0') }
+    it { should contain_cinder_config('DEFAULT/qpid_heartbeat').with_value('60') }
+    it { should contain_cinder_config('DEFAULT/qpid_protocol').with_value('tcp') }
+    it { should contain_cinder_config('DEFAULT/qpid_tcp_nodelay').with_value('true') }
+
+  end
+
 end
