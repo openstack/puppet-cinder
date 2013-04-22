@@ -4,13 +4,13 @@
 # $osapi_volume_extension = cinder.api.openstack.volume.contrib.standard_extensions
 # $root_helper = sudo /usr/local/bin/cinder-rootwrap /etc/cinder/rootwrap.conf
 class cinder (
-  $rabbit_password,
   $sql_connection,
   $rabbit_host            = '127.0.0.1',
   $rabbit_port            = 5672,
   $rabbit_hosts           = undef,
   $rabbit_virtual_host    = '/',
-  $rabbit_userid          = 'nova',
+  $rabbit_userid          = 'guest',
+  $rabbit_password        = false,
   $package_ensure         = 'present',
   $api_paste_config       = '/etc/cinder/api-paste.ini',
   $verbose                = 'False'
@@ -21,9 +21,14 @@ class cinder (
   Package['cinder'] -> Cinder_config<||>
   Package['cinder'] -> Cinder_api_paste_ini<||>
 
+  # this anchor is used to simplify the graph between cinder components by
+  # allowing a resource to serve as a point where the configuration of cinder begins
+  anchor { 'cinder-start': }
+
   package { 'cinder':
     name => $::cinder::params::package_name,
     ensure => $package_ensure,
+    require => Anchor['cinder-start'],
   }
 
   file { $::cinder::params::cinder_conf:
@@ -52,6 +57,10 @@ class cinder (
       'DEFAULT/rabbit_port':        value => $rabbit_port;
       'DEFAULT/rabbit_hosts':       value => "$rabbit_host:$rabbit_port";
     }
+  }
+
+  if ! $rabbit_password {
+    fail('Please specify a rabbit_password parameter.')
   }
 
   cinder_config {

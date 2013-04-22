@@ -35,7 +35,7 @@ describe 'cinder' do
         :value => '/'
       )
       should contain_cinder_config('DEFAULT/rabbit_userid').with(
-        :value => 'nova'
+        :value => 'guest'
       )
       should contain_cinder_config('DEFAULT/sql_connection').with(
         :value => 'mysql://user:password@host/database'
