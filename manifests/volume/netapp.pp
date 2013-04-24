@@ -10,8 +10,6 @@ class cinder::volume::netapp (
   $netapp_vfiler                 = undef
 ) {
 
-  include cinder::params
-
   cinder_config {
     'DEFAULT/volume_driver':                 value => 'cinder.volume.netapp.NetAppISCSIDriver';
     'DEFAULT/netapp_wsdl_url':               value => $netapp_wsdl_url;
