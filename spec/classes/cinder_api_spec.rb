@@ -50,7 +50,8 @@ describe 'cinder::api' do
         :value => 'cinder'
       )
       should contain_cinder_api_paste_ini('filter:authtoken/admin_password').with(
-        :value => 'foo'
+        :value  => 'foo',
+        :secret => true
       )
     end
   end

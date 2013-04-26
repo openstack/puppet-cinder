@@ -30,6 +30,10 @@ describe 'cinder::volume::netapp' do
         should contain_cinder_config("DEFAULT/#{config}").with_value( value )
       end
     end
+
+    it 'marks netapp_password as secret' do
+      should contain_cinder_config('DEFAULT/netapp_password').with_secret( true )
+    end
   end
 
 

@@ -20,7 +20,8 @@ describe 'cinder' do
         :value => 'cinder.openstack.common.rpc.impl_kombu'
       )
       should contain_cinder_config('DEFAULT/rabbit_password').with(
-        :value => 'guest'
+        :value => 'guest',
+        :secret => true
       )
       should contain_cinder_config('DEFAULT/rabbit_host').with(
         :value => '127.0.0.1'
@@ -41,7 +42,8 @@ describe 'cinder' do
         :value => 'guest'
       )
       should contain_cinder_config('DEFAULT/sql_connection').with(
-        :value => 'mysql://user:password@host/database'
+        :value  => 'mysql://user:password@host/database',
+        :secret => true
       )
       should contain_cinder_config('DEFAULT/verbose').with(
         :value => false
@@ -81,7 +83,7 @@ describe 'cinder' do
         :value => 'rabbit1:5672,rabbit2:5672'
       )
       should contain_cinder_config('DEFAULT/rabbit_ha_queues').with(
-          :value => true
+        :value => true
       )
     end
   end
@@ -101,7 +103,7 @@ describe 'cinder' do
     it { should contain_cinder_config('DEFAULT/qpid_hostname').with_value('localhost') }
     it { should contain_cinder_config('DEFAULT/qpid_port').with_value('5672') }
     it { should contain_cinder_config('DEFAULT/qpid_username').with_value('guest') }
-    it { should contain_cinder_config('DEFAULT/qpid_password').with_value('guest') }
+    it { should contain_cinder_config('DEFAULT/qpid_password').with_value('guest').with_secret(true) }
     it { should contain_cinder_config('DEFAULT/qpid_reconnect').with_value(true) }
     it { should contain_cinder_config('DEFAULT/qpid_reconnect_timeout').with_value('0') }
     it { should contain_cinder_config('DEFAULT/qpid_reconnect_limit').with_value('0') }

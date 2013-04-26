@@ -14,7 +14,7 @@ class cinder::volume::netapp (
     'DEFAULT/volume_driver':                 value => 'cinder.volume.netapp.NetAppISCSIDriver';
     'DEFAULT/netapp_wsdl_url':               value => $netapp_wsdl_url;
     'DEFAULT/netapp_login':                  value => $netapp_login;
-    'DEFAULT/netapp_password':               value => $netapp_password;
+    'DEFAULT/netapp_password':               value => $netapp_password, secret => true;
     'DEFAULT/netapp_server_hostname':        value => $netapp_server_hostname;
     'DEFAULT/netapp_storage_service':        value => $netapp_storage_service;
     'DEFAULT/netapp_server_port':            value => $netapp_server_port;

@@ -60,7 +60,7 @@ class cinder::api (
       'filter:authtoken/auth_port':         value => $keystone_auth_port;
       'filter:authtoken/admin_tenant_name': value => $keystone_tenant;
       'filter:authtoken/admin_user':        value => $keystone_user;
-      'filter:authtoken/admin_password':    value => $keystone_password;
+      'filter:authtoken/admin_password':    value => $keystone_password, secret => true;
     }
   }
 
