@@ -54,7 +54,7 @@ class cinder::volume::san (
   $san_is_local       = false,
   $ssh_conn_timeout   = 30,
   $ssh_min_pool_conn  = 1,
-  $ssh_max_pool_conn  = 5,
+  $ssh_max_pool_conn  = 5
 ) {
 
   cinder_config {
