@@ -12,7 +12,7 @@ describe 'cinder' do
     let :params do
       req_params
     end
-    
+
     it { should contain_class('cinder::params') }
 
     it 'should contain default config' do
@@ -44,6 +44,9 @@ describe 'cinder' do
         :value => 'mysql://user:password@host/database'
       )
       should contain_cinder_config('DEFAULT/verbose').with(
+        :value => 'False'
+      )
+      should contain_cinder_config('DEFAULT/debug').with(
         :value => 'False'
       )
       should contain_cinder_config('DEFAULT/api_paste_config').with(

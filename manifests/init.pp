@@ -27,7 +27,8 @@ class cinder (
   $qpid_tcp_nodelay            = true,
   $package_ensure              = 'present',
   $api_paste_config            = '/etc/cinder/api-paste.ini',
-  $verbose                     = 'False'
+  $verbose                     = 'False',
+  $debug                       = 'False'
 ) {
 
   include cinder::params
@@ -114,6 +115,7 @@ class cinder (
   cinder_config {
     'DEFAULT/sql_connection':      value => $sql_connection;
     'DEFAULT/verbose':             value => $verbose;
+    'DEFAULT/debug':               value => $debug;
     'DEFAULT/api_paste_config':    value => $api_paste_config;
     'DEFAULT/rpc_backend':         value => $rpc_backend;
   }
