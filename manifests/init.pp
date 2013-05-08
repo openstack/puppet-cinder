@@ -41,8 +41,8 @@ class cinder (
   anchor { 'cinder-start': }
 
   package { 'cinder':
-    name => $::cinder::params::package_name,
-    ensure => $package_ensure,
+    name    => $::cinder::params::package_name,
+    ensure  => $package_ensure,
     require => Anchor['cinder-start'],
   }
 
@@ -51,7 +51,7 @@ class cinder (
     owner   => 'cinder',
     group   => 'cinder',
     mode    => '0600',
-    require => Package[$::cinder::params::package_name],
+    require => Package['cinder'],
   }
 
   file { $::cinder::params::cinder_paste_api_ini:
@@ -59,7 +59,7 @@ class cinder (
     owner   => 'cinder',
     group   => 'cinder',
     mode    => '0600',
-    require => Package[$::cinder::params::package_name],
+    require => Package['cinder'],
   }
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_kombu' {

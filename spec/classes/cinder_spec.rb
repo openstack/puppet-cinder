@@ -58,14 +58,14 @@ describe 'cinder' do
       :owner   => 'cinder',
       :group   => 'cinder',
       :mode    => '0600',
-      :require => 'Package[cinder-common]'
+      :require => 'Package[cinder]'
     ) }
 
     it { should contain_file('/etc/cinder/api-paste.ini').with(
       :owner   => 'cinder',
       :group   => 'cinder',
       :mode    => '0600',
-      :require => 'Package[cinder-common]'
+      :require => 'Package[cinder]'
     ) }
 
   end
