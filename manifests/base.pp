@@ -13,7 +13,7 @@ class cinder::base (
   $rabbit_userid          = 'nova',
   $package_ensure         = 'present',
   $api_paste_config       = '/etc/cinder/api-paste.ini',
-  $verbose                = 'False'
+  $verbose                = false
 ) {
 
   warning('The "cinder::base" class is deprecated. Use "cinder" instead.')
