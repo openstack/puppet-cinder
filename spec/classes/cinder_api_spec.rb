@@ -43,6 +43,9 @@ describe 'cinder::api' do
       should contain_cinder_api_paste_ini('filter:authtoken/auth_port').with(
         :value => '35357'
       )
+      should contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(
+        :ensure => 'absent'
+      )
       should contain_cinder_api_paste_ini('filter:authtoken/admin_tenant_name').with(
         :value => 'services'
       )
@@ -66,4 +69,41 @@ describe 'cinder::api' do
       )
     end
   end
+
+  [ '/keystone', '/keystone/admin', '' ].each do |keystone_auth_admin_prefix|
+    describe "with keystone_auth_admin_prefix containing incorrect value #{keystone_auth_admin_prefix}" do
+      let :params do
+        {
+          :keystone_auth_admin_prefix => keystone_auth_admin_prefix,
+          :keystone_password    => 'dummy'
+        }
+      end
+
+      it { should contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(
+        :value => keystone_auth_admin_prefix
+      )}
+    end
+  end
+
+  [
+    '/keystone/',
+    'keystone/',
+    'keystone',
+    '/keystone/admin/',
+    'keystone/admin/',
+    'keystone/admin'
+  ].each do |keystone_auth_admin_prefix|
+    describe "with keystone_auth_admin_prefix containing incorrect value #{keystone_auth_admin_prefix}" do
+      let :params do
+        {
+          :keystone_auth_admin_prefix => keystone_auth_admin_prefix,
+          :keystone_password    => 'dummy'
+        }
+      end
+
+      it { expect { should contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix') }.to \
+        raise_error(Puppet::Error, /validate_re\(\): "#{keystone_auth_admin_prefix}" does not match/) }
+    end
+  end
+
 end
