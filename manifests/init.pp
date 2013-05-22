@@ -27,8 +27,8 @@ class cinder (
   $qpid_tcp_nodelay            = true,
   $package_ensure              = 'present',
   $api_paste_config            = '/etc/cinder/api-paste.ini',
-  $verbose                     = 'False',
-  $debug                       = 'False'
+  $verbose                     = false,
+  $debug                       = false
 ) {
 
   include cinder::params

@@ -32,7 +32,7 @@ describe 'cinder' do
         :value => '127.0.0.1:5672'
       )
       should contain_cinder_config('DEFAULT/rabbit_ha_queues').with(
-        :value => 'false'
+        :value => false
       )
       should contain_cinder_config('DEFAULT/rabbit_virtual_host').with(
         :value => '/'
@@ -44,10 +44,10 @@ describe 'cinder' do
         :value => 'mysql://user:password@host/database'
       )
       should contain_cinder_config('DEFAULT/verbose').with(
-        :value => 'False'
+        :value => false
       )
       should contain_cinder_config('DEFAULT/debug').with(
-        :value => 'False'
+        :value => false
       )
       should contain_cinder_config('DEFAULT/api_paste_config').with(
         :value => '/etc/cinder/api-paste.ini'
@@ -81,7 +81,7 @@ describe 'cinder' do
         :value => 'rabbit1:5672,rabbit2:5672'
       )
       should contain_cinder_config('DEFAULT/rabbit_ha_queues').with(
-          :value => 'true'
+          :value => true
       )
     end
   end
@@ -102,7 +102,7 @@ describe 'cinder' do
     it { should contain_cinder_config('DEFAULT/qpid_port').with_value('5672') }
     it { should contain_cinder_config('DEFAULT/qpid_username').with_value('guest') }
     it { should contain_cinder_config('DEFAULT/qpid_password').with_value('guest') }
-    it { should contain_cinder_config('DEFAULT/qpid_reconnect').with_value('true') }
+    it { should contain_cinder_config('DEFAULT/qpid_reconnect').with_value(true) }
     it { should contain_cinder_config('DEFAULT/qpid_reconnect_timeout').with_value('0') }
     it { should contain_cinder_config('DEFAULT/qpid_reconnect_limit').with_value('0') }
     it { should contain_cinder_config('DEFAULT/qpid_reconnect_interval_min').with_value('0') }
@@ -110,7 +110,7 @@ describe 'cinder' do
     it { should contain_cinder_config('DEFAULT/qpid_reconnect_interval').with_value('0') }
     it { should contain_cinder_config('DEFAULT/qpid_heartbeat').with_value('60') }
     it { should contain_cinder_config('DEFAULT/qpid_protocol').with_value('tcp') }
-    it { should contain_cinder_config('DEFAULT/qpid_tcp_nodelay').with_value('true') }
+    it { should contain_cinder_config('DEFAULT/qpid_tcp_nodelay').with_value(true) }
 
   end
 

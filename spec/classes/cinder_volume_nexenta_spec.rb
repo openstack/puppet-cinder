@@ -16,7 +16,7 @@ describe 'cinder::volume::nexenta' do
       :nexenta_target_prefix       => 'iqn:',
       :nexenta_target_group_prefix => 'cinder/',
       :nexenta_blocksize           => '8k',
-      :nexenta_sparse              => 'True' }
+      :nexenta_sparse              => true }
   end
 
   let :facts do
