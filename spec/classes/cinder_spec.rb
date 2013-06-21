@@ -45,6 +45,9 @@ describe 'cinder' do
         :value  => 'mysql://user:password@host/database',
         :secret => true
       )
+      should contain_cinder_config('DEFAULT/sql_idle_timeout').with(
+        :value => '3600'
+      )
       should contain_cinder_config('DEFAULT/verbose').with(
         :value => false
       )

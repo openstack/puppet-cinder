@@ -1,10 +1,13 @@
 #
-# parameters that may need to be added
-# $state_path = /opt/stack/data/cinder
-# $osapi_volume_extension = cinder.api.openstack.volume.contrib.standard_extensions
-# $root_helper = sudo /usr/local/bin/cinder-rootwrap /etc/cinder/rootwrap.conf
+# == Parameters
+#
+# [sql_idle_timeout]
+#   Timeout when db connections should be reaped.
+#   (Optional) Defaults to 3600.
+#
 class cinder (
   $sql_connection,
+  $sql_idle_timeout            = '3600',
   $rpc_backend                 = 'cinder.openstack.common.rpc.impl_kombu',
   $rabbit_host                 = '127.0.0.1',
   $rabbit_port                 = 5672,
@@ -110,6 +113,7 @@ class cinder (
 
   cinder_config {
     'DEFAULT/sql_connection':      value => $sql_connection, secret => true;
+    'DEFAULT/sql_idle_timeout':    value => $sql_idle_timeout;
     'DEFAULT/verbose':             value => $verbose;
     'DEFAULT/debug':               value => $debug;
     'DEFAULT/api_paste_config':    value => $api_paste_config;
