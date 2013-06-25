@@ -8,7 +8,7 @@ class cinder (
   $rpc_backend                 = 'cinder.openstack.common.rpc.impl_kombu',
   $rabbit_host                 = '127.0.0.1',
   $rabbit_port                 = 5672,
-  $rabbit_hosts                = undef,
+  $rabbit_hosts                = false,
   $rabbit_virtual_host         = '/',
   $rabbit_userid               = 'guest',
   $rabbit_password             = false,
@@ -74,20 +74,16 @@ class cinder (
       'DEFAULT/rabbit_virtual_host': value => $rabbit_virtual_host;
     }
 
-    if size($rabbit_hosts) > 1 {
-      cinder_config { 'DEFAULT/rabbit_ha_queues': value => 'true' }
-    } else {
-      cinder_config { 'DEFAULT/rabbit_ha_queues': value => 'false' }
-    }
-
     if $rabbit_hosts {
-      cinder_config { 'DEFAULT/rabbit_hosts': value => join($rabbit_hosts, ',') }
-    } elsif $rabbit_host {
-      cinder_config { 'DEFAULT/rabbit_host': value => $rabbit_host }
-      cinder_config { 'DEFAULT/rabbit_port': value => $rabbit_port }
-      cinder_config { 'DEFAULT/rabbit_hosts': value => "${rabbit_host}:${rabbit_port}" }
-    }
-  }
+      cinder_config { 'DEFAULT/rabbit_hosts':     value => join($rabbit_hosts, ',') }
+      cinder_config { 'DEFAULT/rabbit_ha_queues': value => 'true' }
+     } else {
+       cinder_config { 'DEFAULT/rabbit_host':      value => $rabbit_host }
+       cinder_config { 'DEFAULT/rabbit_port':      value => $rabbit_port }
+       cinder_config { 'DEFAULT/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
+       cinder_config { 'DEFAULT/rabbit_ha_queues': value => 'false' }
+     }
+   }
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' {
 
