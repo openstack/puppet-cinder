@@ -37,7 +37,7 @@ class cinder::volume::glusterfs (
   $glusterfs_disk_util        = undef,
   $glusterfs_sparsed_volumes  = undef,
   $glusterfs_mount_point_base = undef,
-  $glusterfs_shares_config    = "/etc/cinder/shares.conf"
+  $glusterfs_shares_config    = '/etc/cinder/shares.conf'
 ) {
 
   $content = join($glusterfs_shares, "\n")

@@ -8,14 +8,14 @@ class cinder::db::postgresql(
   $user   = 'cinder'
 ) {
 
-  require 'postgresql::python'
+  require postgresql::python
 
-  Postgresql::Db[$dbname] ~> Exec<| title == 'cinder-manage db_sync' |>
+  Postgresql::Db[$dbname]    ~> Exec<| title == 'cinder-manage db_sync' |>
   Package['python-psycopg2'] -> Exec<| title == 'cinder-manage db_sync' |>
 
-  postgresql::db { "${dbname}":
-    user      =>  "${user}",
-    password  =>  "${password}",
+  postgresql::db { $dbname:
+    user      =>  $user,
+    password  =>  $password,
   }
 
 }

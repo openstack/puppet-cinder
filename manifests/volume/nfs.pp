@@ -5,7 +5,7 @@ class cinder::volume::nfs (
   $nfs_disk_util = undef,
   $nfs_sparsed_volumes = undef,
   $nfs_mount_point_base = undef,
-  $nfs_shares_config = "/etc/cinder/shares.conf"
+  $nfs_shares_config = '/etc/cinder/shares.conf'
 ) {
 
   file {$nfs_shares_config:

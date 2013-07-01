@@ -29,11 +29,11 @@ class cinder::keystone::auth (
   keystone_service { $auth_name:
     ensure      => present,
     type        => $service_type,
-    description => "Cinder Service",
+    description => 'Cinder Service',
   }
 
   if $configure_endpoint {
-    keystone_endpoint { "${region}/$auth_name":
+    keystone_endpoint { "${region}/${auth_name}":
       ensure       => present,
       public_url   => "${public_protocol}://${public_address}:${port}/${volume_version}/%(tenant_id)s",
       admin_url    => "http://${admin_address}:${port}/${volume_version}/%(tenant_id)s",

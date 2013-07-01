@@ -3,10 +3,10 @@
 #
 #
 class cinder::rabbitmq(
-  $userid       ='guest',
-  $password     ='guest',
-  $port         ='5672',
-  $virtual_host ='/',
+  $userid       = 'guest',
+  $password     = 'guest',
+  $port         = '5672',
+  $virtual_host = '/',
   $enabled      = true
 ) {
 
@@ -19,10 +19,10 @@ class cinder::rabbitmq(
     } else {
       $delete_guest_user = true
       rabbitmq_user { $userid:
-        admin     => true,
-        password  => $password,
+        admin    => true,
+        password => $password,
         provider => 'rabbitmqctl',
-        require   => Class['rabbitmq::server'],
+        require  => Class['rabbitmq::server'],
       }
       # I need to figure out the appropriate permissions
       rabbitmq_user_permissions { "${userid}@${virtual_host}":
@@ -46,7 +46,7 @@ class cinder::rabbitmq(
   if ($enabled) {
     rabbitmq_vhost { $virtual_host:
       provider => 'rabbitmqctl',
-      require => Class['rabbitmq::server'],
+      require  => Class['rabbitmq::server'],
     }
   }
 }

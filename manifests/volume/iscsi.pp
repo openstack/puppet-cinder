@@ -11,7 +11,7 @@ class cinder::volume::iscsi (
     'DEFAULT/iscsi_ip_address': value => $iscsi_ip_address;
     'DEFAULT/iscsi_helper':     value => $iscsi_helper;
     'DEFAULT/volume_group':     value => $volume_group;
-   }
+  }
 
   case $iscsi_helper {
     'tgtadm': {
@@ -22,11 +22,11 @@ class cinder::volume::iscsi (
 
       if($::osfamily == 'RedHat') {
         file_line { 'cinder include':
-          path => '/etc/tgt/targets.conf',
-          line => "include /etc/cinder/volumes/*",
-          match => '#?include /',
+          path    => '/etc/tgt/targets.conf',
+          line    => 'include /etc/cinder/volumes/*',
+          match   => '#?include /',
           require => Package['tgt'],
-          notify => Service['tgtd'],
+          notify  => Service['tgtd'],
         }
       }
 

@@ -17,11 +17,11 @@ class cinder::qpid(
     $service_ensure = 'running'
 
     qpid_user { $user:
-      password  => $password,
-      file  => $file,
-      realm  => $realm,
+      password => $password,
+      file     => $file,
+      realm    => $realm,
       provider => 'saslpasswd2',
-      require   => Class['qpid::server'],
+      require  => Class['qpid::server'],
     }
 
   } else {
@@ -29,7 +29,7 @@ class cinder::qpid(
   }
 
   class { 'qpid::server':
-    service_ensure    => $service_ensure
+    service_ensure => $service_ensure
   }
 
 }

@@ -80,13 +80,13 @@ class cinder (
     if $rabbit_hosts {
       cinder_config { 'DEFAULT/rabbit_hosts':     value => join($rabbit_hosts, ',') }
       cinder_config { 'DEFAULT/rabbit_ha_queues': value => true }
-     } else {
-       cinder_config { 'DEFAULT/rabbit_host':      value => $rabbit_host }
-       cinder_config { 'DEFAULT/rabbit_port':      value => $rabbit_port }
-       cinder_config { 'DEFAULT/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
-       cinder_config { 'DEFAULT/rabbit_ha_queues': value => false }
-     }
-   }
+    } else {
+      cinder_config { 'DEFAULT/rabbit_host':      value => $rabbit_host }
+      cinder_config { 'DEFAULT/rabbit_port':      value => $rabbit_port }
+      cinder_config { 'DEFAULT/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
+      cinder_config { 'DEFAULT/rabbit_ha_queues': value => false }
+    }
+  }
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' {
 

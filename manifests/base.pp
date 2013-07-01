@@ -1,8 +1,4 @@
 #
-# parameters that may need to be added
-# $state_path = /opt/stack/data/cinder
-# $osapi_volume_extension = cinder.api.openstack.volume.contrib.standard_extensions
-# $root_helper = sudo /usr/local/bin/cinder-rootwrap /etc/cinder/rootwrap.conf
 class cinder::base (
   $rabbit_password,
   $sql_connection,
@@ -16,9 +12,9 @@ class cinder::base (
   $verbose                = false
 ) {
 
-  warning('The "cinder::base" class is deprecated. Use "cinder" instead.')
+  warning('The cinder::base class is deprecated. Use cinder instead.')
 
-  class { "cinder":
+  class { 'cinder':
     rabbit_password         => $rabbit_password,
     sql_connection          => $sql_connection,
     rabbit_host             => $rabbit_host,

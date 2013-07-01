@@ -18,13 +18,12 @@ class cinder::db::mysql (
     password     => $password,
     host         => $host,
     charset      => $charset,
-    # I may want to inject some sql
     require      => Class['mysql::config'],
   }
 
   if $allowed_hosts {
-     # TODO this class should be in the mysql namespace
-     cinder::db::mysql::host_access { $allowed_hosts:
+    # TODO this class should be in the mysql namespace
+    cinder::db::mysql::host_access { $allowed_hosts:
       user      => $user,
       password  => $password,
       database  => $dbname,
