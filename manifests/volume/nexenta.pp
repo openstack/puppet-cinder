@@ -26,7 +26,7 @@
 #   (optional) Block size for volumes. Defaults to '8k'.
 #
 # [*nexenta_sparse*]
-#   (optional) Flag to create sparse volumes. Defaults to 'True'.
+#   (optional) Flag to create sparse volumes. Defaults to true.
 #
 class cinder::volume::nexenta (
   $nexenta_user,

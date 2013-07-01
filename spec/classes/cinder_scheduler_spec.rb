@@ -23,7 +23,7 @@ describe 'cinder::scheduler' do
         :enable    => true,
         :ensure    => 'running',
         :require   => 'Package[cinder]',
-        :hasstatus => 'true'
+        :hasstatus => true
       ) }
     end
 

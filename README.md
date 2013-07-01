@@ -46,7 +46,7 @@ class { 'cinder':
   sql_connection      => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
   rabbit_password     => 'secret_rpc_password_for_blocks',,
   rabbit_host         => 'openstack-controller.example.com',
-  verbose             => 'True',
+  verbose             => true,
 }
 
 class { 'cinder::api':
@@ -72,7 +72,7 @@ class { 'cinder':
   sql_connection      => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
   rabbit_password     => 'secret_rpc_password_for_blocks',,
   rabbit_host         => 'openstack-controller.example.com',
-  verbose             => 'True',
+  verbose             => true,
 }
 
 class { 'cinder::volume': }

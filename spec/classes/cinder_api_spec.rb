@@ -15,7 +15,7 @@ describe 'cinder::api' do
     end
 
     it { should contain_service('cinder-api').with(
-      'hasstatus' => 'true'
+      'hasstatus' => true
     )}
 
     it 'should configure cinder api correctly' do

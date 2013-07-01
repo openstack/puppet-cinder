@@ -7,7 +7,7 @@ describe 'cinder::volume::glusterfs' do
       :glusterfs_shares           => ['10.10.10.10:/volumes', '10.10.10.11:/volumes'],
       :glusterfs_shares_config    => '/etc/cinder/other_shares.conf',
       :glusterfs_disk_util        => 'du',
-      :glusterfs_sparsed_volumes  => 'true',
+      :glusterfs_sparsed_volumes  => true,
       :glusterfs_mount_point_base => '/cinder_mount_point',
     }
   end
@@ -19,7 +19,7 @@ describe 'cinder::volume::glusterfs' do
       should contain_cinder_config('DEFAULT/glusterfs_shares_config').with_value(
         '/etc/cinder/other_shares.conf')
       should contain_cinder_config('DEFAULT/glusterfs_sparsed_volumes').with_value(
-        'true')
+        true)
       should contain_cinder_config('DEFAULT/glusterfs_mount_point_base').with_value(
         '/cinder_mount_point')
       should contain_cinder_config('DEFAULT/glusterfs_disk_util').with_value(

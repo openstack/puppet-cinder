@@ -8,7 +8,7 @@ describe 'cinder::volume::nfs' do
       :nfs_mount_options    => 'vers=3',
       :nfs_shares_config    => '/etc/cinder/other_shares.conf',
       :nfs_disk_util        => 'du',
-      :nfs_sparsed_volumes  => 'true',
+      :nfs_sparsed_volumes  => true,
       :nfs_mount_point_base => '/cinder_mount_point',
     }
   end
@@ -22,7 +22,7 @@ describe 'cinder::volume::nfs' do
       should contain_cinder_config('DEFAULT/nfs_mount_options').with_value(
         'vers=3')
       should contain_cinder_config('DEFAULT/nfs_sparsed_volumes').with_value(
-        'true')
+        true)
       should contain_cinder_config('DEFAULT/nfs_mount_point_base').with_value(
         '/cinder_mount_point')
       should contain_cinder_config('DEFAULT/nfs_disk_util').with_value(
