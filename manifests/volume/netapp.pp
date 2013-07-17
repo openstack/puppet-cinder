@@ -1,10 +1,10 @@
 #
 class cinder::volume::netapp (
-  $netapp_wsdl_url,
   $netapp_login,
   $netapp_password,
   $netapp_server_hostname,
-  $netapp_storage_service,
+  $netapp_wsdl_url               = undef,
+  $netapp_storage_service        = undef,
   $netapp_server_port            = '8088',
   $netapp_storage_service_prefix = 'openstack',
   $netapp_vfiler                 = undef
