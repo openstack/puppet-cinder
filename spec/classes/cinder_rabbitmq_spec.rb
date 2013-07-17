@@ -3,7 +3,9 @@ require 'spec_helper'
 describe 'cinder::rabbitmq' do
 
   let :facts do
-    {:puppetversion => '2.7'}
+    { :puppetversion => '2.7',
+      :osfamily      => 'Debian',
+    }
   end
 
   describe 'with defaults' do
