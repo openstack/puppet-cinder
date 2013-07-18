@@ -9,7 +9,6 @@ class cinder::db::mysql (
   $cluster_id    = 'localzone'
 ) {
 
-  Class['mysql::server'] -> Class['cinder::db::mysql']
   Class['cinder::db::mysql'] -> Exec<| title == 'cinder-manage db_sync' |>
   Database[$dbname] ~> Exec<| title == 'cinder-manage db_sync' |>
 
