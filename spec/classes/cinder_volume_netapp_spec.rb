@@ -4,11 +4,9 @@ describe 'cinder::volume::netapp' do
 
   let :params do
     {
-      :netapp_wsdl_url        => 'http://127.0.0.1/dfm.wsdl',
       :netapp_login           => 'netapp',
       :netapp_password        => 'password',
       :netapp_server_hostname => '127.0.0.2',
-      :netapp_storage_service => 'OpenStack',
     }
   end
 
