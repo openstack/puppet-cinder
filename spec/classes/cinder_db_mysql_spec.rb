@@ -25,4 +25,52 @@ describe 'cinder::db::mysql' do
       :charset      => 'latin1'
      ) }
   end
+  describe "overriding allowed_hosts param to array" do
+    let :params do
+      {
+        :password       => 'cinderpass',
+        :allowed_hosts  => ['127.0.0.1','%']
+      }
+    end
+
+    it {should_not contain_cinder__db__mysql__host_access("127.0.0.1").with(
+      :user     => 'cinder',
+      :password => 'cinderpass',
+      :database => 'cinder'
+    )}
+    it {should contain_cinder__db__mysql__host_access("%").with(
+      :user     => 'cinder',
+      :password => 'cinderpass',
+      :database => 'cinder'
+    )}
+  end
+  describe "overriding allowed_hosts param to string" do
+    let :params do
+      {
+        :password       => 'cinderpass2',
+        :allowed_hosts  => '192.168.1.1'
+      }
+    end
+
+    it {should contain_cinder__db__mysql__host_access("192.168.1.1").with(
+      :user     => 'cinder',
+      :password => 'cinderpass2',
+      :database => 'cinder'
+    )}
+  end
+
+  describe "overriding allowed_hosts param equals to host param " do
+    let :params do
+      {
+        :password       => 'cinderpass2',
+        :allowed_hosts  => '127.0.0.1'
+      }
+    end
+
+    it {should_not contain_cinder__db__mysql__host_access("127.0.0.1").with(
+      :user     => 'cinder',
+      :password => 'cinderpass2',
+      :database => 'cinder'
+    )}
+  end
 end
