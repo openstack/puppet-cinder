@@ -8,6 +8,10 @@ class cinder::setup_test_volume(
     cwd => '/tmp/',
   }
 
+  package { 'lvm2':
+    ensure => present,
+  } ~>
+
   exec { "/bin/dd if=/dev/zero of=${volume_name} bs=1 count=0 seek=${size}":
     unless => "/sbin/vgdisplay ${volume_name}"
   } ~>
