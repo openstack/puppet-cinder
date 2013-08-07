@@ -107,6 +107,19 @@ Contributors
 Release Notes
 -------------
 
+**2.1.0**
+
+* Added configuration of Cinder quotas.
+* Added support for NetApp direct driver backend.
+* Added support for ceph backend.
+* Added support for SQL idle timeout.
+* Added support for RabbitMQ clustering with single IP.
+* Fixed allowed_hosts/database connection bug.
+* Fixed lvm2 setup failure for Ubuntu.
+* Removed unnecessary mysql::server dependency.
+* Pinned RabbitMQ and database module versions.
+* Various lint and bug fixes.
+
 **2.0.0**
 
 * Upstream is now part of stackfoge.
