@@ -56,6 +56,22 @@ describe 'cinder::api' do
         :value  => 'foo',
         :secret => true
       )
+
+      should contain_cinder_api_paste_ini('filter:authtoken/auth_uri').with(
+        :value => 'http://localhost:5000/'
+      )
+
+    end
+  end
+
+  describe 'with custom auth_uri' do
+    let :params do
+      req_params.merge({'keystone_auth_uri' => 'http://foo.bar:8080/v2.0/'})
+    end
+    it 'should configure cinder auth_uri correctly' do
+      should contain_cinder_api_paste_ini('filter:authtoken/auth_uri').with(
+        :value => 'http://foo.bar:8080/v2.0/'
+      )
     end
   end
 

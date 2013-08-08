@@ -63,6 +63,7 @@ class cinder::api (
   $keystone_auth_port         = '35357',
   $keystone_auth_protocol     = 'http',
   $keystone_auth_admin_prefix = false,
+  $keystone_auth_uri          = false,
   $service_port               = '5000',
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
@@ -101,6 +102,12 @@ class cinder::api (
 
   cinder_config {
     'DEFAULT/osapi_volume_listen': value => $bind_host
+  }
+
+  if $keystone_auth_uri {
+    cinder_api_paste_ini { 'filter:authtoken/auth_uri': value => $keystone_auth_uri; }
+  } else {
+    cinder_api_paste_ini { 'filter:authtoken/auth_uri': value => "${keystone_auth_protocol}://${keystone_auth_host}:${service_port}/"; }
   }
 
   if $keystone_enabled {
