@@ -16,8 +16,8 @@ class cinder::volume (
     Package['cinder']        -> Package['cinder-volume']
     Package['cinder-volume'] -> Service['cinder-volume']
     package { 'cinder-volume':
-      name   => $::cinder::params::volume_package,
       ensure => $package_ensure,
+      name   => $::cinder::params::volume_package,
     }
   }
 
@@ -28,9 +28,9 @@ class cinder::volume (
   }
 
   service { 'cinder-volume':
+    ensure    => $ensure,
     name      => $::cinder::params::volume_service,
     enable    => $enabled,
-    ensure    => $ensure,
     hasstatus => true,
     require   => Package['cinder'],
   }

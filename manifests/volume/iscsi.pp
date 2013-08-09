@@ -16,8 +16,8 @@ class cinder::volume::iscsi (
   case $iscsi_helper {
     'tgtadm': {
       package { 'tgt':
-        name   => $::cinder::params::tgt_package_name,
         ensure => present,
+        name   => $::cinder::params::tgt_package_name,
       }
 
       if($::osfamily == 'RedHat') {
@@ -31,8 +31,8 @@ class cinder::volume::iscsi (
       }
 
       service { 'tgtd':
-        name    => $::cinder::params::tgt_service_name,
         ensure  => running,
+        name    => $::cinder::params::tgt_service_name,
         enable  => true,
         require => Class['cinder::volume'],
       }

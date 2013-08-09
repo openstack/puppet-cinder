@@ -44,8 +44,8 @@ class cinder (
   anchor { 'cinder-start': }
 
   package { 'cinder':
-    name    => $::cinder::params::package_name,
     ensure  => $package_ensure,
+    name    => $::cinder::params::package_name,
     require => Anchor['cinder-start'],
   }
 
