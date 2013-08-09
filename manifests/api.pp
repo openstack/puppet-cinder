@@ -80,8 +80,8 @@ class cinder::api (
     Package['cinder-api'] -> Cinder_api_paste_ini<||>
     Package['cinder-api'] -> Service['cinder-api']
     package { 'cinder-api':
-      name    => $::cinder::params::api_package,
       ensure  => $package_ensure,
+      name    => $::cinder::params::api_package,
     }
   }
 
@@ -92,9 +92,9 @@ class cinder::api (
   }
 
   service { 'cinder-api':
+    ensure    => $ensure,
     name      => $::cinder::params::api_service,
     enable    => $enabled,
-    ensure    => $ensure,
     hasstatus => true,
     require   => Package['cinder'],
   }

@@ -5,7 +5,7 @@ class cinder::client(
   include cinder::params
 
   package { 'python-cinderclient':
-    name   => $::cinder::params::client_package,
     ensure => $package_ensure,
+    name   => $::cinder::params::client_package,
   }
 }
