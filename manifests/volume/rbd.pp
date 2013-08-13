@@ -52,6 +52,11 @@ class cinder::volume::rbd (
     }
   }
 
+  # Creates an empty file if it doesn't yet exist
+  file { $::cinder::params::ceph_init_override:
+    ensure  => present,
+  }
+
   file_line { 'set initscript env':
     line    => $override_line,
     path    => $::cinder::params::ceph_init_override,
