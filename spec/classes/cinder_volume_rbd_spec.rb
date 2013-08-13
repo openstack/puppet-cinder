@@ -30,6 +30,9 @@ describe 'cinder::volume::rbd' do
         'test')
       should contain_cinder_config('DEFAULT/rbd_secret_uuid').with_value(
         '0123456789')
+      should contain_file('/etc/init/cinder-volume.override').with(
+        :ensure => 'present'
+      )
       should contain_file_line('set initscript env').with(
         :line    => /env CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/init/cinder-volume.override',
@@ -45,6 +48,12 @@ describe 'cinder::volume::rbd' do
 
     let :params do
       req_params
+    end
+
+    it 'should ensure that the cinder-volume sysconfig file is present' do
+      should contain_file('/etc/sysconfig/openstack-cinder-volume').with(
+        :ensure => 'present'
+      )
     end
 
     it 'should configure RedHat init override' do
