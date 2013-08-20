@@ -14,7 +14,7 @@ describe 'cinder::scheduler' do
 
       it { should contain_package('cinder-scheduler').with(
         :name      => 'cinder-scheduler',
-        :ensure    => 'latest',
+        :ensure    => 'present',
         :before    => 'Service[cinder-scheduler]'
       ) }
 

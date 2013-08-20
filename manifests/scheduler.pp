@@ -1,7 +1,7 @@
 #
 class cinder::scheduler (
   $scheduler_driver = false,
-  $package_ensure   = 'latest',
+  $package_ensure   = 'present',
   $enabled          = true
 ) {
 

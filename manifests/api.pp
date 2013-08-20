@@ -64,7 +64,7 @@ class cinder::api (
   $keystone_auth_protocol     = 'http',
   $keystone_auth_admin_prefix = false,
   $service_port               = '5000',
-  $package_ensure             = 'latest',
+  $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
   $enabled                    = true
 ) {

@@ -10,7 +10,7 @@ describe 'cinder::volume' do
     {:osfamily => 'Debian'}
   end
 
-  it { should contain_package('cinder-volume') }
+  it { should contain_package('cinder-volume').with_ensure('present') }
   it { should contain_service('cinder-volume').with(
       'hasstatus' => true
   )}
