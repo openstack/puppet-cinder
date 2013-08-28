@@ -1,3 +1,12 @@
+# == Class: cinder::client
+#
+# Installs Cinder python client.
+#
+# === Parameters
+#
+# [*ensure*]
+#   Ensure state for package. Defaults to 'present'.
+#
 class cinder::client(
   $package_ensure = 'present'
 ) {

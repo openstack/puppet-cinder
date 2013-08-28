@@ -1,3 +1,45 @@
+# == Class: cinder::keystone::auth
+#
+# Configures Cinder user, service and endpoint in Keystone.
+#
+# === Parameters
+#
+# [*password*]
+#   Password for Cinder user. Required.
+#
+# [*email*]
+#   Email for Cinder user. Optional. Defaults to 'cinder@localhost'.
+#
+# [*auth_name*]
+#   Username for Cinder service. Optional. Defaults to 'cinder'.
+#
+# [*configure_endpoint*]
+#   Should Cinder endpoint be configured? Optional. Defaults to 'true'.
+#
+# [*service_type*]
+#    Type of service. Optional. Defaults to 'volume'.
+#
+# [*public_address*]
+#    Public address for endpoint. Optional. Defaults to '127.0.0.1'.
+#
+# [*admin_address*]
+#    Admin address for endpoint. Optional. Defaults to '127.0.0.1'.
+#
+# [*internal_address*]
+#    Internal address for endpoint. Optional. Defaults to '127.0.0.1'.
+#
+# [*port*]
+#    Port for endpoint. Optional. Defaults to '8776'.
+#
+# [*region*]
+#    Region for endpoint. Optional. Defaults to 'RegionOne'.
+#
+# [*tenant*]
+#    Tenant for Cinder user. Optional. Defaults to 'services'.
+#
+# [*protocol*]
+#    Protocol for public endpoint. Optional. Defaults to 'http'.
+#
 class cinder::keystone::auth (
   $password,
   $auth_name          = 'cinder',
