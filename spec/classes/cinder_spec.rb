@@ -19,6 +19,9 @@ describe 'cinder' do
       should contain_cinder_config('DEFAULT/rpc_backend').with(
         :value => 'cinder.openstack.common.rpc.impl_kombu'
       )
+      should contain_cinder_config('DEFAULT/control_exchange').with(
+        :value => 'openstack'
+      )
       should contain_cinder_config('DEFAULT/rabbit_password').with(
         :value => 'guest',
         :secret => true
