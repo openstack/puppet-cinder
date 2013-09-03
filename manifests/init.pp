@@ -17,6 +17,7 @@ class cinder (
   $sql_connection,
   $sql_idle_timeout            = '3600',
   $rpc_backend                 = 'cinder.openstack.common.rpc.impl_kombu',
+  $control_exchange            = 'openstack',
   $rabbit_host                 = '127.0.0.1',
   $rabbit_port                 = 5672,
   $rabbit_hosts                = false,
@@ -85,6 +86,7 @@ class cinder (
       'DEFAULT/rabbit_password':     value => $rabbit_password, secret => true;
       'DEFAULT/rabbit_userid':       value => $rabbit_userid;
       'DEFAULT/rabbit_virtual_host': value => $rabbit_virtual_host;
+      'DEFAULT/control_exchange':    value => $control_exchange;
     }
 
     if $rabbit_hosts {
