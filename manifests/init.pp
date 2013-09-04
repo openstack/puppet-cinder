@@ -5,6 +5,14 @@
 #   Timeout when db connections should be reaped.
 #   (Optional) Defaults to 3600.
 #
+# [use_syslog]
+#   Use syslog for logging.
+#   (Optional) Defaults to false.
+#
+# [log_facility]
+#   Syslog facility to receive log lines.
+#   (Optional) Defaults to LOG_USER.
+
 class cinder (
   $sql_connection,
   $sql_idle_timeout            = '3600',
@@ -30,6 +38,8 @@ class cinder (
   $qpid_tcp_nodelay            = true,
   $package_ensure              = 'present',
   $api_paste_config            = '/etc/cinder/api-paste.ini',
+  $use_syslog                  = false,
+  $log_facility                = 'LOG_USER',
   $verbose                     = false,
   $debug                       = false
 ) {
@@ -120,4 +130,14 @@ class cinder (
     'DEFAULT/rpc_backend':         value => $rpc_backend;
   }
 
+  if $use_syslog {
+    cinder_config {
+      'DEFAULT/use_syslog':           value => true;
+      'DEFAULT/syslog_log_facility':  value => $log_facility;
+    }
+  } else {
+    cinder_config {
+      'DEFAULT/use_syslog':           value => false;
+    }
+  }
 }
