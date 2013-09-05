@@ -122,4 +122,13 @@ describe 'cinder::api' do
     end
   end
 
+  describe 'with enabled false' do
+    let :params do
+      req_params.merge({'enabled' => false})
+    end
+    it 'should contain db_sync exec' do
+      should_not contain_exec('cinder-manage db_sync')
+    end
+  end
+
 end
