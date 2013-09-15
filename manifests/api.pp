@@ -54,6 +54,14 @@
 #   (optional) The state of the service
 #   Defaults to true
 #
+# [*ratelimits*]
+#   (optional) The state of the service
+#   Defaults to undef. If undefined the default ratelimiting values are used.
+#
+# [*ratelimits_factory*]
+#   (optional) Factory to use for ratelimiting
+#   Defaults to 'cinder.api.v1.limits:RateLimitingMiddleware.factory'
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled           = true,
@@ -67,7 +75,10 @@ class cinder::api (
   $service_port               = '5000',
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
-  $enabled                    = true
+  $enabled                    = true,
+  $ratelimits                 = undef,
+  $ratelimits_factory =
+    'cinder.api.v1.limits:RateLimitingMiddleware.factory'
 ) {
 
   include cinder::params
@@ -135,6 +146,13 @@ class cinder::api (
       'filter:authtoken/admin_user':        value => $keystone_user;
       'filter:authtoken/admin_password':    value => $keystone_password, secret => true;
     }
+
+  if ($ratelimits != undef) {
+    cinder_api_paste_ini {
+      'filter:ratelimit/paste.filter_factory': value => $ratelimits_factory;
+      'filter:ratelimit/limits':               value => $ratelimits;
+    }
+  }
 
     if $keystone_auth_admin_prefix {
       validate_re($keystone_auth_admin_prefix, '^(/.+[^/])?$')

@@ -131,4 +131,14 @@ describe 'cinder::api' do
     end
   end
 
+  describe 'with ratelimits' do
+    let :params do
+      req_params.merge({ :ratelimits => '(GET, "*", .*, 100, MINUTE);(POST, "*", .*, 200, MINUTE)' })
+    end
+
+    it { should contain_cinder_api_paste_ini('filter:ratelimit/limits').with(
+      :value => '(GET, "*", .*, 100, MINUTE);(POST, "*", .*, 200, MINUTE)'
+    )}
+  end
+
 end
