@@ -107,6 +107,17 @@ Contributors
 Release Notes
 -------------
 
+**2.2.0**
+
+* Added support for rate limiting via api-paste.ini
+* Added support to configure control_exchange.
+* Added parameter check to enable or disable db_sync.
+* Added syslog support.
+* Added default auth_uri setting for auth token.
+* Set package defaults to present.
+* Fixed a bug to create empty init script when necessary.
+* Various lint fixes.
+
 **2.1.0**
 
 * Added configuration of Cinder quotas.
