@@ -33,7 +33,7 @@ Setup
 
 ### Installing cinder
 
-    example% puppet module install puppetlabs/cinder
+    puppet module install puppetlabs/cinder
 
 ### Beginning with cinder
 
@@ -43,10 +43,10 @@ To utilize the cinder module's functionality you will need to declare multiple r
 
 ```puppet
 class { 'cinder':
-  sql_connection      => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
-  rabbit_password     => 'secret_rpc_password_for_blocks',,
-  rabbit_host         => 'openstack-controller.example.com',
-  verbose             => true,
+  sql_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  rabbit_password => 'secret_rpc_password_for_blocks',
+  rabbit_host     => 'openstack-controller.example.com',
+  verbose         => true,
 }
 
 class { 'cinder::api':
@@ -62,22 +62,26 @@ class { 'cinder::api':
   enabled                 => $cinder_api_enabled,
 }
 
-class { 'cinder::scheduler': scheduler_driver => 'cinder.scheduler.simple.SimpleScheduler', }
+class { 'cinder::scheduler':
+  scheduler_driver => 'cinder.scheduler.simple.SimpleScheduler',
+}
 ```
 
 **Define a cinder storage node**
 
 ```puppet
 class { 'cinder':
-  sql_connection      => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
-  rabbit_password     => 'secret_rpc_password_for_blocks',,
-  rabbit_host         => 'openstack-controller.example.com',
-  verbose             => true,
+  sql_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  rabbit_password => 'secret_rpc_password_for_blocks',
+  rabbit_host     => 'openstack-controller.example.com',
+  verbose         => true,
 }
 
 class { 'cinder::volume': }
 
-class { 'cinder::volume::iscsi': iscsi_ip_address => '10.0.0.2', }
+class { 'cinder::volume::iscsi':
+  iscsi_ip_address => '10.0.0.2',
+}
 ```
 
 Implementation
