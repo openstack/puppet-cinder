@@ -60,7 +60,6 @@ class cinder::volume::rbd (
   file_line { 'set initscript env':
     line    => $override_line,
     path    => $::cinder::params::ceph_init_override,
-    require => Package['cinder-volume'],
     notify  => Service['cinder-volume'],
   }
 

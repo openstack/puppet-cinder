@@ -36,7 +36,6 @@ describe 'cinder::volume::rbd' do
       should contain_file_line('set initscript env').with(
         :line    => /env CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/init/cinder-volume.override',
-        :require => 'Package[cinder-volume]',
         :notify  => 'Service[cinder-volume]')
     end
   end
@@ -60,7 +59,6 @@ describe 'cinder::volume::rbd' do
       should contain_file_line('set initscript env').with(
         :line    => /export CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/sysconfig/openstack-cinder-volume',
-        :require => 'Package[cinder-volume]',
         :notify  => 'Service[cinder-volume]')
     end
   end
