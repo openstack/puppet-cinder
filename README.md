@@ -84,6 +84,71 @@ class { 'cinder::volume::iscsi':
 }
 ```
 
+**Define a cinder storage node with multiple backends **
+
+```puppet
+class { 'cinder':
+  sql_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  rabbit_password => 'secret_rpc_password_for_blocks',
+  rabbit_host     => 'openstack-controller.example.com',
+  verbose         => true,
+}
+
+class { 'cinder::volume': }
+
+cinder::backend::iscsi {'iscsi1':
+  iscsi_ip_address => '10.0.0.2',
+}
+
+cinder::backend::iscsi {'iscsi2':
+  iscsi_ip_address => '10.0.0.3',
+}
+
+cinder::backend::iscsi {'iscsi3':
+  iscsi_ip_address    => '10.0.0.4',
+  volume_backend_name => 'iscsi',
+}
+
+cinder::backend::iscsi {'iscsi4':
+  iscsi_ip_address    => '10.0.0.5',
+  volume_backend_name => 'iscsi',
+}
+
+cinder::backend::rbd {'rbd-images':
+  rbd_pool => 'images',
+  rbd_user => 'images',
+}
+
+# Cinder::Type requires keystone credentials
+Cinder::Type {
+  os_password     => 'admin',
+  os_tenant_name  => 'admin',
+  os_username     => 'admin',
+  os_auth_url     => 'http://127.0.0.1:5000/v2.0/',
+}
+
+cinder::type {'iscsi':
+  set_key   => 'volume_backend_name',
+  set_value => ['iscsi1', 'iscsi2', 'iscsi']
+}
+
+cinder::type {'rbd':
+  set_key   => 'volume_backend_name',
+  set_value => 'rbd-images',
+}
+
+class { 'cinder::backends':
+  enabled_backends => ['iscsi1', 'iscsi2', 'rbd-images']
+}
+```
+
+Note: that the name passed to any backend resource must be unique accross all backends otherwise a duplicate resource will be defined.
+
+** Using type and type_set **
+
+Cinder allows for the usage of type to set extended information that can be used for various reasons. We have resource provider for ``type`` and ``type_set`` Since types are rarely defined with out also setting attributes with it, the resource for ``type`` can also call ``type_set`` if you pass ``set_key`` and ``set_value``
+
+
 Implementation
 --------------
 
