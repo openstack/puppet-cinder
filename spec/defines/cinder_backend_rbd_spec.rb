@@ -1,6 +1,9 @@
 require 'spec_helper'
 
-describe 'cinder::volume::rbd' do
+describe 'cinder::backend::rbd' do
+
+  let (:title) {'hippo'}
+
   let :req_params do
     {
       :rbd_pool              => 'volumes',
@@ -21,14 +24,17 @@ describe 'cinder::volume::rbd' do
   end
 
   describe 'rbd volume driver' do
+
     it 'configure rbd volume driver' do
-      should contain_cinder_config('DEFAULT/volume_driver').with_value(
+      should contain_cinder_config('hippo/volume_backend_name').with(
+        :value => 'hippo')
+      should contain_cinder_config('hippo/volume_driver').with_value(
         'cinder.volume.drivers.rbd.RBDDriver')
-      should contain_cinder_config('DEFAULT/rbd_pool').with_value(
+      should contain_cinder_config('hippo/rbd_pool').with_value(
         'volumes')
-      should contain_cinder_config('DEFAULT/rbd_user').with_value(
+      should contain_cinder_config('hippo/rbd_user').with_value(
         'test')
-      should contain_cinder_config('DEFAULT/rbd_secret_uuid').with_value(
+      should contain_cinder_config('hippo/rbd_secret_uuid').with_value(
         '0123456789')
       should contain_file('/etc/init/cinder-volume.override').with(
         :ensure => 'present'
@@ -41,6 +47,7 @@ describe 'cinder::volume::rbd' do
   end
 
   describe 'with RedHat' do
+
     let :facts do
         { :osfamily => 'RedHat' }
     end

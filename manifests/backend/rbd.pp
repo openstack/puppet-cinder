@@ -1,42 +1,48 @@
-# == Class: cinder::volume::rbd
+# == define: cinder::backend::rbd
 #
 # Setup Cinder to use the RBD driver.
+# Compatible for multiple backends
 #
 # === Parameters
 #
 # [*rbd_pool*]
 #   (required) Specifies the pool name for the block device driver.
 #
-# [*glance_api_version*]
-#   (required) Required for Ceph functionality.
-#
 # [*rbd_user*]
 #   (required) A required parameter to configure OS init scripts and cephx.
+#
+# [*volume_backend_name*]
+#   (optional) Allows for the volume_backend_name to be separate of $name.
+#   Defaults to: $name
+#
+# [*glance_api_version*]
+#   (required) Required for Ceph functionality.
 #
 # [*rbd_secret_uuid*]
 #   (optional) A required parameter to use cephx.
 #
 
-
-class cinder::volume::rbd (
+define cinder::backend::rbd (
   $rbd_pool,
-  $glance_api_version = '2',
   $rbd_user,
-  $rbd_secret_uuid    = false,
+  $volume_backend_name = $name,
+  $glance_api_version  = '2',
+  $rbd_secret_uuid     = false,
 ) {
 
   include cinder::params
 
   cinder_config {
-    'DEFAULT/volume_driver':        value =>
+    "${name}/volume_backend_name":  value => $volume_backend_name;
+    "${name}/volume_driver":        value =>
       'cinder.volume.drivers.rbd.RBDDriver';
-    'DEFAULT/glance_api_version':   value => $glance_api_version;
-    'DEFAULT/rbd_user':             value => $rbd_user;
-    'DEFAULT/rbd_pool':             value => $rbd_pool;
+    "${name}/glance_api_version":   value => $glance_api_version;
+    "${name}/rbd_user":             value => $rbd_user;
+    "${name}/rbd_pool":             value => $rbd_pool;
   }
   if $rbd_secret_uuid {
     cinder_config {
-      'DEFAULT/rbd_secret_uuid':    value => $rbd_secret_uuid;
+      "${name}/rbd_secret_uuid":    value => $rbd_secret_uuid;
     }
   }
 
