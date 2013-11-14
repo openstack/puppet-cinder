@@ -111,6 +111,13 @@ Contributors
 Release Notes
 -------------
 
+**3.0.0**
+
+* Major release for OpenStack Havana.
+* Added support for Solid Fire.
+* Added support for ceilometer.
+* Fixed bug for cinder-volume requirement.
+
 **2.2.0**
 
 * Added support for rate limiting via api-paste.ini
