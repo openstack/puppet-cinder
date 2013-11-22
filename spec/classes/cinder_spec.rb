@@ -136,7 +136,44 @@ describe 'cinder' do
     it { should contain_cinder_config('DEFAULT/qpid_heartbeat').with_value('60') }
     it { should contain_cinder_config('DEFAULT/qpid_protocol').with_value('tcp') }
     it { should contain_cinder_config('DEFAULT/qpid_tcp_nodelay').with_value(true) }
+  end
 
+  describe 'with qpid rpc and no qpid_sasl_mechanisms' do
+    let :params do
+      {
+        :sql_connection       => 'mysql://user:password@host/database',
+        :qpid_password        => 'guest',
+        :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'
+      }
+    end
+
+    it { should contain_cinder_config('DEFAULT/qpid_sasl_mechanisms').with_ensure('absent') }
+  end
+
+  describe 'with qpid rpc and qpid_sasl_mechanisms string' do
+    let :params do
+      {
+        :sql_connection       => 'mysql://user:password@host/database',
+        :qpid_password        => 'guest',
+        :qpid_sasl_mechanisms => 'PLAIN',
+        :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'
+      }
+    end
+
+    it { should contain_cinder_config('DEFAULT/qpid_sasl_mechanisms').with_value('PLAIN') }
+  end
+
+  describe 'with qpid rpc and qpid_sasl_mechanisms array' do
+    let :params do
+      {
+        :sql_connection       => 'mysql://user:password@host/database',
+        :qpid_password        => 'guest',
+        :qpid_sasl_mechanisms => [ 'DIGEST-MD5', 'GSSAPI', 'PLAIN' ],
+        :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'
+      }
+    end
+
+    it { should contain_cinder_config('DEFAULT/qpid_sasl_mechanisms').with_value('DIGEST-MD5 GSSAPI PLAIN') }
   end
 
   describe 'with syslog disabled' do

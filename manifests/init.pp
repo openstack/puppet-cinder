@@ -28,6 +28,7 @@ class cinder (
   $qpid_port                   = '5672',
   $qpid_username               = 'guest',
   $qpid_password               = false,
+  $qpid_sasl_mechanisms        = false,
   $qpid_reconnect              = true,
   $qpid_reconnect_timeout      = 0,
   $qpid_reconnect_limit        = 0,
@@ -120,6 +121,20 @@ class cinder (
       'DEFAULT/qpid_heartbeat':              value => $qpid_heartbeat;
       'DEFAULT/qpid_protocol':               value => $qpid_protocol;
       'DEFAULT/qpid_tcp_nodelay':            value => $qpid_tcp_nodelay;
+    }
+
+    if is_array($qpid_sasl_mechanisms) {
+      cinder_config {
+        'DEFAULT/qpid_sasl_mechanisms': value => join($qpid_sasl_mechanisms, ' ');
+      }
+    } elsif $qpid_sasl_mechanisms {
+      cinder_config {
+        'DEFAULT/qpid_sasl_mechanisms': value => $qpid_sasl_mechanisms;
+      }
+    } else {
+      cinder_config {
+        'DEFAULT/qpid_sasl_mechanisms': ensure => absent;
+      }
     }
   }
 
