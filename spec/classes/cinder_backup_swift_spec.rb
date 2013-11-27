@@ -15,7 +15,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-# Unit tests for cinder::swift class
+# Unit tests for cinder::backup::swift class
 #
 
 require 'spec_helper'
