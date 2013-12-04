@@ -24,7 +24,7 @@
 # [*backup_swift_url*]
 #   (optional) The URL of the Swift endpoint.
 #   Should be a valid Swift URL
-#   Defaults to 'http://localhost:8080'
+#   Defaults to 'http://localhost:8080/v1/AUTH_'
 #
 # [*backup_swift_container*]
 #   (optional) The default Swift container to use.
@@ -45,7 +45,7 @@
 
 class cinder::backup::swift (
   $backup_driver               = 'cinder.backup.drivers.swift',
-  $backup_swift_url            = 'http://localhost:8080',
+  $backup_swift_url            = 'http://localhost:8080/v1/AUTH_',
   $backup_swift_container      = 'volumes_backup',
   $backup_swift_object_size    = '52428800',
   $backup_swift_retry_attempts = '3',
