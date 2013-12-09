@@ -9,6 +9,8 @@ class cinder::params {
     $client_package     = 'python-cinderclient'
     $api_package        = 'cinder-api'
     $api_service        = 'cinder-api'
+    $backup_package     = 'cinder-backup'
+    $backup_service     = 'cinder-backup'
     $scheduler_package  = 'cinder-scheduler'
     $scheduler_service  = 'cinder-scheduler'
     $volume_package     = 'cinder-volume'
@@ -24,6 +26,8 @@ class cinder::params {
     $client_package     = 'python-cinderclient'
     $api_package        = false
     $api_service        = 'openstack-cinder-api'
+    $backup_package     = false
+    $backup_service     = 'openstack-cinder-backup'
     $scheduler_package  = false
     $scheduler_service  = 'openstack-cinder-scheduler'
     $volume_package     = false
