@@ -12,8 +12,17 @@ describe 'cinder::volume::netapp' do
 
   let :default_params do
     {
-      :netapp_server_port            => '8088',
-      :netapp_storage_service_prefix => 'openstack',
+      :netapp_server_port        => '80',
+      :netapp_size_multiplier    => '1.2',
+      :netapp_storage_family     => 'ontap_cluster',
+      :netapp_storage_protocol   => 'nfs',
+      :netapp_transport_type     => 'http',
+      :netapp_vfiler             => '',
+      :netapp_volume_list        => '',
+      :netapp_vserver            => '',
+      :expiry_thres_minutes      => '720',
+      :thres_avl_size_perc_start => '20',
+      :thres_avl_size_perc_stop  => '60',
     }
   end
 
@@ -24,6 +33,8 @@ describe 'cinder::volume::netapp' do
     end
 
     it 'configures netapp volume driver' do
+      should contain_cinder_config('DEFAULT/volume_driver').with_value(
+        'cinder.volume.drivers.netapp.common.NetAppDriver')
       params_hash.each_pair do |config,value|
         should contain_cinder_config("DEFAULT/#{config}").with_value( value )
       end
