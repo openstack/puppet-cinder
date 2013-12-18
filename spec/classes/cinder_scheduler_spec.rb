@@ -10,7 +10,7 @@ describe 'cinder::scheduler' do
 
     describe 'with default parameters' do
 
-      it { should include_class('cinder::params') }
+      it { should contain_class('cinder::params') }
 
       it { should contain_package('cinder-scheduler').with(
         :name      => 'cinder-scheduler',
@@ -49,7 +49,7 @@ describe 'cinder::scheduler' do
 
     describe 'with default parameters' do
 
-      it { should include_class('cinder::params') }
+      it { should contain_class('cinder::params') }
 
       it { should contain_service('cinder-scheduler').with(
         :name    => 'openstack-cinder-scheduler',

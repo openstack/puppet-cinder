@@ -39,7 +39,7 @@ describe 'cinder::backup' do
       default_params.merge(params)
     end
 
-    it { should include_class('cinder::params') }
+    it { should contain_class('cinder::params') }
 
     it 'installs cinder backup package' do
       if platform_params.has_key?(:backup_package)
