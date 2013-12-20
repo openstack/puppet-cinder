@@ -1,5 +1,5 @@
 name    'puppetlabs-cinder'
-version '3.0.0-rc1'
+version '3.0.0-rc2'
 source  'https://github.com/stackforge/puppet-cinder'
 author  'Puppet Labs'
 license 'Apache License 2.0'
