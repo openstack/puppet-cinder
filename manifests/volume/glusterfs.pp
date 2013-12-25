@@ -10,9 +10,7 @@
 #   Must be an array even if there is only one volume.
 #
 # [*glusterfs_disk_util*]
-#   (optional) The utility used to calculate how much free
-#   space is available on each Gluster volume.
-#   Defaults to undef which uses the driver's default of "df".
+#   Removed in Icehouse.
 #
 # [*glusterfs_sparsed_volumes*]
 #   (optional) Whether or not to use sparse (thin) volumes.
@@ -34,11 +32,15 @@
 #
 class cinder::volume::glusterfs (
   $glusterfs_shares,
-  $glusterfs_disk_util        = undef,
+  $glusterfs_disk_util        = false,
   $glusterfs_sparsed_volumes  = undef,
   $glusterfs_mount_point_base = undef,
   $glusterfs_shares_config    = '/etc/cinder/shares.conf'
 ) {
+
+  if $glusterfs_disk_util {
+    fail('glusterfs_disk_util is removed in Icehouse.')
+  }
 
   $content = join($glusterfs_shares, "\n")
 
@@ -52,7 +54,6 @@ class cinder::volume::glusterfs (
     'DEFAULT/volume_driver':        value =>
       'cinder.volume.drivers.glusterfs.GlusterfsDriver';
     'DEFAULT/glusterfs_shares_config':    value => $glusterfs_shares_config;
-    'DEFAULT/glusterfs_disk_util':        value => $glusterfs_disk_util;
     'DEFAULT/glusterfs_sparsed_volumes':  value => $glusterfs_sparsed_volumes;
     'DEFAULT/glusterfs_mount_point_base': value => $glusterfs_mount_point_base;
   }
