@@ -35,10 +35,10 @@
 #   Defaults to 443
 #
 class cinder::volume::solidfire(
-  $volume_driver       = 'cinder.volume.drivers.solidfire.SolidFire',
   $san_ip,
   $san_login,
   $san_password,
+  $volume_driver       = 'cinder.volume.drivers.solidfire.SolidFire',
   $sf_emulate_512      = true,
   $sf_allow_tenant_qos = false,
   $sf_account_prefix   = '',

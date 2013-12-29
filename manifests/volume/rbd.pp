@@ -20,8 +20,8 @@
 
 class cinder::volume::rbd (
   $rbd_pool,
-  $glance_api_version = '2',
   $rbd_user,
+  $glance_api_version = '2',
   $rbd_secret_uuid    = false,
 ) {
 
