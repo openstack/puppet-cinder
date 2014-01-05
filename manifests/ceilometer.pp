@@ -8,19 +8,15 @@
 # [*notification_driver*]
 #   (option) Driver or drivers to handle sending notifications.
 #    Notice: rabbit_notifier has been deprecated in Grizzly, use rpc_notifier instead.
-# [*control_exchange*]
-#   (option) AMQP exchange to connect to if using RabbitMQ or Qpid.
 #
 
 
 class cinder::ceilometer (
-  $notification_driver = 'cinder.openstack.common.notifier.rpc_notifier',
-  $control_exchange    = 'cinder'
+  $notification_driver = 'cinder.openstack.common.notifier.rpc_notifier'
 ) {
 
   cinder_config {
     'DEFAULT/notification_driver':     value => $notification_driver;
-    'DEFAULT/control_exchange':        value => $control_exchange;
   }
 }
 
