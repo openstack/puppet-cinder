@@ -2,7 +2,8 @@
 class cinder::scheduler (
   $scheduler_driver = false,
   $package_ensure   = 'present',
-  $enabled          = true
+  $enabled          = true,
+  $manage_service   = true
 ) {
 
   include cinder::params
@@ -27,10 +28,12 @@ class cinder::scheduler (
     }
   }
 
-  if $enabled {
-    $ensure = 'running'
-  } else {
-    $ensure = 'stopped'
+  if $manage_service {
+    if $enabled {
+      $ensure = 'running'
+    } else {
+      $ensure = 'stopped'
+    }
   }
 
   service { 'cinder-scheduler':

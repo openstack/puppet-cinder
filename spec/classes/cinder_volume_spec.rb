@@ -15,4 +15,12 @@ describe 'cinder::volume' do
       'hasstatus' => true
   )}
 
+  describe 'with manage_service false' do
+    let :params do
+      { 'manage_service' => false }
+    end
+    it 'should not change the state of the service' do
+      should contain_service('cinder-volume').without_ensure
+    end
+  end
 end

@@ -54,6 +54,10 @@
 #   (optional) The state of the service
 #   Defaults to true
 #
+# [*manage_service*]
+#   (optional) Whether to start/stop the service
+#   Defaults to true
+#
 # [*ratelimits*]
 #   (optional) The state of the service
 #   Defaults to undef. If undefined the default ratelimiting values are used.
@@ -80,6 +84,7 @@ class cinder::api (
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
   $enabled                    = true,
+  $manage_service             = true,
   $ratelimits                 = undef,
   $ratelimits_factory =
     'cinder.api.v1.limits:RateLimitingMiddleware.factory',
@@ -113,9 +118,13 @@ class cinder::api (
       logoutput   => 'on_failure',
       require     => Package['cinder'],
     }
-    $ensure = 'running'
+    if $manage_service {
+      $ensure = 'running'
+    }
   } else {
-    $ensure = 'stopped'
+    if $manage_service {
+      $ensure = 'stopped'
+    }
   }
 
   service { 'cinder-api':

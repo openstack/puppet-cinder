@@ -38,6 +38,16 @@ describe 'cinder::scheduler' do
       it { should contain_cinder_config('DEFAULT/scheduler_driver').with_value('cinder.scheduler.filter_scheduler.FilterScheduler') }
       it { should contain_package('cinder-scheduler').with_ensure('present') }
     end
+
+    describe 'with manage_service false' do
+      let :params do
+        { 'manage_service' => false
+        }
+      end
+      it 'should not change the state of the service' do
+        should contain_service('cinder-scheduler').without_ensure
+      end
+    end
   end
 
 

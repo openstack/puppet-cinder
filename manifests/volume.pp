@@ -1,7 +1,8 @@
 # $volume_name_template = volume-%s
 class cinder::volume (
   $package_ensure = 'present',
-  $enabled        = true
+  $enabled        = true,
+  $manage_service = true
 ) {
 
   include cinder::params
@@ -21,10 +22,12 @@ class cinder::volume (
     }
   }
 
-  if $enabled {
-    $ensure = 'running'
-  } else {
-    $ensure = 'stopped'
+  if $manage_service {
+    if $enabled {
+      $ensure = 'running'
+    } else {
+      $ensure = 'stopped'
+    }
   }
 
   service { 'cinder-volume':
@@ -34,5 +37,4 @@ class cinder::volume (
     hasstatus => true,
     require   => Package['cinder'],
   }
-
 }
