@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'cinder::scheduler' do
 
-  describe 'on debian plateforms' do
+  describe 'on debian platforms' do
 
     let :facts do
       { :osfamily => 'Debian' }
@@ -41,7 +41,7 @@ describe 'cinder::scheduler' do
   end
 
 
-  describe 'on rhel plateforms' do
+  describe 'on rhel platforms' do
 
     let :facts do
       { :osfamily => 'RedHat' }
