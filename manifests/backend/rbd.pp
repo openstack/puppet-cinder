@@ -15,35 +15,70 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
-# [*glance_api_version*]
-#   (required) Required for Ceph functionality.
+# [*rbd_ceph_conf*]
+#   (optional) Path to the ceph configuration file to use
+#   Defaults to '/etc/ceph/ceph.conf'
+#
+# [*rbd_flatten_volume_from_snapshot*]
+#   (optional) Enable flatten volumes created from snapshots.
+#   Defaults to false
 #
 # [*rbd_secret_uuid*]
 #   (optional) A required parameter to use cephx.
+#   Defaults to false
 #
-
+# [*volume_tmp_dir*]
+#   (optional) Location to store temporary image files if the volume
+#   driver does not write them directly to the volume
+#   Defaults to false
+#
+# [*rbd_max_clone_depth*]
+#   (optional) Maximum number of nested clones that can be taken of a
+#   volume before enforcing a flatten prior to next clone.
+#   A value of zero disables cloning
+#   Defaults to '5'
+#
+# [*glance_api_version*]
+#   (optional) DEPRECATED: Use cinder::glance Class instead.
+#   Glance API version. (Defaults to '2')
+#   Setting this parameter cause a duplicate resource declaration
+#   with cinder::glance
+#
 define cinder::backend::rbd (
   $rbd_pool,
   $rbd_user,
-  $volume_backend_name = $name,
-  $glance_api_version  = '2',
-  $rbd_secret_uuid     = false,
+  $volume_backend_name              = $name,
+  $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
+  $rbd_flatten_volume_from_snapshot = false,
+  $rbd_secret_uuid                  = false,
+  $volume_tmp_dir                   = false,
+  $rbd_max_clone_depth              = '5',
+  # DEPRECATED PARAMETERS
+  $glance_api_version               = undef,
 ) {
 
   include cinder::params
 
-  cinder_config {
-    "${name}/volume_backend_name":  value => $volume_backend_name;
-    "${name}/volume_driver":        value =>
-      'cinder.volume.drivers.rbd.RBDDriver';
-    "${name}/glance_api_version":   value => $glance_api_version;
-    "${name}/rbd_user":             value => $rbd_user;
-    "${name}/rbd_pool":             value => $rbd_pool;
+  if $glance_api_version {
+    warning('The glance_api_version parameter is deprecated, use glance_api_version of cinder::glance class instead.')
   }
+
+  cinder_config {
+    "${name}/volume_backend_name":              value => $volume_backend_name;
+    "${name}/volume_driver":                    value => 'cinder.volume.drivers.rbd.RBDDriver';
+    "${name}/rbd_ceph_conf":                    value => $rbd_ceph_conf;
+    "${name}/rbd_user":                         value => $rbd_user;
+    "${name}/rbd_pool":                         value => $rbd_pool;
+    "${name}/rbd_max_clone_depth":              value => $rbd_max_clone_depth;
+    "${name}/rbd_flatten_volume_from_snapshot": value => $rbd_flatten_volume_from_snapshot;
+  }
+
   if $rbd_secret_uuid {
-    cinder_config {
-      "${name}/rbd_secret_uuid":    value => $rbd_secret_uuid;
-    }
+    cinder_config {"${name}/rbd_secret_uuid": value => $rbd_secret_uuid;}
+  }
+
+  if $volume_tmp_dir {
+    cinder_config {"${name}/volume_tmp_dir": value => $volume_tmp_dir;}
   }
 
   case $::osfamily {
