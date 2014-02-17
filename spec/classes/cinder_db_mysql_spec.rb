@@ -3,7 +3,8 @@ require 'spec_helper'
 describe 'cinder::db::mysql' do
 
   let :req_params do
-    {:password => 'pw'}
+    {:password => 'pw',
+     :mysql_module => '0.9'}
   end
 
   let :facts do
