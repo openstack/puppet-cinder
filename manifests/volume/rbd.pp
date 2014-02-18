@@ -15,7 +15,7 @@
 #   Defaults to '/etc/ceph/ceph.conf'
 #
 # [*rbd_flatten_volume_from_snapshot*]
-#   (optional) Enalbe flatten volumes created from snapshots.
+#   (optional) Enable flatten volumes created from snapshots.
 #   Defaults to false
 #
 # [*rbd_secret_uuid*]
@@ -63,10 +63,19 @@ class cinder::volume::rbd (
     'DEFAULT/rbd_user':                         value => $rbd_user;
     'DEFAULT/rbd_pool':                         value => $rbd_pool;
     'DEFAULT/rbd_max_clone_depth':              value => $rbd_max_clone_depth;
-    'DEFAULT/rbd_secret_uuid':                  value => $rbd_secret_uuid;
     'DEFAULT/rbd_flatten_volume_from_snapshot': value => $rbd_flatten_volume_from_snapshot;
-    'DEFAULT/volume_tmp_dir':                   value => $volume_tmp_dir;
+  }
 
+  if $rbd_secret_uuid {
+    cinder_config {'DEFAULT/rbd_secret_uuid': value => $rbd_secret_uuid;}
+  } else {
+    cinder_config {'DEFAULT/rbd_secret_uuid': ensure => absent;}
+  }
+
+  if $volume_tmp_dir {
+    cinder_config {'DEFAULT/volume_tmp_dir': value => $volume_tmp_dir;}
+  } else {
+    cinder_config {'DEFAULT/volume_tmp_dir': ensure => absent;}
   }
 
   case $::osfamily {

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'cinder::backend::nfs' do
 
-  let (:title) {'hippo'}
+  let(:title) {'hippo'}
 
   let :params do
     {

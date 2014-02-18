@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'cinder::backend::iscsi' do
 
-  let (:title) {'hippo'}
+  let(:title) {'hippo'}
 
   let :req_params do {
     :iscsi_ip_address => '127.0.0.2',
