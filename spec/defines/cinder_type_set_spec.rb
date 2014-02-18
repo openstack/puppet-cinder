@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'cinder::type_set' do
 
-  let (:title) {'hippo'}
+  let(:title) {'hippo'}
 
   let :params do {
     :type           => 'sith',
