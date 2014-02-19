@@ -60,6 +60,7 @@ describe 'cinder' do
       should contain_cinder_config('DEFAULT/api_paste_config').with(
         :value => '/etc/cinder/api-paste.ini'
       )
+      should contain_cinder_config('DEFAULT/log_dir').with(:value => '/var/log/cinder')
     end
 
     it { should contain_file('/etc/cinder/cinder.conf').with(
@@ -168,6 +169,11 @@ describe 'cinder' do
 
     it { should contain_cinder_config('DEFAULT/use_syslog').with_value(true) }
     it { should contain_cinder_config('DEFAULT/syslog_log_facility').with_value('LOG_LOCAL0') }
+  end
+
+  describe 'with log_dir disabled' do
+    let(:params) { req_params.merge!({:log_dir => false}) }
+    it { should contain_cinder_config('DEFAULT/log_dir').with_ensure('absent') }
   end
 
 end
