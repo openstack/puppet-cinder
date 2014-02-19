@@ -62,6 +62,10 @@
 #   (optional) Factory to use for ratelimiting
 #   Defaults to 'cinder.api.v1.limits:RateLimitingMiddleware.factory'
 #
+# [*default_volume_type*]
+#   (optional) Specify the default volume type
+#   Defaults to undef.
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled           = true,
@@ -78,7 +82,8 @@ class cinder::api (
   $enabled                    = true,
   $ratelimits                 = undef,
   $ratelimits_factory =
-    'cinder.api.v1.limits:RateLimitingMiddleware.factory'
+    'cinder.api.v1.limits:RateLimitingMiddleware.factory',
+  $default_volume_type        = undef,
 ) {
 
   include cinder::params
@@ -163,6 +168,15 @@ class cinder::api (
       cinder_api_paste_ini {
         'filter:authtoken/auth_admin_prefix': ensure => absent;
       }
+    }
+  }
+  if $default_volume_type {
+    cinder_config {
+      'DEFAULT/default_volume_type': value => $default_volume_type;
+    }
+  } else {
+    cinder_config {
+      'DEFAULT/default_volume_type': ensure => absent;
     }
   }
 }
