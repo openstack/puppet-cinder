@@ -5,7 +5,9 @@ class cinder::volume::nfs (
   $nfs_disk_util = undef,
   $nfs_sparsed_volumes = undef,
   $nfs_mount_point_base = undef,
-  $nfs_shares_config = '/etc/cinder/shares.conf'
+  $nfs_shares_config = '/etc/cinder/shares.conf',
+  $nfs_used_ratio = '0.95',
+  $nfs_oversub_ratio = '1.0',
 ) {
 
   file {$nfs_shares_config:
@@ -22,5 +24,7 @@ class cinder::volume::nfs (
     'DEFAULT/nfs_disk_util':        value => $nfs_disk_util;
     'DEFAULT/nfs_sparsed_volumes':  value => $nfs_sparsed_volumes;
     'DEFAULT/nfs_mount_point_base': value => $nfs_mount_point_base;
+    'DEFAULT/nfs_used_ratio':       value => $nfs_used_ratio;
+    'DEFAULT/nfs_oversub_ratio':    value => $nfs_oversub_ratio;
   }
 }
