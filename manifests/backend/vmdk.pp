@@ -81,8 +81,7 @@ define cinder::backend::vmdk (
     }
   }
 
-  package { 'suds':
-    ensure   => present,
-    provider => pip
+  package { 'python-suds':
+    ensure   => present
   }
 }

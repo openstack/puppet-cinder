@@ -34,10 +34,10 @@ describe 'cinder::volume::vmdk' do
     should_not contain_cinder_config('DEFAULT/vmware_wsdl_location')
   end
 
-  it 'installs vmdk driver with pip' do
-    should contain_package('suds').with(
-               :ensure => 'present',
-               :provider => 'pip')
+  it 'installs vmdk python driver' do
+    should contain_package('python-suds').with(
+               :ensure => 'present'
+               )
   end
 
   context 'with optional parameters' do
