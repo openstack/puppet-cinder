@@ -12,7 +12,12 @@
 # [log_facility]
 #   Syslog facility to receive log lines.
 #   (Optional) Defaults to LOG_USER.
-
+#
+# [*log_dir*]
+#   (optional) Directory where logs should be stored.
+#   If set to boolean false, it will not log to any directory.
+#   Defaults to '/var/log/cinder'
+#
 class cinder (
   $sql_connection,
   $sql_idle_timeout            = '3600',
@@ -41,6 +46,7 @@ class cinder (
   $api_paste_config            = '/etc/cinder/api-paste.ini',
   $use_syslog                  = false,
   $log_facility                = 'LOG_USER',
+  $log_dir                     = '/var/log/cinder',
   $verbose                     = false,
   $debug                       = false
 ) {
@@ -130,6 +136,16 @@ class cinder (
     'DEFAULT/debug':               value => $debug;
     'DEFAULT/api_paste_config':    value => $api_paste_config;
     'DEFAULT/rpc_backend':         value => $rpc_backend;
+  }
+
+  if $log_dir {
+    cinder_config {
+      'DEFAULT/log_dir': value => $log_dir;
+    }
+  } else {
+    cinder_config {
+      'DEFAULT/log_dir': ensure => absent;
+    }
   }
 
   if $use_syslog {
