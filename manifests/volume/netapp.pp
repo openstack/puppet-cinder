@@ -92,6 +92,43 @@
 #   'minutes, where M is the value of the expiry_thres_minutes parameter.
 #   Defaults to 60
 #
+# [*nfs_shares_config*]
+#   (optional) File with the list of available NFS shares
+#   Defaults to ''
+#
+# [*netapp_copyoffload_tool_path*]
+#   (optional) This option specifies the path of the NetApp Copy Offload tool
+#   binary. Ensure that the binary has execute permissions set which allow the
+#   effective user of the cinder-volume process to execute the file.
+#   Defaults to ''
+#
+# [*netapp_controller_ips*]
+#   (optional) This option is only utilized when the storage family is
+#   configured to eseries. This option is used to restrict provisioning to the
+#   specified controllers. Specify the value of this option to be a comma
+#   separated list of controller hostnames or IP addresses to be used for
+#   provisioning.
+#   Defaults to ''
+#
+# [*netapp_sa_password*]
+#   (optional) Password for the NetApp E-Series storage array.
+#   Defaults to ''
+#
+# [*netapp_storage_pools*]
+#   (optional) This option is used to restrict provisioning to the specified
+#   storage pools. Only dynamic disk pools are currently supported. Specify the
+#   value of this option to be a comma separated list of disk pool names to be
+#   used for provisioning.
+#   Defaults to ''
+#
+# [*netapp_webservice_path*]
+#   (optional) This option is used to specify the path to the E-Series proxy
+#   application on a proxy server. The value is combined with the value of the
+#   netapp_transport_type, netapp_server_hostname, and netapp_server_port
+#   options to create the URL used by the driver to connect to the proxy
+#   application.
+#   Defaults to '/devmgr/v2'
+#
 # === Examples
 #
 #  class { 'cinder::volume::netapp':
@@ -115,35 +152,47 @@ class cinder::volume::netapp (
   $netapp_login,
   $netapp_password,
   $netapp_server_hostname,
-  $netapp_server_port        = '80',
-  $netapp_size_multiplier    = '1.2',
-  $netapp_storage_family     = 'ontap_cluster',
-  $netapp_storage_protocol   = 'nfs',
-  $netapp_transport_type     = 'http',
-  $netapp_vfiler             = '',
-  $netapp_volume_list        = '',
-  $netapp_vserver            = '',
-  $expiry_thres_minutes      = '720',
-  $thres_avl_size_perc_start = '20',
-  $thres_avl_size_perc_stop  = '60'
+  $netapp_server_port           = '80',
+  $netapp_size_multiplier       = '1.2',
+  $netapp_storage_family        = 'ontap_cluster',
+  $netapp_storage_protocol      = 'nfs',
+  $netapp_transport_type        = 'http',
+  $netapp_vfiler                = '',
+  $netapp_volume_list           = '',
+  $netapp_vserver               = '',
+  $expiry_thres_minutes         = '720',
+  $thres_avl_size_perc_start    = '20',
+  $thres_avl_size_perc_stop     = '60',
+  $nfs_shares_config            = '',
+  $netapp_copyoffload_tool_path = '',
+  $netapp_controller_ips        = '',
+  $netapp_sa_password           = '',
+  $netapp_storage_pools         = '',
+  $netapp_webservice_path       = '/devmgr/v2',
 ) {
 
   cinder_config {
-    'DEFAULT/volume_driver':                 value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
-    'DEFAULT/netapp_login':                  value => $netapp_login;
-    'DEFAULT/netapp_password':               value => $netapp_password, secret => true;
-    'DEFAULT/netapp_server_hostname':        value => $netapp_server_hostname;
-    'DEFAULT/netapp_server_port':            value => $netapp_server_port;
-    'DEFAULT/netapp_size_multiplier':        value => $netapp_size_multiplier;
-    'DEFAULT/netapp_storage_family':         value => $netapp_storage_family;
-    'DEFAULT/netapp_storage_protocol':       value => $netapp_storage_protocol;
-    'DEFAULT/netapp_transport_type':         value => $netapp_transport_type;
-    'DEFAULT/netapp_vfiler':                 value => $netapp_vfiler;
-    'DEFAULT/netapp_volume_list':            value => $netapp_volume_list;
-    'DEFAULT/netapp_vserver':                value => $netapp_vserver;
-    'DEFAULT/expiry_thres_minutes':          value => $expiry_thres_minutes;
-    'DEFAULT/thres_avl_size_perc_start':     value => $thres_avl_size_perc_start;
-    'DEFAULT/thres_avl_size_perc_stop':      value => $thres_avl_size_perc_stop;
+    'DEFAULT/volume_driver':                value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
+    'DEFAULT/netapp_login':                 value => $netapp_login;
+    'DEFAULT/netapp_password':              value => $netapp_password, secret => true;
+    'DEFAULT/netapp_server_hostname':       value => $netapp_server_hostname;
+    'DEFAULT/netapp_server_port':           value => $netapp_server_port;
+    'DEFAULT/netapp_size_multiplier':       value => $netapp_size_multiplier;
+    'DEFAULT/netapp_storage_family':        value => $netapp_storage_family;
+    'DEFAULT/netapp_storage_protocol':      value => $netapp_storage_protocol;
+    'DEFAULT/netapp_transport_type':        value => $netapp_transport_type;
+    'DEFAULT/netapp_vfiler':                value => $netapp_vfiler;
+    'DEFAULT/netapp_volume_list':           value => $netapp_volume_list;
+    'DEFAULT/netapp_vserver':               value => $netapp_vserver;
+    'DEFAULT/expiry_thres_minutes':         value => $expiry_thres_minutes;
+    'DEFAULT/thres_avl_size_perc_start':    value => $thres_avl_size_perc_start;
+    'DEFAULT/thres_avl_size_perc_stop':     value => $thres_avl_size_perc_stop;
+    'DEFAULT/nfs_shares_config':            value => $nfs_shares_config;
+    'DEFAULT/netapp_copyoffload_tool_path': value => $netapp_copyoffload_tool_path;
+    'DEFAULT/netapp_controller_ips':        value => $netapp_controller_ips;
+    'DEFAULT/netapp_sa_password':           value => $netapp_sa_password;
+    'DEFAULT/netapp_storage_pools':         value => $netapp_storage_pools;
+    'DEFAULT/netapp_webservice_path':       value => $netapp_webservice_path;
   }
 
 }

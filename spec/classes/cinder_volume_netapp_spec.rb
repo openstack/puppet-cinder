@@ -12,17 +12,23 @@ describe 'cinder::volume::netapp' do
 
   let :default_params do
     {
-      :netapp_server_port        => '80',
-      :netapp_size_multiplier    => '1.2',
-      :netapp_storage_family     => 'ontap_cluster',
-      :netapp_storage_protocol   => 'nfs',
-      :netapp_transport_type     => 'http',
-      :netapp_vfiler             => '',
-      :netapp_volume_list        => '',
-      :netapp_vserver            => '',
-      :expiry_thres_minutes      => '720',
-      :thres_avl_size_perc_start => '20',
-      :thres_avl_size_perc_stop  => '60',
+      :netapp_server_port           => '80',
+      :netapp_size_multiplier       => '1.2',
+      :netapp_storage_family        => 'ontap_cluster',
+      :netapp_storage_protocol      => 'nfs',
+      :netapp_transport_type        => 'http',
+      :netapp_vfiler                => '',
+      :netapp_volume_list           => '',
+      :netapp_vserver               => '',
+      :expiry_thres_minutes         => '720',
+      :thres_avl_size_perc_start    => '20',
+      :thres_avl_size_perc_stop     => '60',
+      :nfs_shares_config            => '',
+      :netapp_copyoffload_tool_path => '',
+      :netapp_controller_ips        => '',
+      :netapp_sa_password           => '',
+      :netapp_storage_pools         => '',
+      :netapp_webservice_path       => '/devmgr/v2',
     }
   end
 
