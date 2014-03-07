@@ -37,8 +37,14 @@
 # [*tenant*]
 #    Tenant for Cinder user. Optional. Defaults to 'services'.
 #
-# [*protocol*]
+# [*public_protocol*]
 #    Protocol for public endpoint. Optional. Defaults to 'http'.
+#
+# [*internal_protocol*]
+#    Protocol for internal endpoint. Optional. Defaults to 'http'.
+#
+# [*admin_protocol*]
+#    Protocol for admin endpoint. Optional. Defaults to 'http'.
 #
 class cinder::keystone::auth (
   $password,
@@ -53,7 +59,9 @@ class cinder::keystone::auth (
   $port               = '8776',
   $volume_version     = 'v1',
   $region             = 'RegionOne',
-  $public_protocol    = 'http'
+  $public_protocol    = 'http',
+  $admin_protocol     = 'http',
+  $internal_protocol  = 'http'
 ) {
 
   Keystone_user_role["${auth_name}@${tenant}"] ~> Service <| name == 'cinder-api' |>
@@ -78,8 +86,8 @@ class cinder::keystone::auth (
     keystone_endpoint { "${region}/${auth_name}":
       ensure       => present,
       public_url   => "${public_protocol}://${public_address}:${port}/${volume_version}/%(tenant_id)s",
-      admin_url    => "http://${admin_address}:${port}/${volume_version}/%(tenant_id)s",
-      internal_url => "http://${internal_address}:${port}/${volume_version}/%(tenant_id)s",
+      admin_url    => "${admin_protocol}://${admin_address}:${port}/${volume_version}/%(tenant_id)s",
+      internal_url => "${internal_protocol}://${internal_address}:${port}/${volume_version}/%(tenant_id)s",
     }
   }
 }
