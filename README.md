@@ -159,7 +159,7 @@ cinder is a combination of Puppet manifest and ruby code to delivery configurati
 Limitations
 ------------
 
-* Setup of storage nodes is limited to Linux and LVM, i.e. Puppet won't configure a Nexenta appliacne but nova can be configured to use the Nexenta driver with Class['cinder::volume::nexenta'].
+* Setup of storage nodes is limited to Linux and LVM, i.e. Puppet won't configure a Nexenta appliance but nova can be configured to use the Nexenta driver with Class['cinder::volume::nexenta'].
 
 Development
 -----------
