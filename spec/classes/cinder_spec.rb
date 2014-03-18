@@ -213,4 +213,22 @@ describe 'cinder' do
     it { should contain_cinder_config('DEFAULT/log_dir').with_ensure('absent') }
   end
 
+  describe 'with amqp_durable_queues disabled' do
+    let :params do
+      req_params
+    end
+
+    it { should contain_cinder_config('DEFAULT/amqp_durable_queues').with_value(false) }
+  end
+
+  describe 'with amqp_durable_queues enabled' do
+    let :params do
+      req_params.merge({
+        :amqp_durable_queues => true,
+      })
+    end
+
+    it { should contain_cinder_config('DEFAULT/amqp_durable_queues').with_value(true) }
+  end
+
 end

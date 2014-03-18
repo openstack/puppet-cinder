@@ -5,6 +5,10 @@
 #   Timeout when db connections should be reaped.
 #   (Optional) Defaults to 3600.
 #
+# [amqp_durable_queues]
+#   Use durable queues in amqp.
+#   (Optional) Defaults to false.
+#
 # [use_syslog]
 #   Use syslog for logging.
 #   (Optional) Defaults to false.
@@ -34,6 +38,7 @@ class cinder (
   $rabbit_virtual_host         = '/',
   $rabbit_userid               = 'guest',
   $rabbit_password             = false,
+  $amqp_durable_queues         = false,
   $qpid_hostname               = 'localhost',
   $qpid_port                   = '5672',
   $qpid_username               = 'guest',
@@ -100,6 +105,7 @@ class cinder (
       'DEFAULT/rabbit_userid':       value => $rabbit_userid;
       'DEFAULT/rabbit_virtual_host': value => $rabbit_virtual_host;
       'DEFAULT/control_exchange':    value => $control_exchange;
+      'DEFAULT/amqp_durable_queues': value => $amqp_durable_queues;
     }
 
     if $rabbit_hosts {
@@ -133,6 +139,7 @@ class cinder (
       'DEFAULT/qpid_heartbeat':              value => $qpid_heartbeat;
       'DEFAULT/qpid_protocol':               value => $qpid_protocol;
       'DEFAULT/qpid_tcp_nodelay':            value => $qpid_tcp_nodelay;
+      'DEFAULT/amqp_durable_queues':         value => $amqp_durable_queues;
     }
 
     if is_array($qpid_sasl_mechanisms) {
@@ -186,4 +193,5 @@ class cinder (
       'DEFAULT/use_syslog':           value => false;
     }
   }
+
 }
