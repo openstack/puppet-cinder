@@ -56,6 +56,20 @@ describe 'cinder::backend::rbd' do
       it { should contain_cinder_config("#{req_params[:volume_backend_name]}/volume_tmp_dir").with_ensure('absent') }
     end
 
+    context 'with another RBD backend' do
+      let :pre_condition do
+        "cinder::backend::rbd { 'ceph2':
+           rbd_pool => 'volumes2',
+           rbd_user => 'test'
+         }"
+      end
+      it { should contain_cinder_config("#{req_params[:volume_backend_name]}/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver') }
+      it { should contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_pool").with_value(req_params[:rbd_pool]) }
+      it { should contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_user").with_value(req_params[:rbd_user]) }
+      it { should contain_cinder_config("ceph2/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver') }
+      it { should contain_cinder_config("ceph2/rbd_pool").with_value('volumes2') }
+      it { should contain_cinder_config("ceph2/rbd_user").with_value('test') }
+    end
   end
 
   describe 'with RedHat' do
