@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'cinder::backend::vmdk' do
 
-  let (:title) { 'hippo' }
+  let(:title) { 'hippo' }
 
   let :params do
     {

@@ -41,7 +41,19 @@ describe 'cinder::volume::rbd' do
         :path    => '/etc/init/cinder-volume.override',
         :notify  => 'Service[cinder-volume]')
     end
+
+    context 'with rbd_secret_uuid disabled' do
+      let(:params) { req_params.merge!({:rbd_secret_uuid => false}) }
+      it { should contain_cinder_config('DEFAULT/rbd_secret_uuid').with_ensure('absent') }
+    end
+
+    context 'with volume_tmp_dir disabled' do
+      let(:params) { req_params.merge!({:volume_tmp_dir => false}) }
+      it { should contain_cinder_config('DEFAULT/volume_tmp_dir').with_ensure('absent') }
+    end
+
   end
+
 
   describe 'with RedHat' do
     let :facts do

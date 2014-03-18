@@ -75,10 +75,14 @@ define cinder::backend::rbd (
 
   if $rbd_secret_uuid {
     cinder_config {"${name}/rbd_secret_uuid": value => $rbd_secret_uuid;}
+  } else {
+    cinder_config {"${name}/rbd_secret_uuid": ensure => absent;}
   }
 
   if $volume_tmp_dir {
     cinder_config {"${name}/volume_tmp_dir": value => $volume_tmp_dir;}
+  } else {
+    cinder_config {"${name}/volume_tmp_dir": ensure => absent;}
   }
 
   case $::osfamily {
