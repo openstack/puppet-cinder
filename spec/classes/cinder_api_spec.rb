@@ -83,7 +83,6 @@ describe 'cinder::api' do
       should contain_cinder_config('DEFAULT/osapi_volume_listen').with(
        :value => '192.168.1.3'
       )
-      should contain_cinder_config('DEFAULT/default_volume_type').with_ensure('absent')
     end
   end
 
@@ -139,16 +138,6 @@ describe 'cinder::api' do
 
     it { should contain_cinder_api_paste_ini('filter:ratelimit/limits').with(
       :value => '(GET, "*", .*, 100, MINUTE);(POST, "*", .*, 200, MINUTE)'
-    )}
-  end
-
-  describe 'with default volume type' do
-    let :params do
-      req_params.merge({ :default_volume_type => 'LVM_iSCSI' })
-    end
-
-    it { should contain_cinder_config('DEFAULT/default_volume_type').with(
-      :value => 'LVM_iSCSI'
     )}
   end
 
