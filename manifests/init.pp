@@ -18,6 +18,11 @@
 #   If set to boolean false, it will not log to any directory.
 #   Defaults to '/var/log/cinder'
 #
+# [*mysql_module*]
+#   (optional) Puppetlabs-mysql module version to use
+#   Tested versions include 0.9 and 2.2
+#   Defaults to '0.9'
+#
 class cinder (
   $sql_connection,
   $sql_idle_timeout            = '3600',
@@ -49,7 +54,8 @@ class cinder (
   $log_facility                = 'LOG_USER',
   $log_dir                     = '/var/log/cinder',
   $verbose                     = false,
-  $debug                       = false
+  $debug                       = false,
+  $mysql_module                = '0.9'
 ) {
 
   include cinder::params
@@ -151,6 +157,13 @@ class cinder (
     'DEFAULT/debug':               value => $debug;
     'DEFAULT/api_paste_config':    value => $api_paste_config;
     'DEFAULT/rpc_backend':         value => $rpc_backend;
+  }
+
+  if $mysql_module >= 2.2 {
+    require mysql::bindings
+    require mysql::bindings::python
+  } else {
+    require mysql::python
   }
 
   if $log_dir {
