@@ -179,7 +179,28 @@ Release Notes
 
 **master**
 
-* Added support for multiple concurent backends.
+* Updated NetApp unified driver config options.
+* Added Glance support.
+* Added GlusterFS driver support.
+* Updated support for latest RabbitMQ module.
+* Added support for MySQL module (>= 2.2).
+
+**3.1.0**
+
+* Added default_volume_type as a Cinder API parameter.
+* Added parameter for endpoint procols.
+* Deprecated glance_api_version.
+* Added support for VMDK.
+* Added support for Cinder multi backend.
+* Added support for https authentication endpoints.
+* Replaced pip with native package manager (VMDK).
+
+**3.0.0**
+
+* Major release for OpenStack Havana.
+* Added support for SolidFire.
+* Added support for ceilometer.
+* Fixed bug for cinder-volume requirement.
 
 **2.2.0**
 
