@@ -61,6 +61,18 @@ describe 'cinder::api' do
         :value => 'http://localhost:5000/'
       )
 
+      should_not contain_cinder_config('DEFAULT/os_region_name')
+    end
+  end
+
+  describe 'with a custom region for nova' do
+    let :params do
+      req_params.merge({'os_region_name' => 'MyRegion'})
+    end
+    it 'should configure the region for nova' do
+      should contain_cinder_config('DEFAULT/os_region_name').with(
+        :value => 'MyRegion'
+      )
     end
   end
 
