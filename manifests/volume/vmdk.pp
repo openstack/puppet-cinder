@@ -58,25 +58,15 @@ class cinder::volume::vmdk(
   $wsdl_location               = undef
 ) {
 
-  cinder_config {
-    'DEFAULT/volume_driver':                      value => 'cinder.volume.drivers.vmware.vmdk.VMwareVcVmdkDriver';
-    'DEFAULT/vmware_host_ip':                     value => $host_ip;
-    'DEFAULT/vmware_host_username':               value => $host_username;
-    'DEFAULT/vmware_host_password':               value => $host_password;
-    'DEFAULT/vmware_volume_folder':               value => $volume_folder;
-    'DEFAULT/vmware_api_retry_count':             value => $api_retry_count;
-    'DEFAULT/vmware_max_object_retrieval':        value => $max_object_retrieval;
-    'DEFAULT/vmware_task_poll_interval':          value => $task_poll_interval;
-    'DEFAULT/vmware_image_transfer_timeout_secs': value => $image_transfer_timeout_secs;
-  }
-
-  if $wsdl_location {
-    cinder_config {
-      'DEFAULT/vmware_wsdl_location':               value => $wsdl_location;
-    }
-  }
-
-  package{ 'python-suds':
-    ensure   => present,
+  cinder::backend::vmdk { 'DEFAULT':
+    host_ip                     => $host_ip,
+    host_username               => $host_username,
+    host_password               => $host_password,
+    volume_folder               => $volume_folder,
+    api_retry_count             => $api_retry_count,
+    max_object_retrieval        => $max_object_retrieval,
+    task_poll_interval          => $task_poll_interval,
+    image_transfer_timeout_secs => $image_transfer_timeout_secs,
+    wsdl_location               => $wsdl_location,
   }
 }
