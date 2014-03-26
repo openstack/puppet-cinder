@@ -13,7 +13,9 @@ define cinder::backend::nfs (
   $nfs_disk_util = undef,
   $nfs_sparsed_volumes = undef,
   $nfs_mount_point_base = undef,
-  $nfs_shares_config = '/etc/cinder/shares.conf'
+  $nfs_shares_config = '/etc/cinder/shares.conf',
+  $nfs_used_ratio = '0.95',
+  $nfs_oversub_ratio = '1.0',
 ) {
 
   file {$nfs_shares_config:
@@ -31,5 +33,7 @@ define cinder::backend::nfs (
     "${name}/nfs_disk_util":        value => $nfs_disk_util;
     "${name}/nfs_sparsed_volumes":  value => $nfs_sparsed_volumes;
     "${name}/nfs_mount_point_base": value => $nfs_mount_point_base;
+    "${name}/nfs_used_ratio":       value => $nfs_used_ratio;
+    "${name}/nfs_oversub_ratio":    value => $nfs_oversub_ratio;
   }
 }

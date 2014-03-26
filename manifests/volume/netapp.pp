@@ -171,28 +171,26 @@ class cinder::volume::netapp (
   $netapp_webservice_path       = '/devmgr/v2',
 ) {
 
-  cinder_config {
-    'DEFAULT/volume_driver':                value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
-    'DEFAULT/netapp_login':                 value => $netapp_login;
-    'DEFAULT/netapp_password':              value => $netapp_password, secret => true;
-    'DEFAULT/netapp_server_hostname':       value => $netapp_server_hostname;
-    'DEFAULT/netapp_server_port':           value => $netapp_server_port;
-    'DEFAULT/netapp_size_multiplier':       value => $netapp_size_multiplier;
-    'DEFAULT/netapp_storage_family':        value => $netapp_storage_family;
-    'DEFAULT/netapp_storage_protocol':      value => $netapp_storage_protocol;
-    'DEFAULT/netapp_transport_type':        value => $netapp_transport_type;
-    'DEFAULT/netapp_vfiler':                value => $netapp_vfiler;
-    'DEFAULT/netapp_volume_list':           value => $netapp_volume_list;
-    'DEFAULT/netapp_vserver':               value => $netapp_vserver;
-    'DEFAULT/expiry_thres_minutes':         value => $expiry_thres_minutes;
-    'DEFAULT/thres_avl_size_perc_start':    value => $thres_avl_size_perc_start;
-    'DEFAULT/thres_avl_size_perc_stop':     value => $thres_avl_size_perc_stop;
-    'DEFAULT/nfs_shares_config':            value => $nfs_shares_config;
-    'DEFAULT/netapp_copyoffload_tool_path': value => $netapp_copyoffload_tool_path;
-    'DEFAULT/netapp_controller_ips':        value => $netapp_controller_ips;
-    'DEFAULT/netapp_sa_password':           value => $netapp_sa_password;
-    'DEFAULT/netapp_storage_pools':         value => $netapp_storage_pools;
-    'DEFAULT/netapp_webservice_path':       value => $netapp_webservice_path;
+  cinder::backend::netapp { 'DEFAULT':
+    netapp_login                 => $netapp_login,
+    netapp_password              => $netapp_password,
+    netapp_server_hostname       => $netapp_server_hostname,
+    netapp_server_port           => $netapp_server_port,
+    netapp_size_multiplier       => $netapp_size_multiplier,
+    netapp_storage_family        => $netapp_storage_family,
+    netapp_storage_protocol      => $netapp_storage_protocol,
+    netapp_transport_type        => $netapp_transport_type,
+    netapp_vfiler                => $netapp_vfiler,
+    netapp_volume_list           => $netapp_volume_list,
+    netapp_vserver               => $netapp_vserver,
+    expiry_thres_minutes         => $expiry_thres_minutes,
+    thres_avl_size_perc_start    => $thres_avl_size_perc_start,
+    thres_avl_size_perc_stop     => $thres_avl_size_perc_stop,
+    nfs_shares_config            => $nfs_shares_config,
+    netapp_copyoffload_tool_path => $netapp_copyoffload_tool_path,
+    netapp_controller_ips        => $netapp_controller_ips,
+    netapp_sa_password           => $netapp_sa_password,
+    netapp_storage_pools         => $netapp_storage_pools,
+    netapp_webservice_path       => $netapp_webservice_path,
   }
-
 }
