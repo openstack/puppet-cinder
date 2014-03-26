@@ -31,6 +31,12 @@
 #   (optional) The protocol used to access the auth host
 #   Defaults to http.
 #
+# [*os_region_name*]
+#   (optional) Some operations require cinder to make API requests
+#   to Nova. This sets the keystone region to be used for these
+#   requests. For example, boot-from-volume.
+#   Defaults to undef.
+#
 # [*keystone_auth_admin_prefix*]
 #   (optional) The admin_prefix used to admin endpoint of the auth host
 #   This allow admin auth URIs like http://auth_host:35357/keystone.
@@ -72,6 +78,7 @@ class cinder::api (
   $keystone_auth_protocol     = 'http',
   $keystone_auth_admin_prefix = false,
   $keystone_auth_uri          = false,
+  $os_region_name             = undef,
   $service_port               = '5000',
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
@@ -123,6 +130,12 @@ class cinder::api (
 
   cinder_config {
     'DEFAULT/osapi_volume_listen': value => $bind_host
+  }
+
+  if $os_region_name {
+    cinder_config {
+      'DEFAULT/os_region_name': value => $os_region_name;
+    }
   }
 
   if $keystone_auth_uri {
