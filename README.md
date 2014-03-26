@@ -176,6 +176,16 @@ Contributors
 Release Notes
 -------------
 
+**3.1.0**
+
+* Added default_volume_type as a Cinder API parameter.
+* Added parameter for endpoint procols.
+* Deprecated glance_api_version.
+* Added support for VMDK.
+* Added support for Cinder multi backend.
+* Added support for https authentication endpoints.
+* Replaced pip with native package manager (VMDK).
+
 **3.0.0**
 
 * Major release for OpenStack Havana.
