@@ -1,4 +1,4 @@
-# == Class: cinder::volume::nexenta
+# == Class: cinder::backend::nexenta
 #
 # Setups Cinder with Nexenta volume driver.
 #
@@ -12,6 +12,10 @@
 #
 # [*nexenta_host*]
 #   (required) IP address of Nexenta SA.
+#
+# [*volume_backend_name*]
+#   (optional) Allows for the volume_backend_name to be separate of $name.
+#   Defaults to: $name
 #
 # [*nexenta_volume*]
 #   (optional) Pool on SA that will hold all volumes. Defaults to 'cinder'.
@@ -28,10 +32,11 @@
 # [*nexenta_sparse*]
 #   (optional) Flag to create sparse volumes. Defaults to true.
 #
-class cinder::volume::nexenta (
+define cinder::backend::nexenta (
   $nexenta_user,
   $nexenta_password,
   $nexenta_host,
+  $volume_backend_name          = $name,
   $nexenta_volume               = 'cinder',
   $nexenta_target_prefix        = 'iqn:',
   $nexenta_target_group_prefix  = 'cinder/',
@@ -39,14 +44,16 @@ class cinder::volume::nexenta (
   $nexenta_sparse               = true
 ) {
 
-  cinder::backend::nexenta { 'DEFAULT':
-    nexenta_user                => $nexenta_user,
-    nexenta_password            => $nexenta_password,
-    nexenta_host                => $nexenta_host,
-    nexenta_volume              => $nexenta_volume,
-    nexenta_target_prefix       => $nexenta_target_prefix,
-    nexenta_target_group_prefix => $nexenta_target_group_prefix,
-    nexenta_blocksize           => $nexenta_blocksize,
-    nexenta_sparse              => $nexenta_sparse,
+  cinder_config {
+    "${name}/volume_backend_name":         value => $volume_backend_name;
+    "${name}/nexenta_user":                value => $nexenta_user;
+    "${name}/nexenta_password":            value => $nexenta_password;
+    "${name}/nexenta_host":                value => $nexenta_host;
+    "${name}/nexenta_volume":              value => $nexenta_volume;
+    "${name}/nexenta_target_prefix":       value => $nexenta_target_prefix;
+    "${name}/nexenta_target_group_prefix": value => $nexenta_target_group_prefix;
+    "${name}/nexenta_blocksize":           value => $nexenta_blocksize;
+    "${name}/nexenta_sparse":              value => $nexenta_sparse;
+    "${name}/volume_driver":               value => 'cinder.volume.drivers.nexenta.volume.NexentaDriver';
   }
 }
