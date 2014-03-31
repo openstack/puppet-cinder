@@ -57,18 +57,18 @@ class cinder::volume::san (
   $ssh_max_pool_conn  = 5
 ) {
 
-  cinder_config {
-    'DEFAULT/volume_driver':      value => $volume_driver;
-    'DEFAULT/san_thin_provision': value => $san_thin_provision;
-    'DEFAULT/san_ip':             value => $san_ip;
-    'DEFAULT/san_login':          value => $san_login;
-    'DEFAULT/san_password':       value => $san_password;
-    'DEFAULT/san_private_key':    value => $san_private_key;
-    'DEFAULT/san_clustername':    value => $san_clustername;
-    'DEFAULT/san_ssh_port':       value => $san_ssh_port;
-    'DEFAULT/san_is_local':       value => $san_is_local;
-    'DEFAULT/ssh_conn_timeout':   value => $ssh_conn_timeout;
-    'DEFAULT/ssh_min_pool_conn':  value => $ssh_min_pool_conn;
-    'DEFAULT/ssh_max_pool_conn':  value => $ssh_max_pool_conn;
+  cinder::backend::san { 'DEFAULT':
+    volume_driver      => $volume_driver,
+    san_thin_provision => $san_thin_provision,
+    san_ip             => $san_ip,
+    san_login          => $san_login,
+    san_password       => $san_password,
+    san_private_key    => $san_private_key,
+    san_clustername    => $san_clustername,
+    san_ssh_port       => $san_ssh_port,
+    san_is_local       => $san_is_local,
+    ssh_conn_timeout   => $ssh_conn_timeout,
+    ssh_min_pool_conn  => $ssh_min_pool_conn,
+    ssh_max_pool_conn  => $ssh_max_pool_conn,
   }
 }

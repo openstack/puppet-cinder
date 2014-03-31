@@ -1,9 +1,13 @@
-# == Class: cinder::volume::solidfire
+# == Class: cinder::backend::solidfire
 #
 # Configures Cinder volume SolidFire driver.
 # Parameters are particular to each volume driver.
 #
 # === Parameters
+#
+# [*volume_backend_name*]
+#   (optional) Allows for the volume_backend_name to be separate of $name.
+#   Defaults to: $name
 #
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use SolidFire volume driver.
@@ -34,10 +38,11 @@
 #   (optional) Port ID to use to connect to SolidFire API.
 #   Defaults to 443
 #
-class cinder::volume::solidfire(
+define cinder::backend::solidfire(
   $san_ip,
   $san_login,
   $san_password,
+  $volume_backend_name = $name,
   $volume_driver       = 'cinder.volume.drivers.solidfire.SolidFire',
   $sf_emulate_512      = true,
   $sf_allow_tenant_qos = false,
@@ -45,14 +50,15 @@ class cinder::volume::solidfire(
   $sf_api_port         = '443'
 ) {
 
-  cinder::backend::solidfire { 'DEFAULT':
-    san_ip              => $san_ip,
-    san_login           => $san_login,
-    san_password        => $san_password,
-    volume_driver       => $volume_driver,
-    sf_emulate_512      => $sf_emulate_512,
-    sf_allow_tenant_qos => $sf_allow_tenant_qos,
-    sf_account_prefix   => $sf_account_prefix,
-    sf_api_port         => $sf_api_port,
+  cinder_config {
+    "${name}/volume_backend_name": value => $volume_backend_name;
+    "${name}/volume_driver":       value => $volume_driver;
+    "${name}/san_ip":              value => $san_ip;
+    "${name}/san_login":           value => $san_login;
+    "${name}/san_password":        value => $san_password;
+    "${name}/sf_emulate_512":      value => $sf_emulate_512;
+    "${name}/sf_allow_tenant_qos": value => $sf_allow_tenant_qos;
+    "${name}/sf_account_prefix":   value => $sf_account_prefix;
+    "${name}/sf_api_port":         value => $sf_api_port;
   }
 }
