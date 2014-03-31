@@ -15,7 +15,8 @@ describe 'cinder::api' do
     end
 
     it { should contain_service('cinder-api').with(
-      'hasstatus' => true
+      'hasstatus' => true,
+      'ensure' => 'running'
     )}
 
     it 'should configure cinder api correctly' do
@@ -138,8 +139,20 @@ describe 'cinder::api' do
     let :params do
       req_params.merge({'enabled' => false})
     end
+    it 'should stop the service' do
+      should contain_service('cinder-api').with_ensure('stopped')
+    end
     it 'should contain db_sync exec' do
       should_not contain_exec('cinder-manage db_sync')
+    end
+  end
+
+  describe 'with manage_service false' do
+    let :params do
+      req_params.merge({'manage_service' => false})
+    end
+    it 'should not change the state of the service' do
+      should contain_service('cinder-api').without_ensure
     end
   end
 
