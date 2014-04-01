@@ -9,8 +9,8 @@ class cinder::db::mysql (
   $user          = 'cinder',
   $host          = '127.0.0.1',
   $allowed_hosts = undef,
-  $charset       = 'latin1',
-  $collate       = 'latin1_swedish_ci',
+  $charset       = 'utf8',
+  $collate       = 'utf8_unicode_ci',
   $cluster_id    = 'localzone',
   $mysql_module  = '0.9'
 ) {

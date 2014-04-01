@@ -23,7 +23,7 @@ describe 'cinder::db::mysql' do
       :user         => 'cinder',
       :password     => 'pw',
       :host         => '127.0.0.1',
-      :charset      => 'latin1'
+      :charset      => 'utf8'
      ) }
   end
   describe "overriding allowed_hosts param to array" do
