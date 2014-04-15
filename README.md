@@ -176,6 +176,10 @@ Contributors
 Release Notes
 -------------
 
+**3.1.1**
+
+* Fixed resource duplication bug.
+
 **3.1.0**
 
 * Added default_volume_type as a Cinder API parameter.
