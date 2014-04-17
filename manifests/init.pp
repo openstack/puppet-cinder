@@ -1,5 +1,7 @@
 #
 # == Parameters
+# [sql_connection]
+#    Url used to connect to database.
 #
 # [database_idle_timeout]
 #   Timeout when db connections should be reaped.
@@ -183,11 +185,19 @@ class cinder (
     'DEFAULT/rpc_backend':         value => $rpc_backend;
   }
 
-  if $mysql_module >= 2.2 {
-    require mysql::bindings
-    require mysql::bindings::python
+  if($database_connection =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
+    if ($mysql_module >= 2.2) {
+      require 'mysql::bindings'
+      require 'mysql::bindings::python'
+    } else {
+      require 'mysql::python'
+    }
+  } elsif($database_connection =~ /postgresql:\/\/\S+:\S+@\S+\/\S+/) {
+
+  } elsif($database_connection =~ /sqlite:\/\//) {
+
   } else {
-    require mysql::python
+    fail("Invalid db connection ${database_connection}")
   }
 
   if $log_dir {

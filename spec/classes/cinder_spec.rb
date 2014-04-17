@@ -14,6 +14,7 @@ describe 'cinder' do
     end
 
     it { should contain_class('cinder::params') }
+    it { should contain_class('mysql::python') }
 
     it 'should contain default config' do
       should contain_cinder_config('DEFAULT/rpc_backend').with(
@@ -231,4 +232,20 @@ describe 'cinder' do
     it { should contain_cinder_config('DEFAULT/amqp_durable_queues').with_value(true) }
   end
 
+  describe 'with postgresql' do
+    let :params do
+      {
+        :database_connection      => 'postgresql://user:drowssap@host/database',
+        :rabbit_password       => 'guest',
+      }
+    end
+
+    it { should contain_cinder_config('database/connection').with(
+      :value  => 'postgresql://user:drowssap@host/database',
+      :secret => true
+    ) }
+    it { should_not contain_class('mysql::python') }
+    it { should_not contain_class('mysql::bindings') }
+    it { should_not contain_class('mysql::bindings::python') }
+  end
 end
