@@ -2,8 +2,10 @@ require 'spec_helper'
 
 describe 'cinder::volume::iscsi' do
 
-  let :req_params do
-    {:iscsi_ip_address => '127.0.0.2'}
+  let :req_params do {
+    :iscsi_ip_address => '127.0.0.2',
+    :iscsi_helper => 'tgtadm'
+  }
   end
 
   let :facts do
@@ -42,6 +44,22 @@ describe 'cinder::volume::iscsi' do
       :line => 'include /etc/cinder/volumes/*',
       :path => '/etc/tgt/targets.conf'
     ) }
+
+  end
+
+  describe 'with lioadm' do
+
+    let :params do {
+      :iscsi_ip_address => '127.0.0.2',
+      :iscsi_helper => 'lioadm'
+    }
+    end
+
+    let :facts do
+      {:osfamily => 'RedHat'}
+    end
+
+    it { should contain_package('targetcli').with_ensure('present')}
 
   end
 
