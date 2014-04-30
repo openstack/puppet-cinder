@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe 'cinder' do
   let :req_params do
-    {:rabbit_password => 'guest', :sql_connection => 'mysql://user:password@host/database'}
+    {:rabbit_password => 'guest', :database_connection => 'mysql://user:password@host/database'}
   end
 
   let :facts do
@@ -44,11 +44,11 @@ describe 'cinder' do
       should contain_cinder_config('DEFAULT/rabbit_userid').with(
         :value => 'guest'
       )
-      should contain_cinder_config('DEFAULT/sql_connection').with(
+      should contain_cinder_config('database/connection').with(
         :value  => 'mysql://user:password@host/database',
         :secret => true
       )
-      should contain_cinder_config('DEFAULT/sql_idle_timeout').with(
+      should contain_cinder_config('database/idle_timeout').with(
         :value => '3600'
       )
       should contain_cinder_config('DEFAULT/verbose').with(
@@ -116,13 +116,13 @@ describe 'cinder' do
 
     let :params do
       {
-        :sql_connection      => 'mysql://user:password@host/database',
+        :database_connection => 'mysql://user:password@host/database',
         :qpid_password       => 'guest',
         :rpc_backend         => 'cinder.openstack.common.rpc.impl_qpid'
       }
     end
 
-    it { should contain_cinder_config('DEFAULT/sql_connection').with_value('mysql://user:password@host/database') }
+    it { should contain_cinder_config('database/connection').with_value('mysql://user:password@host/database') }
     it { should contain_cinder_config('DEFAULT/rpc_backend').with_value('cinder.openstack.common.rpc.impl_qpid') }
     it { should contain_cinder_config('DEFAULT/qpid_hostname').with_value('localhost') }
     it { should contain_cinder_config('DEFAULT/qpid_port').with_value('5672') }
@@ -142,7 +142,7 @@ describe 'cinder' do
   describe 'with qpid rpc and no qpid_sasl_mechanisms' do
     let :params do
       {
-        :sql_connection       => 'mysql://user:password@host/database',
+        :database_connection  => 'mysql://user:password@host/database',
         :qpid_password        => 'guest',
         :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'
       }
@@ -154,7 +154,7 @@ describe 'cinder' do
   describe 'with qpid rpc and qpid_sasl_mechanisms string' do
     let :params do
       {
-        :sql_connection       => 'mysql://user:password@host/database',
+        :database_connection  => 'mysql://user:password@host/database',
         :qpid_password        => 'guest',
         :qpid_sasl_mechanisms => 'PLAIN',
         :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'
@@ -167,7 +167,7 @@ describe 'cinder' do
   describe 'with qpid rpc and qpid_sasl_mechanisms array' do
     let :params do
       {
-        :sql_connection       => 'mysql://user:password@host/database',
+        :database_connection  => 'mysql://user:password@host/database',
         :qpid_password        => 'guest',
         :qpid_sasl_mechanisms => [ 'DIGEST-MD5', 'GSSAPI', 'PLAIN' ],
         :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'

@@ -22,7 +22,7 @@
 # sudo pcs constraint colocation add cinder_api_service with cinder_vip
 
 class { 'cinder':
-  sql_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  database_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
 }
 
 class { 'cinder::api':

@@ -43,10 +43,10 @@ To utilize the cinder module's functionality you will need to declare multiple r
 
 ```puppet
 class { 'cinder':
-  sql_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
-  rabbit_password => 'secret_rpc_password_for_blocks',
-  rabbit_host     => 'openstack-controller.example.com',
-  verbose         => true,
+  database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  rabbit_password         => 'secret_rpc_password_for_blocks',
+  rabbit_host             => 'openstack-controller.example.com',
+  verbose                 => true,
 }
 
 class { 'cinder::api':
@@ -71,10 +71,10 @@ class { 'cinder::scheduler':
 
 ```puppet
 class { 'cinder':
-  sql_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
-  rabbit_password => 'secret_rpc_password_for_blocks',
-  rabbit_host     => 'openstack-controller.example.com',
-  verbose         => true,
+  database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  rabbit_password         => 'secret_rpc_password_for_blocks',
+  rabbit_host             => 'openstack-controller.example.com',
+  verbose                 => true,
 }
 
 class { 'cinder::volume': }
@@ -88,10 +88,10 @@ class { 'cinder::volume::iscsi':
 
 ```puppet
 class { 'cinder':
-  sql_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
-  rabbit_password => 'secret_rpc_password_for_blocks',
-  rabbit_host     => 'openstack-controller.example.com',
-  verbose         => true,
+  database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  rabbit_password         => 'secret_rpc_password_for_blocks',
+  rabbit_host             => 'openstack-controller.example.com',
+  verbose                 => true,
 }
 
 class { 'cinder::volume': }

@@ -1,7 +1,7 @@
 #
 # == Parameters
 #
-# [sql_idle_timeout]
+# [database_idle_timeout]
 #   Timeout when db connections should be reaped.
 #   (Optional) Defaults to 3600.
 #
@@ -28,8 +28,8 @@
 #   Defaults to '0.9'
 #
 class cinder (
-  $sql_connection,
-  $sql_idle_timeout            = '3600',
+  $database_connection         = 'sqlite:////var/lib/cinder/cinder.sqlite',
+  $database_idle_timeout       = '3600',
   $rpc_backend                 = 'cinder.openstack.common.rpc.impl_kombu',
   $control_exchange            = 'openstack',
   $rabbit_host                 = '127.0.0.1',
@@ -60,13 +60,30 @@ class cinder (
   $log_dir                     = '/var/log/cinder',
   $verbose                     = false,
   $debug                       = false,
-  $mysql_module                = '0.9'
+  $mysql_module                = '0.9',
+  # DEPRECATED PARAMETERS
+  $sql_connection              = undef,
+  $sql_idle_timeout            = undef,
 ) {
 
   include cinder::params
 
   Package['cinder'] -> Cinder_config<||>
   Package['cinder'] -> Cinder_api_paste_ini<||>
+
+  if $sql_connection {
+    warning('The sql_connection parameter is deprecated, use database_connection instead.')
+    $database_connection_real = $sql_connection
+  } else {
+    $database_connection_real = $database_connection
+  }
+
+  if $sql_idle_timeout {
+    warning('The sql_idle_timeout parameter is deprecated, use database_idle_timeout instead.')
+    $database_idle_timeout_real = $sql_idle_timeout
+  } else {
+    $database_idle_timeout_real = $database_idle_timeout
+  }
 
   # this anchor is used to simplify the graph between cinder components by
   # allowing a resource to serve as a point where the configuration of cinder begins
@@ -158,8 +175,8 @@ class cinder (
   }
 
   cinder_config {
-    'DEFAULT/sql_connection':      value => $sql_connection, secret => true;
-    'DEFAULT/sql_idle_timeout':    value => $sql_idle_timeout;
+    'database/connection':         value => $database_connection_real, secret => true;
+    'database/idle_timeout':       value => $database_idle_timeout_real;
     'DEFAULT/verbose':             value => $verbose;
     'DEFAULT/debug':               value => $debug;
     'DEFAULT/api_paste_config':    value => $api_paste_config;
