@@ -6,6 +6,7 @@ describe 'cinder::backend::iscsi' do
 
   let :req_params do {
     :iscsi_ip_address => '127.0.0.2',
+    :iscsi_helper => 'tgtadm',
   }
   end
 

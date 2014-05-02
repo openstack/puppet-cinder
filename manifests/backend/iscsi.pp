@@ -11,7 +11,7 @@ define cinder::backend::iscsi (
   $iscsi_ip_address,
   $volume_backend_name = $name,
   $volume_group        = 'cinder-volumes',
-  $iscsi_helper        = 'tgtadm'
+  $iscsi_helper        = $::cinder::params::iscsi_helper,
 ) {
 
   include cinder::params
@@ -45,6 +45,13 @@ define cinder::backend::iscsi (
         name    => $::cinder::params::tgt_service_name,
         enable  => true,
         require => Class['cinder::volume'],
+      }
+    }
+
+    'lioadm': {
+      package { 'targetcli':
+        ensure => present,
+        name   => $::cinder::params::lio_package_name,
       }
     }
 
