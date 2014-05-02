@@ -1,7 +1,9 @@
 #
 # == Parameters
-# [sql_connection]
+# [database_connection]
 #    Url used to connect to database.
+#    (Optional) Defaults to
+#    'sqlite:////var/lib/cinder/cinder.sqlite'
 #
 # [database_idle_timeout]
 #   Timeout when db connections should be reaped.
@@ -28,6 +30,11 @@
 #   (optional) Puppetlabs-mysql module version to use
 #   Tested versions include 0.9 and 2.2
 #   Defaults to '0.9'
+#
+# [sql_connection]
+#   DEPRECATED
+# [sql_idle_timeout]
+#   DEPRECATED
 #
 class cinder (
   $database_connection         = 'sqlite:////var/lib/cinder/cinder.sqlite',
@@ -185,19 +192,19 @@ class cinder (
     'DEFAULT/rpc_backend':         value => $rpc_backend;
   }
 
-  if($database_connection =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
+  if($database_connection_real =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
     if ($mysql_module >= 2.2) {
       require 'mysql::bindings'
       require 'mysql::bindings::python'
     } else {
       require 'mysql::python'
     }
-  } elsif($database_connection =~ /postgresql:\/\/\S+:\S+@\S+\/\S+/) {
+  } elsif($database_connection_real =~ /postgresql:\/\/\S+:\S+@\S+\/\S+/) {
 
-  } elsif($database_connection =~ /sqlite:\/\//) {
+  } elsif($database_connection_real =~ /sqlite:\/\//) {
 
   } else {
-    fail("Invalid db connection ${database_connection}")
+    fail("Invalid db connection ${database_connection_real}")
   }
 
   if $log_dir {
