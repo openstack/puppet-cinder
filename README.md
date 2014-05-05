@@ -1,6 +1,8 @@
 cinder
 =======
 
+4.0.0 - 2014.1.0 - Icehouse
+
 #### Table of Contents
 
 1. [Overview - What is the cinder module?](#overview)
@@ -177,13 +179,24 @@ Contributors
 Release Notes
 -------------
 
-**master**
+**4.0.0**
 
+* Stable Icehouse release.
 * Updated NetApp unified driver config options.
+* Updated support for latest RabbitMQ module.
 * Added Glance support.
 * Added GlusterFS driver support.
-* Updated support for latest RabbitMQ module.
+* Added region support.
 * Added support for MySQL module (>= 2.2).
+* Added support for Swift and Ceph backup backend.
+* Added cinder::config to handle additional custom options.
+* Refactored duplicate code for single and multiple backends.
+* Removed control exchange flag.
+* Removed deprecated cinder::base class.
+
+**3.1.1**
+
+* Fixed resource duplication bug.
 
 **3.1.0**
 
