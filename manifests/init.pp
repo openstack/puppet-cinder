@@ -53,6 +53,16 @@
 #   Tested versions include 0.9 and 2.2
 #   Defaults to '0.9'
 #
+# [*storage_availability_zone*]
+#   (optional) Availability zone of the node.
+#   Defaults to 'nova'
+#
+# [*default_availability_zone*]
+#   (optional) Default availability zone for new volumes.
+#   If not set, the storage_availability_zone option value is used as
+#   the default for new volumes.
+#   Defaults to false
+#
 # [sql_connection]
 #   DEPRECATED
 # [sql_idle_timeout]
@@ -97,6 +107,8 @@ class cinder (
   $verbose                     = false,
   $debug                       = false,
   $mysql_module                = '0.9',
+  $storage_availability_zone   = 'nova',
+  $default_availability_zone   = false,
   # DEPRECATED PARAMETERS
   $sql_connection              = undef,
   $sql_idle_timeout            = undef,
@@ -240,13 +252,21 @@ class cinder (
     }
   }
 
+  if ! $default_availability_zone {
+    $default_availability_zone_real = $storage_availability_zone
+  } else {
+    $default_availability_zone_real = $default_availability_zone
+  }
+
   cinder_config {
-    'database/connection':         value => $database_connection_real, secret => true;
-    'database/idle_timeout':       value => $database_idle_timeout_real;
-    'DEFAULT/verbose':             value => $verbose;
-    'DEFAULT/debug':               value => $debug;
-    'DEFAULT/api_paste_config':    value => $api_paste_config;
-    'DEFAULT/rpc_backend':         value => $rpc_backend;
+    'database/connection':               value => $database_connection_real, secret => true;
+    'database/idle_timeout':             value => $database_idle_timeout_real;
+    'DEFAULT/verbose':                   value => $verbose;
+    'DEFAULT/debug':                     value => $debug;
+    'DEFAULT/api_paste_config':          value => $api_paste_config;
+    'DEFAULT/rpc_backend':               value => $rpc_backend;
+    'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
+    'DEFAULT/default_availability_zone': value => $default_availability_zone_real;
   }
 
   if($database_connection_real =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
