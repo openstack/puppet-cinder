@@ -41,7 +41,6 @@ define cinder::type (
 #   reasons, the credential discovery magic can occur like in neutron.
 
   exec {"cinder type-create ${volume_name}":
-    path        => '/usr/bin',
     command     => "cinder type-create ${volume_name}",
     unless      => "cinder type-list | grep ${volume_name}",
     environment => [
