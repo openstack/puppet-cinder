@@ -43,6 +43,7 @@ define cinder::type (
   exec {"cinder type-create ${volume_name}":
     path        => '/usr/bin',
     command     => "cinder type-create ${volume_name}",
+    unless      => "cinder type-list | grep ${volume_name}",
     environment => [
       "OS_TENANT_NAME=${os_tenant_name}",
       "OS_USERNAME=${os_username}",
