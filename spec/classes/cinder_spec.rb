@@ -288,4 +288,54 @@ describe 'cinder' do
     it { should_not contain_class('mysql::bindings') }
     it { should_not contain_class('mysql::bindings::python') }
   end
+
+  describe 'with SSL socket options set' do
+    let :params do
+      {
+        :use_ssl         => true,
+        :cert_file       => '/path/to/cert',
+        :ca_file         => '/path/to/ca',
+        :key_file        => '/path/to/key',
+        :rabbit_password => 'guest',
+      }
+    end
+
+    it { should contain_cinder_config('DEFAULT/ssl_ca_file').with_value('/path/to/ca') }
+    it { should contain_cinder_config('DEFAULT/ssl_cert_file').with_value('/path/to/cert') }
+    it { should contain_cinder_config('DEFAULT/ssl_key_file').with_value('/path/to/key') }
+  end
+
+  describe 'with SSL socket options set to false' do
+    let :params do
+      {
+        :use_ssl         => false,
+        :cert_file       => false,
+        :ca_file         => false,
+        :key_file        => false,
+        :rabbit_password => 'guest',
+      }
+    end
+
+    it { should contain_cinder_config('DEFAULT/ssl_ca_file').with_ensure('absent') }
+    it { should contain_cinder_config('DEFAULT/ssl_cert_file').with_ensure('absent') }
+    it { should contain_cinder_config('DEFAULT/ssl_key_file').with_ensure('absent') }
+  end
+
+  describe 'with SSL socket options set wrongly configured' do
+    let :params do
+      {
+        :use_ssl         => true,
+        :ca_file         => '/path/to/ca',
+        :key_file        => '/path/to/key',
+        :rabbit_password => 'guest',
+      }
+    end
+
+    it 'should raise an error' do
+      expect {
+        should compile
+      }.to raise_error Puppet::Error, /The cert_file parameter is required when use_ssl is set to true/
+    end
+  end
+
 end

@@ -48,6 +48,22 @@
 #   If set to boolean false, it will not log to any directory.
 #   Defaults to '/var/log/cinder'
 #
+# [*use_ssl*]
+#   (optional) Enable SSL on the API server
+#   Defaults to false, not set
+#
+# [*cert_file*]
+#   (optinal) Certificate file to use when starting API server securely
+#   Defaults to false, not set
+#
+# [*key_file*]
+#   (optional) Private key file to use when starting API server securely
+#   Defaults to false, not set
+#
+# [*ca_file*]
+#   (optional) CA certificate file to use to verify connecting clients
+#   Defaults to false, not set_
+#
 # [*mysql_module*]
 #   (optional) Puppetlabs-mysql module version to use
 #   Tested versions include 0.9 and 2.2
@@ -90,6 +106,10 @@ class cinder (
   $qpid_protocol               = 'tcp',
   $qpid_tcp_nodelay            = true,
   $package_ensure              = 'present',
+  $use_ssl                     = false,
+  $ca_file                     = false,
+  $cert_file                   = false,
+  $key_file                    = false,
   $api_paste_config            = '/etc/cinder/api-paste.ini',
   $use_syslog                  = false,
   $log_facility                = 'LOG_USER',
@@ -119,6 +139,15 @@ class cinder (
     $database_idle_timeout_real = $sql_idle_timeout
   } else {
     $database_idle_timeout_real = $database_idle_timeout
+  }
+
+  if $use_ssl {
+    if !$cert_file {
+      fail('The cert_file parameter is required when use_ssl is set to true')
+    }
+    if !$key_file {
+      fail('The key_file parameter is required when use_ssl is set to true')
+    }
   }
 
   if $rabbit_use_ssl {
@@ -271,6 +300,29 @@ class cinder (
   } else {
     cinder_config {
       'DEFAULT/log_dir': ensure => absent;
+    }
+  }
+
+  # SSL Options
+  if $use_ssl {
+    cinder_config {
+      'DEFAULT/ssl_cert_file' : value => $cert_file;
+      'DEFAULT/ssl_key_file' :  value => $key_file;
+    }
+    if $ca_file {
+      cinder_config { 'DEFAULT/ssl_ca_file' :
+        value => $ca_file,
+      }
+    } else {
+      cinder_config { 'DEFAULT/ssl_ca_file' :
+        ensure => absent,
+      }
+    }
+  } else {
+    cinder_config {
+      'DEFAULT/ssl_cert_file' : ensure => absent;
+      'DEFAULT/ssl_key_file' :  ensure => absent;
+      'DEFAULT/ssl_ca_file' :   ensure => absent;
     }
   }
 
