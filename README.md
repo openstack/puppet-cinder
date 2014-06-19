@@ -179,6 +179,15 @@ Contributors
 Release Notes
 -------------
 
+**4.1.0**
+
+* Added Cinder v2 endpoint support.
+* Added SSL support for Cinder API.
+* Added RabbitMQ SSL support.
+* Moved default_volume_type to cinder::api
+* Removed warnings for existing Cinder volumes.
+* Pinned major gems.
+
 **4.0.0**
 
 * Stable Icehouse release.
