@@ -51,6 +51,10 @@ describe 'cinder::backend::netapp' do
     it 'marks netapp_password as secret' do
       should contain_cinder_config("#{params_hash[:volume_backend_name]}/netapp_password").with_secret( true )
     end
+
+    it 'marks netapp_sa_password as secret' do
+      should contain_cinder_config("#{params_hash[:volume_backend_name]}/netapp_sa_password").with_secret( true )
+    end
   end
 
 
