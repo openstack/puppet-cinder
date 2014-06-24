@@ -73,6 +73,12 @@ describe 'cinder::keystone::auth' do
       :internal_url => 'https://10.0.42.3:4242/v42/%(tenant_id)s'
     )}
 
+    it { should contain_keystone_endpoint('RegionThree/cinderv2').with(
+      :ensure       => 'present',
+      :public_url   => 'https://10.0.42.1:4242/v2/%(tenant_id)s',
+      :admin_url    => 'https://10.0.42.2:4242/v2/%(tenant_id)s',
+      :internal_url => 'https://10.0.42.3:4242/v2/%(tenant_id)s'
+    )}
   end
 
 
