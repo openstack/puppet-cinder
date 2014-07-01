@@ -49,6 +49,12 @@ define cinder::backend::iscsi (
     }
 
     'lioadm': {
+      service { 'target':
+        ensure  => running,
+        enable  => true,
+        require => Package['targetcli'],
+      }
+
       package { 'targetcli':
         ensure => present,
         name   => $::cinder::params::lio_package_name,

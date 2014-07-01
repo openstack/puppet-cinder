@@ -60,6 +60,11 @@ describe 'cinder::volume::iscsi' do
     end
 
     it { should contain_package('targetcli').with_ensure('present')}
+    it { should contain_service('target').with(
+      :ensure  => 'running',
+      :enable  => 'true',
+      :require => 'Package[targetcli]'
+    ) }
 
   end
 
