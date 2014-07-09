@@ -194,7 +194,7 @@ define cinder::backend::netapp (
     "${volume_backend_name}/nfs_shares_config":            value => $nfs_shares_config;
     "${volume_backend_name}/netapp_copyoffload_tool_path": value => $netapp_copyoffload_tool_path;
     "${volume_backend_name}/netapp_controller_ips":        value => $netapp_controller_ips;
-    "${volume_backend_name}/netapp_sa_password":           value => $netapp_sa_password;
+    "${volume_backend_name}/netapp_sa_password":           value => $netapp_sa_password, secret => true;
     "${volume_backend_name}/netapp_storage_pools":         value => $netapp_storage_pools;
     "${volume_backend_name}/netapp_webservice_path":       value => $netapp_webservice_path;
   }
