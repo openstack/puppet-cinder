@@ -65,9 +65,7 @@
 #   Defaults to false, not set_
 #
 # [*mysql_module*]
-#   (optional) Puppetlabs-mysql module version to use
-#   Tested versions include 0.9 and 2.2
-#   Defaults to '2.2'
+#   (optional) Deprecated. Does nothing.
 #
 # [*storage_availability_zone*]
 #   (optional) Availability zone of the node.
@@ -126,10 +124,10 @@ class cinder (
   $log_dir                     = '/var/log/cinder',
   $verbose                     = false,
   $debug                       = false,
-  $mysql_module                = '2.2',
   $storage_availability_zone   = 'nova',
   $default_availability_zone   = false,
   # DEPRECATED PARAMETERS
+  $mysql_module                = undef,
   $sql_connection              = undef,
   $sql_idle_timeout            = undef,
 ) {
@@ -138,6 +136,10 @@ class cinder (
 
   Package['cinder'] -> Cinder_config<||>
   Package['cinder'] -> Cinder_api_paste_ini<||>
+
+  if $mysql_module {
+    warning('The mysql_module parameter is deprecated. The latest 2.x mysql module will be used.')
+  }
 
   if $sql_connection {
     warning('The sql_connection parameter is deprecated, use database_connection instead.')
@@ -299,12 +301,8 @@ class cinder (
   }
 
   if($database_connection_real =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
-    if ($mysql_module >= 2.2) {
-      require 'mysql::bindings'
-      require 'mysql::bindings::python'
-    } else {
-      require 'mysql::python'
-    }
+    require 'mysql::bindings'
+    require 'mysql::bindings::python'
   } elsif($database_connection_real =~ /postgresql:\/\/\S+:\S+@\S+\/\S+/) {
 
   } elsif($database_connection_real =~ /sqlite:\/\//) {
