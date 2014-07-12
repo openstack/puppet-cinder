@@ -2,10 +2,8 @@ require 'spec_helper'
 
 describe 'cinder::volume::iscsi' do
 
-  let :req_params do {
-    :iscsi_ip_address => '127.0.0.2',
-    :iscsi_helper => 'tgtadm'
-  }
+  let :req_params do
+    {:iscsi_ip_address => '127.0.0.2'}
   end
 
   let :facts do
@@ -18,16 +16,20 @@ describe 'cinder::volume::iscsi' do
       req_params
     end
 
-    it { should contain_cinder_config('DEFAULT/iscsi_ip_address').with(
-      :value => '127.0.0.2'
-    ) }
-    it { should contain_cinder_config('DEFAULT/iscsi_helper').with(
-      :value => 'tgtadm'
-    ) }
-    it { should contain_cinder_config('DEFAULT/volume_group').with(
-      :value => 'cinder-volumes'
-    ) }
+    it { should contain_cinder_config('DEFAULT/iscsi_ip_address').with(:value => '127.0.0.2')}
+    it { should contain_cinder_config('DEFAULT/iscsi_helper').with(:value => 'tgtadm')}
+    it { should contain_cinder_config('DEFAULT/volume_group').with(:value => 'cinder-volumes')}
 
+  end
+
+  describe 'with a unsupported iscsi helper' do
+    let(:params) { req_params.merge(:iscsi_helper => 'fooboozoo')}
+
+    it 'should raise an error' do
+      expect {
+        should compile
+      }.to raise_error Puppet::Error, /Unsupported iscsi helper: fooboozoo/
+    end
   end
 
   describe 'with RedHat' do
