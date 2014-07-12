@@ -49,7 +49,7 @@ class cinder::params {
         }
       }
       default: {
-        $Iscsi_helper = 'tgtadm'
+        $iscsi_helper = 'tgtadm'
       }
     }
 
