@@ -1,7 +1,7 @@
 # [*mysql_module*]
 #   (optional) The puppet-mysql module version to use.
 #   Tested versions include 0.9 and 2.2
-#   Defaults to '0.9'
+#   Defaults to '2.2'
 #
 class cinder::db::mysql (
   $password,
@@ -12,7 +12,7 @@ class cinder::db::mysql (
   $charset       = 'utf8',
   $collate       = 'utf8_unicode_ci',
   $cluster_id    = 'localzone',
-  $mysql_module  = '0.9'
+  $mysql_module  = '2.2'
 ) {
 
   Class['cinder::db::mysql'] -> Exec<| title == 'cinder-manage db_sync' |>
