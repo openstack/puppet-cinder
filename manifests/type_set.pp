@@ -56,7 +56,7 @@ define cinder::type_set (
   }
 
   exec {"cinder type-key ${type} set ${key}=${name}":
-    path        => '/usr/bin',
+    path        => ['/usr/bin', '/bin'],
     command     => "cinder type-key ${type} set ${key}=${name}",
     environment => concat($cinder_env, $region_env),
     require     => Package['python-cinderclient']
