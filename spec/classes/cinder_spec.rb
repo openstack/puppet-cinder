@@ -14,7 +14,7 @@ describe 'cinder' do
     end
 
     it { should contain_class('cinder::params') }
-    it { should contain_class('mysql::python') }
+    it { should contain_class('mysql::bindings::python') }
 
     it 'should contain default config' do
       should contain_cinder_config('DEFAULT/rpc_backend').with(
