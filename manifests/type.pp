@@ -62,7 +62,8 @@ define cinder::type (
     command     => "cinder type-create ${volume_name}",
     unless      => "cinder type-list | grep ${volume_name}",
     environment => concat($cinder_env, $region_env),
-    require     => Package['python-cinderclient']
+    require     => Package['python-cinderclient'],
+    path        => ['/usr/bin', '/bin'],
   }
 
   if ($set_value and $set_key) {
