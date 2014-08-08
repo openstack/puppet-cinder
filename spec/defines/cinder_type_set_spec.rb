@@ -19,6 +19,7 @@ describe 'cinder::type_set' do
   it 'should have its execs' do
     should contain_exec('cinder type-key sith set monchichi=hippo').with(
       :command => 'cinder type-key sith set monchichi=hippo',
+      :unless  => "cinder extra-specs-list | grep -Eq '\\bsith\\b.*\\bmonchichi\\b.*\\bhippo\\b'",
       :environment => [
         'OS_TENANT_NAME=admin',
         'OS_USERNAME=admin',
