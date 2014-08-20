@@ -26,6 +26,9 @@ describe 'cinder::api' do
       should contain_cinder_config('DEFAULT/osapi_volume_listen').with(
        :value => '0.0.0.0'
       )
+      should contain_cinder_config('DEFAULT/osapi_volume_workers').with(
+       :value => '1'
+      )
       should contain_cinder_config('DEFAULT/default_volume_type').with(
        :ensure => 'absent'
       )
