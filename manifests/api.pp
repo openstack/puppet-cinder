@@ -48,6 +48,10 @@
 #   (optional) The cinder api port
 #   Defaults to 5000
 #
+# [*service_workers*]
+#   (optional) Number of cinder-api workers
+#   Defaults to 3
+#
 # [*package_ensure*]
 #   (optional) The state of the package
 #   Defaults to present
@@ -90,6 +94,7 @@ class cinder::api (
   $keystone_auth_uri          = false,
   $os_region_name             = undef,
   $service_port               = '5000',
+  $service_workers            = '3',
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
   $enabled                    = true,
@@ -145,7 +150,8 @@ class cinder::api (
   }
 
   cinder_config {
-    'DEFAULT/osapi_volume_listen': value => $bind_host
+    'DEFAULT/osapi_volume_listen':  value => $bind_host;
+    'DEFAULT/osapi_volume_workers': value => $service_workers;
   }
 
   if $os_region_name {
