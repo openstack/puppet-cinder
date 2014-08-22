@@ -93,4 +93,43 @@ describe 'cinder::keystone::auth' do
     it { should_not contain_keystone_endpoint('RegionOne/cinderv2') }
   end
 
+  describe 'when user should not be configured' do
+    let :params do
+      req_params.merge(
+        :configure_user => false
+      )
+    end
+
+    it { should_not contain_keystone_user('cinder') }
+
+    it { should contain_keystone_user_role('cinder@services') }
+
+    it { should contain_keystone_service('cinder').with(
+        :ensure      => 'present',
+        :type        => 'volume',
+        :description => 'Cinder Service'
+    ) }
+
+  end
+
+  describe 'when user and user role should not be configured' do
+    let :params do
+      req_params.merge(
+        :configure_user      => false,
+        :configure_user_role => false
+      )
+    end
+
+    it { should_not contain_keystone_user('cinder') }
+
+    it { should_not contain_keystone_user_role('cinder@services') }
+
+    it { should contain_keystone_service('cinder').with(
+        :ensure      => 'present',
+        :type        => 'volume',
+        :description => 'Cinder Service'
+    ) }
+
+  end
+
 end
