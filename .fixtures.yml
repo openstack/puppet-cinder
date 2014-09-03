@@ -6,6 +6,7 @@ fixtures:
     'mysql':
       repo: 'git://github.com/puppetlabs/puppetlabs-mysql.git'
       ref:  'origin/2.2.x'
+    'openstacklib': 'git://github.com/stackforge/puppet-openstacklib.git'
     'postgresql':
       repo: 'git://github.com/puppetlabs/puppet-postgresql.git'
       ref: '2.5.0'
