@@ -50,8 +50,7 @@
 #
 # [*service_workers*]
 #   (optional) Number of cinder-api workers
-#   Defaults to 1. Based on documentation, a reasonable value is the same as the
-#   number of cores on your system.
+#   Defaults to $::processorcount
 #
 # [*package_ensure*]
 #   (optional) The state of the package
@@ -95,7 +94,7 @@ class cinder::api (
   $keystone_auth_uri          = false,
   $os_region_name             = undef,
   $service_port               = '5000',
-  $service_workers            = '1',
+  $service_workers            = $::processorcount,
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
   $enabled                    = true,
