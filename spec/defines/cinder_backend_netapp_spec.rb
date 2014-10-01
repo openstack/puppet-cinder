@@ -70,4 +70,11 @@ describe 'cinder::backend::netapp' do
     it_configures 'netapp volume driver'
   end
 
+  context 'with netapp_storage_family eseries' do
+    let (:req_params) { params.merge!({
+        :netapp_storage_family   => 'eseries',
+    }) }
+
+    it { should contain_cinder_config("#{req_params[:volume_backend_name]}/use_multipath_for_image_xfer").with_value('true') }
+  end
 end
