@@ -52,6 +52,17 @@ describe 'cinder' do
       should contain_cinder_config('database/idle_timeout').with(
         :value => '3600'
       )
+      should contain_cinder_config('database/min_pool_size').with(
+        :value => '1'
+      )
+      should contain_cinder_config('database/max_pool_size').with_ensure('absent')
+      should contain_cinder_config('database/max_retries').with(
+        :value => '10'
+      )
+      should contain_cinder_config('database/retry_interval').with(
+        :value => '10'
+      )
+      should contain_cinder_config('database/max_overflow').with_ensure('absent')
       should contain_cinder_config('DEFAULT/verbose').with(
         :value => false
       )
