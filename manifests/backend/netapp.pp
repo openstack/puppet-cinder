@@ -198,4 +198,10 @@ define cinder::backend::netapp (
     "${volume_backend_name}/netapp_storage_pools":         value => $netapp_storage_pools;
     "${volume_backend_name}/netapp_webservice_path":       value => $netapp_webservice_path;
   }
+
+  if $netapp_storage_family == 'eseries' {
+    cinder_config {
+      "${volume_backend_name}/use_multipath_for_image_xfer": value => true;
+    }
+  }
 }
