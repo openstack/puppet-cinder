@@ -60,7 +60,7 @@ define cinder::type (
 
   exec {"cinder type-create ${volume_name}":
     command     => "cinder type-create ${volume_name}",
-    unless      => "cinder type-list | grep ${volume_name}",
+    unless      => "cinder type-list | grep -qP '\\b${volume_name}\\b'",
     environment => concat($cinder_env, $region_env),
     require     => Package['python-cinderclient'],
     path        => ['/usr/bin', '/bin'],
