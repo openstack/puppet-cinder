@@ -54,7 +54,7 @@
 #
 
 class cinder::backup::ceph (
-  $backup_driver            = 'cinder.backup.driver.ceph',
+  $backup_driver            = 'cinder.backup.drivers.ceph',
   $backup_ceph_conf         = '/etc/ceph/ceph.conf',
   $backup_ceph_user         = 'cinder',
   $backup_ceph_chunk_size   = '134217728',
