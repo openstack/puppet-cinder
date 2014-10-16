@@ -1,7 +1,7 @@
 cinder
 =======
 
-4.0.0 - 2014.1.0 - Icehouse
+4.2.0 - 2014.1.0 - Icehouse
 
 #### Table of Contents
 
@@ -178,6 +178,18 @@ Contributors
 
 Release Notes
 -------------
+
+**4.2.0**
+
+* Added parameters to set cinder volume driver
+* Added class for extended logging options
+* Added option to specify endpoint protocol
+* Fixed cinder type path issues
+* Added option to specify cinder volume path
+* Fixed targetcli package dependency on target service
+* Fixed os version fact comparison for RedHat-based operating systems
+  for specifying service provider
+* Added option to configure os_region_name in the cinder config
 
 **4.1.0**
 
