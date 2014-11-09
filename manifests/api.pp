@@ -106,11 +106,14 @@ class cinder::api (
 ) {
 
   include cinder::params
+  include cinder::policy
 
   Cinder_config<||> ~> Service['cinder-api']
   Cinder_api_paste_ini<||> ~> Service['cinder-api']
+  Class['cinder::policy'] ~> Service['cinder-api']
 
   if $::cinder::params::api_package {
+    Package['cinder-api'] -> Class['cinder::policy']
     Package['cinder-api'] -> Cinder_config<||>
     Package['cinder-api'] -> Cinder_api_paste_ini<||>
     Package['cinder-api'] -> Service['cinder-api']
