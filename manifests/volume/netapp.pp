@@ -92,9 +92,14 @@
 #   'minutes, where M is the value of the expiry_thres_minutes parameter.
 #   Defaults to 60
 #
+# [*nfs_shares*]
+#   (optional) Array of NFS exports in the form of host:/share; will be written into
+#    file specified in nfs_shares_config
+#    Defaults to undef
+#
 # [*nfs_shares_config*]
 #   (optional) File with the list of available NFS shares
-#   Defaults to ''
+#   Defaults to '/etc/cinder/shares.conf'
 #
 # [*netapp_copyoffload_tool_path*]
 #   (optional) This option specifies the path of the NetApp Copy Offload tool
@@ -163,7 +168,8 @@ class cinder::volume::netapp (
   $expiry_thres_minutes         = '720',
   $thres_avl_size_perc_start    = '20',
   $thres_avl_size_perc_stop     = '60',
-  $nfs_shares_config            = '',
+  $nfs_shares                   = undef,
+  $nfs_shares_config            = '/etc/cinder/shares.conf',
   $netapp_copyoffload_tool_path = '',
   $netapp_controller_ips        = '',
   $netapp_sa_password           = '',
@@ -186,6 +192,7 @@ class cinder::volume::netapp (
     expiry_thres_minutes         => $expiry_thres_minutes,
     thres_avl_size_perc_start    => $thres_avl_size_perc_start,
     thres_avl_size_perc_stop     => $thres_avl_size_perc_stop,
+    nfs_shares                   => $nfs_shares,
     nfs_shares_config            => $nfs_shares_config,
     netapp_copyoffload_tool_path => $netapp_copyoffload_tool_path,
     netapp_controller_ips        => $netapp_controller_ips,
