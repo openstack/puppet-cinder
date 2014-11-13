@@ -26,7 +26,7 @@ describe 'cinder::backend::netapp' do
       :expiry_thres_minutes         => '720',
       :thres_avl_size_perc_start    => '20',
       :thres_avl_size_perc_stop     => '60',
-      :nfs_shares_config            => '',
+      :nfs_shares_config            => '/etc/cinder/shares.conf',
       :netapp_copyoffload_tool_path => '',
       :netapp_controller_ips        => '',
       :netapp_sa_password           => '',
@@ -76,5 +76,17 @@ describe 'cinder::backend::netapp' do
     }) }
 
     it { should contain_cinder_config("#{req_params[:volume_backend_name]}/use_multipath_for_image_xfer").with_value('true') }
+  end
+
+  context 'with NFS shares provided' do
+    let (:req_params) { params.merge!({
+        :nfs_shares => ['10.0.0.1:/test1', '10.0.0.2:/test2'],
+        :nfs_shares_config => '/etc/cinder/shares.conf',
+    }) }
+
+    it 'writes NFS shares to file' do
+      should contain_file("#{req_params[:nfs_shares_config]}") \
+        .with_content("10.0.0.1:/test1\n10.0.0.2:/test2")
+    end
   end
 end
