@@ -44,6 +44,10 @@
 #   Defaults to false for empty. If defined, should be a string with a
 #   leading '/' and no trailing '/'.
 #
+# [*keystone_auth_uri*]
+#   (optional) Public Identity API endpoint.
+#   Defaults to 'false'.
+#
 # [*service_port*]
 #   (optional) The cinder api port
 #   Defaults to 5000
@@ -118,8 +122,8 @@ class cinder::api (
     Package['cinder-api'] -> Cinder_api_paste_ini<||>
     Package['cinder-api'] -> Service['cinder-api']
     package { 'cinder-api':
-      ensure  => $package_ensure,
-      name    => $::cinder::params::api_package,
+      ensure => $package_ensure,
+      name   => $::cinder::params::api_package,
     }
   }
 

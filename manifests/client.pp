@@ -4,8 +4,9 @@
 #
 # === Parameters
 #
-# [*ensure*]
-#   Ensure state for package. Defaults to 'present'.
+# [*package_ensure*]
+#   (Optional) Ensure state for package.
+#   Defaults to 'present'.
 #
 class cinder::client(
   $package_ensure = 'present'

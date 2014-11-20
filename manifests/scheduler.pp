@@ -1,3 +1,25 @@
+# == Class: cinder::scheduler
+#
+#  Scheduler class for cinder.
+#
+# === Parameters
+#
+# [*scheduler_driver*]
+#   (Optional) Default scheduler driver to use
+#   Defaults to 'false'.
+#
+# [*package_ensure*]
+#   (Optioanl) The state of the package.
+#   Defaults to 'present'.
+#
+# [*enabled*]
+#   (Optional) The state of the service
+#   Defaults to 'true'.
+#
+# [*manage_service*]
+#   (Optional) Whether to start/stop the service
+#   Defaults to 'true'.
+#
 #
 class cinder::scheduler (
   $scheduler_driver = false,

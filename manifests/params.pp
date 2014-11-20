@@ -1,3 +1,4 @@
+# == Class: cinder::params
 #
 class cinder::params {
 

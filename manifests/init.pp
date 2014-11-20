@@ -1,34 +1,87 @@
+# == Class: cinder
 #
-# == Parameters
-# [database_connection]
+#  Cinder base package & configuration
+#
+# === Parameters
+#
+# [*package_ensure*]
+#    (Optional) Ensure state for package.
+#    Defaults to 'present'
+#
+# [*verbose*]
+#   (Optional) Should the daemons log verbose messages
+#   Defaults to 'false'
+#
+# [*debug*]
+#   (Optional) Should the daemons log debug messages
+#   Defaults to 'false'
+#
+# [*use_syslog*]
+#   (Optional) Use syslog for logging.
+#   Defaults to false.
+#
+# [*database_connection*]
 #    Url used to connect to database.
 #    (Optional) Defaults to
 #    'sqlite:////var/lib/cinder/cinder.sqlite'
 #
-# [database_idle_timeout]
+# [*database_idle_timeout*]
 #   Timeout when db connections should be reaped.
 #   (Optional) Defaults to 3600.
 #
-# [database_min_pool_size]
+# [*database_min_pool_size*]
 #   Minimum number of SQL connections to keep open in a pool.
 #   (Optional) Defaults to 1.
 #
-# [database_max_pool_size]
+# [*database_max_pool_size*]
 #   Maximum number of SQL connections to keep open in a pool.
 #   (Optional) Defaults to undef.
 #
-# [database_max_retries]
+# [*database_max_retries*]
 #   Maximum db connection retries during startup.
 #   Setting -1 implies an infinite retry count.
 #   (Optional) Defaults to 10.
 #
-# [database_retry_interval]
+# [*database_retry_interval*]
 #   Interval between retries of opening a sql connection.
 #   (Optional) Defaults to 10.
 #
-# [database_max_overflow]
+# [*database_max_overflow*]
 #   If set, use this value for max_overflow with sqlalchemy.
 #   (Optional) Defaults to undef.
+#
+# [*rpc_backend*]
+#   (Optional) Use these options to configure the RabbitMQ message system.
+#   Defaults to 'cinder.openstack.common.rpc.impl_kombu'
+#
+# [*control_exchange*]
+#   (Optional)
+#   Defaults to 'openstack'.
+#
+# [*rabbit_host*]
+#   (Optional) IP or hostname of the rabbit server.
+#   Defaults to '127.0.0.1'
+#
+# [*rabbit_port*]
+#   (Optional) Port of the rabbit server.
+#   Defaults to 5672.
+#
+# [*rabbit_hosts*]
+#   (Optional) Array of host:port (used with HA queues).
+#   If defined, will remove rabbit_host & rabbit_port parameters from config
+#   Defaults to undef.
+#
+# [*rabbit_userid*]
+#   (Optional) User to connect to the rabbit server.
+#   Defaults to 'guest'
+#
+# [*rabbit_password*]
+#   (Optional) Password to connect to the rabbit_server.
+#   Defaults to empty.
+#
+# [*rabbit_virtual_host*]
+#   (Optional) Virtual_host to use.
+#   Defaults to '/'
 #
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
@@ -52,15 +105,59 @@
 #   available on some distributions.
 #   Defaults to 'SSLv3'
 #
-# [amqp_durable_queues]
+# [*amqp_durable_queues*]
 #   Use durable queues in amqp.
 #   (Optional) Defaults to false.
 #
-# [use_syslog]
+# [*qpid_hostname*]
+#   (Optional) Location of qpid server
+#   Defaults to 'localhost'.
+#
+# [*qpid_port*]
+#   (Optional) Port for qpid server.
+#   Defaults to '5672'.
+#
+# [*qpid_username*]
+#   (Optional) Username to use when connecting to qpid.
+#   Defaults to 'guest'.
+#
+# [*qpid_password*]
+#   (Optional) Password to use when connecting to qpid.
+#   Defaults to 'false'.
+#
+# [*qpid_sasl_mechanisms*]
+#   (Optional) ENable one or more SASL mechanisms.
+#   Defaults to 'false'.
+#
+# [*qpid_heartbeat*]
+#   (Optional) Seconds between connection keepalive heartbeats.
+#   Defaults to '60'.
+#
+# [*qpid_protocol*]
+#   (Optional) Transport to use, either 'tcp' or 'ssl'.
+#   Defaults to 'tcp'.
+#
+# [*qpid_tcp_nodelay*]
+#   (Optional) Disable Nagle Algorithm.
+#   Defaults to 'true'.
+#
+# [*qpid_reconnect*]
+#
+# [*qpid_reconnect_timeout*]
+#
+# [*qpid_reconnect_limit*]
+#
+# [*qpid_reconnect_interval*]
+#
+# [*qpid_reconnect_interval_min*]
+#
+# [*qpid_reconnect_interval_max*]
+#
+# [*use_syslog]
 #   Use syslog for logging.
 #   (Optional) Defaults to false.
 #
-# [log_facility]
+# [*log_facility*]
 #   Syslog facility to receive log lines.
 #   (Optional) Defaults to LOG_USER.
 #
@@ -85,9 +182,6 @@
 #   (optional) CA certificate file to use to verify connecting clients
 #   Defaults to false, not set_
 #
-# [*mysql_module*]
-#   (optional) Deprecated. Does nothing.
-#
 # [*storage_availability_zone*]
 #   (optional) Availability zone of the node.
 #   Defaults to 'nova'
@@ -97,6 +191,15 @@
 #   If not set, the storage_availability_zone option value is used as
 #   the default for new volumes.
 #   Defaults to false
+#
+# [*api_paste_config*]
+#   (Optional)
+#   Defaults to '/etc/cinder/api-paste.ini',
+#
+# === Deprecated Parameters
+#
+# [*mysql_module*]
+#   DEPRECATED. Does nothing.
 #
 class cinder (
   $database_connection         = 'sqlite:////var/lib/cinder/cinder.sqlite',

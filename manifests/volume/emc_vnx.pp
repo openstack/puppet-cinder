@@ -5,25 +5,32 @@
 #
 # === Parameters
 #
+# [*package_ensure*]
+#   (Optional) State of the package
+#   Defaults to 'present'.
+#
+# [*iscsi_ip_address*]
+#   (Required) The IP address that the iSCSI daemon is listening on
+#
 # [*san_ip*]
-#   (required) IP address of SAN controller.
+#   (Required) IP address of SAN controller.
 #
 # [*san_password*]
-#   (required) Password of SAN controller.
+#   (Required) Password of SAN controller.
 #
 # [*san_login*]
-#   (optional) Login of SAN controller.
+#   (Optional) Login of SAN controller.
 #   Defaults to : 'admin'
 #
 # [*storage_vnx_pool_name*]
-#   (required) Storage pool name.
+#   (Required) Storage pool name.
 #
 # [*default_timeout*]
-#   (optonal) Default timeout for CLI operations in minutes.
+#   (Optonal) Default timeout for CLI operations in minutes.
 #   Defaults to: '10'
 #
 # [*max_luns_per_storage_group*]
-#   (optonal) Default max number of LUNs in a storage group.
+#   (Optonal) Default max number of LUNs in a storage group.
 #   Defaults to: '256'
 #
 class cinder::volume::emc_vnx(

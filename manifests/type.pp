@@ -1,34 +1,40 @@
-# ==Define: cinder::type
+# == Define: cinder::type
 #
 # Creates cinder type and assigns backends.
 #
 # === Parameters
 #
 # [*os_password*]
-#   (required) The keystone tenant:username password.
+#   (Required) The keystone tenant:username password.
 #
 # [*set_key*]
-#   (optional) Must be used with set_value. Accepts a single string be used
-#     as the key in type_set
+#   (Optional) Must be used with set_value. Accepts a single string be used
+#   as the key in type_set
+#   Defaults to 'undef'.
 #
 # [*set_value*]
 #   (optional) Accepts list of strings or singular string. A list of values
-#     passed to type_set
+#   passed to type_set
+#   Defaults to 'undef'.
 #
 # [*os_tenant_name*]
-#   (optional) The keystone tenant name. Defaults to 'admin'.
+#   (Optional) The keystone tenant name.
+#   Defaults to 'admin'.
 #
 # [*os_username*]
-#   (optional) The keystone user name. Defaults to 'admin.
+#   (Optional) The keystone user name.
+#   Defaults to 'admin.
 #
 # [*os_auth_url*]
-#   (optional) The keystone auth url. Defaults to 'http://127.0.0.1:5000/v2.0/'.
+#   (Optional) The keystone auth url.
+#   Defaults to 'http://127.0.0.1:5000/v2.0/'.
 #
 # [*os_region_name*]
-#   (optional) The keystone region name. Default is unset.
+#   (Optional) The keystone region name.
+#   Default is unset.
 #
 # Author: Andrew Woodward <awoodward@mirantis.com>
-
+#
 define cinder::type (
   $os_password,
   $set_key        = undef,
@@ -69,13 +75,13 @@ define cinder::type (
   if ($set_value and $set_key) {
     Exec["cinder type-create ${volume_name}"] ->
     cinder::type_set { $set_value:
-      type            => $volume_name,
-      key             => $set_key,
-      os_password     => $os_password,
-      os_tenant_name  => $os_tenant_name,
-      os_username     => $os_username,
-      os_auth_url     => $os_auth_url,
-      os_region_name  => $os_region_name,
+      type           => $volume_name,
+      key            => $set_key,
+      os_password    => $os_password,
+      os_tenant_name => $os_tenant_name,
+      os_username    => $os_username,
+      os_auth_url    => $os_auth_url,
+      os_region_name => $os_region_name,
     }
   }
 }

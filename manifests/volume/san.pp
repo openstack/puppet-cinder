@@ -9,38 +9,45 @@
 #   (required) Setup cinder-volume to use volume driver.
 #
 # [*san_thin_provision*]
-#   (optional) Use thin provisioning for SAN volumes? Defaults to true.
+#   (Optional) Use thin provisioning for SAN volumes?
+#   Defaults to true.
 #
 # [*san_ip*]
-#   (optional) IP address of SAN controller.
+#   (Optional) IP address of SAN controller.
 #
 # [*san_login*]
-#   (optional) Username for SAN controller. Defaults to 'admin'.
+#   (Optional) Username for SAN controller.
+#   Defaults to 'admin'.
 #
 # [*san_password*]
-#   (optional) Password for SAN controller.
+#   (Optional) Password for SAN controller.
 #
 # [*san_private_key*]
-#   (optional) Filename of private key to use for SSH authentication.
+#   (Optional) Filename of private key to use for SSH authentication.
 #
 # [*san_clustername*]
-#   (optional) Cluster name to use for creating volumes.
+#   (Optional) Cluster name to use for creating volumes.
 #
 # [*san_ssh_port*]
-#   (optional) SSH port to use with SAN. Defaults to 22.
+#   (Optional) SSH port to use with SAN.
+#   Defaults to 22.
 #
 # [*san_is_local*]
-#   (optional) Execute commands locally instead of over SSH
+#   (Optional) Execute commands locally instead of over SSH
 #   use if the volume service is running on the SAN device.
+#   Defaults to 'false'.
 #
 # [*ssh_conn_timeout*]
-#   (optional) SSH connection timeout in seconds. Defaults to 30.
+#   (Optional) SSH connection timeout in seconds.
+#   Defaults to '30'.
 #
 # [*ssh_min_pool_conn*]
-#   (optional) Minimum ssh connections in the pool.
+#   (Optional) Minimum ssh connections in the pool.
+#   Defaults to '1'.
 #
-# [*ssh_min_pool_conn*]
-#   (optional) Maximum ssh connections in the pool.
+# [*ssh_max_pool_conn*]
+#   (Optional) Maximum ssh connections in the pool.
+#   Defaults to '5'.
 #
 class cinder::volume::san (
   $volume_driver,

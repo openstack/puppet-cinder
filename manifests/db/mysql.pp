@@ -1,33 +1,41 @@
+# == Class: cinder::db::mysql
+#
 # The cinder::db::mysql class creates a MySQL database for cinder.
 # It must be used on the MySQL server
 #
-# == Parameters
+# === Parameters
 #
-#  [*password*]
-#    password to connect to the database. Mandatory.
+# [*password*]
+#   password to connect to the database. Mandatory.
 #
-#  [*dbname*]
-#    name of the database. Optional. Defaults to cinder.
+# [*dbname*]
+#   name of the database. Optional. Defaults to cinder.
 #
-#  [*user*]
-#    user to connect to the database. Optional. Defaults to cinder.
+# [*user*]
+#   user to connect to the database. Optional. Defaults to cinder.
 #
-#  [*host*]
-#    the default source host user is allowed to connect from.
-#    Optional. Defaults to 'localhost'
+# [*host*]
+#   the default source host user is allowed to connect from.
+#   Optional. Defaults to 'localhost'
 #
-#  [*allowed_hosts*]
-#    other hosts the user is allowd to connect from.
-#    Optional. Defaults to undef.
+# [*allowed_hosts*]
+#   other hosts the user is allowd to connect from.
+#   Optional. Defaults to undef.
 #
-#  [*charset*]
-#    the database charset. Optional. Defaults to 'utf8'
+# [*charset*]
+#   the database charset. Optional. Defaults to 'utf8'
 #
-#  [*collate*]
-#    the database collation. Optional. Defaults to 'utf8_unicode_ci'
+# [*collate*]
+#   the database collation. Optional. Defaults to 'utf8_unicode_ci'
+#
+# [*cluster_id*]
+#   (Optional) TODO
+#   Defaults to 'localzone'.
+#
+# === Deprecated Parameters
 #
 #  [*mysql_module*]
-#   (optional) Deprecated. Does nothing.
+#   (Deprecated) Deprecated. Does nothing.
 #
 class cinder::db::mysql (
   $password,
@@ -38,6 +46,7 @@ class cinder::db::mysql (
   $charset       = 'utf8',
   $collate       = 'utf8_unicode_ci',
   $cluster_id    = 'localzone',
+  # DEPRECATED
   $mysql_module  = undef,
 ) {
 
