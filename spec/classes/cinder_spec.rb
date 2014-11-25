@@ -102,8 +102,12 @@ describe 'cinder' do
     end
 
     it 'should contain many' do
-      should_not contain_cinder_config('DEFAULT/rabbit_host')
-      should_not contain_cinder_config('DEFAULT/rabbit_port')
+      should contain_cinder_config('DEFAULT/rabbit_host').with(
+        :value => nil
+      )
+      should contain_cinder_config('DEFAULT/rabbit_port').with(
+        :value => nil
+      )
       should contain_cinder_config('DEFAULT/rabbit_hosts').with(
         :value => 'rabbit1:5672,rabbit2:5672'
       )
@@ -119,8 +123,12 @@ describe 'cinder' do
     end
 
     it 'should contain many' do
-      should_not contain_cinder_config('DEFAULT/rabbit_host')
-      should_not contain_cinder_config('DEFAULT/rabbit_port')
+      should contain_cinder_config('DEFAULT/rabbit_host').with(
+        :value => nil
+      )
+      should contain_cinder_config('DEFAULT/rabbit_port').with(
+        :value => nil
+      )
       should contain_cinder_config('DEFAULT/rabbit_hosts').with(
         :value => 'rabbit1:5672'
       )
