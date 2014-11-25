@@ -4,7 +4,6 @@ describe 'cinder::volume::rbd' do
   let :req_params do
     {
       :rbd_pool                         => 'volumes',
-      :glance_api_version               => '2',
       :rbd_user                         => 'test',
       :rbd_secret_uuid                  => '0123456789',
       :rbd_ceph_conf                    => '/foo/boo/zoo/ceph.conf',

@@ -8,7 +8,6 @@ describe 'cinder::backend::rbd' do
     {
       :volume_backend_name              => 'rbd-ssd',
       :rbd_pool                         => 'volumes',
-      :glance_api_version               => '2',
       :rbd_user                         => 'test',
       :rbd_secret_uuid                  => '0123456789',
       :rbd_ceph_conf                    => '/foo/boo/zoo/ceph.conf',

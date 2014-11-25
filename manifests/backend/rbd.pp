@@ -38,12 +38,6 @@
 #   A value of zero disables cloning
 #   Defaults to '5'
 #
-# [*glance_api_version*]
-#   (optional) DEPRECATED: Use cinder::glance Class instead.
-#   Glance API version. (Defaults to '2')
-#   Setting this parameter cause a duplicate resource declaration
-#   with cinder::glance
-#
 define cinder::backend::rbd (
   $rbd_pool,
   $rbd_user,
@@ -53,15 +47,9 @@ define cinder::backend::rbd (
   $rbd_secret_uuid                  = false,
   $volume_tmp_dir                   = false,
   $rbd_max_clone_depth              = '5',
-  # DEPRECATED PARAMETERS
-  $glance_api_version               = undef,
 ) {
 
   include cinder::params
-
-  if $glance_api_version {
-    warning('The glance_api_version parameter is deprecated, use glance_api_version of cinder::glance class instead.')
-  }
 
   cinder_config {
     "${name}/volume_backend_name":              value => $volume_backend_name;

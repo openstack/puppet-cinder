@@ -98,11 +98,6 @@
 #   the default for new volumes.
 #   Defaults to false
 #
-# [sql_connection]
-#   DEPRECATED
-# [sql_idle_timeout]
-#   DEPRECATED
-#
 class cinder (
   $database_connection         = 'sqlite:////var/lib/cinder/cinder.sqlite',
   $database_idle_timeout       = '3600',
@@ -154,8 +149,6 @@ class cinder (
   $default_availability_zone   = false,
   # DEPRECATED PARAMETERS
   $mysql_module                = undef,
-  $sql_connection              = undef,
-  $sql_idle_timeout            = undef,
 ) {
 
   include cinder::params
@@ -165,20 +158,6 @@ class cinder (
 
   if $mysql_module {
     warning('The mysql_module parameter is deprecated. The latest 2.x mysql module will be used.')
-  }
-
-  if $sql_connection {
-    warning('The sql_connection parameter is deprecated, use database_connection instead.')
-    $database_connection_real = $sql_connection
-  } else {
-    $database_connection_real = $database_connection
-  }
-
-  if $sql_idle_timeout {
-    warning('The sql_idle_timeout parameter is deprecated, use database_idle_timeout instead.')
-    $database_idle_timeout_real = $sql_idle_timeout
-  } else {
-    $database_idle_timeout_real = $database_idle_timeout
   }
 
   if $use_ssl {
@@ -316,8 +295,8 @@ class cinder (
   }
 
   cinder_config {
-    'database/connection':               value => $database_connection_real, secret => true;
-    'database/idle_timeout':             value => $database_idle_timeout_real;
+    'database/connection':               value => $database_connection, secret => true;
+    'database/idle_timeout':             value => $database_idle_timeout;
     'database/min_pool_size':            value => $database_min_pool_size;
     'database/max_retries':              value => $database_max_retries;
     'database/retry_interval':           value => $database_retry_interval;
@@ -349,15 +328,15 @@ class cinder (
     }
   }
 
-  if($database_connection_real =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
+  if($database_connection =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
     require 'mysql::bindings'
     require 'mysql::bindings::python'
-  } elsif($database_connection_real =~ /postgresql:\/\/\S+:\S+@\S+\/\S+/) {
+  } elsif($database_connection =~ /postgresql:\/\/\S+:\S+@\S+\/\S+/) {
 
-  } elsif($database_connection_real =~ /sqlite:\/\//) {
+  } elsif($database_connection =~ /sqlite:\/\//) {
 
   } else {
-    fail("Invalid db connection ${database_connection_real}")
+    fail("Invalid db connection ${database_connection}")
   }
 
   if $log_dir {
