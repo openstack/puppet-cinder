@@ -6,7 +6,11 @@
 #
 # [*policies*]
 #   (optional) Set of policies to configure for cinder
-#   Example : { 'cinder-context_is_admin' => {'context_is_admin' => 'true'}, 'cinder-default' => {'default' => 'rule:admin_or_owner'} }
+#   Example :
+#     {
+#       'cinder-context_is_admin' => {'context_is_admin' => 'true'},
+#       'cinder-default'          => {'default' => 'rule:admin_or_owner'}
+#     }
 #   Defaults to empty hash.
 #
 # [*policy_path*]

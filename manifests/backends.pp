@@ -5,9 +5,14 @@
 # === Parameters
 #
 # [*enabled_backends*]
-#   (required) a list of ini sections to enable.
-#     This should contain names used in ceph::backend::* resources.
-#     Example: ['volume1', 'volume2', 'sata3']
+#   (Required) a list of ini sections to enable.
+#   This should contain names used in ceph::backend::* resources.
+#   Example: ['volume1', 'volume2', 'sata3']
+#
+# === Deprecated Parameters
+#
+# [*default_volume_type*]
+#   (Deprecated) Does nothing.
 #
 # Author: Andrew Woodward <awoodward@mirantis.com>
 class cinder::backends (

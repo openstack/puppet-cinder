@@ -1,28 +1,28 @@
-# Class cinder::logging
+# == Class: cinder::logging
 #
-#  cinder extended logging configuration
+#  Cinder extended logging configuration
 #
-# == parameters
+# === Parameters
 #
 #  [*logging_context_format_string*]
-#    (optional) Format string to use for log messages with context.
+#    (Optional) Format string to use for log messages with context.
 #    Defaults to undef.
 #    Example: '%(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s\
 #              [%(request_id)s %(user_identity)s] %(instance)s%(message)s'
 #
 #  [*logging_default_format_string*]
-#    (optional) Format string to use for log messages without context.
+#    (Optional) Format string to use for log messages without context.
 #    Defaults to undef.
 #    Example: '%(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s\
 #              [-] %(instance)s%(message)s'
 #
 #  [*logging_debug_format_suffix*]
-#    (optional) Formatted data to append to log format when level is DEBUG.
+#    (Optional) Formatted data to append to log format when level is DEBUG.
 #    Defaults to undef.
 #    Example: '%(funcName)s %(pathname)s:%(lineno)d'
 #
 #  [*logging_exception_prefix*]
-#    (optional) Prefix each line of exception output with this format.
+#    (Optional) Prefix each line of exception output with this format.
 #    Defaults to undef.
 #    Example: '%(asctime)s.%(msecs)03d %(process)d TRACE %(name)s %(instance)s'
 #
@@ -59,12 +59,12 @@
 #               it like this (string value).
 #    Defaults to undef.
 #    Example: instance_uuid_format='[instance: %(uuid)s] '
-
+#
 #  [*log_date_format*]
 #    (optional) Format string for %%(asctime)s in log records.
 #    Defaults to undef.
 #    Example: 'Y-%m-%d %H:%M:%S'
-
+#
 class cinder::logging(
   $logging_context_format_string = undef,
   $logging_default_format_string = undef,
