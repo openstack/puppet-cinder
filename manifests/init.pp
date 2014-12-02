@@ -225,6 +225,8 @@ class cinder (
     if $rabbit_hosts {
       cinder_config { 'DEFAULT/rabbit_hosts':     value => join($rabbit_hosts, ',') }
       cinder_config { 'DEFAULT/rabbit_ha_queues': value => true }
+      cinder_config { 'DEFAULT/rabbit_host':      ensure => absent }
+      cinder_config { 'DEFAULT/rabbit_port':      ensure => absent }
     } else {
       cinder_config { 'DEFAULT/rabbit_host':      value => $rabbit_host }
       cinder_config { 'DEFAULT/rabbit_port':      value => $rabbit_port }
