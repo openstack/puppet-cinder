@@ -89,49 +89,37 @@ class cinder::keystone::auth (
   $internal_protocol     = 'http'
 ) {
 
-  if $configure_user {
-    keystone_user { $auth_name:
-      ensure   => present,
-      password => $password,
-      email    => $email,
-      tenant   => $tenant,
-    }
+  keystone::resource::service_identity { $auth_name:
+    configure_user      => $configure_user,
+    configure_user_role => $configure_user_role,
+    configure_endpoint  => $configure_endpoint,
+    service_type        => $service_type,
+    service_description => 'Cinder Service',
+    service_name        => $auth_name,
+    region              => $region,
+    password            => $password,
+    email               => $email,
+    tenant              => $tenant,
+    public_url          => "${public_protocol}://${public_address}:${port}/${volume_version}/%(tenant_id)s",
+    admin_url           => "${admin_protocol}://${admin_address}:${port}/${volume_version}/%(tenant_id)s",
+    internal_url        => "${internal_protocol}://${internal_address}:${port}/${volume_version}/%(tenant_id)s",
+  }
+
+  keystone::resource::service_identity { $auth_name_v2:
+    configure_user      => false,
+    configure_user_role => false,
+    configure_endpoint  => $configure_endpoint_v2,
+    service_type        => $service_type_v2,
+    service_description => 'Cinder Service v2',
+    service_name        => $auth_name_v2,
+    region              => $region,
+    public_url          => "${public_protocol}://${public_address}:${port}/v2/%(tenant_id)s",
+    admin_url           => "${admin_protocol}://${admin_address}:${port}/v2/%(tenant_id)s",
+    internal_url        => "${internal_protocol}://${internal_address}:${port}/v2/%(tenant_id)s",
   }
 
   if $configure_user_role {
     Keystone_user_role["${auth_name}@${tenant}"] ~> Service <| name == 'cinder-api' |>
-
-    keystone_user_role { "${auth_name}@${tenant}":
-      ensure => present,
-      roles  => 'admin',
-    }
   }
 
-  keystone_service { $auth_name:
-    ensure      => present,
-    type        => $service_type,
-    description => 'Cinder Service',
-  }
-  keystone_service { $auth_name_v2:
-    ensure      => present,
-    type        => $service_type_v2,
-    description => 'Cinder Service v2',
-  }
-
-  if $configure_endpoint {
-    keystone_endpoint { "${region}/${auth_name}":
-      ensure       => present,
-      public_url   => "${public_protocol}://${public_address}:${port}/${volume_version}/%(tenant_id)s",
-      admin_url    => "${admin_protocol}://${admin_address}:${port}/${volume_version}/%(tenant_id)s",
-      internal_url => "${internal_protocol}://${internal_address}:${port}/${volume_version}/%(tenant_id)s",
-    }
-  }
-  if $configure_endpoint_v2 {
-    keystone_endpoint { "${region}/${auth_name_v2}":
-      ensure       => present,
-      public_url   => "${public_protocol}://${public_address}:${port}/v2/%(tenant_id)s",
-      admin_url    => "${admin_protocol}://${admin_address}:${port}/v2/%(tenant_id)s",
-      internal_url => "${internal_protocol}://${internal_address}:${port}/v2/%(tenant_id)s",
-    }
-  }
 }
