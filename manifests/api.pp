@@ -82,6 +82,27 @@
 #   If not configured, it produces an error when creating a volume
 #   without specifying a type.
 #   Defaults to 'false'.
+#
+# [*validate*]
+#   (optional) Whether to validate the service is working after any service refreshes
+#   Defaults to false
+#
+# [*validation_options*]
+#   (optional) Service validation options
+#   Should be a hash of options defined in openstacklib::service_validation
+#   If empty, defaults values are taken from openstacklib function.
+#   Default command list volumes.
+#   Require validate set at True.
+#   Example:
+#   glance::api::validation_options:
+#     glance-api:
+#       command: check_cinder-api.py
+#       path: /usr/bin:/bin:/usr/sbin:/sbin
+#       provider: shell
+#       tries: 5
+#       try_sleep: 10
+#   Defaults to {}
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled           = true,
@@ -102,7 +123,9 @@ class cinder::api (
   $ratelimits                 = undef,
   $default_volume_type        = false,
   $ratelimits_factory =
-    'cinder.api.v1.limits:RateLimitingMiddleware.factory'
+    'cinder.api.v1.limits:RateLimitingMiddleware.factory',
+  $validate                   = false,
+  $validation_options         = {},
 ) {
 
   include cinder::params
@@ -164,10 +187,11 @@ class cinder::api (
   }
 
   if $keystone_auth_uri {
-    cinder_api_paste_ini { 'filter:authtoken/auth_uri': value => $keystone_auth_uri; }
+    $auth_uri = $keystone_auth_uri
   } else {
-    cinder_api_paste_ini { 'filter:authtoken/auth_uri': value => "${keystone_auth_protocol}://${keystone_auth_host}:${service_port}/"; }
+    $auth_uri = "${keystone_auth_protocol}://${keystone_auth_host}:${service_port}/"
   }
+  cinder_api_paste_ini { 'filter:authtoken/auth_uri': value => $auth_uri; }
 
   if $keystone_enabled {
     cinder_config {
@@ -212,6 +236,16 @@ class cinder::api (
     cinder_config {
       'DEFAULT/default_volume_type': ensure => absent;
     }
+  }
+
+  if $validate {
+    $defaults = {
+      'cinder-api' => {
+        'command'  => "cinder --os-auth-url ${auth_uri} --os-tenant-name ${keystone_tenant} --os-username ${keystone_user} --os-password ${keystone_password} list",
+      }
+    }
+    $validation_options_hash = merge ($defaults, $validation_options)
+    create_resources('openstacklib::service_validation', $validation_options_hash, {'subscribe' => 'Service[cinder-api]'})
   }
 
 }

@@ -184,4 +184,43 @@ describe 'cinder::api' do
     )}
   end
 
+  describe 'while validating the service with default command' do
+    let :params do
+      req_params.merge({
+        :validate => true,
+      })
+    end
+    it { should contain_exec('execute cinder-api validation').with(
+      :path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+      :provider    => 'shell',
+      :tries       => '10',
+      :try_sleep   => '2',
+      :command     => 'cinder --os-auth-url http://localhost:5000/ --os-tenant-name services --os-username cinder --os-password foo list',
+    )}
+
+    it { should contain_anchor('create cinder-api anchor').with(
+      :require => 'Exec[execute cinder-api validation]',
+    )}
+  end
+
+  describe 'while validating the service with custom command' do
+    let :params do
+      req_params.merge({
+        :validate            => true,
+        :validation_options  => { 'cinder-api' => { 'command' => 'my-script' } }
+      })
+    end
+    it { should contain_exec('execute cinder-api validation').with(
+      :path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+      :provider    => 'shell',
+      :tries       => '10',
+      :try_sleep   => '2',
+      :command     => 'my-script',
+    )}
+
+    it { should contain_anchor('create cinder-api anchor').with(
+      :require => 'Exec[execute cinder-api validation]',
+    )}
+  end
+
 end
