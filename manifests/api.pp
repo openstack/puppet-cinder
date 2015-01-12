@@ -201,34 +201,39 @@ class cinder::api (
     cinder_config {
       'DEFAULT/auth_strategy':     value => 'keystone' ;
     }
+
+    $identity_uri = "${keystone_auth_protocol}://${keystone_auth_host}:${keystone_auth_port}"
+    if $keystone_auth_admin_prefix {
+      validate_re($keystone_auth_admin_prefix, '^(/.+[^/])?$')
+      # a leading slash on keystone_auth_admin_prefix is already required,
+      # don't add it here
+      $identity_uri_real = "${identity_uri}${keystone_auth_admin_prefix}"
+    }
+    else {
+      $identity_uri_real = $identity_uri
+    }
+
     cinder_api_paste_ini {
       'filter:authtoken/service_protocol':  value => $keystone_auth_protocol;
       'filter:authtoken/service_host':      value => $keystone_auth_host;
       'filter:authtoken/service_port':      value => $service_port;
-      'filter:authtoken/auth_protocol':     value => $keystone_auth_protocol;
-      'filter:authtoken/auth_host':         value => $keystone_auth_host;
-      'filter:authtoken/auth_port':         value => $keystone_auth_port;
+      'filter:authtoken/identity_uri':      value => $identity_uri_real;
       'filter:authtoken/admin_tenant_name': value => $keystone_tenant;
       'filter:authtoken/admin_user':        value => $keystone_user;
       'filter:authtoken/admin_password':    value => $keystone_password, secret => true;
+
+      # deprecated parameters - replaced with identity_uri
+      'filter:authtoken/auth_protocol':     ensure => absent;
+      'filter:authtoken/auth_host':         ensure => absent;
+      'filter:authtoken/auth_port':         ensure => absent;
+      'filter:authtoken/auth_admin_prefix': ensure => absent;
     }
+  }
 
   if ($ratelimits != undef) {
     cinder_api_paste_ini {
       'filter:ratelimit/paste.filter_factory': value => $ratelimits_factory;
       'filter:ratelimit/limits':               value => $ratelimits;
-    }
-  }
-
-    if $keystone_auth_admin_prefix {
-      validate_re($keystone_auth_admin_prefix, '^(/.+[^/])?$')
-      cinder_api_paste_ini {
-        'filter:authtoken/auth_admin_prefix': value => $keystone_auth_admin_prefix;
-      }
-    } else {
-      cinder_api_paste_ini {
-        'filter:authtoken/auth_admin_prefix': ensure => absent;
-      }
     }
   }
 

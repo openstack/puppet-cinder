@@ -42,14 +42,17 @@ describe 'cinder::api' do
       should contain_cinder_api_paste_ini('filter:authtoken/service_port').with(
         :value => '5000'
       )
+      should contain_cinder_api_paste_ini('filter:authtoken/identity_uri').with(
+        :value => 'http://localhost:35357'
+      )
       should contain_cinder_api_paste_ini('filter:authtoken/auth_protocol').with(
-        :value => 'http'
+        :ensure => 'absent'
       )
       should contain_cinder_api_paste_ini('filter:authtoken/auth_host').with(
-        :value => 'localhost'
+        :ensure => 'absent'
       )
       should contain_cinder_api_paste_ini('filter:authtoken/auth_port').with(
-        :value => '35357'
+        :ensure => 'absent'
       )
       should contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(
         :ensure => 'absent'
@@ -70,6 +73,7 @@ describe 'cinder::api' do
       )
 
       should_not contain_cinder_config('DEFAULT/os_region_name')
+
     end
   end
 
@@ -126,8 +130,8 @@ describe 'cinder::api' do
         }
       end
 
-      it { should contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(
-        :value => keystone_auth_admin_prefix
+      it { should contain_cinder_api_paste_ini('filter:authtoken/identity_uri').with(
+        :value => "http://localhost:35357#{keystone_auth_admin_prefix}"
       )}
     end
   end
@@ -148,7 +152,7 @@ describe 'cinder::api' do
         }
       end
 
-      it { expect { should contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix') }.to \
+      it { expect { should contain_cinder_api_paste_ini('filter:authtoken/identity_uri') }.to \
         raise_error(Puppet::Error, /validate_re\(\): "#{keystone_auth_admin_prefix}" does not match/) }
     end
   end
