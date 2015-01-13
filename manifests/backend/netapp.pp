@@ -94,9 +94,14 @@
 #   last M minutes, where M is the value of the expiry_thres_minutes parameter.
 #   Defaults to 60
 #
+# [*nfs_shares*]
+#   (optional) Array of NFS exports in the form of host:/share; will be written into
+#    file specified in nfs_shares_config
+#    Defaults to undef
+#
 # [*nfs_shares_config*]
 #   (optional) File with the list of available NFS shares
-#   Defaults to ''
+#   Defaults to '/etc/cinder/shares.conf'
 #
 # [*netapp_copyoffload_tool_path*]
 #   (optional) This option specifies the path of the NetApp Copy Offload tool
@@ -166,13 +171,22 @@ define cinder::backend::netapp (
   $expiry_thres_minutes         = '720',
   $thres_avl_size_perc_start    = '20',
   $thres_avl_size_perc_stop     = '60',
-  $nfs_shares_config            = '',
+  $nfs_shares                   = undef,
+  $nfs_shares_config            = '/etc/cinder/shares.conf',
   $netapp_copyoffload_tool_path = '',
   $netapp_controller_ips        = '',
   $netapp_sa_password           = '',
   $netapp_storage_pools         = '',
   $netapp_webservice_path       = '/devmgr/v2',
 ) {
+
+  if $nfs_shares {
+    file {$nfs_shares_config:
+      content => join($nfs_shares, "\n"),
+      require => Package['cinder'],
+      notify  => Service['cinder-volume']
+    }
+  }
 
   cinder_config {
     "${volume_backend_name}/volume_backend_name":          value => $volume_backend_name;
