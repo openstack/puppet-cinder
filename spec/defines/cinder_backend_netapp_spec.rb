@@ -89,4 +89,18 @@ describe 'cinder::backend::netapp' do
         .with_content("10.0.0.1:/test1\n10.0.0.2:/test2")
     end
   end
+
+  context 'with invalid NFS shares provided' do
+    before do
+      params.merge!({
+        :nfs_shares => "not an array",
+        :nfs_shares_config => '/etc/cinder/shares.conf',
+      })
+    end
+
+    it 'throw error' do
+        expect {subject}.to raise_error(Puppet::Error, /"not an array" is not an Array.  It looks to be a String/)
+    end
+  end
+
 end

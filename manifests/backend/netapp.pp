@@ -181,6 +181,7 @@ define cinder::backend::netapp (
 ) {
 
   if $nfs_shares {
+    validate_array($nfs_shares)
     file {$nfs_shares_config:
       content => join($nfs_shares, "\n"),
       require => Package['cinder'],
