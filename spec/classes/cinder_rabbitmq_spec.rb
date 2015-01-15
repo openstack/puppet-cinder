@@ -77,5 +77,18 @@ describe 'cinder::rabbitmq' do
     end
   end
 
+  describe 'when no rabbitmq class specified' do
+
+    let :params do
+      {
+        :rabbitmq_class => false
+      }
+    end
+
+    it 'should not contain rabbitmq class calls' do
+      should_not contain_class('rabbitmq::server')
+    end
+
+  end
 
 end
