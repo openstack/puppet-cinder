@@ -66,6 +66,7 @@ class cinder::backup (
   if $::cinder::params::backup_package {
     Package['cinder-backup'] -> Cinder_config<||>
     Package['cinder-backup'] -> Service['cinder-backup']
+    Package['cinder-backup'] ~> Exec<| title == 'cinder-manage db_sync' |>
     package { 'cinder-backup':
       ensure => $package_ensure,
       name   => $::cinder::params::backup_package,
