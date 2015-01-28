@@ -132,4 +132,22 @@ describe 'cinder::keystone::auth' do
 
   end
 
+  describe 'when overriding service names' do
+
+    let :params do
+      req_params.merge(
+        :service_name    => 'cinder_service',
+        :service_name_v2 => 'cinder_service_v2',
+      )
+    end
+
+    it { should contain_keystone_user('cinder') }
+    it { should contain_keystone_user_role('cinder@services') }
+    it { should contain_keystone_service('cinder_service') }
+    it { should contain_keystone_service('cinder_service_v2') }
+    it { should contain_keystone_endpoint('RegionOne/cinder_service') }
+    it { should contain_keystone_endpoint('RegionOne/cinder_service_v2') }
+
+  end
+
 end
