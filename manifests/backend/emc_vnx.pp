@@ -6,6 +6,12 @@
 #
 # == Parameters
 #
+# [*iscsi_initiators*]
+# 
+#   (required) IP addresses of the iSCSI initiator ports on all OpenStack nodes which want to connec to VNX via iSCSI
+#   Example: {"node1hostname":["10.0.0.1", "10.0.0.2"],"node2hostname":["10.0.0.3"]}
+#   Default to: none
+#
 # [*volume_backend_name*]
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
@@ -36,7 +42,7 @@
 #   Defaults to: 'present'
 #
 define cinder::backend::emc_vnx (
-  $iscsi_ip_address,
+  $iscsi_initiators,
   $san_ip,
   $san_password,
   $storage_vnx_pool_name,
@@ -51,7 +57,7 @@ define cinder::backend::emc_vnx (
 
   cinder_config {
     "${name}/default_timeout":            value => $default_timeout;
-    "${name}/iscsi_ip_address":           value => $iscsi_ip_address;
+    "${name}/iscsi_initiators":           value => $iscsi_initiators;
     "${name}/max_luns_per_storage_group": value => $max_luns_per_storage_group;
     "${name}/naviseccli_path":            value => '/opt/Navisphere/bin/naviseccli';
     "${name}/san_ip":                     value => $san_ip;
