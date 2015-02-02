@@ -6,7 +6,7 @@ describe 'cinder::volume::emc_vnx' do
       :san_ip                => '127.0.0.2',
       :san_login             => 'emc',
       :san_password          => 'password',
-      :iscsi_ip_address      => '127.0.0.3',
+      :iscsi_initiators      => '{"node1hostname":["10.0.0.1", "10.0.0.2"],"node2hostname":["10.0.0.3"]}',
       :storage_vnx_pool_name => 'emc-storage-pool'
     }
   end
@@ -25,7 +25,7 @@ describe 'cinder::volume::emc_vnx' do
       should contain_cinder_config('DEFAULT/san_ip').with_value('127.0.0.2')
       should contain_cinder_config('DEFAULT/san_login').with_value('emc')
       should contain_cinder_config('DEFAULT/san_password').with_value('password')
-      should contain_cinder_config('DEFAULT/iscsi_ip_address').with_value('127.0.0.3')
+      should contain_cinder_config('DEFAULT/iscsi_initiators').with_value('{"node1hostname":["10.0.0.1", "10.0.0.2"],"node2hostname":["10.0.0.3"]}')
       should contain_cinder_config('DEFAULT/storage_vnx_pool_name').with_value('emc-storage-pool')
     end
   end

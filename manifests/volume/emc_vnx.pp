@@ -5,6 +5,12 @@
 #
 # === Parameters
 #
+# [*iscsi_initiators*]
+#
+#   (required) IP addresses of the iSCSI initiator ports on all OpenStack nodes which want to connec to VNX via iSCSI
+#   Example: {"node1hostname":["10.0.0.1", "10.0.0.2"],"node2hostname":["10.0.0.3"]}
+#   Default to: none
+#
 # [*san_ip*]
 #   (required) IP address of SAN controller.
 #
@@ -27,7 +33,7 @@
 #   Defaults to: '256'
 #
 class cinder::volume::emc_vnx(
-  $iscsi_ip_address,
+  $iscsi_initiators,
   $san_ip,
   $san_password,
   $storage_vnx_pool_name,
@@ -39,7 +45,7 @@ class cinder::volume::emc_vnx(
 
   cinder::backend::emc_vnx { 'DEFAULT':
     default_timeout            => $default_timeout,
-    iscsi_ip_address           => $iscsi_ip_address,
+    iscsi_initiators           => $iscsi_initiators,
     max_luns_per_storage_group => $max_luns_per_storage_group,
     package_ensure             => $package_ensure,
     san_ip                     => $san_ip,
