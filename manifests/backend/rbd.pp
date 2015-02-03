@@ -76,9 +76,11 @@ define cinder::backend::rbd (
   case $::osfamily {
     'Debian': {
       $override_line    = "env CEPH_ARGS=\"--id ${rbd_user}\""
+      $override_match   = '^env CEPH_ARGS='
     }
     'RedHat': {
       $override_line    = "export CEPH_ARGS=\"--id ${rbd_user}\""
+      $override_match   = '^export CEPH_ARGS='
     }
     default: {
       fail("unsuported osfamily ${::osfamily}, currently Debian and Redhat are the only supported platforms")
@@ -91,6 +93,7 @@ define cinder::backend::rbd (
   ensure_resource('file_line', 'set initscript env', {
     line   => $override_line,
     path   => $::cinder::params::ceph_init_override,
+    match  => $override_match,
     notify => Service['cinder-volume']
   })
 
