@@ -203,7 +203,7 @@ describe 'cinder' do
     it { should contain_cinder_config('DEFAULT/qpid_sasl_mechanisms').with_value('DIGEST-MD5 GSSAPI PLAIN') }
   end
 
-  describe 'with SSL enabled' do
+  describe 'with SSL enabled with kombu' do
     let :params do
       req_params.merge!({
         :rabbit_use_ssl     => true,
@@ -219,6 +219,22 @@ describe 'cinder' do
       should contain_cinder_config('DEFAULT/kombu_ssl_ca_certs').with_value('/path/to/ssl/ca/certs')
       should contain_cinder_config('DEFAULT/kombu_ssl_certfile').with_value('/path/to/ssl/cert/file')
       should contain_cinder_config('DEFAULT/kombu_ssl_keyfile').with_value('/path/to/ssl/keyfile')
+      should contain_cinder_config('DEFAULT/kombu_ssl_version').with_value('TLSv1')
+    end
+  end
+
+  describe 'with SSL enabled without kombu' do
+    let :params do
+      req_params.merge!({
+        :rabbit_use_ssl     => true,
+      })
+    end
+
+    it do
+      should contain_cinder_config('DEFAULT/rabbit_use_ssl').with_value('true')
+      should contain_cinder_config('DEFAULT/kombu_ssl_ca_certs').with_ensure('absent')
+      should contain_cinder_config('DEFAULT/kombu_ssl_certfile').with_ensure('absent')
+      should contain_cinder_config('DEFAULT/kombu_ssl_keyfile').with_ensure('absent')
       should contain_cinder_config('DEFAULT/kombu_ssl_version').with_value('TLSv1')
     end
   end
