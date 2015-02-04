@@ -7,7 +7,7 @@
 #
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use SolidFire volume driver.
-#   Defaults to 'cinder.volume.drivers.solidfire.SolidFire'
+#   Defaults to 'cinder.volume.drivers.solidfire.SolidFireDriver'
 #
 # [*san_ip*]
 #   (required) IP address of SolidFire clusters MVIP.
@@ -38,7 +38,7 @@ class cinder::volume::solidfire(
   $san_ip,
   $san_login,
   $san_password,
-  $volume_driver       = 'cinder.volume.drivers.solidfire.SolidFire',
+  $volume_driver       = 'cinder.volume.drivers.solidfire.SolidFireDriver',
   $sf_emulate_512      = true,
   $sf_allow_tenant_qos = false,
   $sf_account_prefix   = '',
