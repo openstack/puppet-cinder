@@ -190,18 +190,6 @@ class cinder (
     }
   }
 
-  if $rabbit_use_ssl {
-    if !$kombu_ssl_ca_certs {
-      fail('The kombu_ssl_ca_certs parameter is required when rabbit_use_ssl is set to true')
-    }
-    if !$kombu_ssl_certfile {
-      fail('The kombu_ssl_certfile parameter is required when rabbit_use_ssl is set to true')
-    }
-    if !$kombu_ssl_keyfile {
-      fail('The kombu_ssl_keyfile parameter is required when rabbit_use_ssl is set to true')
-    }
-  }
-
   # this anchor is used to simplify the graph between cinder components by
   # allowing a resource to serve as a point where the configuration of cinder begins
   anchor { 'cinder-start': }
@@ -254,11 +242,24 @@ class cinder (
     }
 
     if $rabbit_use_ssl {
-      cinder_config {
-        'DEFAULT/kombu_ssl_ca_certs': value => $kombu_ssl_ca_certs;
-        'DEFAULT/kombu_ssl_certfile': value => $kombu_ssl_certfile;
-        'DEFAULT/kombu_ssl_keyfile':  value => $kombu_ssl_keyfile;
-        'DEFAULT/kombu_ssl_version':  value => $kombu_ssl_version;
+      cinder_config { 'DEFAULT/kombu_ssl_version': value => $kombu_ssl_version }
+
+      if $kombu_ssl_ca_certs {
+        cinder_config { 'DEFAULT/kombu_ssl_ca_certs': value => $kombu_ssl_ca_certs }
+      } else {
+        cinder_config { 'DEFAULT/kombu_ssl_ca_certs': ensure => absent}
+      }
+
+      if $kombu_ssl_certfile {
+        cinder_config { 'DEFAULT/kombu_ssl_certfile': value => $kombu_ssl_certfile }
+      } else {
+        cinder_config { 'DEFAULT/kombu_ssl_certfile': ensure => absent}
+      }
+
+      if $kombu_ssl_keyfile {
+        cinder_config { 'DEFAULT/kombu_ssl_keyfile': value => $kombu_ssl_keyfile }
+      } else {
+        cinder_config { 'DEFAULT/kombu_ssl_keyfile': ensure => absent}
       }
     } else {
       cinder_config {
