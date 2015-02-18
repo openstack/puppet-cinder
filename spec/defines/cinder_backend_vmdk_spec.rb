@@ -54,6 +54,7 @@ describe 'cinder::backend::vmdk' do
       is_expected.to contain_cinder_config('hippo/vmware_task_poll_interval').with_value(params[:task_poll_interval])
       is_expected.to contain_cinder_config('hippo/vmware_image_transfer_timeout_secs').with_value(params[:image_transfer_timeout_secs])
       is_expected.to contain_cinder_config('hippo/vmware_wsdl_location').with_value(params[:wsdl_location])
+      is_expected.to contain_cinder_config('hippo/host').with_value("vmdk:#{params[:host_ip]}-#{params[:volume_folder]}")
     end
   end
 
