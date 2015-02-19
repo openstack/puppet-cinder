@@ -26,7 +26,7 @@ class cinder::volume::iscsi (
   $iscsi_helper      = $::cinder::params::iscsi_helper,
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   cinder::backend::iscsi { 'DEFAULT':
     iscsi_ip_address => $iscsi_ip_address,

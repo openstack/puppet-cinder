@@ -49,7 +49,7 @@ define cinder::backend::rbd (
   $rbd_max_clone_depth              = '5',
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   cinder_config {
     "${name}/volume_backend_name":              value => $volume_backend_name;

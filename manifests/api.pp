@@ -132,8 +132,8 @@ class cinder::api (
   $validation_options         = {},
 ) {
 
-  include cinder::params
-  include cinder::policy
+  include ::cinder::params
+  include ::cinder::policy
 
   Cinder_config<||> ~> Service['cinder-api']
   Cinder_api_paste_ini<||> ~> Service['cinder-api']

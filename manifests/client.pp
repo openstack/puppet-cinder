@@ -12,7 +12,7 @@ class cinder::client(
   $package_ensure = 'present'
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   package { 'python-cinderclient':
     ensure => $package_ensure,

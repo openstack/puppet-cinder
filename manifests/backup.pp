@@ -58,7 +58,7 @@ class cinder::backup (
   $backup_name_template = 'backup-%s'
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   Cinder_config<||> ~> Service['cinder-backup']
   Exec<| title == 'cinder-manage db_sync' |> ~> Service['cinder-backup']

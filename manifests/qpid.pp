@@ -51,7 +51,7 @@ class cinder::qpid (
     $service_ensure = 'stopped'
   }
 
-  class { 'qpid::server':
+  class { '::qpid::server':
     service_ensure => $service_ensure
   }
 

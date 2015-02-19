@@ -15,7 +15,7 @@ define cinder::backend::iscsi (
   $iscsi_helper        = $::cinder::params::iscsi_helper,
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   cinder_config {
     "${name}/volume_backend_name":  value => $volume_backend_name;

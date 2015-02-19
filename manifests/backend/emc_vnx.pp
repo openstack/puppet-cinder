@@ -47,7 +47,7 @@ define cinder::backend::emc_vnx (
   $volume_backend_name        = $name,
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   cinder_config {
     "${name}/default_timeout":            value => $default_timeout;

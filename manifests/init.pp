@@ -254,7 +254,7 @@ class cinder (
   $mysql_module                = undef,
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   Package['cinder'] -> Cinder_config<||>
   Package['cinder'] -> Cinder_api_paste_ini<||>

@@ -28,7 +28,7 @@ class cinder::scheduler (
   $manage_service   = true
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   Cinder_config<||> ~> Service['cinder-scheduler']
   Cinder_api_paste_ini<||> ~> Service['cinder-scheduler']

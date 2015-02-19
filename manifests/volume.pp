@@ -20,7 +20,7 @@ class cinder::volume (
   $manage_service = true
 ) {
 
-  include cinder::params
+  include ::cinder::params
 
   Cinder_config<||> ~> Service['cinder-volume']
   Cinder_api_paste_ini<||> ~> Service['cinder-volume']
