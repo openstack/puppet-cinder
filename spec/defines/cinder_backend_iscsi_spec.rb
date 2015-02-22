@@ -18,6 +18,10 @@ describe 'cinder::backend::iscsi' do
     req_params
   end
 
+  let :iser_params do
+    {:iscsi_protocol => 'iser'}
+  end
+
   describe 'with default params' do
 
     it 'should configure iscsi driver' do
@@ -31,6 +35,19 @@ describe 'cinder::backend::iscsi' do
         :value => 'tgtadm')
       should contain_cinder_config('hippo/volume_group').with(
         :value => 'cinder-volumes')
+      should contain_cinder_config('hippo/iscsi_protocol').with(
+        :value => 'iscsi')
+    end
+  end
+
+  describe 'with iser protocol' do
+    before :each do
+      params.merge!(iser_params)
+    end
+
+    it 'should configure iscsi driver with iser protocol' do
+      should contain_cinder_config('hippo/iscsi_protocol').with(
+        :value => 'iser')
     end
   end
 
@@ -46,5 +63,4 @@ describe 'cinder::backend::iscsi' do
     ) }
 
   end
-
 end
