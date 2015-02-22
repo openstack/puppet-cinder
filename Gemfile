@@ -14,9 +14,8 @@ group :development, :test do
   gem 'puppet-lint-variable_contains_upcase'
   gem 'puppet-lint-numericvariable'
 
-  gem 'rspec-puppet', '~> 1.0.1'
+  gem 'rspec-puppet', '~> 2.0.0', :require => false
   gem 'rake', '10.1.1'
-  gem 'rspec', '< 2.99'
   gem 'json'
   gem 'webmock'
 end

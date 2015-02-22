@@ -39,19 +39,19 @@ describe 'cinder::volume::netapp' do
     end
 
     it 'configures netapp volume driver' do
-      should contain_cinder_config('DEFAULT/volume_driver').with_value(
+      is_expected.to contain_cinder_config('DEFAULT/volume_driver').with_value(
         'cinder.volume.drivers.netapp.common.NetAppDriver')
       params_hash.each_pair do |config,value|
-        should contain_cinder_config("DEFAULT/#{config}").with_value( value )
+        is_expected.to contain_cinder_config("DEFAULT/#{config}").with_value( value )
       end
     end
 
     it 'marks netapp_password as secret' do
-      should contain_cinder_config('DEFAULT/netapp_password').with_secret( true )
+      is_expected.to contain_cinder_config('DEFAULT/netapp_password').with_secret( true )
     end
 
     it 'marks netapp_sa_password as secret' do
-      should contain_cinder_config('DEFAULT/netapp_sa_password').with_secret( true )
+      is_expected.to contain_cinder_config('DEFAULT/netapp_sa_password').with_secret( true )
     end
   end
 
@@ -75,7 +75,7 @@ describe 'cinder::volume::netapp' do
     }) }
 
     it 'writes NFS shares to file' do
-      should contain_file("#{req_params[:nfs_shares_config]}")
+      is_expected.to contain_file("#{req_params[:nfs_shares_config]}")
         .with_content("10.0.0.1:/test1\n10.0.0.2:/test2")
     end
   end

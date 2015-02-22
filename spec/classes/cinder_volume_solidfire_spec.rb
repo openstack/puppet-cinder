@@ -15,14 +15,14 @@ describe 'cinder::volume::solidfire' do
 
   describe 'solidfire volume driver' do
     it 'configure solidfire volume driver' do
-      should contain_cinder_config('DEFAULT/volume_driver').with_value('cinder.volume.drivers.solidfire.SolidFireDriver')
-      should contain_cinder_config('DEFAULT/san_ip').with_value('127.0.0.2')
-      should contain_cinder_config('DEFAULT/san_login').with_value('solidfire')
-      should contain_cinder_config('DEFAULT/san_password').with_value('password')
+      is_expected.to contain_cinder_config('DEFAULT/volume_driver').with_value('cinder.volume.drivers.solidfire.SolidFireDriver')
+      is_expected.to contain_cinder_config('DEFAULT/san_ip').with_value('127.0.0.2')
+      is_expected.to contain_cinder_config('DEFAULT/san_login').with_value('solidfire')
+      is_expected.to contain_cinder_config('DEFAULT/san_password').with_value('password')
     end
 
     it 'marks san_password as secret' do
-      should contain_cinder_config('DEFAULT/san_password').with_secret( true )
+      is_expected.to contain_cinder_config('DEFAULT/san_password').with_secret( true )
     end
 
   end

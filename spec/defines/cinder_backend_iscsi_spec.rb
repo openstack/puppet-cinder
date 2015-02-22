@@ -29,19 +29,19 @@ describe 'cinder::backend::iscsi' do
   describe 'with default params' do
 
     it 'should configure iscsi driver' do
-      should contain_cinder_config('hippo/volume_backend_name').with(
+      is_expected.to contain_cinder_config('hippo/volume_backend_name').with(
         :value => 'hippo')
-      should contain_cinder_config('hippo/volume_driver').with(
+      is_expected.to contain_cinder_config('hippo/volume_driver').with(
         :value => 'cinder.volume.drivers.lvm.LVMVolumeDriver')
-      should contain_cinder_config('hippo/iscsi_ip_address').with(
+      is_expected.to contain_cinder_config('hippo/iscsi_ip_address').with(
         :value => '127.0.0.2')
-      should contain_cinder_config('hippo/iscsi_helper').with(
+      is_expected.to contain_cinder_config('hippo/iscsi_helper').with(
         :value => 'tgtadm')
-      should contain_cinder_config('hippo/volume_group').with(
+      is_expected.to contain_cinder_config('hippo/volume_group').with(
         :value => 'cinder-volumes')
-      should contain_cinder_config('hippo/volumes_dir').with(
+      is_expected.to contain_cinder_config('hippo/volumes_dir').with(
         :value => '/var/lib/cinder/volumes')
-      should contain_cinder_config('hippo/iscsi_protocol').with(
+      is_expected.to contain_cinder_config('hippo/iscsi_protocol').with(
         :value => 'iscsi')
     end
   end
@@ -52,7 +52,7 @@ describe 'cinder::backend::iscsi' do
     end
 
     it 'should configure iscsi driver with iser protocol' do
-      should contain_cinder_config('hippo/iscsi_protocol').with(
+      is_expected.to contain_cinder_config('hippo/iscsi_protocol').with(
         :value => 'iser')
     end
   end
@@ -63,7 +63,7 @@ describe 'cinder::backend::iscsi' do
     end
 
     it 'should configure iscsi driver with /etc/cinder/volumes as volumes_dir' do
-      should contain_cinder_config('hippo/volumes_dir').with(
+      is_expected.to contain_cinder_config('hippo/volumes_dir').with(
         :value => '/etc/cinder/volumes'
       )
     end
@@ -75,7 +75,7 @@ describe 'cinder::backend::iscsi' do
       {:osfamily => 'RedHat'}
     end
 
-    it { should contain_file_line('cinder include').with(
+    it { is_expected.to contain_file_line('cinder include').with(
       :line => 'include /var/lib/cinder/volumes/*',
       :path => '/etc/tgt/targets.conf'
     ) }

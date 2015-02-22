@@ -24,7 +24,7 @@ describe 'cinder::db::postgresql' do
         req_params
       end
 
-      it { should contain_postgresql__server__db('cinder').with(
+      it { is_expected.to contain_postgresql__server__db('cinder').with(
         :user     => 'cinder',
         :password => 'md506736c3030793e09882cc536063d433f'
       )}
@@ -47,7 +47,7 @@ describe 'cinder::db::postgresql' do
         req_params
       end
 
-      it { should contain_postgresql__server__db('cinder').with(
+      it { is_expected.to contain_postgresql__server__db('cinder').with(
         :user     => 'cinder',
         :password => 'md506736c3030793e09882cc536063d433f'
       )}

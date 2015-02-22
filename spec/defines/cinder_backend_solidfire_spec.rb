@@ -17,13 +17,13 @@ describe 'cinder::backend::solidfire' do
 
   describe 'solidfire volume driver' do
     it 'configure solidfire volume driver' do
-      should contain_cinder_config('solidfire/volume_driver').with_value(
+      is_expected.to contain_cinder_config('solidfire/volume_driver').with_value(
         'cinder.volume.drivers.solidfire.SolidFireDriver')
-      should contain_cinder_config('solidfire/san_ip').with_value(
+      is_expected.to contain_cinder_config('solidfire/san_ip').with_value(
         '127.0.0.2')
-      should contain_cinder_config('solidfire/san_login').with_value(
+      is_expected.to contain_cinder_config('solidfire/san_login').with_value(
         'solidfire')
-      should contain_cinder_config('solidfire/san_password').with_value(
+      is_expected.to contain_cinder_config('solidfire/san_password').with_value(
         'password')
     end
   end

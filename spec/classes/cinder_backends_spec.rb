@@ -45,7 +45,7 @@ describe 'cinder::backends' do
       end
 
       it 'configures cinder.conf with default params' do
-        should contain_cinder_config('DEFAULT/enabled_backends').with_value(p[:enabled_backends].join(','))
+        is_expected.to contain_cinder_config('DEFAULT/enabled_backends').with_value(p[:enabled_backends].join(','))
       end
     end
 
@@ -57,9 +57,7 @@ describe 'cinder::backends' do
         )
       end
 
-      it 'should fail to configure default volume type' do
-        expect { subject }.to raise_error(Puppet::Error, /The default_volume_type parameter is deprecated in this class, you should declare it in cinder::api./)
-      end
+      it_raises 'a Puppet::Error', /The default_volume_type parameter is deprecated in this class, you should declare it in cinder::api./
     end
 
   end
