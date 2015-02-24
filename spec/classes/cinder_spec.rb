@@ -379,4 +379,17 @@ describe 'cinder' do
     end
   end
 
+  describe 'with APIs set for Kilo (proposed)' do
+    let :params do
+      {
+        :enable_v1_api   => false,
+        :enable_v2_api   => true,
+        :rabbit_password => 'guest',
+      }
+    end
+
+    it { should contain_cinder_config('DEFAULT/enable_v1_api').with_value(false) }
+    it { should contain_cinder_config('DEFAULT/enable_v2_api').with_value(true) }
+
+  end
 end

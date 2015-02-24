@@ -196,6 +196,15 @@
 #   (Optional)
 #   Defaults to '/etc/cinder/api-paste.ini',
 #
+# [*enable_v1_api*]
+#   (Optional) Whether to enable the v1 API (true/false).
+#   This will be deprecated in Kilo.
+#   Defaults to 'true'.
+#
+# [*enable_v2_api*]
+#   (Optional) Whether to enable the v1 API (true/false).
+#   Defaults to 'true'.
+#
 # === Deprecated Parameters
 #
 # [*mysql_module*]
@@ -250,6 +259,8 @@ class cinder (
   $debug                       = false,
   $storage_availability_zone   = 'nova',
   $default_availability_zone   = false,
+  $enable_v1_api               = true,
+  $enable_v2_api               = true,
   # DEPRECATED PARAMETERS
   $mysql_module                = undef,
 ) {
@@ -487,6 +498,12 @@ class cinder (
     cinder_config {
       'DEFAULT/use_syslog':           value => false;
     }
+  }
+
+  # V1/V2 APIs
+  cinder_config {
+    'DEFAULT/enable_v1_api':        value => $enable_v1_api;
+    'DEFAULT/enable_v2_api':        value => $enable_v2_api;
   }
 
 }
