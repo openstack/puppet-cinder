@@ -49,7 +49,9 @@ describe 'cinder::volume::iscsi' do
     end
 
     let :facts do
-      {:osfamily => 'RedHat'}
+      {:osfamily => 'RedHat',
+       :operatingsystem => 'RedHat',
+       :operatingsystemmajrelease => '6'}
     end
 
     it { should contain_file_line('cinder include').with(
