@@ -42,17 +42,14 @@ describe 'cinder::api' do
       is_expected.to contain_cinder_api_paste_ini('filter:authtoken/service_port').with(
         :value => '5000'
       )
-      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/identity_uri').with(
-        :value => 'http://localhost:35357'
-      )
       is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_protocol').with(
-        :ensure => 'absent'
+        :value => 'http'
       )
       is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_host').with(
-        :ensure => 'absent'
+        :value => 'localhost'
       )
       is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_port').with(
-        :ensure => 'absent'
+        :value => '35357'
       )
       is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(
         :ensure => 'absent'
@@ -67,7 +64,6 @@ describe 'cinder::api' do
         :value  => 'foo',
         :secret => true
       )
-
       is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_uri').with(
         :value => 'http://localhost:5000/'
       )
@@ -101,11 +97,11 @@ describe 'cinder::api' do
 
   describe 'with custom auth_uri' do
     let :params do
-      req_params.merge({'keystone_auth_uri' => 'http://foo.bar:8080/v2.0/'})
+      req_params.merge({'keystone_auth_uri' => 'http://localhost:8080/v2.0/'})
     end
     it 'should configure cinder auth_uri correctly' do
       is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_uri').with(
-        :value => 'http://foo.bar:8080/v2.0/'
+        :value => 'http://localhost:8080/v2.0/'
       )
     end
   end
@@ -121,8 +117,8 @@ describe 'cinder::api' do
     end
   end
 
-  [ '/keystone', '/keystone/admin', '' ].each do |keystone_auth_admin_prefix|
-    describe "with keystone_auth_admin_prefix containing incorrect value #{keystone_auth_admin_prefix}" do
+  [ '/keystone', '/keystone/admin' ].each do |keystone_auth_admin_prefix|
+    describe "with keystone_auth_admin_prefix containing correct value #{keystone_auth_admin_prefix}" do
       let :params do
         {
           :keystone_auth_admin_prefix => keystone_auth_admin_prefix,
@@ -130,10 +126,21 @@ describe 'cinder::api' do
         }
       end
 
-      it { is_expected.to contain_cinder_api_paste_ini('filter:authtoken/identity_uri').with(
-        :value => "http://localhost:35357#{keystone_auth_admin_prefix}"
+      it { is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(
+        :value => "#{keystone_auth_admin_prefix}"
       )}
     end
+  end
+
+  describe "with keystone_auth_admin_prefix containing correct value ''" do
+    let :params do
+      {
+        :keystone_auth_admin_prefix => '',
+        :keystone_password          => 'dummy'
+      }
+    end
+
+    it { is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(:value => nil)}
   end
 
   [
@@ -152,7 +159,7 @@ describe 'cinder::api' do
         }
       end
 
-      it { expect { is_expected.to contain_cinder_api_paste_ini('filter:authtoken/identity_uri') }.to \
+      it { expect { is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix') }.to \
         raise_error(Puppet::Error, /validate_re\(\): "#{keystone_auth_admin_prefix}" does not match/) }
     end
   end
@@ -227,4 +234,34 @@ describe 'cinder::api' do
     )}
   end
 
+  describe "with custom keystone identity_uri and auth_uri" do
+    let :params do
+      req_params.merge({
+        :identity_uri         => 'https://localhost:35357/',
+        :auth_uri             => 'https://localhost:5000/v2.0/',
+      })
+    end
+    it 'configures identity_uri and auth_uri but deprecates old auth settings' do
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/identity_uri').with_value("https://localhost:35357/");
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_uri').with_value("https://localhost:5000/v2.0/");
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(:ensure => 'absent')
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_port').with(:ensure => 'absent')
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/service_port').with(:ensure => 'absent')
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_protocol').with(:ensure => 'absent')
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/service_protocol').with(:ensure => 'absent')
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_host').with(:ensure => 'absent')
+      is_expected.to contain_cinder_api_paste_ini('filter:authtoken/service_host').with(:ensure => 'absent')
+    end
+  end
+
+  describe 'when someone sets keystone_auth_uri and auth_uri' do
+    let :params do
+      req_params.merge({
+          :keystone_auth_uri    => 'http://thisis',
+          :auth_uri             => 'http://broken',
+        })
+    end
+
+    it_raises 'a Puppet::Error', /both keystone_auth_uri and auth_uri are set and they have the same meaning/
+  end
 end

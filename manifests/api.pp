@@ -20,16 +20,19 @@
 #   Defaults to cinder
 #
 # [*keystone_auth_host*]
-#   (optional) The keystone host
+#   (optional) DEPRECATED The keystone host
 #   Defaults to localhost
+#   Use auth_uri instead.
 #
 # [*keystone_auth_port*]
-#   (optional) The keystone auth port
+#   (optional) DEPRECATED The keystone auth port
 #   Defaults to 35357
+#   Use auth_uri instead.
 #
 # [*keystone_auth_protocol*]
-#   (optional) The protocol used to access the auth host
+#   (optional) DEPRECATED The protocol used to access the auth host
 #   Defaults to http.
+#   Use auth_uri instead.
 #
 # [*os_region_name*]
 #   (optional) Some operations require cinder to make API requests
@@ -38,18 +41,27 @@
 #   Defaults to undef.
 #
 # [*keystone_auth_admin_prefix*]
-#   (optional) The admin_prefix used to admin endpoint of the auth host
-#   This allow admin auth URIs like http://auth_host:35357/keystone.
+#   (optional) DEPRECATED The admin_prefix used to admin endpoint of the auth
+#   host. This allow admin auth URIs like http://auth_host:35357/keystone.
 #   (where '/keystone' is the admin prefix)
 #   Defaults to false for empty. If defined, should be a string with a
 #   leading '/' and no trailing '/'.
+#   Use auth_uri instead.
 #
 # [*keystone_auth_uri*]
+#   (optional) DEPRECATED Renamed to auth_uri
+#   Defaults to 'false'.
+#
+# [*auth_uri*]
 #   (optional) Public Identity API endpoint.
 #   Defaults to 'false'.
 #
+# [*identity_uri*]
+#   (optional) Complete admin Identity API endpoint.
+#   Defaults to: false
+#
 # [*service_port*]
-#   (optional) The cinder api port
+#   (optional) DEPRECATED The Keystone public api port
 #   Defaults to 5000
 #
 # [*service_workers*]
@@ -112,13 +124,9 @@ class cinder::api (
   $keystone_enabled           = true,
   $keystone_tenant            = 'services',
   $keystone_user              = 'cinder',
-  $keystone_auth_host         = 'localhost',
-  $keystone_auth_port         = '35357',
-  $keystone_auth_protocol     = 'http',
-  $keystone_auth_admin_prefix = false,
-  $keystone_auth_uri          = false,
+  $auth_uri                   = false,
+  $identity_uri               = false,
   $os_region_name             = undef,
-  $service_port               = '5000',
   $service_workers            = $::processorcount,
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
@@ -129,7 +137,14 @@ class cinder::api (
   $ratelimits_factory =
     'cinder.api.v1.limits:RateLimitingMiddleware.factory',
   $validate                   = false,
+  # DEPRECATED PARAMETERS
   $validation_options         = {},
+  $keystone_auth_uri          = false,
+  $keystone_auth_host         = 'localhost',
+  $keystone_auth_port         = '35357',
+  $keystone_auth_protocol     = 'http',
+  $keystone_auth_admin_prefix = false,
+  $service_port               = '5000',
 ) {
 
   include ::cinder::params
@@ -191,43 +206,118 @@ class cinder::api (
     }
   }
 
-  if $keystone_auth_uri {
-    $auth_uri = $keystone_auth_uri
-  } else {
-    $auth_uri = "${keystone_auth_protocol}://${keystone_auth_host}:${service_port}/"
+  if $keystone_auth_uri and $auth_uri {
+    fail('both keystone_auth_uri and auth_uri are set and they have the same meaning')
   }
-  cinder_api_paste_ini { 'filter:authtoken/auth_uri': value => $auth_uri; }
+  elsif !$keystone_auth_uri and !$auth_uri {
+    warning('use of keystone_auth_protocol, keystone_auth_host, and service_port is deprecated, please set auth_uri directly')
+    $auth_uri_real = "${keystone_auth_protocol}://${keystone_auth_host}:${service_port}/"
+  }
+  elsif $keystone_auth_uri {
+    warning('keystone_auth_uri has been renamed to auth_uri')
+    $auth_uri_real = $keystone_auth_uri
+  }
+  else {
+    $auth_uri_real = $auth_uri
+  }
+  cinder_api_paste_ini { 'filter:authtoken/auth_uri': value => $auth_uri_real; }
 
   if $keystone_enabled {
     cinder_config {
       'DEFAULT/auth_strategy':     value => 'keystone' ;
     }
 
-    $identity_uri = "${keystone_auth_protocol}://${keystone_auth_host}:${keystone_auth_port}"
-    if $keystone_auth_admin_prefix {
-      validate_re($keystone_auth_admin_prefix, '^(/.+[^/])?$')
-      # a leading slash on keystone_auth_admin_prefix is already required,
-      # don't add it here
-      $identity_uri_real = "${identity_uri}${keystone_auth_admin_prefix}"
-    }
-    else {
-      $identity_uri_real = $identity_uri
-    }
-
     cinder_api_paste_ini {
-      'filter:authtoken/service_protocol':  value => $keystone_auth_protocol;
-      'filter:authtoken/service_host':      value => $keystone_auth_host;
-      'filter:authtoken/service_port':      value => $service_port;
-      'filter:authtoken/identity_uri':      value => $identity_uri_real;
       'filter:authtoken/admin_tenant_name': value => $keystone_tenant;
       'filter:authtoken/admin_user':        value => $keystone_user;
       'filter:authtoken/admin_password':    value => $keystone_password, secret => true;
+    }
 
-      # deprecated parameters - replaced with identity_uri
-      'filter:authtoken/auth_protocol':     ensure => absent;
-      'filter:authtoken/auth_host':         ensure => absent;
-      'filter:authtoken/auth_port':         ensure => absent;
-      'filter:authtoken/auth_admin_prefix': ensure => absent;
+    # if both auth_uri and identity_uri are set we skip these deprecated settings entirely
+    if !$auth_uri or !$identity_uri {
+      if $keystone_auth_host {
+        warning('The keystone_auth_host parameter is deprecated. Please use auth_uri and identity_uri instead.')
+        cinder_api_paste_ini {
+          'filter:authtoken/service_host': value => $keystone_auth_host;
+          'filter:authtoken/auth_host':    value => $keystone_auth_host;
+        }
+      } else {
+        cinder_api_paste_ini {
+          'filter:authtoken/service_host': ensure => absent;
+          'filter:authtoken/auth_host':    ensure => absent;
+        }
+      }
+
+      if $keystone_auth_protocol {
+        warning('The keystone_auth_protocol parameter is deprecated. Please use auth_uri and identity_uri instead.')
+        cinder_api_paste_ini {
+          'filter:authtoken/service_protocol': value => $keystone_auth_protocol;
+          'filter:authtoken/auth_protocol':    value => $keystone_auth_protocol;
+        }
+      } else {
+        cinder_api_paste_ini {
+          'filter:authtoken/service_protocol': ensure => absent;
+          'filter:authtoken/auth_protocol':    ensure => absent;
+        }
+      }
+
+      if $keystone_auth_port {
+        warning('The keystone_auth_port parameter is deprecated. Please use auth_uri and identity_uri instead.')
+        cinder_api_paste_ini {
+          'filter:authtoken/auth_port':    value => $keystone_auth_port;
+        }
+      } else {
+        cinder_api_paste_ini {
+          'filter:authtoken/auth_port':    ensure => absent;
+        }
+      }
+
+      if $service_port {
+        warning('The service_port parameter is deprecated. Please use auth_uri and identity_uri instead.')
+        cinder_api_paste_ini {
+          'filter:authtoken/service_port': value => $service_port;
+        }
+      } else {
+        cinder_api_paste_ini {
+          'filter:authtoken/service_port': ensure => absent;
+        }
+      }
+
+
+      if $keystone_auth_admin_prefix {
+        warning('The keystone_auth_admin_prefix parameter is deprecated. Please use auth_uri and identity_uri instead.')
+        validate_re($keystone_auth_admin_prefix, '^(/.+[^/])?$')
+        cinder_api_paste_ini {
+          'filter:authtoken/auth_admin_prefix': value => $keystone_auth_admin_prefix;
+        }
+      } else {
+        cinder_api_paste_ini {
+          'filter:authtoken/auth_admin_prefix': ensure => absent;
+        }
+      }
+    }
+    else {
+      cinder_api_paste_ini {
+        'filter:authtoken/auth_admin_prefix': ensure => absent;
+      }
+      cinder_api_paste_ini {
+        'filter:authtoken/service_port':     ensure => absent;
+        'filter:authtoken/auth_port':        ensure => absent;
+        'filter:authtoken/service_host':     ensure => absent;
+        'filter:authtoken/auth_host':        ensure => absent;
+        'filter:authtoken/service_protocol': ensure => absent;
+        'filter:authtoken/auth_protocol':    ensure => absent;
+      }
+    }
+
+    if $identity_uri {
+      cinder_api_paste_ini {
+        'filter:authtoken/identity_uri': value => $identity_uri;
+      }
+    } else {
+      cinder_api_paste_ini {
+        'filter:authtoken/identity_uri': ensure => absent;
+      }
     }
   }
 
@@ -251,7 +341,7 @@ class cinder::api (
   if $validate {
     $defaults = {
       'cinder-api' => {
-        'command'  => "cinder --os-auth-url ${auth_uri} --os-tenant-name ${keystone_tenant} --os-username ${keystone_user} --os-password ${keystone_password} list",
+        'command'  => "cinder --os-auth-url ${auth_uri_real} --os-tenant-name ${keystone_tenant} --os-username ${keystone_user} --os-password ${keystone_password} list",
       }
     }
     $validation_options_hash = merge ($defaults, $validation_options)
