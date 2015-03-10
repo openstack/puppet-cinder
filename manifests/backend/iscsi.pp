@@ -13,6 +13,7 @@ define cinder::backend::iscsi (
   $volume_driver       = 'cinder.volume.drivers.lvm.LVMISCSIDriver',
   $volume_group        = 'cinder-volumes',
   $iscsi_helper        = $::cinder::params::iscsi_helper,
+  $iscsi_protocol      = 'iscsi',
 ) {
 
   include ::cinder::params
@@ -23,6 +24,7 @@ define cinder::backend::iscsi (
     "${name}/iscsi_ip_address":     value => $iscsi_ip_address;
     "${name}/iscsi_helper":         value => $iscsi_helper;
     "${name}/volume_group":         value => $volume_group;
+    "${name}/iscsi_protocol":       value => $iscsi_protocol;
   }
 
   case $iscsi_helper {

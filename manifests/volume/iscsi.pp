@@ -19,11 +19,16 @@
 #   (Optional) iSCSI target user-land tool to use.
 #   Defaults to '$::cinder::params::iscsi_helper'.
 #
+# [*iscsi_protocol*]
+#   (Optional) Protocol to use as iSCSI driver
+#   Defaults to 'iscsi'.
+#
 class cinder::volume::iscsi (
   $iscsi_ip_address,
   $volume_driver     = 'cinder.volume.drivers.lvm.LVMISCSIDriver',
   $volume_group      = 'cinder-volumes',
   $iscsi_helper      = $::cinder::params::iscsi_helper,
+  $iscsi_protocol    = 'iscsi'
 ) {
 
   include ::cinder::params
@@ -32,6 +37,7 @@ class cinder::volume::iscsi (
     iscsi_ip_address => $iscsi_ip_address,
     volume_driver    => $volume_driver,
     volume_group     => $volume_group,
-    iscsi_helper     => $iscsi_helper
+    iscsi_helper     => $iscsi_helper,
+    iscsi_protocol   => $iscsi_protocol
   }
 }
