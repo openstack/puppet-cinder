@@ -9,13 +9,16 @@
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
 #   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
-#
+# [*volumes_dir*]
+#   (Optional) Volume configuration file storage directory
+#   Defaults to '/var/lib/cinder/volumes'.
 #
 define cinder::backend::iscsi (
   $iscsi_ip_address,
   $volume_backend_name = $name,
   $volume_driver       = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
   $volume_group        = 'cinder-volumes',
+  $volumes_dir         = '/var/lib/cinder/volumes',
   $iscsi_helper        = $::cinder::params::iscsi_helper,
   $iscsi_protocol      = 'iscsi',
 ) {
@@ -28,6 +31,7 @@ define cinder::backend::iscsi (
     "${name}/iscsi_ip_address":     value => $iscsi_ip_address;
     "${name}/iscsi_helper":         value => $iscsi_helper;
     "${name}/volume_group":         value => $volume_group;
+    "${name}/volumes_dir":          value => $volumes_dir;
     "${name}/iscsi_protocol":       value => $iscsi_protocol;
   }
 
@@ -41,7 +45,7 @@ define cinder::backend::iscsi (
       if($::osfamily == 'RedHat') {
         file_line { 'cinder include':
           path    => '/etc/tgt/targets.conf',
-          line    => 'include /etc/cinder/volumes/*',
+          line    => "include ${volumes_dir}/*",
           match   => '#?include /',
           require => Package['tgt'],
           notify  => Service['tgtd'],

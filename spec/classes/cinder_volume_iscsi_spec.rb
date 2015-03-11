@@ -21,7 +21,19 @@ describe 'cinder::volume::iscsi' do
     it { should contain_cinder_config('DEFAULT/iscsi_ip_address').with(:value => '127.0.0.2')}
     it { should contain_cinder_config('DEFAULT/iscsi_helper').with(:value => 'tgtadm')}
     it { should contain_cinder_config('DEFAULT/volume_group').with(:value => 'cinder-volumes')}
+    it { should contain_cinder_config('DEFAULT/volumes_dir').with(:value => '/var/lib/cinder/volumes')}
     it { should contain_cinder_config('DEFAULT/iscsi_protocol').with(:value => 'iscsi')}
+
+  end
+
+  describe 'with a non-default $volumes_dir' do
+    let(:params) { req_params.merge(:volumes_dir => '/etc/cinder/volumes')}
+
+    it 'should contain a cinder::backend::iscsi resource with /etc/cinder/volumes as $volumes dir' do
+      should contain_cinder__backend__iscsi('DEFAULT').with({
+        :volumes_dir => '/etc/cinder/volumes'
+      })
+    end
 
   end
 
@@ -48,7 +60,7 @@ describe 'cinder::volume::iscsi' do
     end
 
     it { should contain_file_line('cinder include').with(
-      :line => 'include /etc/cinder/volumes/*',
+      :line => 'include /var/lib/cinder/volumes/*',
       :path => '/etc/tgt/targets.conf'
     ) }
 

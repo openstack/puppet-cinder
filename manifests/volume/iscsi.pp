@@ -15,6 +15,10 @@
 #   (Optional) Name for the VG that will contain exported volumes
 #   Defaults to 'cinder-volumes'.
 #
+# [*volumes_dir*]
+#   (Optional) Volume configuration file storage directory
+#   Defaults to '/var/lib/cinder/volumes'.
+#
 # [*iscsi_helper*]
 #   (Optional) iSCSI target user-land tool to use.
 #   Defaults to '$::cinder::params::iscsi_helper'.
@@ -27,6 +31,7 @@ class cinder::volume::iscsi (
   $iscsi_ip_address,
   $volume_driver     = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
   $volume_group      = 'cinder-volumes',
+  $volumes_dir       = '/var/lib/cinder/volumes',
   $iscsi_helper      = $::cinder::params::iscsi_helper,
   $iscsi_protocol    = 'iscsi'
 ) {
@@ -37,6 +42,7 @@ class cinder::volume::iscsi (
     iscsi_ip_address => $iscsi_ip_address,
     volume_driver    => $volume_driver,
     volume_group     => $volume_group,
+    volumes_dir      => $volumes_dir,
     iscsi_helper     => $iscsi_helper,
     iscsi_protocol   => $iscsi_protocol
   }

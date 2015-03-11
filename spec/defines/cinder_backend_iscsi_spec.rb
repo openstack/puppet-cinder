@@ -22,6 +22,10 @@ describe 'cinder::backend::iscsi' do
     {:iscsi_protocol => 'iser'}
   end
 
+  let :volumes_dir_params do
+    {:volumes_dir => '/etc/cinder/volumes'}
+  end
+
   describe 'with default params' do
 
     it 'should configure iscsi driver' do
@@ -35,6 +39,8 @@ describe 'cinder::backend::iscsi' do
         :value => 'tgtadm')
       should contain_cinder_config('hippo/volume_group').with(
         :value => 'cinder-volumes')
+      should contain_cinder_config('hippo/volumes_dir').with(
+        :value => '/var/lib/cinder/volumes')
       should contain_cinder_config('hippo/iscsi_protocol').with(
         :value => 'iscsi')
     end
@@ -51,6 +57,18 @@ describe 'cinder::backend::iscsi' do
     end
   end
 
+  describe 'with non-default $volumes_dir' do
+    before :each do
+      params.merge!(volumes_dir_params)
+    end
+
+    it 'should configure iscsi driver with /etc/cinder/volumes as volumes_dir' do
+      should contain_cinder_config('hippo/volumes_dir').with(
+        :value => '/etc/cinder/volumes'
+      )
+    end
+  end
+
   describe 'with RedHat' do
 
     let :facts do
@@ -58,7 +76,7 @@ describe 'cinder::backend::iscsi' do
     end
 
     it { should contain_file_line('cinder include').with(
-      :line => 'include /etc/cinder/volumes/*',
+      :line => 'include /var/lib/cinder/volumes/*',
       :path => '/etc/tgt/targets.conf'
     ) }
 
