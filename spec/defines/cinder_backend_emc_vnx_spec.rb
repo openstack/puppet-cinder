@@ -31,4 +31,17 @@ describe 'cinder::backend::emc_vnx' do
       should contain_cinder_config('emc/storage_vnx_pool_name').with_value('emc-storage-pool')
     end
   end
+
+  describe 'emc vnx backend with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'emc/param1' => {'value' => 'value1'}}})
+    end
+
+    it 'configure emc vnx backend with additional configuration' do
+      should contain_cinder_config('emc/param1').with({
+        :value => 'value1',
+      })
+    end
+  end
+
 end

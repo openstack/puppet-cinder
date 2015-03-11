@@ -33,6 +33,12 @@
 #   (Optonal) Default max number of LUNs in a storage group.
 #   Defaults to: '256'
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'emc_vnx_backend/param1' => { 'value' => value1 } }
+#
 class cinder::volume::emc_vnx(
   $iscsi_ip_address,
   $san_ip,
@@ -42,6 +48,7 @@ class cinder::volume::emc_vnx(
   $max_luns_per_storage_group = '256',
   $package_ensure             = 'present',
   $san_login                  = 'admin',
+  $extra_options              = {},
 ) {
 
   cinder::backend::emc_vnx { 'DEFAULT':
@@ -53,5 +60,7 @@ class cinder::volume::emc_vnx(
     san_login                  => $san_login,
     san_password               => $san_password,
     storage_vnx_pool_name      => $storage_vnx_pool_name,
+    extra_options              => $extra_options,
   }
+
 }

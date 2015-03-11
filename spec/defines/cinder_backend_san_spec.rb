@@ -37,4 +37,17 @@ describe 'cinder::backend::san' do
   context 'with parameters' do
     it_configures 'a san volume driver'
   end
+
+  context 'san backend with additional configuration' do
+    before do
+      params.merge!({:extra_options => {'mysan/param1' => { 'value' => 'value1' }}})
+    end
+
+    it 'configure san backend with additional configuration' do
+      should contain_cinder_config('mysan/param1').with({
+        :value => 'value1'
+      })
+    end
+  end
+
 end

@@ -49,6 +49,12 @@
 #   (optional) The maximum retry count for reconnection.
 #   Defaults to 5
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'eqlx_backend/param1' => { 'value' => value1 } }
+#
 define cinder::backend::eqlx (
   $san_ip,
   $san_login,
@@ -62,6 +68,7 @@ define cinder::backend::eqlx (
   $eqlx_chap_password   = '12345',
   $eqlx_cli_timeout     = 30,
   $eqlx_cli_max_retries = 5,
+  $extra_options        = {},
 ) {
   cinder_config {
     "${name}/volume_backend_name":  value => $volume_backend_name;
@@ -83,4 +90,7 @@ define cinder::backend::eqlx (
       "${name}/eqlx_chap_password":   value => $eqlx_chap_password, secret => true;
     }
   }
+
+  create_resources('cinder_config', $extra_options)
+
 }

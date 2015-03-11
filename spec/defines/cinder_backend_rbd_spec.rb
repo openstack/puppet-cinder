@@ -69,6 +69,19 @@ describe 'cinder::backend::rbd' do
       it { should contain_cinder_config("ceph2/rbd_pool").with_value('volumes2') }
       it { should contain_cinder_config("ceph2/rbd_user").with_value('test') }
     end
+
+    context 'rbd backend with additional configuration' do
+      before do
+        params.merge!({:extra_options => {'rbd-ssd/param1' => { 'value' => 'value1' }}})
+      end
+
+      it 'configure rbd backend with additional configuration' do
+        should contain_cinder_config('rbd-ssd/param1').with({
+          :value => 'value1'
+        })
+      end
+    end
+
   end
 
   describe 'with RedHat' do

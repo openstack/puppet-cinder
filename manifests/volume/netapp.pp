@@ -134,6 +134,12 @@
 #   application.
 #   Defaults to '/devmgr/v2'
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'netapp_backend/param1' => { 'value' => value1 } }
+#
 # === Examples
 #
 #  class { 'cinder::volume::netapp':
@@ -175,6 +181,7 @@ class cinder::volume::netapp (
   $netapp_sa_password           = '',
   $netapp_storage_pools         = '',
   $netapp_webservice_path       = '/devmgr/v2',
+  $extra_options                = {},
 ) {
 
   cinder::backend::netapp { 'DEFAULT':
@@ -199,5 +206,6 @@ class cinder::volume::netapp (
     netapp_sa_password           => $netapp_sa_password,
     netapp_storage_pools         => $netapp_storage_pools,
     netapp_webservice_path       => $netapp_webservice_path,
+    extra_options                => $extra_options,
   }
 }

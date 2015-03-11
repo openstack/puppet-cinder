@@ -40,6 +40,19 @@ describe 'cinder::backend::glusterfs' do
         expect { subject }.to raise_error(Puppet::Error, /glusterfs_disk_util is removed in Icehouse./)
       end
     end
+
+    context 'glusterfs backend with additional configuration' do
+      before do
+        params.merge!({:extra_options => {'mygluster/param1' => { 'value' => 'value1' }}})
+      end
+
+      it 'configure glusterfs backend with additional configuration' do
+        should contain_cinder_config('mygluster/param1').with({
+          :value => 'value1'
+        })
+      end
+
+    end
   end
 
   context 'on Debian platforms' do

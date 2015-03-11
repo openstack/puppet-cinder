@@ -38,6 +38,12 @@
 #   A value of zero disables cloning
 #   Defaults to '5'
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'rbd_backend/param1' => { 'value' => value1 } }
+#
 define cinder::backend::rbd (
   $rbd_pool,
   $rbd_user,
@@ -47,6 +53,7 @@ define cinder::backend::rbd (
   $rbd_secret_uuid                  = false,
   $volume_tmp_dir                   = false,
   $rbd_max_clone_depth              = '5',
+  $extra_options                    = {},
 ) {
 
   include ::cinder::params
@@ -72,6 +79,8 @@ define cinder::backend::rbd (
   } else {
     cinder_config {"${name}/volume_tmp_dir": ensure => absent;}
   }
+
+  create_resources('cinder_config', $extra_options)
 
   case $::osfamily {
     'Debian': {

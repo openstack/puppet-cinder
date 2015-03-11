@@ -51,7 +51,13 @@
 #   (required) Time in hours until a snapshot expires. Must be more
 #   than hp3par_snapshot_retention.
 #   Defaults to 72.
-
+#
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'h3par_iscsi_backend/param1' => { 'value' => value1 } }
+#
 define cinder::backend::hp3par_iscsi(
   $hp3par_api_url,
   $hp3par_username,
@@ -66,6 +72,7 @@ define cinder::backend::hp3par_iscsi(
   $hp3par_snap_cpg            = 'OpenstackCPG',
   $hp3par_snapshot_retention  = 48,
   $hp3par_snapshot_expiration = 72,
+  $extra_options              = {},
 ) {
 
   if ($hp3par_snapshot_expiration <= $hp3par_snapshot_retention) {
@@ -87,4 +94,7 @@ define cinder::backend::hp3par_iscsi(
     "${name}/hp3par_snapshot_retention":  value => $hp3par_snapshot_retention;
     "${name}/hp3par_snapshot_expiration": value => $hp3par_snapshot_expiration;
   }
+
+  create_resources('cinder_config', $extra_options)
+
 }

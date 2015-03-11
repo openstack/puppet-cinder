@@ -27,4 +27,17 @@ describe 'cinder::backend::solidfire' do
         'password')
     end
   end
+
+  describe 'solidfire backend with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'solidfire/param1' => {'value' => 'value1'}}})
+    end
+
+    it 'configure solidfire backend with additional configuration' do
+      should contain_cinder_config('solidfire/param1').with({
+        :value => 'value1',
+      })
+    end
+  end
+
 end

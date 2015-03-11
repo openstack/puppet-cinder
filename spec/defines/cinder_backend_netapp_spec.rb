@@ -78,6 +78,18 @@ describe 'cinder::backend::netapp' do
     it { should contain_cinder_config("#{req_params[:volume_backend_name]}/use_multipath_for_image_xfer").with_value('true') }
   end
 
+  context 'netapp backend with additional configuration' do
+    before do
+      params.merge!({:extra_options => {'hippo/param1' => { 'value' => 'value1' }}})
+    end
+
+    it 'configure netapp backend with additional configuration' do
+      should contain_cinder_config('hippo/param1').with({
+        :value => 'value1'
+      })
+    end
+  end
+
   context 'with NFS shares provided' do
     let (:req_params) { params.merge!({
         :nfs_shares => ['10.0.0.1:/test1', '10.0.0.2:/test2'],

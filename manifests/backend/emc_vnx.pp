@@ -35,6 +35,12 @@
 #   (optional) The state of the package
 #   Defaults to: 'present'
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'emc_vnx_backend/param1' => { 'value' => value1 } }
+#
 define cinder::backend::emc_vnx (
   $iscsi_ip_address,
   $san_ip,
@@ -45,6 +51,7 @@ define cinder::backend::emc_vnx (
   $package_ensure             = 'present',
   $san_login                  = 'admin',
   $volume_backend_name        = $name,
+  $extra_options              = {},
 ) {
 
   include ::cinder::params
@@ -61,5 +68,7 @@ define cinder::backend::emc_vnx (
     "${name}/volume_backend_name":        value => $volume_backend_name;
     "${name}/volume_driver":              value => 'cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver';
   }
+
+  create_resources('cinder_config', $extra_options)
 
 }

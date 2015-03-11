@@ -29,4 +29,18 @@ describe 'cinder::volume::emc_vnx' do
       should contain_cinder_config('DEFAULT/storage_vnx_pool_name').with_value('emc-storage-pool')
     end
   end
+
+  describe 'emc vnx volume driver with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'emc_vnx_backend/param1' => {'value' => 'value1'}}})
+    end
+
+    it 'configure emc vnx volume with additional configuration' do
+      should contain_cinder__backend__emc_vnx('DEFAULT').with({
+        :extra_options => {'emc_vnx_backend/param1' => {'value' => 'value1'}}
+      })
+    end
+  end
+
+
 end

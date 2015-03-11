@@ -40,4 +40,18 @@ describe 'cinder::volume::nfs' do
       )
     end
   end
+
+  describe 'nfs volume driver with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'nfs_backend/param1' => {'value' => 'value1'}}})
+    end
+
+    it 'configure nfs volume with additional configuration' do
+      should contain_cinder__backend__nfs('DEFAULT').with({
+        :extra_options => {'nfs_backend/param1' => {'value' => 'value1'}}
+      })
+    end
+  end
+
+
 end

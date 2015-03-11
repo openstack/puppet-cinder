@@ -33,6 +33,12 @@
 #   A value of zero disables cloning
 #   Defaults to '5'
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'rbd_backend/param1' => { 'value' => value1 } }
+#
 class cinder::volume::rbd (
   $rbd_pool,
   $rbd_user,
@@ -41,6 +47,7 @@ class cinder::volume::rbd (
   $rbd_secret_uuid                  = false,
   $volume_tmp_dir                   = false,
   $rbd_max_clone_depth              = '5',
+  $extra_options                    = {},
 ) {
 
   cinder::backend::rbd { 'DEFAULT':
@@ -51,5 +58,6 @@ class cinder::volume::rbd (
     rbd_secret_uuid                  => $rbd_secret_uuid,
     volume_tmp_dir                   => $volume_tmp_dir,
     rbd_max_clone_depth              => $rbd_max_clone_depth,
+    extra_options                    => $extra_options,
   }
 }

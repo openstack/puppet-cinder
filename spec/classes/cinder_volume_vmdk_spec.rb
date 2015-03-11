@@ -17,7 +17,8 @@ describe 'cinder::volume::vmdk' do
         :max_object_retrieval => 200,
         :task_poll_interval => 10,
         :image_transfer_timeout_secs => 3600,
-        :wsdl_location => 'http://127.0.0.1:8080/vmware/SDK/wsdl/vim25/vimService.wsdl'
+        :wsdl_location => 'http://127.0.0.1:8080/vmware/SDK/wsdl/vim25/vimService.wsdl',
+        :extra_options => { 'vmdk_backend/param1' => { 'value' => 'value1' }}
     }
   end
 
@@ -58,4 +59,18 @@ describe 'cinder::volume::vmdk' do
       should contain_cinder_config('DEFAULT/vmware_wsdl_location').with_value(params[:wsdl_location])
     end
   end
+
+  context 'vmdk volume driver with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => { 'vmdk_backend/param1' => { 'value' => 'value1' }}})
+    end
+
+    it 'configure vmdk volume with additional configuration' do
+      should contain_cinder__backend__vmdk('DEFAULT').with({
+        :extra_options => {'vmdk_backend/param1' => {'value' => 'value1'}}
+      })
+    end
+
+ end
+
 end

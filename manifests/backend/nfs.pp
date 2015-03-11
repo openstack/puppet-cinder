@@ -43,6 +43,11 @@
 #   longer be valid.
 #   Defaults to '1.0'.
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'nfs_backend/param1' => { 'value' => value1 } }
 #
 define cinder::backend::nfs (
   $volume_backend_name  = $name,
@@ -54,6 +59,7 @@ define cinder::backend::nfs (
   $nfs_shares_config    = '/etc/cinder/shares.conf',
   $nfs_used_ratio       = '0.95',
   $nfs_oversub_ratio    = '1.0',
+  $extra_options        = {},
 ) {
 
   file {$nfs_shares_config:
@@ -74,4 +80,7 @@ define cinder::backend::nfs (
     "${name}/nfs_used_ratio":       value => $nfs_used_ratio;
     "${name}/nfs_oversub_ratio":    value => $nfs_oversub_ratio;
   }
+
+  create_resources('cinder_config', $extra_options)
+
 }

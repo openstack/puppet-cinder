@@ -36,4 +36,17 @@ describe 'cinder::backend::nexenta' do
       end
     end
   end
+
+  context 'nexenta backend with additional configuration' do
+    before do
+      params.merge!({:extra_options => {'nexenta/param1' => { 'value' => 'value1' }}})
+    end
+
+    it 'configure nexenta backend with additional configuration' do
+      should contain_cinder_config('nexenta/param1').with({
+        :value => 'value1'
+      })
+    end
+  end
+
 end

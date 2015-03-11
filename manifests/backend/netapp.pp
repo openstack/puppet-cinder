@@ -136,6 +136,12 @@
 #   application.
 #   Defaults to '/devmgr/v2'
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'netapp_backend/param1' => { 'value' => value1 } }
+#
 # === Examples
 #
 #  cinder::backend::netapp { 'myBackend':
@@ -178,6 +184,7 @@ define cinder::backend::netapp (
   $netapp_sa_password           = '',
   $netapp_storage_pools         = '',
   $netapp_webservice_path       = '/devmgr/v2',
+  $extra_options                = {},
 ) {
 
   if $nfs_shares {
@@ -219,4 +226,7 @@ define cinder::backend::netapp (
       "${volume_backend_name}/use_multipath_for_image_xfer": value => true;
     }
   }
+
+  create_resources('cinder_config', $extra_options)
+
 }

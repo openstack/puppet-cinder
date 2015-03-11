@@ -79,4 +79,17 @@ describe 'cinder::volume::netapp' do
         .with_content("10.0.0.1:/test1\n10.0.0.2:/test2")
     end
   end
+
+  context 'with netapp volume drivers additional configuration' do
+    before do
+      params.merge!({:extra_options => {'netapp_backend/param1' => { 'value' => 'value1' }}})
+    end
+
+    it 'configure netapp volume with additional configuration' do
+      should contain_cinder__backend__netapp('DEFAULT').with({
+        :extra_options => {'netapp_backend/param1' => {'value' => 'value1'}}
+      })  
+    end
+  end
+
 end

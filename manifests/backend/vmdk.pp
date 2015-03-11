@@ -49,6 +49,12 @@
 #   (optional) The name for the folder in the VC datacenter that will contain cinder volumes.
 #   Defaults to 'cinder-volumes'.
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'vmdk_backend/param1' => { 'value' => value1 } }
+#
 define cinder::backend::vmdk (
   $host_ip,
   $host_username,
@@ -59,7 +65,8 @@ define cinder::backend::vmdk (
   $max_object_retrieval        = 100,
   $task_poll_interval          = 5,
   $image_transfer_timeout_secs = 7200,
-  $wsdl_location               = undef
+  $wsdl_location               = undef,
+  $extra_options               = {},
   ) {
 
   cinder_config {
@@ -84,4 +91,7 @@ define cinder::backend::vmdk (
   package { 'python-suds':
     ensure   => present
   }
+
+  create_resources('cinder_config', $extra_options)
+
 }

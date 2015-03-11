@@ -41,7 +41,13 @@
 #
 # [*hp3par_snapshot_expiration*]
 #   (required) setting to 72 hours as default (must be larger than retention)
-
+#
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'h3par_iscsi_backend/param1' => { 'value' => value1 } }
+#
 class cinder::volume::hp3par_iscsi(
   $hp3par_api_url,
   $hp3par_username,
@@ -55,6 +61,7 @@ class cinder::volume::hp3par_iscsi(
   $hp3par_snap_cpg = OpenstackCPG,
   $hp3par_snapshot_retention = 48,
   $hp3par_snapshot_expiration = 72,
+  $extra_options              = {},
 ) {
 
   cinder::backend::hp3par_iscsi { 'DEFAULT':
@@ -69,5 +76,6 @@ class cinder::volume::hp3par_iscsi(
     hp3par_snap_cpg            => $hp3par_snap_cpg,
     hp3par_snapshot_retention  => $hp3par_snapshot_retention,
     hp3par_snapshot_expiration => $hp3par_snapshot_expiration,
+    extra_options              => $extra_options,
   }
 }

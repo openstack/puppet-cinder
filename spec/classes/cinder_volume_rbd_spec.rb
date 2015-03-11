@@ -53,6 +53,16 @@ describe 'cinder::volume::rbd' do
 
   end
 
+  describe 'rbd volume driver with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'rbd_backend/param1' => {'value' => 'value1'}}})
+    end
+    it 'configure rbd volume with additional configuration' do
+      should contain_cinder__backend__rbd('DEFAULT').with({
+        :extra_options => {'rbd_backend/param1' => {'value' => 'value1'}}
+      })
+    end
+  end
 
   describe 'with RedHat' do
     let :facts do

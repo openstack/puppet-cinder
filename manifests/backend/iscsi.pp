@@ -9,9 +9,16 @@
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
 #   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
+#
 # [*volumes_dir*]
 #   (Optional) Volume configuration file storage directory
 #   Defaults to '/var/lib/cinder/volumes'.
+#
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'iscsi_backend/param1' => { 'value' => value1 } }
 #
 define cinder::backend::iscsi (
   $iscsi_ip_address,
@@ -21,6 +28,7 @@ define cinder::backend::iscsi (
   $volumes_dir         = '/var/lib/cinder/volumes',
   $iscsi_helper        = $::cinder::params::iscsi_helper,
   $iscsi_protocol      = 'iscsi',
+  $extra_options       = {},
 ) {
 
   include ::cinder::params
@@ -34,6 +42,8 @@ define cinder::backend::iscsi (
     "${name}/volumes_dir":          value => $volumes_dir;
     "${name}/iscsi_protocol":       value => $iscsi_protocol;
   }
+
+  create_resources('cinder_config', $extra_options)
 
   case $iscsi_helper {
     'tgtadm': {

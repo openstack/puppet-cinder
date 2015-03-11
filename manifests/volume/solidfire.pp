@@ -34,6 +34,12 @@
 #   (optional) Port ID to use to connect to SolidFire API.
 #   Defaults to 443
 #
+# [*extra_options*]
+#   (optional) Hash of extra options to pass to the backend stanza
+#   Defaults to: {}
+#   Example :
+#     { 'solidfire_backend/param1' => { 'value' => value1 } }
+#
 class cinder::volume::solidfire(
   $san_ip,
   $san_login,
@@ -42,7 +48,8 @@ class cinder::volume::solidfire(
   $sf_emulate_512      = true,
   $sf_allow_tenant_qos = false,
   $sf_account_prefix   = '',
-  $sf_api_port         = '443'
+  $sf_api_port         = '443',
+  $extra_options       = {},
 ) {
 
   cinder::backend::solidfire { 'DEFAULT':
@@ -54,5 +61,6 @@ class cinder::volume::solidfire(
     sf_allow_tenant_qos => $sf_allow_tenant_qos,
     sf_account_prefix   => $sf_account_prefix,
     sf_api_port         => $sf_api_port,
+    extra_options       => $extra_options,
   }
 }

@@ -31,4 +31,17 @@ describe 'cinder::backend::hp3par_iscsi' do
       should contain_cinder_config('hp3par_iscsi/san_password').with_value('password')
     end
   end
+
+  describe 'hp3par_iscsi backend with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'hp3par_iscsi/param1' => {'value' => 'value1'}}})
+    end
+
+    it 'configure hp3par_iscsi backend with additional configuration' do
+      should contain_cinder_config('hp3par_iscsi/param1').with({
+        :value => 'value1',
+      })
+    end
+  end
+
 end

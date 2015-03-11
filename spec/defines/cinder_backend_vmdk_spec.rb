@@ -56,4 +56,17 @@ describe 'cinder::backend::vmdk' do
       should contain_cinder_config('hippo/vmware_wsdl_location').with_value(params[:wsdl_location])
     end
   end
+
+  context 'vmdk backend with additional configuration' do
+    before do
+      params.merge!({:extra_options => {'hippo/param1' => { 'value' => 'value1' }}})
+    end
+
+    it 'configure vmdk backend with additional configuration' do
+      should contain_cinder_config('hippo/param1').with({
+        :value => 'value1'
+      })
+    end
+  end
+
 end

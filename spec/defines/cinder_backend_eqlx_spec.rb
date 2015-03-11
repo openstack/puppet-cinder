@@ -33,4 +33,17 @@ describe 'cinder::backend::eqlx' do
       end
     end
   end
+
+  describe 'eqlx backend with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'eqlx-1/param1' => {'value' => 'value1'}}})
+    end
+
+    it 'configure eqlx backend with additional configuration' do
+      should contain_cinder_config('eqlx-1/param1').with({
+        :value => 'value1',
+      })
+    end
+  end
+
 end

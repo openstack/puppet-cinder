@@ -69,6 +69,18 @@ describe 'cinder::backend::iscsi' do
     end
   end
 
+  describe 'iscsi backend with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'hippo/param1' => {'value' => 'value1'}}})
+    end
+
+    it 'configure iscsi backend with additional configuration' do
+      should contain_cinder_config('hippo/param1').with({
+        :value => 'value1',
+      })
+    end
+  end
+
   describe 'with RedHat' do
 
     let :facts do

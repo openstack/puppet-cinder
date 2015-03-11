@@ -29,4 +29,17 @@ describe 'cinder::volume::hp3par_iscsi' do
       should contain_cinder_config('DEFAULT/san_password').with_value('password')
     end
   end
+
+  describe 'hp3par_iscsi volume driver with additional configuration' do
+    before :each do
+      params.merge!({:extra_options => {'hp3par_iscsi_backend/param1' => {'value' => 'value1'}}})
+    end
+
+    it 'configure hp3par_iscsi volume with additional configuration' do
+      should contain_cinder__backend__hp3par_iscsi('DEFAULT').with({
+        :extra_options => {'hp3par_iscsi_backend/param1' => {'value' => 'value1'}}
+      })
+    end
+  end
+
 end
