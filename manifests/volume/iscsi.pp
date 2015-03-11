@@ -9,7 +9,7 @@
 #
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
-#   Defaults to 'cinder.volume.drivers.lvm.LVMISCSIDriver'.
+#   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
 #
 # [*volume_group*]
 #   (Optional) Name for the VG that will contain exported volumes
@@ -25,7 +25,7 @@
 #
 class cinder::volume::iscsi (
   $iscsi_ip_address,
-  $volume_driver     = 'cinder.volume.drivers.lvm.LVMISCSIDriver',
+  $volume_driver     = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
   $volume_group      = 'cinder-volumes',
   $iscsi_helper      = $::cinder::params::iscsi_helper,
   $iscsi_protocol    = 'iscsi'

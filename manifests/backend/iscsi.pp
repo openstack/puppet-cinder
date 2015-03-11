@@ -6,11 +6,15 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*volume_driver*]
+#   (Optional) Driver to use for volume creation
+#   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
+#
 #
 define cinder::backend::iscsi (
   $iscsi_ip_address,
   $volume_backend_name = $name,
-  $volume_driver       = 'cinder.volume.drivers.lvm.LVMISCSIDriver',
+  $volume_driver       = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
   $volume_group        = 'cinder-volumes',
   $iscsi_helper        = $::cinder::params::iscsi_helper,
   $iscsi_protocol      = 'iscsi',

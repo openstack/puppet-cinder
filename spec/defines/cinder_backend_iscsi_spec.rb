@@ -28,7 +28,7 @@ describe 'cinder::backend::iscsi' do
       should contain_cinder_config('hippo/volume_backend_name').with(
         :value => 'hippo')
       should contain_cinder_config('hippo/volume_driver').with(
-        :value => 'cinder.volume.drivers.lvm.LVMISCSIDriver')
+        :value => 'cinder.volume.drivers.lvm.LVMVolumeDriver')
       should contain_cinder_config('hippo/iscsi_ip_address').with(
         :value => '127.0.0.2')
       should contain_cinder_config('hippo/iscsi_helper').with(

@@ -17,7 +17,7 @@ describe 'cinder::volume::iscsi' do
     end
 
     it { should contain_cinder_config('DEFAULT/volume_driver').with(
-           :value => 'cinder.volume.drivers.lvm.LVMISCSIDriver')}
+           :value => 'cinder.volume.drivers.lvm.LVMVolumeDriver')}
     it { should contain_cinder_config('DEFAULT/iscsi_ip_address').with(:value => '127.0.0.2')}
     it { should contain_cinder_config('DEFAULT/iscsi_helper').with(:value => 'tgtadm')}
     it { should contain_cinder_config('DEFAULT/volume_group').with(:value => 'cinder-volumes')}
