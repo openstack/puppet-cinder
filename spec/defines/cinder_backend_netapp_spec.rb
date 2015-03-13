@@ -41,19 +41,19 @@ describe 'cinder::backend::netapp' do
     end
 
     it 'configures netapp volume driver' do
-      should contain_cinder_config("#{params_hash[:volume_backend_name]}/volume_driver").with_value(
+      is_expected.to contain_cinder_config("#{params_hash[:volume_backend_name]}/volume_driver").with_value(
         'cinder.volume.drivers.netapp.common.NetAppDriver')
       params_hash.each_pair do |config,value|
-        should contain_cinder_config("#{params_hash[:volume_backend_name]}/#{config}").with_value( value )
+        is_expected.to contain_cinder_config("#{params_hash[:volume_backend_name]}/#{config}").with_value( value )
       end
     end
 
     it 'marks netapp_password as secret' do
-      should contain_cinder_config("#{params_hash[:volume_backend_name]}/netapp_password").with_secret( true )
+      is_expected.to contain_cinder_config("#{params_hash[:volume_backend_name]}/netapp_password").with_secret( true )
     end
 
     it 'marks netapp_sa_password as secret' do
-      should contain_cinder_config("#{params_hash[:volume_backend_name]}/netapp_sa_password").with_secret( true )
+      is_expected.to contain_cinder_config("#{params_hash[:volume_backend_name]}/netapp_sa_password").with_secret( true )
     end
   end
 
@@ -75,7 +75,7 @@ describe 'cinder::backend::netapp' do
         :netapp_storage_family   => 'eseries',
     }) }
 
-    it { should contain_cinder_config("#{req_params[:volume_backend_name]}/use_multipath_for_image_xfer").with_value('true') }
+    it { is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/use_multipath_for_image_xfer").with_value('true') }
   end
 
   context 'netapp backend with additional configuration' do
@@ -97,7 +97,7 @@ describe 'cinder::backend::netapp' do
     }) }
 
     it 'writes NFS shares to file' do
-      should contain_file("#{req_params[:nfs_shares_config]}") \
+      is_expected.to contain_file("#{req_params[:nfs_shares_config]}") \
         .with_content("10.0.0.1:/test1\n10.0.0.2:/test2")
     end
   end
@@ -110,9 +110,7 @@ describe 'cinder::backend::netapp' do
       })
     end
 
-    it 'throw error' do
-        expect {subject}.to raise_error(Puppet::Error, /"not an array" is not an Array.  It looks to be a String/)
-    end
+    it_raises 'a Puppet::Error', /"not an array" is not an Array.  It looks to be a String/
   end
 
 end

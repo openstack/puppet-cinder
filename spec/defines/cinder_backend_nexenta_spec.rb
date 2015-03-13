@@ -32,7 +32,7 @@ describe 'cinder::backend::nexenta' do
 
     it 'configures nexenta volume driver' do
       params_hash.each_pair do |config, value|
-        should contain_cinder_config("nexenta/#{config}").with_value(value)
+        is_expected.to contain_cinder_config("nexenta/#{config}").with_value(value)
       end
     end
   end

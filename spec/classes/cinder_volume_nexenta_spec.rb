@@ -33,12 +33,12 @@ describe 'cinder::volume::nexenta' do
 
     it 'configures nexenta volume driver' do
       params_hash.each_pair do |config, value|
-        should contain_cinder_config("DEFAULT/#{config}").with_value(value)
+        is_expected.to contain_cinder_config("DEFAULT/#{config}").with_value(value)
       end
     end
 
     it 'marks nexenta_password as secret' do
-      should contain_cinder_config('DEFAULT/nexenta_password').with_secret( true )
+      is_expected.to contain_cinder_config('DEFAULT/nexenta_password').with_secret( true )
     end
 
   end

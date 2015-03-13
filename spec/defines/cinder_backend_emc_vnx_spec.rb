@@ -23,12 +23,12 @@ describe 'cinder::backend::emc_vnx' do
 
   describe 'emc vnx volume driver' do
     it 'configure emc vnx volume driver' do
-      should contain_cinder_config('emc/volume_driver').with_value('cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver')
-      should contain_cinder_config('emc/san_ip').with_value('127.0.0.2')
-      should contain_cinder_config('emc/san_login').with_value('emc')
-      should contain_cinder_config('emc/san_password').with_value('password')
-      should contain_cinder_config('emc/iscsi_ip_address').with_value('127.0.0.3')
-      should contain_cinder_config('emc/storage_vnx_pool_name').with_value('emc-storage-pool')
+      is_expected.to contain_cinder_config('emc/volume_driver').with_value('cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver')
+      is_expected.to contain_cinder_config('emc/san_ip').with_value('127.0.0.2')
+      is_expected.to contain_cinder_config('emc/san_login').with_value('emc')
+      is_expected.to contain_cinder_config('emc/san_password').with_value('password')
+      is_expected.to contain_cinder_config('emc/iscsi_ip_address').with_value('127.0.0.3')
+      is_expected.to contain_cinder_config('emc/storage_vnx_pool_name').with_value('emc-storage-pool')
     end
   end
 

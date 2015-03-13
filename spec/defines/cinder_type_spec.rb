@@ -17,7 +17,7 @@ describe 'cinder::type' do
   end
 
   it 'should have its execs' do
-    should contain_exec('cinder type-create hippo').with(
+    is_expected.to contain_exec('cinder type-create hippo').with(
       :command => 'cinder type-create hippo',
       :environment => [
         'OS_TENANT_NAME=admin',
@@ -26,7 +26,7 @@ describe 'cinder::type' do
         'OS_AUTH_URL=http://127.127.127.1:5000/v2.0/'],
       :unless  => "cinder type-list | grep -qP '\\bhippo\\b'",
       :require => 'Package[python-cinderclient]')
-    should contain_exec('cinder type-key hippo set volume_backend_name=name1')
-    should contain_exec('cinder type-key hippo set volume_backend_name=name2')
+    is_expected.to contain_exec('cinder type-key hippo set volume_backend_name=name1')
+    is_expected.to contain_exec('cinder type-key hippo set volume_backend_name=name2')
   end
 end

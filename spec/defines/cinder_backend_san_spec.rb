@@ -28,7 +28,7 @@ describe 'cinder::backend::san' do
 
     it 'configures cinder volume driver' do
       params_hash.each_pair do |config,value|
-        should contain_cinder_config("mysan/#{config}").with_value( value )
+        is_expected.to contain_cinder_config("mysan/#{config}").with_value( value )
       end
     end
   end

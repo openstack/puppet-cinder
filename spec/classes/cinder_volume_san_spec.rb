@@ -28,12 +28,12 @@ describe 'cinder::volume::san' do
 
     it 'configures cinder volume driver' do
       params_hash.each_pair do |config,value|
-        should contain_cinder_config("DEFAULT/#{config}").with_value( value )
+        is_expected.to contain_cinder_config("DEFAULT/#{config}").with_value( value )
       end
     end
 
     it 'marks san_password as secret' do
-      should contain_cinder_config('DEFAULT/san_password').with_secret( true )
+      is_expected.to contain_cinder_config('DEFAULT/san_password').with_secret( true )
     end
 
   end
