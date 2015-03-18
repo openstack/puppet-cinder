@@ -4,9 +4,17 @@ describe 'cinder::volume::netapp' do
 
   let :params do
     {
-      :netapp_login           => 'netapp',
-      :netapp_password        => 'password',
-      :netapp_server_hostname => '127.0.0.2',
+      :netapp_login                 => 'netapp',
+      :netapp_password              => 'password',
+      :netapp_server_hostname       => '127.0.0.2',
+      :netapp_vfiler                => 'netapp_vfiler',
+      :netapp_volume_list           => 'vol1,vol2',
+      :netapp_vserver               => 'netapp_vserver',
+      :netapp_partner_backend_name  => 'fc2',
+      :netapp_copyoffload_tool_path => '/tmp/na_copyoffload_64',
+      :netapp_controller_ips        => '10.0.0.2,10.0.0.3',
+      :netapp_sa_password           => 'password',
+      :netapp_storage_pools         => 'pool1,pool2',
     }
   end
 
@@ -17,17 +25,11 @@ describe 'cinder::volume::netapp' do
       :netapp_storage_family        => 'ontap_cluster',
       :netapp_storage_protocol      => 'nfs',
       :netapp_transport_type        => 'http',
-      :netapp_vfiler                => '',
-      :netapp_volume_list           => '',
-      :netapp_vserver               => '',
       :expiry_thres_minutes         => '720',
       :thres_avl_size_perc_start    => '20',
       :thres_avl_size_perc_stop     => '60',
       :nfs_shares_config            => '/etc/cinder/shares.conf',
-      :netapp_copyoffload_tool_path => '',
-      :netapp_controller_ips        => '',
-      :netapp_sa_password           => '',
-      :netapp_storage_pools         => '',
+      :netapp_eseries_host_type     => 'linux_dm_mp',
       :netapp_webservice_path       => '/devmgr/v2',
     }
   end
