@@ -92,7 +92,7 @@ define cinder::backend::rbd (
       $override_match   = '^export CEPH_ARGS='
     }
     default: {
-      fail("unsuported osfamily ${::osfamily}, currently Debian and Redhat are the only supported platforms")
+      fail("unsupported osfamily ${::osfamily}, currently Debian and Redhat are the only supported platforms")
     }
   }
 

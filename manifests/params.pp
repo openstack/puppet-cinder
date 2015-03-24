@@ -55,6 +55,6 @@ class cinder::params {
     }
 
   } else {
-    fail("unsuported osfamily ${::osfamily}, currently Debian and Redhat are the only supported platforms")
+    fail("unsupported osfamily ${::osfamily}, currently Debian and Redhat are the only supported platforms")
   }
 }
