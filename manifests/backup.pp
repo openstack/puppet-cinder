@@ -70,6 +70,7 @@ class cinder::backup (
     package { 'cinder-backup':
       ensure => $package_ensure,
       name   => $::cinder::params::backup_package,
+      tag    => 'openstack',
     }
   }
 

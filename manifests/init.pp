@@ -290,6 +290,7 @@ class cinder (
   package { 'cinder':
     ensure  => $package_ensure,
     name    => $::cinder::params::package_name,
+    tag     => 'openstack',
     require => Anchor['cinder-start'],
   }
 

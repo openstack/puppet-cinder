@@ -51,6 +51,7 @@ class cinder::scheduler (
     package { 'cinder-scheduler':
       ensure => $package_ensure,
       name   => $::cinder::params::scheduler_package,
+      tag    => 'openstack',
     }
   }
 

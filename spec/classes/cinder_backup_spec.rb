@@ -45,7 +45,8 @@ describe 'cinder::backup' do
       if platform_params.has_key?(:backup_package)
         is_expected.to contain_package('cinder-backup').with(
           :name   => platform_params[:backup_package],
-          :ensure => 'present'
+          :ensure => 'present',
+          :tag    => 'openstack'
         )
         is_expected.to contain_package('cinder-backup').with_before(/Cinder_config\[.+\]/)
         is_expected.to contain_package('cinder-backup').with_before(/Service\[cinder-backup\]/)
@@ -92,7 +93,7 @@ describe 'cinder::backup' do
     end
 
     let :platform_params do
-      { :backup_service => 'cinder-backup' }
+      { :backup_service => 'opentack-cinder-backup' }
     end
 
     it_configures 'cinder backup'

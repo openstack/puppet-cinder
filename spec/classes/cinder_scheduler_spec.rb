@@ -14,9 +14,10 @@ describe 'cinder::scheduler' do
       it { is_expected.to contain_cinder_config('DEFAULT/scheduler_driver').with_ensure('absent') }
 
       it { is_expected.to contain_package('cinder-scheduler').with(
-        :name      => 'cinder-scheduler',
-        :ensure    => 'present',
-        :before    => ['Cinder_config[DEFAULT/scheduler_driver]','Service[cinder-scheduler]'],
+        :name   => 'cinder-scheduler',
+        :ensure => 'present',
+        :before => ['Cinder_config[DEFAULT/scheduler_driver]','Service[cinder-scheduler]'],
+        :tag    => 'openstack',
       ) }
 
       it { is_expected.to contain_service('cinder-scheduler').with(

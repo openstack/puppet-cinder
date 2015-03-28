@@ -34,6 +34,7 @@ class cinder::volume (
     package { 'cinder-volume':
       ensure => $package_ensure,
       name   => $::cinder::params::volume_package,
+      tag    => 'openstack',
     }
   }
 

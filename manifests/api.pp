@@ -163,6 +163,7 @@ class cinder::api (
     package { 'cinder-api':
       ensure => $package_ensure,
       name   => $::cinder::params::api_package,
+      tag    => 'openstack',
     }
   }
 
