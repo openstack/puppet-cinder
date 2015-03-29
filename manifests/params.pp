@@ -43,7 +43,7 @@ class cinder::params {
 
     case $::operatingsystem {
       'RedHat', 'CentOS', 'Scientific': {
-        if $::operatingsystemmajrelease >= 7 {
+        if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
           $iscsi_helper = 'lioadm'
         } else {
           $iscsi_helper = 'tgtadm'
