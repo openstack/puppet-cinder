@@ -43,7 +43,7 @@ describe 'cinder::volume::iscsi' do
     it_raises 'a Puppet::Error', /Unsupported iscsi helper: fooboozoo/
   end
 
-  describe 'with RedHat' do
+  describe 'on RHEL Platforms' do
 
     let :params do
       req_params
@@ -52,6 +52,7 @@ describe 'cinder::volume::iscsi' do
     let :facts do
       {:osfamily => 'RedHat',
        :operatingsystem => 'RedHat',
+       :operatingsystemrelease => 6.5,
        :operatingsystemmajrelease => '6'}
     end
 
@@ -66,12 +67,15 @@ describe 'cinder::volume::iscsi' do
 
     let :params do {
       :iscsi_ip_address => '127.0.0.2',
-      :iscsi_helper => 'lioadm'
+      :iscsi_helper     => 'lioadm'
     }
     end
 
     let :facts do
-      {:osfamily => 'RedHat'}
+      {:osfamily => 'RedHat',
+       :operatingsystem => 'RedHat',
+       :operatingsystemrelease => 7.0,
+       :operatingsystemmajrelease => '7'}
     end
 
     it { is_expected.to contain_package('targetcli').with_ensure('present')}
