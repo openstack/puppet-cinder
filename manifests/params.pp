@@ -42,7 +42,7 @@ class cinder::params {
     $lio_package_name   = 'targetcli'
 
     case $::operatingsystem {
-      'RedHat', 'CentOS', 'Scientific': {
+      'RedHat', 'CentOS', 'Scientific', 'OracleLinux': {
         if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
           $iscsi_helper = 'lioadm'
         } else {
