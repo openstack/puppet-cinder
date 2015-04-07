@@ -119,6 +119,10 @@
 #       try_sleep: 10
 #   Defaults to {}
 #
+# [*sync_db*]
+#   (Optional) Run db sync on the node.
+#   Defaults to true
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled           = true,
@@ -137,6 +141,7 @@ class cinder::api (
   $ratelimits_factory =
     'cinder.api.v1.limits:RateLimitingMiddleware.factory',
   $validate                   = false,
+  $sync_db                    = true,
   # DEPRECATED PARAMETERS
   $validation_options         = {},
   $keystone_auth_uri          = false,
@@ -168,16 +173,18 @@ class cinder::api (
   }
 
   if $enabled {
-    Cinder_config<||> ~> Exec['cinder-manage db_sync']
+    if $sync_db {
+      Cinder_config<||> ~> Exec['cinder-manage db_sync']
 
-    exec { 'cinder-manage db_sync':
-      command     => $::cinder::params::db_sync_command,
-      path        => '/usr/bin',
-      user        => 'cinder',
-      refreshonly => true,
-      logoutput   => 'on_failure',
-      subscribe   => Package['cinder'],
-      before      => Service['cinder-api'],
+      exec { 'cinder-manage db_sync':
+        command     => $::cinder::params::db_sync_command,
+        path        => '/usr/bin',
+        user        => 'cinder',
+        refreshonly => true,
+        logoutput   => 'on_failure',
+        subscribe   => Package['cinder'],
+        before      => Service['cinder-api'],
+      }
     }
     if $manage_service {
       $ensure = 'running'

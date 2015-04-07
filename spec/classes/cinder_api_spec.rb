@@ -117,6 +117,17 @@ describe 'cinder::api' do
     end
   end
 
+  describe 'with sync_db set to false' do
+    let :params do
+      {
+        :keystone_password => 'dummy',
+        :enabled           => 'true',
+        :sync_db           => false,
+      }
+    end
+    it { is_expected.not_to contain_exec('cinder-manage db_sync') }
+  end
+
   [ '/keystone', '/keystone/admin' ].each do |keystone_auth_admin_prefix|
     describe "with keystone_auth_admin_prefix containing correct value #{keystone_auth_admin_prefix}" do
       let :params do
