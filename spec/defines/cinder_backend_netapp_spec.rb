@@ -31,6 +31,7 @@ describe 'cinder::backend::netapp' do
       :netapp_controller_ips        => '',
       :netapp_sa_password           => '',
       :netapp_storage_pools         => '',
+      :nfs_mount_options            => nil,
       :netapp_webservice_path       => '/devmgr/v2',
     }
   end
@@ -76,6 +77,14 @@ describe 'cinder::backend::netapp' do
     }) }
 
     it { should contain_cinder_config("#{req_params[:volume_backend_name]}/use_multipath_for_image_xfer").with_value('true') }
+  end
+
+  context 'with NFS mount options' do
+    let (:req_params) { params.merge!({
+        :nfs_mount_options => 'rw,proto=tcp,sec=sys',
+    }) }
+
+    it { should contain_cinder_config("#{req_params[:volume_backend_name]}/nfs_mount_options").with_value('rw,proto=tcp,sec=sys') }
   end
 
   context 'with NFS shares provided' do

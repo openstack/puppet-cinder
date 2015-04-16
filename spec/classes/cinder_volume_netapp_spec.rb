@@ -28,6 +28,7 @@ describe 'cinder::volume::netapp' do
       :netapp_controller_ips        => '',
       :netapp_sa_password           => '',
       :netapp_storage_pools         => '',
+      :nfs_mount_options            => nil,
       :netapp_webservice_path       => '/devmgr/v2',
     }
   end

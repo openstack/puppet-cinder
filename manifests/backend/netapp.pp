@@ -103,6 +103,11 @@
 #   (optional) File with the list of available NFS shares
 #   Defaults to '/etc/cinder/shares.conf'
 #
+# [*nfs_mount_options*]
+#   (optional) Mount options passed to the nfs client. See section
+#   of the nfs man page for details.
+#   Defaults to undef
+#
 # [*netapp_copyoffload_tool_path*]
 #   (optional) This option specifies the path of the NetApp Copy Offload tool
 #   binary. Ensure that the binary has execute permissions set which allow the
@@ -177,6 +182,7 @@ define cinder::backend::netapp (
   $netapp_controller_ips        = '',
   $netapp_sa_password           = '',
   $netapp_storage_pools         = '',
+  $nfs_mount_options            = undef,
   $netapp_webservice_path       = '/devmgr/v2',
 ) {
 
@@ -185,6 +191,16 @@ define cinder::backend::netapp (
       content => join($nfs_shares, "\n"),
       require => Package['cinder'],
       notify  => Service['cinder-volume']
+    }
+  }
+
+  if $nfs_mount_options {
+    cinder_config {
+      "${volume_backend_name}/nfs_mount_options": value => $nfs_mount_options;
+    }
+  } else {
+    cinder_config {
+      "${volume_backend_name}/nfs_mount_options": ensure => absent;
     }
   }
 
