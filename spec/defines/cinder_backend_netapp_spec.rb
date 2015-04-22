@@ -33,6 +33,7 @@ describe 'cinder::backend::netapp' do
       :thres_avl_size_perc_stop     => '60',
       :nfs_shares_config            => '/etc/cinder/shares.conf',
       :netapp_eseries_host_type     => 'linux_dm_mp',
+      :nfs_mount_options            => nil,
       :netapp_webservice_path       => '/devmgr/v2',
     }
   end
@@ -78,6 +79,14 @@ describe 'cinder::backend::netapp' do
     }) }
 
     it { is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/use_multipath_for_image_xfer").with_value('true') }
+  end
+
+  context 'with NFS mount options' do
+    let (:req_params) { params.merge!({
+        :nfs_mount_options => 'rw,proto=tcp,sec=sys',
+    }) }
+
+    it { is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/nfs_mount_options").with_value('rw,proto=tcp,sec=sys') }
   end
 
   context 'netapp backend with additional configuration' do
