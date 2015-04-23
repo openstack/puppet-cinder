@@ -23,7 +23,8 @@ describe 'cinder::db::mysql' do
       :user          => 'cinder',
       :password_hash => '*D821809F681A40A6E379B50D0463EFAE20BDD122',
       :host          => '127.0.0.1',
-      :charset       => 'utf8'
+      :charset       => 'utf8',
+      :collate       => 'utf8_general_ci',
      ) }
   end
   describe "overriding allowed_hosts param to array" do
