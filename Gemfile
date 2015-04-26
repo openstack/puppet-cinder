@@ -14,6 +14,7 @@ group :development, :test do
   gem 'puppet-lint-variable_contains_upcase'
   gem 'puppet-lint-numericvariable'
 
+  gem 'beaker-rspec', '~> 2.2.4', :require => false
   gem 'rspec-puppet', '~> 2.1.0', :require => false
   gem 'rake', '10.1.1'
   gem 'json'

@@ -163,6 +163,18 @@ Limitations
 
 * Setup of storage nodes is limited to Linux and LVM, i.e. Puppet won't configure a Nexenta appliance but nova can be configured to use the Nexenta driver with Class['cinder::volume::nexenta'].
 
+Beaker-Rspec
+------------
+
+This module has beaker-rspec tests
+
+To run:
+
+``shell
+bundle install
+bundle exec rspec spec/acceptance
+``
+
 Development
 -----------
 
