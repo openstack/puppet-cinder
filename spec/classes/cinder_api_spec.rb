@@ -151,7 +151,7 @@ describe 'cinder::api' do
       }
     end
 
-    it { is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix').with(:value => nil)}
+    it { is_expected.to contain_cinder_api_paste_ini('filter:authtoken/auth_admin_prefix')}
   end
 
   [

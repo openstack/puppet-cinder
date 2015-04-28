@@ -22,7 +22,7 @@ describe 'cinder::keystone::auth' do
       )
       is_expected.to contain_keystone_user_role('cinder@services').with(
         :ensure  => 'present',
-        :roles   => 'admin'
+        :roles   => ['admin']
       )
       is_expected.to contain_keystone_service('cinder').with(
         :ensure      => 'present',
