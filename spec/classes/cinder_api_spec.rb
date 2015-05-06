@@ -183,7 +183,7 @@ describe 'cinder::api' do
       is_expected.to contain_service('cinder-api').with_ensure('stopped')
     end
     it 'should contain db_sync exec' do
-      is_expected.to_not contain_exec('cinder-manage db_sync')
+      is_expected.to contain_exec('cinder-manage db_sync')
     end
   end
 
@@ -193,6 +193,9 @@ describe 'cinder::api' do
     end
     it 'should not change the state of the service' do
       is_expected.to contain_service('cinder-api').without_ensure
+    end
+    it 'should contain db_sync exec' do
+      is_expected.to contain_exec('cinder-manage db_sync')
     end
   end
 
