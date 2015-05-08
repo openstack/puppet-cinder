@@ -29,6 +29,11 @@
 #   (optional) The backoff time in seconds between Swift retries.
 #   Defaults to '2'
 #
+# [*backup_compression_algorithm*]
+#   (optional) The compression algorithm for the chunks sent to swift
+#   Defaults to 'zlib'
+#   set to None to disable compression
+#
 # === Author(s)
 #
 # Emilien Macchi <emilien.macchi@enovance.com>
@@ -51,21 +56,23 @@
 #
 #
 class cinder::backup::swift (
-  $backup_driver               = 'cinder.backup.drivers.swift',
-  $backup_swift_url            = 'http://localhost:8080/v1/AUTH_',
-  $backup_swift_container      = 'volumes_backup',
-  $backup_swift_object_size    = '52428800',
-  $backup_swift_retry_attempts = '3',
-  $backup_swift_retry_backoff  = '2'
+  $backup_driver                = 'cinder.backup.drivers.swift',
+  $backup_swift_url             = 'http://localhost:8080/v1/AUTH_',
+  $backup_swift_container       = 'volumes_backup',
+  $backup_swift_object_size     = '52428800',
+  $backup_swift_retry_attempts  = '3',
+  $backup_swift_retry_backoff   = '2',
+  $backup_compression_algorithm = 'zlib',
 ) {
 
   cinder_config {
-    'DEFAULT/backup_driver':               value => $backup_driver;
-    'DEFAULT/backup_swift_url':            value => $backup_swift_url;
-    'DEFAULT/backup_swift_container':      value => $backup_swift_container;
-    'DEFAULT/backup_swift_object_size':    value => $backup_swift_object_size;
-    'DEFAULT/backup_swift_retry_attempts': value => $backup_swift_retry_attempts;
-    'DEFAULT/backup_swift_retry_backoff':  value => $backup_swift_retry_backoff;
+    'DEFAULT/backup_driver':                value => $backup_driver;
+    'DEFAULT/backup_swift_url':             value => $backup_swift_url;
+    'DEFAULT/backup_swift_container':       value => $backup_swift_container;
+    'DEFAULT/backup_swift_object_size':     value => $backup_swift_object_size;
+    'DEFAULT/backup_swift_retry_attempts':  value => $backup_swift_retry_attempts;
+    'DEFAULT/backup_swift_retry_backoff':   value => $backup_swift_retry_backoff;
+    'DEFAULT/backup_compression_algorithm': value => $backup_compression_algorithm;
   }
 
 }
