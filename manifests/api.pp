@@ -172,20 +172,21 @@ class cinder::api (
     }
   }
 
-  if $enabled {
-    if $sync_db {
-      Cinder_config<||> ~> Exec['cinder-manage db_sync']
+  if $sync_db {
+    Cinder_config<||> ~> Exec['cinder-manage db_sync']
 
-      exec { 'cinder-manage db_sync':
-        command     => $::cinder::params::db_sync_command,
-        path        => '/usr/bin',
-        user        => 'cinder',
-        refreshonly => true,
-        logoutput   => 'on_failure',
-        subscribe   => Package['cinder'],
-        before      => Service['cinder-api'],
-      }
+    exec { 'cinder-manage db_sync':
+      command     => $::cinder::params::db_sync_command,
+      path        => '/usr/bin',
+      user        => 'cinder',
+      refreshonly => true,
+      logoutput   => 'on_failure',
+      subscribe   => Package['cinder'],
+      before      => Service['cinder-api'],
     }
+  }
+
+  if $enabled {
     if $manage_service {
       $ensure = 'running'
     }
