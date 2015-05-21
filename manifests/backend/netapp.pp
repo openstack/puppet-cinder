@@ -214,44 +214,44 @@ define cinder::backend::netapp (
 
   if $nfs_mount_options {
     cinder_config {
-      "${volume_backend_name}/nfs_mount_options": value => $nfs_mount_options;
+      "${name}/nfs_mount_options": value => $nfs_mount_options;
     }
   } else {
     cinder_config {
-      "${volume_backend_name}/nfs_mount_options": ensure => absent;
+      "${name}/nfs_mount_options": ensure => absent;
     }
   }
 
   cinder_config {
-    "${volume_backend_name}/volume_backend_name":          value => $volume_backend_name;
-    "${volume_backend_name}/volume_driver":                value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
-    "${volume_backend_name}/netapp_login":                 value => $netapp_login;
-    "${volume_backend_name}/netapp_password":              value => $netapp_password, secret => true;
-    "${volume_backend_name}/netapp_server_hostname":       value => $netapp_server_hostname;
-    "${volume_backend_name}/netapp_server_port":           value => $netapp_server_port;
-    "${volume_backend_name}/netapp_size_multiplier":       value => $netapp_size_multiplier;
-    "${volume_backend_name}/netapp_storage_family":        value => $netapp_storage_family;
-    "${volume_backend_name}/netapp_storage_protocol":      value => $netapp_storage_protocol;
-    "${volume_backend_name}/netapp_transport_type":        value => $netapp_transport_type;
-    "${volume_backend_name}/netapp_vfiler":                value => $netapp_vfiler;
-    "${volume_backend_name}/netapp_volume_list":           value => $netapp_volume_list;
-    "${volume_backend_name}/netapp_vserver":               value => $netapp_vserver;
-    "${volume_backend_name}/netapp_partner_backend_name":  value => $netapp_partner_backend_name;
-    "${volume_backend_name}/expiry_thres_minutes":         value => $expiry_thres_minutes;
-    "${volume_backend_name}/thres_avl_size_perc_start":    value => $thres_avl_size_perc_start;
-    "${volume_backend_name}/thres_avl_size_perc_stop":     value => $thres_avl_size_perc_stop;
-    "${volume_backend_name}/nfs_shares_config":            value => $nfs_shares_config;
-    "${volume_backend_name}/netapp_copyoffload_tool_path": value => $netapp_copyoffload_tool_path;
-    "${volume_backend_name}/netapp_controller_ips":        value => $netapp_controller_ips;
-    "${volume_backend_name}/netapp_sa_password":           value => $netapp_sa_password, secret => true;
-    "${volume_backend_name}/netapp_storage_pools":         value => $netapp_storage_pools;
-    "${volume_backend_name}/netapp_eseries_host_type":     value => $netapp_eseries_host_type;
-    "${volume_backend_name}/netapp_webservice_path":       value => $netapp_webservice_path;
+    "${name}/volume_backend_name":          value => $volume_backend_name;
+    "${name}/volume_driver":                value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
+    "${name}/netapp_login":                 value => $netapp_login;
+    "${name}/netapp_password":              value => $netapp_password, secret => true;
+    "${name}/netapp_server_hostname":       value => $netapp_server_hostname;
+    "${name}/netapp_server_port":           value => $netapp_server_port;
+    "${name}/netapp_size_multiplier":       value => $netapp_size_multiplier;
+    "${name}/netapp_storage_family":        value => $netapp_storage_family;
+    "${name}/netapp_storage_protocol":      value => $netapp_storage_protocol;
+    "${name}/netapp_transport_type":        value => $netapp_transport_type;
+    "${name}/netapp_vfiler":                value => $netapp_vfiler;
+    "${name}/netapp_volume_list":           value => $netapp_volume_list;
+    "${name}/netapp_vserver":               value => $netapp_vserver;
+    "${name}/netapp_partner_backend_name":  value => $netapp_partner_backend_name;
+    "${name}/expiry_thres_minutes":         value => $expiry_thres_minutes;
+    "${name}/thres_avl_size_perc_start":    value => $thres_avl_size_perc_start;
+    "${name}/thres_avl_size_perc_stop":     value => $thres_avl_size_perc_stop;
+    "${name}/nfs_shares_config":            value => $nfs_shares_config;
+    "${name}/netapp_copyoffload_tool_path": value => $netapp_copyoffload_tool_path;
+    "${name}/netapp_controller_ips":        value => $netapp_controller_ips;
+    "${name}/netapp_sa_password":           value => $netapp_sa_password, secret => true;
+    "${name}/netapp_storage_pools":         value => $netapp_storage_pools;
+    "${name}/netapp_eseries_host_type":     value => $netapp_eseries_host_type;
+    "${name}/netapp_webservice_path":       value => $netapp_webservice_path;
   }
 
   if $netapp_storage_family == 'eseries' {
     cinder_config {
-      "${volume_backend_name}/use_multipath_for_image_xfer": value => true;
+      "${name}/use_multipath_for_image_xfer": value => true;
     }
   }
 
