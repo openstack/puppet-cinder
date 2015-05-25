@@ -234,4 +234,14 @@ describe 'cinder' do
     it { is_expected.to contain_cinder_config('DEFAULT/enable_v2_api').with_value(true) }
 
   end
+
+  describe 'with image_conversion_dir' do
+    let :params do
+      req_params.merge({
+        :image_conversion_dir => '/tmp/foo',
+      })
+    end
+
+    it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_dir').with_value('/tmp/foo') }
+  end
 end
