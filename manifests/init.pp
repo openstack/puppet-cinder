@@ -317,52 +317,52 @@ class cinder (
     }
 
     cinder_config {
-      'DEFAULT/rabbit_password':     value => $rabbit_password, secret => true;
-      'DEFAULT/rabbit_userid':       value => $rabbit_userid;
-      'DEFAULT/rabbit_virtual_host': value => $rabbit_virtual_host;
-      'DEFAULT/rabbit_use_ssl':      value => $rabbit_use_ssl;
+      'oslo_messaging_rabbit/rabbit_password':     value => $rabbit_password, secret => true;
+      'oslo_messaging_rabbit/rabbit_userid':       value => $rabbit_userid;
+      'oslo_messaging_rabbit/rabbit_virtual_host': value => $rabbit_virtual_host;
+      'oslo_messaging_rabbit/rabbit_use_ssl':      value => $rabbit_use_ssl;
       'DEFAULT/control_exchange':    value => $control_exchange;
       'DEFAULT/amqp_durable_queues': value => $amqp_durable_queues;
     }
 
     if $rabbit_hosts {
-      cinder_config { 'DEFAULT/rabbit_hosts':     value => join($rabbit_hosts, ',') }
-      cinder_config { 'DEFAULT/rabbit_ha_queues': value => true }
-      cinder_config { 'DEFAULT/rabbit_host':      ensure => absent }
-      cinder_config { 'DEFAULT/rabbit_port':      ensure => absent }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => join($rabbit_hosts, ',') }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => true }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_host':      ensure => absent }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_port':      ensure => absent }
     } else {
-      cinder_config { 'DEFAULT/rabbit_host':      value => $rabbit_host }
-      cinder_config { 'DEFAULT/rabbit_port':      value => $rabbit_port }
-      cinder_config { 'DEFAULT/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
-      cinder_config { 'DEFAULT/rabbit_ha_queues': value => false }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_host':      value => $rabbit_host }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_port':      value => $rabbit_port }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => false }
     }
 
     if $rabbit_use_ssl {
-      cinder_config { 'DEFAULT/kombu_ssl_version': value => $kombu_ssl_version }
+      cinder_config { 'oslo_messaging_rabbit/kombu_ssl_version': value => $kombu_ssl_version }
 
       if $kombu_ssl_ca_certs {
-        cinder_config { 'DEFAULT/kombu_ssl_ca_certs': value => $kombu_ssl_ca_certs }
+        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_ca_certs': value => $kombu_ssl_ca_certs }
       } else {
-        cinder_config { 'DEFAULT/kombu_ssl_ca_certs': ensure => absent}
+        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_ca_certs': ensure => absent}
       }
 
       if $kombu_ssl_certfile {
-        cinder_config { 'DEFAULT/kombu_ssl_certfile': value => $kombu_ssl_certfile }
+        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_certfile': value => $kombu_ssl_certfile }
       } else {
-        cinder_config { 'DEFAULT/kombu_ssl_certfile': ensure => absent}
+        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_certfile': ensure => absent}
       }
 
       if $kombu_ssl_keyfile {
-        cinder_config { 'DEFAULT/kombu_ssl_keyfile': value => $kombu_ssl_keyfile }
+        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_keyfile': value => $kombu_ssl_keyfile }
       } else {
-        cinder_config { 'DEFAULT/kombu_ssl_keyfile': ensure => absent}
+        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_keyfile': ensure => absent}
       }
     } else {
       cinder_config {
-        'DEFAULT/kombu_ssl_ca_certs': ensure => absent;
-        'DEFAULT/kombu_ssl_certfile': ensure => absent;
-        'DEFAULT/kombu_ssl_keyfile':  ensure => absent;
-        'DEFAULT/kombu_ssl_version':  ensure => absent;
+        'oslo_messaging_rabbit/kombu_ssl_ca_certs': ensure => absent;
+        'oslo_messaging_rabbit/kombu_ssl_certfile': ensure => absent;
+        'oslo_messaging_rabbit/kombu_ssl_keyfile':  ensure => absent;
+        'oslo_messaging_rabbit/kombu_ssl_version':  ensure => absent;
       }
     }
 
