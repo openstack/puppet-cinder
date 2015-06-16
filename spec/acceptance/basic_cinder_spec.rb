@@ -109,6 +109,7 @@ describe 'basic cinder' do
       class { '::cinder::client': }
       class { '::cinder::quota': }
       class { '::cinder::scheduler': }
+      class { '::cinder::scheduler::filter': }
       class { '::cinder::volume': }
       # TODO: create a backend and spawn a volume
       EOS
