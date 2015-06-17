@@ -1,7 +1,7 @@
 cinder
 =======
 
-5.0.0 - 2014.2.0 - Juno
+5.1.0 - 2014.2 - Juno
 
 #### Table of Contents
 
@@ -189,6 +189,23 @@ Contributors
 
 Release Notes
 -------------
+
+**5.1.0**
+
+* Service Validation for Cinder-API
+* Automates generation of NFS config file
+* spec: pin rspec-puppet to 1.0.1
+* Switch to using the new SolidFire driver name
+* Makes kombu_ssl_* parameters optional when rabbit_use_ssl => true
+* Switch to TLSv1
+* Create type-key only if it doesn't exist
+* use lioadm on Fedora
+* Pin puppetlabs-concat to 1.2.1 in fixtures
+* Add nfs_mount_options variable when backend is NetApp
+* Change default MySQL collate to utf8_general_ci
+* Add configuration helpers for Quobyte
+* Implement HP 3par iscsi backend module
+* Update .gitreview file for project rename
 
 **5.0.0**
 

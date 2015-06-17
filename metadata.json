@@ -1,10 +1,10 @@
 {
   "name": "stackforge-cinder",
-  "version": "5.0.0",
-  "author": "Puppet Labs and StackForge Contributors",
+  "version": "5.1.0",
+  "author": "Puppet Labs and OpenStack Contributors",
   "summary": "Puppet module for OpenStack Cinder",
   "license": "Apache-2.0",
-  "source": "git://github.com/stackforge/puppet-cinder.git",
+  "source": "git://github.com/openstack/puppet-cinder.git",
   "project_page": "https://launchpad.net/puppet-cinder",
   "issues_url": "https://bugs.launchpad.net/puppet-cinder",
   "requirements": [
