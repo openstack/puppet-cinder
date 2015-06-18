@@ -294,22 +294,6 @@ class cinder (
     require => Anchor['cinder-start'],
   }
 
-  file { $::cinder::params::cinder_conf:
-    ensure  => present,
-    owner   => 'cinder',
-    group   => 'cinder',
-    mode    => '0600',
-    require => Package['cinder'],
-  }
-
-  file { $::cinder::params::cinder_paste_api_ini:
-    ensure  => present,
-    owner   => 'cinder',
-    group   => 'cinder',
-    mode    => '0600',
-    require => Package['cinder'],
-  }
-
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_kombu' {
 
     if ! $rabbit_password {
