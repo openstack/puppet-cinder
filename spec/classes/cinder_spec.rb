@@ -25,6 +25,8 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => '127.0.0.1:5672')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => false)
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_virtual_host').with(:value => '/')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('0')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('2')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_userid').with(:value => 'guest')
       is_expected.to contain_cinder_config('database/connection').with(:value  => 'mysql://user:password@host/database', :secret => true)
       is_expected.to contain_cinder_config('database/idle_timeout').with(:value => '3600')
@@ -65,6 +67,17 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => nil)
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => 'rabbit1:5672')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => true)
+    end
+  end
+
+  describe 'with rabbitmq heartbeats' do
+    let :params do
+      req_params.merge({'rabbit_heartbeat_timeout_threshold' => '60', 'rabbit_heartbeat_rate' => '10'})
+    end
+
+    it 'should contain heartbeat config' do
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('60')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('10')
     end
   end
 
