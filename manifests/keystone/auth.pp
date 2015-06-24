@@ -46,6 +46,14 @@
 # [*service_type_v2*]
 #    Type of API v2 service. Optional. Defaults to 'volume2'.
 #
+# [*service_description*]
+#    (optional) Description for keystone service.
+#    Defaults to 'Cinder Service'.
+#
+# [*service_description_v2*]
+#    (optional) Description for keystone v2 service.
+#    Defaults to 'Cinder Service v2'.
+#
 # [*public_address*]
 #    Public address for endpoint. Optional. Defaults to '127.0.0.1'.
 #
@@ -143,34 +151,36 @@
 #
 class cinder::keystone::auth (
   $password,
-  $auth_name             = 'cinder',
-  $auth_name_v2          = 'cinderv2',
-  $tenant                = 'services',
-  $email                 = 'cinder@localhost',
-  $public_url            = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
-  $internal_url          = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
-  $admin_url             = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
-  $public_url_v2         = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
-  $internal_url_v2       = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
-  $admin_url_v2          = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
-  $configure_endpoint    = true,
-  $configure_endpoint_v2 = true,
-  $configure_user        = true,
-  $configure_user_role   = true,
-  $service_name          = undef,
-  $service_name_v2       = undef,
-  $service_type          = 'volume',
-  $service_type_v2       = 'volumev2',
-  $region                = 'RegionOne',
+  $auth_name              = 'cinder',
+  $auth_name_v2           = 'cinderv2',
+  $tenant                 = 'services',
+  $email                  = 'cinder@localhost',
+  $public_url             = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
+  $internal_url           = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
+  $admin_url              = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
+  $public_url_v2          = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
+  $internal_url_v2        = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
+  $admin_url_v2           = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
+  $configure_endpoint     = true,
+  $configure_endpoint_v2  = true,
+  $configure_user         = true,
+  $configure_user_role    = true,
+  $service_name           = undef,
+  $service_name_v2        = undef,
+  $service_type           = 'volume',
+  $service_type_v2        = 'volumev2',
+  $service_description    = 'Cinder Service',
+  $service_description_v2 = 'Cinder Service v2',
+  $region                 = 'RegionOne',
   # DEPRECATED PARAMETERS
-  $port                  = undef,
-  $volume_version        = undef,
-  $public_address        = undef,
-  $admin_address         = undef,
-  $internal_address      = undef,
-  $public_protocol       = undef,
-  $admin_protocol        = undef,
-  $internal_protocol     = undef
+  $port                   = undef,
+  $volume_version         = undef,
+  $public_address         = undef,
+  $admin_address          = undef,
+  $internal_address       = undef,
+  $public_protocol        = undef,
+  $admin_protocol         = undef,
+  $internal_protocol      = undef
 ) {
 
   if $volume_version {
@@ -274,7 +284,7 @@ class cinder::keystone::auth (
     configure_user_role => $configure_user_role,
     configure_endpoint  => $configure_endpoint,
     service_type        => $service_type,
-    service_description => 'Cinder Service',
+    service_description => $service_description,
     service_name        => $real_service_name,
     region              => $region,
     auth_name           => $auth_name,
@@ -291,7 +301,7 @@ class cinder::keystone::auth (
     configure_user_role => false,
     configure_endpoint  => $configure_endpoint_v2,
     service_type        => $service_type_v2,
-    service_description => 'Cinder Service v2',
+    service_description => $service_description_v2,
     service_name        => $real_service_name_v2,
     region              => $region,
     public_url          => $public_url_v2_real,
