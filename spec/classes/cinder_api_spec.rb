@@ -126,7 +126,7 @@ describe 'cinder::api' do
         :sync_db           => false,
       }
     end
-    it { is_expected.not_to contain_exec('cinder-manage db_sync') }
+    it { is_expected.not_to contain_class('cinder::db::sync') }
   end
 
   [ '/keystone', '/keystone/admin' ].each do |keystone_auth_admin_prefix|
@@ -183,8 +183,8 @@ describe 'cinder::api' do
     it 'should stop the service' do
       is_expected.to contain_service('cinder-api').with_ensure('stopped')
     end
-    it 'should contain db_sync exec' do
-      is_expected.to contain_exec('cinder-manage db_sync')
+    it 'includes cinder::db::sync' do
+      is_expected.to contain_class('cinder::db::sync')
     end
   end
 
@@ -195,8 +195,8 @@ describe 'cinder::api' do
     it 'should not change the state of the service' do
       is_expected.to contain_service('cinder-api').without_ensure
     end
-    it 'should contain db_sync exec' do
-      is_expected.to contain_exec('cinder-manage db_sync')
+    it 'includes cinder::db::sync' do
+      is_expected.to contain_class('cinder::db::sync')
     end
   end
 
