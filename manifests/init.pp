@@ -76,8 +76,9 @@
 #   Defaults to 'guest'
 #
 # [*rabbit_password*]
-#   (Optional) Password to connect to the rabbit_server.
-#   Defaults to empty.
+#   (Required) Password to connect to the rabbit_server.
+#   Defaults to empty. Required if using the Rabbit (kombu)
+#   backend.
 #
 # [*rabbit_virtual_host*]
 #   (Optional) Virtual_host to use.
