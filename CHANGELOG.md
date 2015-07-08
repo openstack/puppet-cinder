@@ -1,3 +1,52 @@
+##2015-07-08 - 6.0.0
+###Summary
+
+This is a backwards-incompatible major release for OpenStack Kilo.
+
+####Backwards-incompatible changes
+- Iscsi: Change default $volume_driver
+- Switch to TLSv1 as SSLv3 is considered insecure and is disabled by default
+- Remove POSIX users, groups, and file modes
+- Move rabbit/kombu settings to oslo_messaging_rabbit section
+- Also removed deprecated parameters
+
+####Features
+- Puppet 4.x support
+- Refactorise Keystone resources management
+- Add an option to not configure RabbitMQ service
+- Run db_sync when upgrading packages
+- Makes kombu_ssl_* parameters optional when rabbit_use_ssl => true
+- Adds ability to override service name for service catalog
+- Support the enable_v*_api settings
+- Support iSER driver within the ISCSITarget flow
+- ISCSI: Allow one to specify volumes_dir path
+- Backends: Add an extra_options door
+- Support identity_uri and auth_uri properly
+- Make scheduler_driver option can be cleaned up
+- Tag all Cinder packages
+- Adds OracleLinux support
+- Create a sync_db boolean for Cinder
+- Update NetApp params for Kilo
+- Add nfs_mount_options variable when backend is NetApp
+- Add support for NFS Backup
+- Decouple $sync_db from $enabled
+- Add backup compression parameter
+- Introduce public_url, internal_url and admin_url
+- Added support for DellStorageCenter ISCSI cinder driver
+- Add cinder::scheduler::filter for managing scheduler.filter
+- NetApp: use $name for configuration group name (allows to run multiple NetApp
+  backends)
+- Lint documentation parameters
+- HP 3par iscsi backend module
+- MySQL: change default MySQL collate to utf8_general_ci
+
+####Bugfixes
+- Fix db_sync dependencies
+
+####Maintenance
+- Acceptance tests with Beaker
+- Fix spec tests for RSpec 3.x and Puppet 4.x
+
 ##2015-06-17 - 5.1.0
 ###Summary
 
