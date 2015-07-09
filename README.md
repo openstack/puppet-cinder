@@ -34,7 +34,7 @@ Setup
 
 ### Installing cinder
 
-    puppet module install puppetlabs/cinder
+    puppet module install openstack/cinder
 
 ### Beginning with cinder
 
