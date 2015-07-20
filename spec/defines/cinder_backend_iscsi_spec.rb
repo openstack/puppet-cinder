@@ -75,7 +75,7 @@ describe 'cinder::backend::iscsi' do
     end
 
     it 'configure iscsi backend with additional configuration' do
-      should contain_cinder_config('hippo/param1').with({
+      is_expected.to contain_cinder_config('hippo/param1').with({
         :value => 'value1',
       })
     end

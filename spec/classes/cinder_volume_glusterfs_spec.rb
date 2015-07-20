@@ -39,7 +39,7 @@ describe 'cinder::volume::glusterfs' do
       end
 
       it 'configure glusterfs volume with additional configuration' do
-        should contain_cinder__backend__glusterfs('DEFAULT').with({
+        is_expected.to contain_cinder__backend__glusterfs('DEFAULT').with({
           :extra_options => {'glusterfs_backend/param1' => {'value' => 'value1'}}
         })
       end

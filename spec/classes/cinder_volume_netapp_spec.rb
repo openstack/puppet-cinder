@@ -89,7 +89,7 @@ describe 'cinder::volume::netapp' do
     end
 
     it 'configure netapp volume with additional configuration' do
-      should contain_cinder__backend__netapp('DEFAULT').with({
+      is_expected.to contain_cinder__backend__netapp('DEFAULT').with({
         :extra_options => {'netapp_backend/param1' => {'value' => 'value1'}}
       })  
     end

@@ -49,7 +49,7 @@ describe 'cinder::volume::nexenta' do
     end
 
     it 'configure nexenta volume with additional configuration' do
-      should contain_cinder__backend__nexenta('DEFAULT').with({
+      is_expected.to contain_cinder__backend__nexenta('DEFAULT').with({
         :extra_options => {'nexenta_backend/param1' => {'value' => 'value1'}}
       })
     end

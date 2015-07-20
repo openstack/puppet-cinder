@@ -78,7 +78,7 @@ describe 'cinder::backend::netapp' do
     end
 
     it 'sets use_multipath_for_image_xfer to true' do
-      should contain_cinder_config('netapp/use_multipath_for_image_xfer').with({
+      is_expected.to contain_cinder_config('netapp/use_multipath_for_image_xfer').with({
         :value => 'true'
       })
     end
@@ -90,7 +90,7 @@ describe 'cinder::backend::netapp' do
     end
 
     it 'sets the nfs mount options' do
-      should contain_cinder_config('netapp/nfs_mount_options').with({
+      is_expected.to contain_cinder_config('netapp/nfs_mount_options').with({
         :value => 'rw,proto=tcp,sec=sys'
       })
     end
@@ -102,7 +102,7 @@ describe 'cinder::backend::netapp' do
     end
 
     it 'configure netapp backend with additional configuration' do
-      should contain_cinder_config('netapp/param1').with({
+      is_expected.to contain_cinder_config('netapp/param1').with({
         :value => 'value1'
       })
     end

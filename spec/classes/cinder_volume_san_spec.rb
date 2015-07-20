@@ -49,7 +49,7 @@ describe 'cinder::volume::san' do
     end
 
     it 'configure san volume with additional configuration' do
-      should contain_cinder__backend__san('DEFAULT').with({
+      is_expected.to contain_cinder__backend__san('DEFAULT').with({
         :extra_options => {'san_backend/param1' => {'value' => 'value1'}}
       })
     end

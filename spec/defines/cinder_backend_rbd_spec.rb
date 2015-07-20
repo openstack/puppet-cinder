@@ -76,7 +76,7 @@ describe 'cinder::backend::rbd' do
       end
 
       it 'configure rbd backend with additional configuration' do
-        should contain_cinder_config('rbd-ssd/param1').with({
+        is_expected.to contain_cinder_config('rbd-ssd/param1').with({
           :value => 'value1'
         })
       end

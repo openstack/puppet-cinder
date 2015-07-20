@@ -36,7 +36,7 @@ describe 'cinder::volume::emc_vnx' do
     end
 
     it 'configure emc vnx volume with additional configuration' do
-      should contain_cinder__backend__emc_vnx('DEFAULT').with({
+      is_expected.to contain_cinder__backend__emc_vnx('DEFAULT').with({
         :extra_options => {'emc_vnx_backend/param1' => {'value' => 'value1'}}
       })
     end

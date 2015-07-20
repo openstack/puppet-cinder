@@ -47,7 +47,7 @@ describe 'cinder::volume::nfs' do
     end
 
     it 'configure nfs volume with additional configuration' do
-      should contain_cinder__backend__nfs('DEFAULT').with({
+      is_expected.to contain_cinder__backend__nfs('DEFAULT').with({
         :extra_options => {'nfs_backend/param1' => {'value' => 'value1'}}
       })
     end

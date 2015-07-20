@@ -91,7 +91,7 @@ describe 'cinder::volume::iscsi' do
     let(:params) { req_params.merge({:extra_options => {'iscsi_backend/param1' => {'value' => 'value1'}}}) }
 
     it 'configure iscsi volume with additional configuration' do
-      should contain_cinder__backend__iscsi('DEFAULT').with({
+      is_expected.to contain_cinder__backend__iscsi('DEFAULT').with({
         :extra_options => {'iscsi_backend/param1' => {'value' => 'value1'}}
       })
     end

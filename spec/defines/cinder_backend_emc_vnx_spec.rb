@@ -38,7 +38,7 @@ describe 'cinder::backend::emc_vnx' do
     end
 
     it 'configure emc vnx backend with additional configuration' do
-      should contain_cinder_config('emc/param1').with({
+      is_expected.to contain_cinder_config('emc/param1').with({
         :value => 'value1',
       })
     end

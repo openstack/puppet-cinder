@@ -45,7 +45,7 @@ describe 'cinder::backend::glusterfs' do
       end
 
       it 'configure glusterfs backend with additional configuration' do
-        should contain_cinder_config('mygluster/param1').with({
+        is_expected.to contain_cinder_config('mygluster/param1').with({
           :value => 'value1'
         })
       end

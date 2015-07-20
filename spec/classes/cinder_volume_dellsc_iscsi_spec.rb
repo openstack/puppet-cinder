@@ -48,7 +48,7 @@ describe 'cinder::volume::dellsc_iscsi' do
     end
 
     it 'configure dellsc_iscsi volume with additional configuration' do
-      should contain_cinder__backend__dellsc_iscsi('DEFAULT').with({
+      is_expected.to contain_cinder__backend__dellsc_iscsi('DEFAULT').with({
         :extra_options => {'dellsc_iscsi_backend/param1' => {'value' => 'value1'}}
       })
     end

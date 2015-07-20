@@ -12,13 +12,13 @@ describe 'cinder::volume::quobyte' do
     end
 
     it 'configures quobyte volume driver' do
-      should contain_cinder_config('DEFAULT/volume_driver').with_value(
+      is_expected.to contain_cinder_config('DEFAULT/volume_driver').with_value(
         'cinder.volume.drivers.quobyte.QuobyteDriver')
-      should contain_cinder_config('DEFAULT/quobyte_volume_url').with_value(
+      is_expected.to contain_cinder_config('DEFAULT/quobyte_volume_url').with_value(
         'quobyte://quobyte.cluster.example.com/volume-name')
-      should contain_cinder_config('DEFAULT/quobyte_qcow2_volumes').with_value(
+      is_expected.to contain_cinder_config('DEFAULT/quobyte_qcow2_volumes').with_value(
         false)
-      should contain_cinder_config('DEFAULT/quobyte_sparsed_volumes').with_value(
+      is_expected.to contain_cinder_config('DEFAULT/quobyte_sparsed_volumes').with_value(
         true)
     end
 

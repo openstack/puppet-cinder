@@ -40,7 +40,7 @@ describe 'cinder::backend::eqlx' do
     end
 
     it 'configure eqlx backend with additional configuration' do
-      should contain_cinder_config('eqlx-1/param1').with({
+      is_expected.to contain_cinder_config('eqlx-1/param1').with({
         :value => 'value1',
       })
     end

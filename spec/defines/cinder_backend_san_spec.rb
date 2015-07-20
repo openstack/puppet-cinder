@@ -44,7 +44,7 @@ describe 'cinder::backend::san' do
     end
 
     it 'configure san backend with additional configuration' do
-      should contain_cinder_config('mysan/param1').with({
+      is_expected.to contain_cinder_config('mysan/param1').with({
         :value => 'value1'
       })
     end

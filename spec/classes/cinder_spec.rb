@@ -327,8 +327,8 @@ describe 'cinder' do
       }
     end
 
-    it { should contain_cinder_config('DEFAULT/enable_v1_api').with_value(false) }
-    it { should contain_cinder_config('DEFAULT/enable_v2_api').with_value(true) }
+    it { is_expected.to contain_cinder_config('DEFAULT/enable_v1_api').with_value(false) }
+    it { is_expected.to contain_cinder_config('DEFAULT/enable_v2_api').with_value(true) }
 
   end
 end

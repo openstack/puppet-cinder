@@ -66,7 +66,7 @@ describe 'cinder::volume::vmdk' do
     end
 
     it 'configure vmdk volume with additional configuration' do
-      should contain_cinder__backend__vmdk('DEFAULT').with({
+      is_expected.to contain_cinder__backend__vmdk('DEFAULT').with({
         :extra_options => {'vmdk_backend/param1' => {'value' => 'value1'}}
       })
     end

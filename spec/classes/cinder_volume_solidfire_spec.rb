@@ -33,7 +33,7 @@ describe 'cinder::volume::solidfire' do
     end
 
     it 'configure solidfire volume with additional configuration' do
-      should contain_cinder__backend__solidfire('DEFAULT').with({
+      is_expected.to contain_cinder__backend__solidfire('DEFAULT').with({
         :extra_options => {'solidfire_backend/param1' => {'value' => 'value1'}}
       })
     end

@@ -39,7 +39,7 @@ describe 'cinder::volume::eqlx' do
     end
 
     it 'configure eqlx volume with additional configuration' do
-      should contain_cinder__backend__eqlx('DEFAULT').with({
+      is_expected.to contain_cinder__backend__eqlx('DEFAULT').with({
         :extra_options => {'eqlx_backend/param1' => {'value' => 'value1'}}
       })
     end

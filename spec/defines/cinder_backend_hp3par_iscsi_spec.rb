@@ -21,14 +21,14 @@ describe 'cinder::backend::hp3par_iscsi' do
 
   describe 'hp3par_iscsi volume driver' do
     it 'configure hp3par_iscsi volume driver' do
-      should contain_cinder_config('hp3par_iscsi/volume_driver').with_value('cinder.volume.drivers.san.hp.hp_3par_iscsi.HP3PARISCSIDriver')
-      should contain_cinder_config('hp3par_iscsi/hp3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
-      should contain_cinder_config('hp3par_iscsi/hp3par_username').with_value('3paradm')
-      should contain_cinder_config('hp3par_iscsi/hp3par_password').with_value('password')
-      should contain_cinder_config('hp3par_iscsi/hp3par_iscsi_ips').with_value('172.0.0.3')
-      should contain_cinder_config('hp3par_iscsi/san_ip').with_value('172.0.0.2')
-      should contain_cinder_config('hp3par_iscsi/san_login').with_value('3paradm')
-      should contain_cinder_config('hp3par_iscsi/san_password').with_value('password')
+      is_expected.to contain_cinder_config('hp3par_iscsi/volume_driver').with_value('cinder.volume.drivers.san.hp.hp_3par_iscsi.HP3PARISCSIDriver')
+      is_expected.to contain_cinder_config('hp3par_iscsi/hp3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
+      is_expected.to contain_cinder_config('hp3par_iscsi/hp3par_username').with_value('3paradm')
+      is_expected.to contain_cinder_config('hp3par_iscsi/hp3par_password').with_value('password')
+      is_expected.to contain_cinder_config('hp3par_iscsi/hp3par_iscsi_ips').with_value('172.0.0.3')
+      is_expected.to contain_cinder_config('hp3par_iscsi/san_ip').with_value('172.0.0.2')
+      is_expected.to contain_cinder_config('hp3par_iscsi/san_login').with_value('3paradm')
+      is_expected.to contain_cinder_config('hp3par_iscsi/san_password').with_value('password')
     end
   end
 
@@ -38,7 +38,7 @@ describe 'cinder::backend::hp3par_iscsi' do
     end
 
     it 'configure hp3par_iscsi backend with additional configuration' do
-      should contain_cinder_config('hp3par_iscsi/param1').with({
+      is_expected.to contain_cinder_config('hp3par_iscsi/param1').with({
         :value => 'value1',
       })
     end

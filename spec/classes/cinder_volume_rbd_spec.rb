@@ -58,7 +58,7 @@ describe 'cinder::volume::rbd' do
       params.merge!({:extra_options => {'rbd_backend/param1' => {'value' => 'value1'}}})
     end
     it 'configure rbd volume with additional configuration' do
-      should contain_cinder__backend__rbd('DEFAULT').with({
+      is_expected.to contain_cinder__backend__rbd('DEFAULT').with({
         :extra_options => {'rbd_backend/param1' => {'value' => 'value1'}}
       })
     end

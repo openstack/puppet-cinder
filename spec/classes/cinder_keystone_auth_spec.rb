@@ -168,12 +168,12 @@ describe 'cinder::keystone::auth' do
       )
     end
 
-    it { should contain_keystone_user('cinder') }
-    it { should contain_keystone_user_role('cinder@services') }
-    it { should contain_keystone_service('cinder_service') }
-    it { should contain_keystone_service('cinder_service_v2') }
-    it { should contain_keystone_endpoint('RegionOne/cinder_service') }
-    it { should contain_keystone_endpoint('RegionOne/cinder_service_v2') }
+    it { is_expected.to contain_keystone_user('cinder') }
+    it { is_expected.to contain_keystone_user_role('cinder@services') }
+    it { is_expected.to contain_keystone_service('cinder_service') }
+    it { is_expected.to contain_keystone_service('cinder_service_v2') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/cinder_service') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/cinder_service_v2') }
 
   end
 
