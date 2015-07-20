@@ -7,16 +7,17 @@
 #
 # [*notification_driver*]
 #   (option) Driver or drivers to handle sending notifications.
-#    Notice: rabbit_notifier has been deprecated in Grizzly, use rpc_notifier instead.
+#   The default value of 'messagingv2' is for enabling notifications via
+#   oslo.messaging.  'cinder.openstack.common.notifier.rpc_notifier' is the
+#   backwards compatible option that will be deprecated. Prior to Grizzly,
+#   'cinder.openstack.common.notifier.rabbit_notifier' was used. oslo.messaging
+#   was adopted in icehouse/juno. See LP#1425713.
 #
-
-
 class cinder::ceilometer (
-  $notification_driver = 'cinder.openstack.common.notifier.rpc_notifier'
+  $notification_driver = 'messagingv2',
 ) {
 
   cinder_config {
-    'DEFAULT/notification_driver':     value => $notification_driver;
+    'DEFAULT/notification_driver': value => $notification_driver;
   }
 }
-
