@@ -51,7 +51,7 @@ class cinder::scheduler (
     package { 'cinder-scheduler':
       ensure => $package_ensure,
       name   => $::cinder::params::scheduler_package,
-      tag    => 'openstack',
+      tag    => ['openstack', 'cinder-package'],
     }
   }
 
@@ -69,5 +69,6 @@ class cinder::scheduler (
     enable    => $enabled,
     hasstatus => true,
     require   => Package['cinder'],
+    tag       => 'cinder-service',
   }
 }

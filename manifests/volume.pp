@@ -34,7 +34,7 @@ class cinder::volume (
     package { 'cinder-volume':
       ensure => $package_ensure,
       name   => $::cinder::params::volume_package,
-      tag    => 'openstack',
+      tag    => ['openstack', 'cinder-package'],
     }
   }
 
@@ -52,5 +52,6 @@ class cinder::volume (
     enable    => $enabled,
     hasstatus => true,
     require   => Package['cinder'],
+    tag       => 'cinder-service',
   }
 }

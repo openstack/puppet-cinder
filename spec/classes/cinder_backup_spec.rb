@@ -46,7 +46,7 @@ describe 'cinder::backup' do
         is_expected.to contain_package('cinder-backup').with(
           :name   => platform_params[:backup_package],
           :ensure => 'present',
-          :tag    => 'openstack'
+          :tag    => ['openstack', 'cinder-package'],
         )
         is_expected.to contain_package('cinder-backup').with_before(/Cinder_config\[.+\]/)
         is_expected.to contain_package('cinder-backup').with_before(/Service\[cinder-backup\]/)
@@ -54,7 +54,10 @@ describe 'cinder::backup' do
     end
 
     it 'ensure cinder backup service is running' do
-      is_expected.to contain_service('cinder-backup').with('hasstatus' => true)
+      is_expected.to contain_service('cinder-backup').with(
+        'hasstatus' => true,
+        'tag'       => 'cinder-service',
+      )
     end
 
     it 'configures cinder.conf' do
