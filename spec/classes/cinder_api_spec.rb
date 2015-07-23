@@ -17,7 +17,8 @@ describe 'cinder::api' do
 
     it { is_expected.to contain_service('cinder-api').with(
       'hasstatus' => true,
-      'ensure' => 'running'
+      'ensure' => 'running',
+      'tag' => 'cinder-service',
     )}
 
     it 'should configure cinder api correctly' do

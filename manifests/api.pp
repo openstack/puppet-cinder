@@ -168,7 +168,7 @@ class cinder::api (
     package { 'cinder-api':
       ensure => $package_ensure,
       name   => $::cinder::params::api_package,
-      tag    => 'openstack',
+      tag    => ['openstack', 'cinder-package'],
     }
   }
 
@@ -202,6 +202,7 @@ class cinder::api (
     enable    => $enabled,
     hasstatus => true,
     require   => Package['cinder'],
+    tag       => 'cinder-service',
   }
 
   cinder_config {
