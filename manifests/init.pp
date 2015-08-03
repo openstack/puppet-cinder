@@ -20,36 +20,6 @@
 #   (Optional) Use syslog for logging.
 #   Defaults to false.
 #
-# [*database_connection*]
-#    Url used to connect to database.
-#    (Optional) Defaults to
-#    'sqlite:////var/lib/cinder/cinder.sqlite'
-#
-# [*database_idle_timeout*]
-#   Timeout when db connections should be reaped.
-#   (Optional) Defaults to 3600.
-#
-# [*database_min_pool_size*]
-#   Minimum number of SQL connections to keep open in a pool.
-#   (Optional) Defaults to 1.
-#
-# [*database_max_pool_size*]
-#   Maximum number of SQL connections to keep open in a pool.
-#   (Optional) Defaults to '<SERVICE DEFAULT>'
-#
-# [*database_max_retries*]
-#   Maximum db connection retries during startup.
-#   Setting -1 implies an infinite retry count.
-#   (Optional) Defaults to 10.
-#
-# [*database_retry_interval*]
-#   Interval between retries of opening a sql connection.
-#   (Optional) Defaults to 10.
-#
-# [*database_max_overflow*]
-#   If set, use this value for max_overflow with sqlalchemy.
-#   (Optional) Defaults to "<SERVICE DEFAULT>'
-#
 # [*rpc_backend*]
 #   (Optional) Use these options to configure the RabbitMQ message system.
 #   Defaults to 'cinder.openstack.common.rpc.impl_kombu'
@@ -173,6 +143,35 @@
 #   Use syslog for logging.
 #   (Optional) Defaults to false.
 #
+# [*database_connection*]
+#    Url used to connect to database.
+#    (Optional) Defaults to undef.
+#
+# [*database_idle_timeout*]
+#   Timeout when db connections should be reaped.
+#   (Optional) Defaults to undef.
+#
+# [*database_min_pool_size*]
+#   Minimum number of SQL connections to keep open in a pool.
+#   (Optional) Defaults to undef.
+#
+# [*database_max_pool_size*]
+#   Maximum number of SQL connections to keep open in a pool.
+#   (Optional) Defaults to undef.
+#
+# [*database_max_retries*]
+#   Maximum db connection retries during startup.
+#   Setting -1 implies an infinite retry count.
+#   (Optional) Defaults to undef.
+#
+# [*database_retry_interval*]
+#   Interval between retries of opening a sql connection.
+#   (Optional) Defaults to underf.
+#
+# [*database_max_overflow*]
+#   If set, use this value for max_overflow with sqlalchemy.
+#   (Optional) Defaults to undef.
+#
 # [*use_stderr*]
 #   (optional) Use stderr for logging
 #   Defaults to true
@@ -236,13 +235,13 @@
 #   DEPRECATED. Does nothing.
 #
 class cinder (
-  $database_connection                = 'sqlite:////var/lib/cinder/cinder.sqlite',
-  $database_idle_timeout              = '3600',
-  $database_min_pool_size             = '1',
-  $database_max_pool_size             = '<SERVICE DEFAULT>',
-  $database_max_retries               = '10',
-  $database_retry_interval            = '10',
-  $database_max_overflow              = '<SERVICE DEFAULT>',
+  $database_connection                = undef,
+  $database_idle_timeout              = undef,
+  $database_min_pool_size             = undef,
+  $database_max_pool_size             = undef,
+  $database_max_retries               = undef,
+  $database_retry_interval            = undef,
+  $database_max_overflow              = undef,
   $rpc_backend                        = 'cinder.openstack.common.rpc.impl_kombu',
   $control_exchange                   = 'openstack',
   $rabbit_host                        = '127.0.0.1',
@@ -292,8 +291,9 @@ class cinder (
   $lock_path                          = $::cinder::params::lock_path,
   # DEPRECATED PARAMETERS
   $mysql_module                       = undef,
-) {
+)  {
 
+  include ::cinder::db
   include ::cinder::params
 
   if $mysql_module {
@@ -400,13 +400,6 @@ class cinder (
   }
 
   cinder_config {
-    'database/connection':               value => $database_connection, secret => true;
-    'database/idle_timeout':             value => $database_idle_timeout;
-    'database/min_pool_size':            value => $database_min_pool_size;
-    'database/max_retries':              value => $database_max_retries;
-    'database/retry_interval':           value => $database_retry_interval;
-    'database/max_pool_size':            value => $database_max_pool_size;
-    'database/max_overflow':             value => $database_max_overflow;
     'DEFAULT/log_dir':                   value => $log_dir;
     'DEFAULT/verbose':                   value => $verbose;
     'DEFAULT/debug':                     value => $debug;
@@ -415,17 +408,6 @@ class cinder (
     'DEFAULT/rpc_backend':               value => $rpc_backend;
     'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
     'DEFAULT/default_availability_zone': value => $default_availability_zone_real;
-  }
-
-  if($database_connection =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
-    require 'mysql::bindings'
-    require 'mysql::bindings::python'
-  } elsif($database_connection =~ /postgresql:\/\/\S+:\S+@\S+\/\S+/) {
-
-  } elsif($database_connection =~ /sqlite:\/\//) {
-
-  } else {
-    fail("Invalid db connection ${database_connection}")
   }
 
   # SSL Options

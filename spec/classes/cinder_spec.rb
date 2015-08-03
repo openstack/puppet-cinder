@@ -32,13 +32,6 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('0')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('2')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_userid').with(:value => 'guest')
-      is_expected.to contain_cinder_config('database/connection').with(:value  => 'mysql://user:password@host/database', :secret => true)
-      is_expected.to contain_cinder_config('database/idle_timeout').with(:value => '3600')
-      is_expected.to contain_cinder_config('database/min_pool_size').with(:value => '1')
-      is_expected.to contain_cinder_config('database/max_pool_size').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('database/max_retries').with(:value => '10')
-      is_expected.to contain_cinder_config('database/retry_interval').with(:value => '10')
-      is_expected.to contain_cinder_config('database/max_overflow').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/verbose').with(:value => false)
       is_expected.to contain_cinder_config('DEFAULT/debug').with(:value => false)
       is_expected.to contain_cinder_config('DEFAULT/use_stderr').with(:value => true)
@@ -97,7 +90,6 @@ describe 'cinder' do
       }
     end
 
-    it { is_expected.to contain_cinder_config('database/connection').with_value('mysql://user:password@host/database') }
     it { is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with_value('cinder.openstack.common.rpc.impl_qpid') }
     it { is_expected.to contain_cinder_config('DEFAULT/qpid_hostname').with_value('localhost') }
     it { is_expected.to contain_cinder_config('DEFAULT/qpid_port').with_value('5672') }
@@ -270,10 +262,6 @@ describe 'cinder' do
       }
     end
 
-    it { is_expected.to contain_cinder_config('database/connection').with(
-      :value  => 'postgresql://user:drowssap@host/database',
-      :secret => true
-    ) }
     it { is_expected.to_not contain_class('mysql::python') }
     it { is_expected.to_not contain_class('mysql::bindings') }
     it { is_expected.to_not contain_class('mysql::bindings::python') }
