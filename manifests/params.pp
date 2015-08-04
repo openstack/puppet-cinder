@@ -19,6 +19,7 @@ class cinder::params {
     $ceph_init_override = '/etc/init/cinder-volume.override'
     $iscsi_helper       = 'tgtadm'
     $lio_package_name   = 'targetcli'
+    $lock_path          = '/var/lock/cinder'
 
   } elsif($::osfamily == 'RedHat') {
 
@@ -37,6 +38,7 @@ class cinder::params {
     $tgt_service_name   = 'tgtd'
     $ceph_init_override = '/etc/sysconfig/openstack-cinder-volume'
     $lio_package_name   = 'targetcli'
+    $lock_path          = '/var/lib/cinder/tmp'
 
     case $::operatingsystem {
       'RedHat', 'CentOS', 'Scientific', 'OracleLinux': {
