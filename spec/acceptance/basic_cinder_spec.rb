@@ -102,6 +102,7 @@ describe 'basic cinder' do
       class { '::cinder::scheduler': }
       class { '::cinder::scheduler::filter': }
       class { '::cinder::volume': }
+      class { '::cinder::cron::db_purge': }
       # TODO: create a backend and spawn a volume
       EOS
 
@@ -114,6 +115,11 @@ describe 'basic cinder' do
     describe port(8776) do
       it { is_expected.to be_listening.with('tcp') }
     end
+
+    describe cron do
+      it { is_expected.to have_entry('1 0 * * * cinder-manage db purge 30 >>/var/log/cinder/cinder-rowsflush.log 2>&1').with_user('cinder') }
+    end
+
 
   end
 end
