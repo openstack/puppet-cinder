@@ -37,6 +37,7 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('database/max_overflow').with_ensure('absent')
       is_expected.to contain_cinder_config('DEFAULT/verbose').with(:value => false)
       is_expected.to contain_cinder_config('DEFAULT/debug').with(:value => false)
+      is_expected.to contain_cinder_config('DEFAULT/use_stderr').with(:value => true)
       is_expected.to contain_cinder_config('DEFAULT/storage_availability_zone').with(:value => 'nova')
       is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
       is_expected.to contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
