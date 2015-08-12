@@ -173,6 +173,10 @@
 #   Use syslog for logging.
 #   (Optional) Defaults to false.
 #
+# [*use_stderr*]
+#   (optional) Use stderr for logging
+#   Defaults to true
+#
 # [*log_facility*]
 #   Syslog facility to receive log lines.
 #   (Optional) Defaults to LOG_USER.
@@ -276,6 +280,7 @@ class cinder (
   $key_file                           = false,
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
   $use_syslog                         = false,
+  $use_stderr                         = true,
   $log_facility                       = 'LOG_USER',
   $log_dir                            = '/var/log/cinder',
   $verbose                            = false,
@@ -430,6 +435,7 @@ class cinder (
     'database/retry_interval':           value => $database_retry_interval;
     'DEFAULT/verbose':                   value => $verbose;
     'DEFAULT/debug':                     value => $debug;
+    'DEFAULT/use_stderr':                value => $use_stderr;
     'DEFAULT/api_paste_config':          value => $api_paste_config;
     'DEFAULT/rpc_backend':               value => $rpc_backend;
     'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
