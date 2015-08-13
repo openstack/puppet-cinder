@@ -27,8 +27,6 @@ class cinder::volume (
   Exec<| title == 'cinder-manage db_sync' |> ~> Service['cinder-volume']
 
   if $::cinder::params::volume_package {
-    Package['cinder-volume'] -> Cinder_config<||>
-    Package['cinder-volume'] -> Cinder_api_paste_ini<||>
     Package['cinder']        -> Package['cinder-volume']
     Package['cinder-volume'] -> Service['cinder-volume']
     package { 'cinder-volume':

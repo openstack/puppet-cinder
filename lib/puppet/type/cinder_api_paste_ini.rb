@@ -39,4 +39,9 @@ Puppet::Type.newtype(:cinder_api_paste_ini) do
 
     defaultto false
   end
+
+  autorequire(:package) do
+    'cinder'
+  end
+
 end

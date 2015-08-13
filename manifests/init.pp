@@ -296,9 +296,6 @@ class cinder (
 
   include ::cinder::params
 
-  Package['cinder'] -> Cinder_config<||>
-  Package['cinder'] -> Cinder_api_paste_ini<||>
-
   if $mysql_module {
     warning('The mysql_module parameter is deprecated. The latest 2.x mysql module will be used.')
   }

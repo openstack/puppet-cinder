@@ -161,8 +161,6 @@ class cinder::api (
 
   if $::cinder::params::api_package {
     Package['cinder-api'] -> Class['cinder::policy']
-    Package['cinder-api'] -> Cinder_config<||>
-    Package['cinder-api'] -> Cinder_api_paste_ini<||>
     Package['cinder-api'] -> Service['cinder-api']
     Package['cinder-api'] ~> Exec<| title == 'cinder-manage db_sync' |>
     package { 'cinder-api':

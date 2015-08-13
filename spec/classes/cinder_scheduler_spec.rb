@@ -16,7 +16,7 @@ describe 'cinder::scheduler' do
       it { is_expected.to contain_package('cinder-scheduler').with(
         :name   => 'cinder-scheduler',
         :ensure => 'present',
-        :before => ['Cinder_config[DEFAULT/scheduler_driver]','Service[cinder-scheduler]'],
+        :before => ['Service[cinder-scheduler]'],
         :tag    => ['openstack', 'cinder-package'],
       ) }
 
