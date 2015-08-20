@@ -1,7 +1,11 @@
 require 'spec_helper'
 describe 'cinder' do
   let :req_params do
-    {:rabbit_password => 'guest', :database_connection => 'mysql://user:password@host/database'}
+    {
+      :rabbit_password => 'guest',
+      :database_connection => 'mysql://user:password@host/database',
+      :lock_path => '/var/lock/cinder',
+    }
   end
 
   let :facts do
