@@ -50,6 +50,10 @@
 #   (Optional) Virtual_host to use.
 #   Defaults to '/'
 #
+# [*rabbit_ha_queues*]
+#   (optional) Use HA queues in RabbitMQ (x-ha-policy: all).
+#   Defaults to undef
+#
 # [*rabbit_heartbeat_timeout_threshold*]
 #   (optional) Number of seconds after which the RabbitMQ broker is considered
 #   down if the heartbeat keepalive fails.  Any value >0 enables heartbeats.
@@ -266,8 +270,9 @@ class cinder (
   $control_exchange                   = 'openstack',
   $rabbit_host                        = '127.0.0.1',
   $rabbit_port                        = 5672,
-  $rabbit_hosts                       = false,
+  $rabbit_hosts                       = undef,
   $rabbit_virtual_host                = '/',
+  $rabbit_ha_queues                   = undef,
   $rabbit_heartbeat_timeout_threshold = 0,
   $rabbit_heartbeat_rate              = 2,
   $rabbit_userid                      = 'guest',
@@ -366,15 +371,24 @@ class cinder (
     }
 
     if $rabbit_hosts {
-      cinder_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => join($rabbit_hosts, ',') }
-      cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => true }
-      cinder_config { 'oslo_messaging_rabbit/rabbit_host':      ensure => absent }
-      cinder_config { 'oslo_messaging_rabbit/rabbit_port':      ensure => absent }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_hosts': value => join(any2array($rabbit_hosts), ',') }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_host':  ensure => absent }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_port':  ensure => absent }
     } else {
-      cinder_config { 'oslo_messaging_rabbit/rabbit_host':      value => $rabbit_host }
-      cinder_config { 'oslo_messaging_rabbit/rabbit_port':      value => $rabbit_port }
-      cinder_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
-      cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => false }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_host':  value => $rabbit_host }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_port':  value => $rabbit_port }
+      cinder_config { 'oslo_messaging_rabbit/rabbit_hosts': value => "${rabbit_host}:${rabbit_port}" }
+    }
+
+    # By default rabbit_ha_queues is undef
+    if $rabbit_ha_queues == undef {
+      if size($rabbit_hosts) > 1 {
+        cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value  => true }
+      } else {
+        cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => false }
+      }
+    } else {
+      cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => $rabbit_ha_queues }
     }
 
   }
