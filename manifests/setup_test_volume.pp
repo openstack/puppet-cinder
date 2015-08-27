@@ -53,6 +53,7 @@ class cinder::setup_test_volume(
 
   exec { "vgcreate ${volume_name} ${loopback_device}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
+    unless      => "vgdisplay | grep ${volume_name}",
     refreshonly => true,
   }
 
