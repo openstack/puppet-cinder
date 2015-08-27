@@ -41,6 +41,7 @@ class cinder::setup_test_volume(
 
   exec { "losetup ${loopback_device} ${volume_path}/${volume_name}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
+    unless      => "losetup ${loopback_device}",
     refreshonly => true,
   } ~>
 
