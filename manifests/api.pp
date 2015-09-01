@@ -40,6 +40,15 @@
 #   requests. For example, boot-from-volume.
 #   Defaults to undef.
 #
+# [*nova_catalog_info*]
+#   (optional) Match this value when searching for nova in the service
+#   catalog.
+#   Defaults to 'compute:Compute Service:publicURL'
+#
+# [*nova_catalog_admin_info*]
+#   (optional) Same as nova_catalog_info, but for admin endpoint.
+#   Defaults to 'compute:Compute Service:adminURL'
+#
 # [*keystone_auth_admin_prefix*]
 #   (optional) DEPRECATED The admin_prefix used to admin endpoint of the auth
 #   host. This allow admin auth URIs like http://auth_host:35357/keystone.
@@ -131,6 +140,8 @@ class cinder::api (
   $auth_uri                   = false,
   $identity_uri               = false,
   $os_region_name             = undef,
+  $nova_catalog_info          = 'compute:Compute Service:publicURL',
+  $nova_catalog_admin_info    = 'compute:Compute Service:adminURL',
   $service_workers            = $::processorcount,
   $package_ensure             = 'present',
   $bind_host                  = '0.0.0.0',
@@ -213,6 +224,11 @@ class cinder::api (
     cinder_config {
       'DEFAULT/os_region_name': value => $os_region_name;
     }
+  }
+
+  cinder_config {
+    'DEFAULT/nova_catalog_info':       value => $nova_catalog_info;
+    'DEFAULT/nova_catalog_admin_info': value => $nova_catalog_admin_info;
   }
 
   if $keystone_auth_uri and $auth_uri {
