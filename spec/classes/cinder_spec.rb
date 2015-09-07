@@ -35,17 +35,17 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('database/connection').with(:value  => 'mysql://user:password@host/database', :secret => true)
       is_expected.to contain_cinder_config('database/idle_timeout').with(:value => '3600')
       is_expected.to contain_cinder_config('database/min_pool_size').with(:value => '1')
-      is_expected.to contain_cinder_config('database/max_pool_size').with_ensure('absent')
+      is_expected.to contain_cinder_config('database/max_pool_size').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('database/max_retries').with(:value => '10')
       is_expected.to contain_cinder_config('database/retry_interval').with(:value => '10')
-      is_expected.to contain_cinder_config('database/max_overflow').with_ensure('absent')
+      is_expected.to contain_cinder_config('database/max_overflow').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/verbose').with(:value => false)
       is_expected.to contain_cinder_config('DEFAULT/debug').with(:value => false)
       is_expected.to contain_cinder_config('DEFAULT/use_stderr').with(:value => true)
       is_expected.to contain_cinder_config('DEFAULT/storage_availability_zone').with(:value => 'nova')
       is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
       is_expected.to contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
-      is_expected.to contain_cinder_config('DEFAULT/log_dir').with(:value => '/var/log/cinder')
+      is_expected.to contain_cinder_config('DEFAULT/log_dir').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/lock_path').with(:value => '/var/lock/cinder')
     end
 
@@ -181,10 +181,10 @@ describe 'cinder' do
 
     it do
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_use_ssl').with_value('true')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_ca_certs').with_ensure('absent')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_certfile').with_ensure('absent')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_ensure('absent')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_version').with_value('TLSv1')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_ca_certs').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_certfile').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_version').with_value('<SERVICE DEFAULT>')
     end
   end
 
@@ -192,19 +192,19 @@ describe 'cinder' do
     let :params do
       req_params.merge!({
         :rabbit_use_ssl     => false,
-        :kombu_ssl_ca_certs => 'undef',
-        :kombu_ssl_certfile => 'undef',
-        :kombu_ssl_keyfile  => 'undef',
-        :kombu_ssl_version  => 'TLSv1'
+        :kombu_ssl_ca_certs => '<SERVICE DEFAULT>',
+        :kombu_ssl_certfile => '<SERVICE DEFAULT>',
+        :kombu_ssl_keyfile  => '<SERVICE DEFAULT>',
+        :kombu_ssl_version  => '<SERVICE DEFAULT>'
       })
     end
 
     it do
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_use_ssl').with_value('false')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_ca_certs').with_ensure('absent')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_certfile').with_ensure('absent')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_ensure('absent')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_version').with_ensure('absent')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_ca_certs').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_certfile').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_ssl_version').with_value('<SERVICE DEFAULT>')
     end
   end
 
@@ -237,11 +237,6 @@ describe 'cinder' do
 
     it { is_expected.to contain_cinder_config('DEFAULT/use_syslog').with_value(true) }
     it { is_expected.to contain_cinder_config('DEFAULT/syslog_log_facility').with_value('LOG_LOCAL0') }
-  end
-
-  describe 'with log_dir disabled' do
-    let(:params) { req_params.merge!({:log_dir => false}) }
-    it { is_expected.to contain_cinder_config('DEFAULT/log_dir').with_ensure('absent') }
   end
 
   describe 'with different lock_path' do

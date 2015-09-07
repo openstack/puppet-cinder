@@ -34,10 +34,6 @@ describe 'cinder::logging' do
       it_configures 'logging params set'
     end
 
-    context 'without extended logging options' do
-      it_configures 'logging params unset'
-    end
-
   end
 
   shared_examples_for 'logging params set' do
@@ -74,18 +70,6 @@ describe 'cinder::logging' do
       is_expected.to contain_cinder_config('DEFAULT/log_date_format').with_value(
         '%Y-%m-%d %H:%M:%S')
     end
-  end
-
-
-  shared_examples_for 'logging params unset' do
-   [ :logging_context_format_string, :logging_default_format_string,
-     :logging_debug_format_suffix, :logging_exception_prefix,
-     :log_config_append, :publish_errors,
-     :default_log_levels, :fatal_deprecations,
-     :instance_format, :instance_uuid_format,
-     :log_date_format, ].each { |param|
-        it { is_expected.to contain_cinder_config("DEFAULT/#{param}").with_ensure('absent') }
-      }
   end
 
   context 'on Debian platforms' do

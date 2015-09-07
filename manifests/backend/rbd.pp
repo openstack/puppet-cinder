@@ -25,12 +25,12 @@
 #
 # [*rbd_secret_uuid*]
 #   (optional) A required parameter to use cephx.
-#   Defaults to false
+#   Defaults to '<SERVICE DEFAULT>'
 #
 # [*volume_tmp_dir*]
 #   (optional) Location to store temporary image files if the volume
 #   driver does not write them directly to the volume
-#   Defaults to false
+#   Defaults to '<SERVICE DEFAULT>'
 #
 # [*rbd_max_clone_depth*]
 #   (optional) Maximum number of nested clones that can be taken of a
@@ -50,8 +50,8 @@ define cinder::backend::rbd (
   $volume_backend_name              = $name,
   $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
   $rbd_flatten_volume_from_snapshot = false,
-  $rbd_secret_uuid                  = false,
-  $volume_tmp_dir                   = false,
+  $rbd_secret_uuid                  = '<SERVICE DEFAULT>',
+  $volume_tmp_dir                   = '<SERVICE DEFAULT>',
   $rbd_max_clone_depth              = '5',
   $extra_options                    = {},
 ) {
@@ -67,18 +67,8 @@ define cinder::backend::rbd (
     "${name}/rbd_max_clone_depth":              value => $rbd_max_clone_depth;
     "${name}/rbd_flatten_volume_from_snapshot": value => $rbd_flatten_volume_from_snapshot;
     "${name}/host":                             value => "rbd:${rbd_pool}";
-  }
-
-  if $rbd_secret_uuid {
-    cinder_config {"${name}/rbd_secret_uuid": value => $rbd_secret_uuid;}
-  } else {
-    cinder_config {"${name}/rbd_secret_uuid": ensure => absent;}
-  }
-
-  if $volume_tmp_dir {
-    cinder_config {"${name}/volume_tmp_dir": value => $volume_tmp_dir;}
-  } else {
-    cinder_config {"${name}/volume_tmp_dir": ensure => absent;}
+    "${name}/rbd_secret_uuid":                  value => $rbd_secret_uuid;
+    "${name}/volume_tmp_dir":                   value => $volume_tmp_dir;
   }
 
   create_resources('cinder_config', $extra_options)

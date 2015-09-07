@@ -11,7 +11,7 @@ describe 'cinder::scheduler' do
     describe 'with default parameters' do
 
       it { is_expected.to contain_class('cinder::params') }
-      it { is_expected.to contain_cinder_config('DEFAULT/scheduler_driver').with_ensure('absent') }
+      it { is_expected.to contain_cinder_config('DEFAULT/scheduler_driver').with_value('<SERVICE DEFAULT>') }
 
       it { is_expected.to contain_package('cinder-scheduler').with(
         :name   => 'cinder-scheduler',

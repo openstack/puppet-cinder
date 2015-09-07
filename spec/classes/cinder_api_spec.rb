@@ -38,7 +38,10 @@ describe 'cinder::api' do
        :value => 'compute:Compute Service:adminURL'
       )
       is_expected.to contain_cinder_config('DEFAULT/default_volume_type').with(
-       :ensure => 'absent'
+       :value => '<SERVICE DEFAULT>'
+      )
+      is_expected.to contain_cinder_config('DEFAULT/os_region_name').with(
+       :value => '<SERVICE DEFAULT>'
       )
       is_expected.to contain_cinder_api_paste_ini('filter:authtoken/service_protocol').with(
         :value => 'http'
@@ -75,7 +78,6 @@ describe 'cinder::api' do
         :value => 'http://localhost:5000/'
       )
 
-      is_expected.to_not contain_cinder_config('DEFAULT/os_region_name')
 
     end
   end

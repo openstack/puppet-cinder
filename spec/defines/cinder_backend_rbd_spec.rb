@@ -9,10 +9,10 @@ describe 'cinder::backend::rbd' do
       :volume_backend_name              => 'rbd-ssd',
       :rbd_pool                         => 'volumes',
       :rbd_user                         => 'test',
-      :rbd_secret_uuid                  => '0123456789',
+      :rbd_secret_uuid                  => '<SERVICE DEFAULT>',
       :rbd_ceph_conf                    => '/foo/boo/zoo/ceph.conf',
       :rbd_flatten_volume_from_snapshot => true,
-      :volume_tmp_dir                   => '/foo/tmp',
+      :volume_tmp_dir                   => '<SERVICE DEFAULT>',
       :rbd_max_clone_depth              => '0'
     }
   end
@@ -43,16 +43,6 @@ describe 'cinder::backend::rbd' do
         :line    => /env CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/init/cinder-volume.override',
         :notify  => 'Service[cinder-volume]')
-    end
-
-    context 'with rbd_secret_uuid disabled' do
-      let(:params) { req_params.merge!({:rbd_secret_uuid => false}) }
-      it { is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_secret_uuid").with_ensure('absent') }
-    end
-
-    context 'with volume_tmp_dir disabled' do
-      let(:params) { req_params.merge!({:volume_tmp_dir => false}) }
-      it { is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_tmp_dir").with_ensure('absent') }
     end
 
     context 'with another RBD backend' do

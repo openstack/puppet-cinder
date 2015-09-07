@@ -35,7 +35,7 @@
 #
 # [*database_max_pool_size*]
 #   Maximum number of SQL connections to keep open in a pool.
-#   (Optional) Defaults to undef.
+#   (Optional) Defaults to '<SERVICE DEFAULT>'
 #
 # [*database_max_retries*]
 #   Maximum db connection retries during startup.
@@ -48,7 +48,7 @@
 #
 # [*database_max_overflow*]
 #   If set, use this value for max_overflow with sqlalchemy.
-#   (Optional) Defaults to undef.
+#   (Optional) Defaults to "<SERVICE DEFAULT>'
 #
 # [*rpc_backend*]
 #   (Optional) Use these options to configure the RabbitMQ message system.
@@ -105,21 +105,21 @@
 #
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
-#   Defaults to undef
+#   Defaults to '<SERVICE DEFAULT>'
 #
 # [*kombu_ssl_certfile*]
 #   (optional) SSL cert file (valid only if SSL enabled).
-#   Defaults to undef
+#   Defaults to '<SERVICE DEFAULT>'
 #
 # [*kombu_ssl_keyfile*]
 #   (optional) SSL key file (valid only if SSL enabled).
-#   Defaults to undef
+#   Defaults to '<SERVICE DEFAULT>'
 #
 # [*kombu_ssl_version*]
 #   (optional) SSL version to use (valid only if SSL enabled).
 #   Valid values are TLSv1, SSLv23 and SSLv3. SSLv2 may be
 #   available on some distributions.
-#   Defaults to 'TLSv1'
+#   Defaults to '<SERVICE DEFAULT>'
 #
 # [*amqp_durable_queues*]
 #   Use durable queues in amqp.
@@ -184,7 +184,7 @@
 # [*log_dir*]
 #   (optional) Directory where logs should be stored.
 #   If set to boolean false, it will not log to any directory.
-#   Defaults to '/var/log/cinder'
+#   Defaults to '<SERVICE DEFAULT>'
 #
 # [*use_ssl*]
 #   (optional) Enable SSL on the API server
@@ -200,7 +200,7 @@
 #
 # [*ca_file*]
 #   (optional) CA certificate file to use to verify connecting clients
-#   Defaults to false, not set_
+#   Defaults to '<SERVICE DEFAULT>'
 #
 # [*storage_availability_zone*]
 #   (optional) Availability zone of the node.
@@ -239,10 +239,10 @@ class cinder (
   $database_connection                = 'sqlite:////var/lib/cinder/cinder.sqlite',
   $database_idle_timeout              = '3600',
   $database_min_pool_size             = '1',
-  $database_max_pool_size             = undef,
+  $database_max_pool_size             = '<SERVICE DEFAULT>',
   $database_max_retries               = '10',
   $database_retry_interval            = '10',
-  $database_max_overflow              = undef,
+  $database_max_overflow              = '<SERVICE DEFAULT>',
   $rpc_backend                        = 'cinder.openstack.common.rpc.impl_kombu',
   $control_exchange                   = 'openstack',
   $rabbit_host                        = '127.0.0.1',
@@ -254,10 +254,10 @@ class cinder (
   $rabbit_userid                      = 'guest',
   $rabbit_password                    = false,
   $rabbit_use_ssl                     = false,
-  $kombu_ssl_ca_certs                 = undef,
-  $kombu_ssl_certfile                 = undef,
-  $kombu_ssl_keyfile                  = undef,
-  $kombu_ssl_version                  = 'TLSv1',
+  $kombu_ssl_ca_certs                 = '<SERVICE DEFAULT>',
+  $kombu_ssl_certfile                 = '<SERVICE DEFAULT>',
+  $kombu_ssl_keyfile                  = '<SERVICE DEFAULT>',
+  $kombu_ssl_version                  = '<SERVICE DEFAULT>',
   $amqp_durable_queues                = false,
   $qpid_hostname                      = 'localhost',
   $qpid_port                          = '5672',
@@ -275,14 +275,14 @@ class cinder (
   $qpid_tcp_nodelay                   = true,
   $package_ensure                     = 'present',
   $use_ssl                            = false,
-  $ca_file                            = false,
+  $ca_file                            = '<SERVICE DEFAULT>',
   $cert_file                          = false,
   $key_file                           = false,
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
   $use_syslog                         = false,
   $use_stderr                         = true,
   $log_facility                       = 'LOG_USER',
-  $log_dir                            = '/var/log/cinder',
+  $log_dir                            = '<SERVICE DEFAULT>',
   $verbose                            = false,
   $debug                              = false,
   $storage_availability_zone          = 'nova',
@@ -331,6 +331,10 @@ class cinder (
       'oslo_messaging_rabbit/rabbit_userid':                value => $rabbit_userid;
       'oslo_messaging_rabbit/rabbit_virtual_host':          value => $rabbit_virtual_host;
       'oslo_messaging_rabbit/rabbit_use_ssl':               value => $rabbit_use_ssl;
+      'oslo_messaging_rabbit/kombu_ssl_version':            value => $kombu_ssl_version;
+      'oslo_messaging_rabbit/kombu_ssl_ca_certs':           value => $kombu_ssl_ca_certs;
+      'oslo_messaging_rabbit/kombu_ssl_certfile':           value => $kombu_ssl_certfile;
+      'oslo_messaging_rabbit/kombu_ssl_keyfile':            value => $kombu_ssl_keyfile;
       'oslo_messaging_rabbit/heartbeat_timeout_threshold':  value => $rabbit_heartbeat_timeout_threshold;
       'oslo_messaging_rabbit/heartbeat_rate':               value => $rabbit_heartbeat_rate;
       'DEFAULT/control_exchange':                           value => $control_exchange;
@@ -347,35 +351,6 @@ class cinder (
       cinder_config { 'oslo_messaging_rabbit/rabbit_port':      value => $rabbit_port }
       cinder_config { 'oslo_messaging_rabbit/rabbit_hosts':     value => "${rabbit_host}:${rabbit_port}" }
       cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => false }
-    }
-
-    if $rabbit_use_ssl {
-      cinder_config { 'oslo_messaging_rabbit/kombu_ssl_version': value => $kombu_ssl_version }
-
-      if $kombu_ssl_ca_certs {
-        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_ca_certs': value => $kombu_ssl_ca_certs }
-      } else {
-        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_ca_certs': ensure => absent}
-      }
-
-      if $kombu_ssl_certfile {
-        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_certfile': value => $kombu_ssl_certfile }
-      } else {
-        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_certfile': ensure => absent}
-      }
-
-      if $kombu_ssl_keyfile {
-        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_keyfile': value => $kombu_ssl_keyfile }
-      } else {
-        cinder_config { 'oslo_messaging_rabbit/kombu_ssl_keyfile': ensure => absent}
-      }
-    } else {
-      cinder_config {
-        'oslo_messaging_rabbit/kombu_ssl_ca_certs': ensure => absent;
-        'oslo_messaging_rabbit/kombu_ssl_certfile': ensure => absent;
-        'oslo_messaging_rabbit/kombu_ssl_keyfile':  ensure => absent;
-        'oslo_messaging_rabbit/kombu_ssl_version':  ensure => absent;
-      }
     }
 
   }
@@ -430,6 +405,9 @@ class cinder (
     'database/min_pool_size':            value => $database_min_pool_size;
     'database/max_retries':              value => $database_max_retries;
     'database/retry_interval':           value => $database_retry_interval;
+    'database/max_pool_size':            value => $database_max_pool_size;
+    'database/max_overflow':             value => $database_max_overflow;
+    'DEFAULT/log_dir':                   value => $log_dir;
     'DEFAULT/verbose':                   value => $verbose;
     'DEFAULT/debug':                     value => $debug;
     'DEFAULT/use_stderr':                value => $use_stderr;
@@ -437,26 +415,6 @@ class cinder (
     'DEFAULT/rpc_backend':               value => $rpc_backend;
     'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
     'DEFAULT/default_availability_zone': value => $default_availability_zone_real;
-  }
-
-  if $database_max_pool_size {
-    cinder_config {
-      'database/max_pool_size': value => $database_max_pool_size;
-    }
-  } else {
-    cinder_config {
-      'database/max_pool_size': ensure => absent;
-    }
-  }
-
-  if $database_max_overflow {
-    cinder_config {
-      'database/max_overflow': value => $database_max_overflow;
-    }
-  } else {
-    cinder_config {
-      'database/max_overflow': ensure => absent;
-    }
   }
 
   if($database_connection =~ /mysql:\/\/\S+:\S+@\S+\/\S+/) {
@@ -470,30 +428,12 @@ class cinder (
     fail("Invalid db connection ${database_connection}")
   }
 
-  if $log_dir {
-    cinder_config {
-      'DEFAULT/log_dir': value => $log_dir;
-    }
-  } else {
-    cinder_config {
-      'DEFAULT/log_dir': ensure => absent;
-    }
-  }
-
   # SSL Options
   if $use_ssl {
     cinder_config {
       'DEFAULT/ssl_cert_file' : value => $cert_file;
       'DEFAULT/ssl_key_file' :  value => $key_file;
-    }
-    if $ca_file {
-      cinder_config { 'DEFAULT/ssl_ca_file' :
-        value => $ca_file,
-      }
-    } else {
-      cinder_config { 'DEFAULT/ssl_ca_file' :
-        ensure => absent,
-      }
+      'DEFAULT/ssl_ca_file' :   value => $ca_file;
     }
   } else {
     cinder_config {
