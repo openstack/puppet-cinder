@@ -13,6 +13,9 @@
 # [*key*]
 #   (required) the key name that we are setting the value for.
 #
+# [*value*]
+#   the value that we are setting. Defaults to content of namevar.
+#
 # [*os_tenant_name*]
 #   (optional) The keystone tenant name. Defaults to 'admin'.
 #
@@ -36,6 +39,7 @@ define cinder::type_set (
   $os_username    = 'admin',
   $os_auth_url    = 'http://127.0.0.1:5000/v2.0/',
   $os_region_name = undef,
+  $value          = $name,
   ) {
 
 # TODO: (xarses) This should be moved to a ruby provider so that among other
@@ -55,10 +59,10 @@ define cinder::type_set (
     $region_env = []
   }
 
-  exec {"cinder type-key ${type} set ${key}=${name}":
+  exec {"cinder type-key ${type} set ${key}=${value}":
     path        => ['/usr/bin', '/bin'],
-    command     => "cinder type-key ${type} set ${key}=${name}",
-    unless      => "cinder extra-specs-list | grep -Eq '\\b${type}\\b.*\\b${key}\\b.*\\b${name}\\b'",
+    command     => "cinder type-key ${type} set ${key}=${value}",
+    unless      => "cinder extra-specs-list | grep -Eq '\\b${type}\\b.*\\b${key}\\b.*\\b${value}\\b'",
     environment => concat($cinder_env, $region_env),
     require     => Package['python-cinderclient']
   }
