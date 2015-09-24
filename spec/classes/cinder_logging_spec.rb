@@ -15,7 +15,7 @@ describe 'cinder::logging' do
       :logging_exception_prefix => '%(asctime)s.%(msecs)03d %(process)d TRACE %(name)s %(instance)s',
       :log_config_append => '/etc/cinder/logging.conf',
       :publish_errors => true,
-      :default_log_levels => { 
+      :default_log_levels => {
         'amqp' => 'WARN', 'amqplib' => 'WARN', 'boto' => 'WARN',
         'qpid' => 'WARN', 'sqlalchemy' => 'WARN', 'suds' => 'INFO',
         'iso8601' => 'WARN',
@@ -24,16 +24,53 @@ describe 'cinder::logging' do
      :instance_format => '[instance: %(uuid)s] ',
      :instance_uuid_format => '[instance: %(uuid)s] ',
      :log_date_format => '%Y-%m-%d %H:%M:%S',
+     :use_syslog => false,
+     :use_stderr => false,
+     :log_facility => 'LOG_USER',
+     :log_dir => '/var/log',
+     :verbose => true,
+     :debug => true,
     }
   end
 
   shared_examples_for 'cinder-logging' do
+
+    context 'with basic logging options and default settings' do
+      it_configures  'basic default logging settings'
+    end
+
+    context 'with basic logging options and non-default settings' do
+      before { params.merge!( log_params ) }
+      it_configures 'basic non-default logging settings'
+    end
 
     context 'with extended logging options' do
       before { params.merge!( log_params ) }
       it_configures 'logging params set'
     end
 
+  end
+
+  shared_examples 'basic default logging settings' do
+    it 'configures cinder logging settins with default values' do
+      is_expected.to contain_cinder_config('DEFAULT/use_syslog').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/use_stderr').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/syslog_log_facility').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/log_dir').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/verbose').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/debug').with(:value => '<SERVICE DEFAULT>')
+    end
+  end
+
+  shared_examples 'basic non-default logging settings' do
+    it 'configures cinder logging settins with non-default values' do
+      is_expected.to contain_cinder_config('DEFAULT/use_syslog').with(:value => 'false')
+      is_expected.to contain_cinder_config('DEFAULT/use_stderr').with(:value => 'false')
+      is_expected.to contain_cinder_config('DEFAULT/syslog_log_facility').with(:value => 'LOG_USER')
+      is_expected.to contain_cinder_config('DEFAULT/log_dir').with(:value => '/var/log')
+      is_expected.to contain_cinder_config('DEFAULT/verbose').with(:value => 'true')
+      is_expected.to contain_cinder_config('DEFAULT/debug').with(:value => 'true')
+    end
   end
 
   shared_examples_for 'logging params set' do
