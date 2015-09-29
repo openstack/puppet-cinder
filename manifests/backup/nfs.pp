@@ -37,11 +37,11 @@
 #
 # [*backup_mount_options*]
 #   (optional) The mount options that are passed to the NFS client.
-#   Defaults to '<SERVICE DEFAULT>'
+#   Defaults to $::os_service_default
 #
 # [*backup_container*]
 #   (optional) Custom container to use for backups.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*backup_compression_algorithm*]
 #   (optional) Compression algorithm to use when writing backup data.
@@ -75,8 +75,8 @@ class cinder::backup::nfs (
   $backup_sha_block_size_bytes  = 32768,
   $backup_enable_progress_timer = true,
   $backup_mount_point_base      = '$state_path/backup_mount',
-  $backup_mount_options         = '<SERVICE DEFAULT>',
-  $backup_container             = undef,
+  $backup_mount_options         = $::os_service_default,
+  $backup_container             = $::os_service_default,
   $backup_compression_algorithm = 'zlib',
 ) {
 

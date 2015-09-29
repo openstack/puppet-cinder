@@ -4,6 +4,10 @@ describe 'cinder::backend::netapp' do
 
   let(:title) {'netapp'}
 
+  let :facts do
+    @default_facts.merge!({})
+  end
+
   let :params do
     {
       :volume_backend_name          => 'netapp-cdot-nfs',

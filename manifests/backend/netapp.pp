@@ -112,7 +112,7 @@
 # [*nfs_mount_options*]
 #   (optional) Mount options passed to the nfs client. See section
 #   of the nfs man page for details.
-#   Defaults to '<SERVICE DEFAULT>'
+#   Defaults to $::os_service_default
 #
 # [*netapp_copyoffload_tool_path*]
 #   (optional) This option specifies the path of the NetApp Copy Offload tool
@@ -197,7 +197,7 @@ define cinder::backend::netapp (
   $thres_avl_size_perc_stop     = '60',
   $nfs_shares                   = undef,
   $nfs_shares_config            = '/etc/cinder/shares.conf',
-  $nfs_mount_options            = '<SERVICE DEFAULT>',
+  $nfs_mount_options            = $::os_service_default,
   $netapp_copyoffload_tool_path = undef,
   $netapp_controller_ips        = undef,
   $netapp_sa_password           = undef,

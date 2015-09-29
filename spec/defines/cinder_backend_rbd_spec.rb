@@ -4,6 +4,10 @@ describe 'cinder::backend::rbd' do
 
   let(:title) {'rbd-ssd'}
 
+  let :facts do
+    @default_facts.merge!({})
+  end
+
   let :req_params do
     {
       :volume_backend_name              => 'rbd-ssd',

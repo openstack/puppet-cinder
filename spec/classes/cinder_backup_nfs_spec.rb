@@ -37,6 +37,8 @@ describe 'cinder::backup::nfs' do
       :backup_sha_block_size_bytes  => 32768,
       :backup_enable_progress_timer => true,
       :backup_mount_point_base      => '$state_path/backup_mount',
+      :backup_mount_options         => '<SERVICE DEFAULT>',
+      :backup_container             => '<SERVICE DEFAULT>',
       :backup_compression_algorithm => 'zlib',
     }
   end
@@ -67,7 +69,7 @@ describe 'cinder::backup::nfs' do
 
   context 'on Debian platforms' do
     let :facts do
-      { :osfamily => 'Debian' }
+      @default_facts.merge!({:osfamily => 'Debian'})
     end
 
     it_configures 'cinder backup with nfs'
@@ -75,7 +77,7 @@ describe 'cinder::backup::nfs' do
 
   context 'on RedHat platforms' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      @default_facts.merge!({:osfamily => 'RedHat'})
     end
 
     it_configures 'cinder backup with nfs'

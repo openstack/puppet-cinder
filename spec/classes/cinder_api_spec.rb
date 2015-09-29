@@ -6,8 +6,10 @@ describe 'cinder::api' do
     {:keystone_password => 'foo'}
   end
   let :facts do
-    {:osfamily       => 'Debian',
-     :processorcount => 8 }
+    @default_facts.merge!({
+     :osfamily       => 'Debian',
+     :processorcount => 8
+    })
   end
 
   describe 'with only required params' do

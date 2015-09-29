@@ -75,21 +75,21 @@
 #
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
-#   Defaults to '<SERVICE DEFAULT>'
+#   Defaults to $::os_service_default
 #
 # [*kombu_ssl_certfile*]
 #   (optional) SSL cert file (valid only if SSL enabled).
-#   Defaults to '<SERVICE DEFAULT>'
+#   Defaults to $::os_service_default
 #
 # [*kombu_ssl_keyfile*]
 #   (optional) SSL key file (valid only if SSL enabled).
-#   Defaults to '<SERVICE DEFAULT>'
+#   Defaults to $::os_service_default
 #
 # [*kombu_ssl_version*]
 #   (optional) SSL version to use (valid only if SSL enabled).
 #   Valid values are TLSv1, SSLv23 and SSLv3. SSLv2 may be
 #   available on some distributions.
-#   Defaults to '<SERVICE DEFAULT>'
+#   Defaults to $::os_service_default
 #
 # [*amqp_durable_queues*]
 #   Use durable queues in amqp.
@@ -183,7 +183,7 @@
 # [*log_dir*]
 #   (optional) Directory where logs should be stored.
 #   If set to boolean false, it will not log to any directory.
-#   Defaults to '<SERVICE DEFAULT>'
+#   Defaults to $::os_service_default
 #
 # [*use_ssl*]
 #   (optional) Enable SSL on the API server
@@ -199,7 +199,7 @@
 #
 # [*ca_file*]
 #   (optional) CA certificate file to use to verify connecting clients
-#   Defaults to '<SERVICE DEFAULT>'
+#   Defaults to $::os_service_default
 #
 # [*storage_availability_zone*]
 #   (optional) Availability zone of the node.
@@ -253,10 +253,10 @@ class cinder (
   $rabbit_userid                      = 'guest',
   $rabbit_password                    = false,
   $rabbit_use_ssl                     = false,
-  $kombu_ssl_ca_certs                 = '<SERVICE DEFAULT>',
-  $kombu_ssl_certfile                 = '<SERVICE DEFAULT>',
-  $kombu_ssl_keyfile                  = '<SERVICE DEFAULT>',
-  $kombu_ssl_version                  = '<SERVICE DEFAULT>',
+  $kombu_ssl_ca_certs                 = $::os_service_default,
+  $kombu_ssl_certfile                 = $::os_service_default,
+  $kombu_ssl_keyfile                  = $::os_service_default,
+  $kombu_ssl_version                  = $::os_service_default,
   $amqp_durable_queues                = false,
   $qpid_hostname                      = 'localhost',
   $qpid_port                          = '5672',
@@ -274,14 +274,14 @@ class cinder (
   $qpid_tcp_nodelay                   = true,
   $package_ensure                     = 'present',
   $use_ssl                            = false,
-  $ca_file                            = '<SERVICE DEFAULT>',
+  $ca_file                            = $::os_service_default,
   $cert_file                          = false,
   $key_file                           = false,
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
   $use_syslog                         = false,
   $use_stderr                         = true,
   $log_facility                       = 'LOG_USER',
-  $log_dir                            = '<SERVICE DEFAULT>',
+  $log_dir                            = $::os_service_default,
   $verbose                            = false,
   $debug                              = false,
   $storage_availability_zone          = 'nova',

@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe 'cinder::volume::netapp' do
 
+  let :facts do
+    @default_facts.merge!({})
+  end
+
   let :params do
     {
       :netapp_login                 => 'netapp',

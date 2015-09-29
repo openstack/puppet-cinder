@@ -60,7 +60,7 @@
 #   (optional) Some operations require cinder to make API requests
 #   to Nova. This sets the keystone region to be used for these
 #   requests. For example, boot-from-volume.
-#   Defaults to '<SERVICE DEFAULT>'.
+#   Defaults to $::os_service_default
 #
 # [*nova_catalog_info*]
 #   (optional) Match this value when searching for nova in the service
@@ -128,7 +128,7 @@
 #   This should contain the name of the default volume type to use.
 #   If not configured, it produces an error when creating a volume
 #   without specifying a type.
-#   Defaults to '<SERVICE DEFAULT>'.
+#   Defaults to $::os_service_default.
 #
 # [*validate*]
 #   (optional) Whether to validate the service is working after any service refreshes
@@ -163,7 +163,7 @@ class cinder::api (
   $identity_uri                = false,
   $nova_catalog_info           = 'compute:Compute Service:publicURL',
   $nova_catalog_admin_info     = 'compute:Compute Service:adminURL',
-  $os_region_name              = '<SERVICE DEFAULT>',
+  $os_region_name              = $::os_service_default,
   $privileged_user             = false,
   $os_privileged_user_name     = undef,
   $os_privileged_user_password = undef,
@@ -175,7 +175,7 @@ class cinder::api (
   $enabled                     = true,
   $manage_service              = true,
   $ratelimits                  = undef,
-  $default_volume_type         = '<SERVICE DEFAULT>',
+  $default_volume_type         = $::os_service_default,
   $ratelimits_factory =
     'cinder.api.v1.limits:RateLimitingMiddleware.factory',
   $validate                   = false,
