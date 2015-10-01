@@ -61,7 +61,7 @@ describe 'cinder::backend::pure' do
     end
 
     it 'configure pure volume with additional configuration' do
-      should contain_cinder__backend__pure('pure').with({
+      is_expected.to contain_cinder__backend__pure('pure').with({
         :extra_options => {'pure_backend/param1' => {'value' => 'value1'}}
       })
     end

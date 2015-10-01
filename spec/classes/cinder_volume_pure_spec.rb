@@ -15,7 +15,7 @@ describe 'cinder::volume::pure' do
     end
 
     it 'configure pure volume driver' do
-      should contain_cinder__backend__pure('DEFAULT')
+      is_expected.to contain_cinder__backend__pure('DEFAULT')
     end
   end
 
@@ -28,7 +28,7 @@ describe 'cinder::volume::pure' do
     end
 
     it 'configure pure volume driver' do
-      should contain_cinder__backend__pure('DEFAULT').with({
+      is_expected.to contain_cinder__backend__pure('DEFAULT').with({
         :pure_storage_protocol => 'iSCSI',
         :use_chap_auth => 'true'
       })
@@ -41,7 +41,7 @@ describe 'cinder::volume::pure' do
     end
 
     it 'configure pure volume driver' do
-      should contain_cinder__backend__pure('DEFAULT').with({
+      is_expected.to contain_cinder__backend__pure('DEFAULT').with({
         :pure_storage_protocol => 'FC'
       })
     end
@@ -53,7 +53,7 @@ describe 'cinder::volume::pure' do
     end
 
     it 'configure pure volume with additional configuration' do
-      should contain_cinder__backend__pure('DEFAULT').with({
+      is_expected.to contain_cinder__backend__pure('DEFAULT').with({
         :extra_options => {'pure_backend/param1' => {'value' => 'value1'}}
       })
     end
