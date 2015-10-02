@@ -19,7 +19,7 @@ describe 'cinder::type_set' do
   describe 'by default' do
     let(:params){ default_params }
     it 'should have its execs' do
-      should contain_exec('cinder type-key sith set monchichi=hippo').with(
+      is_expected.to contain_exec('cinder type-key sith set monchichi=hippo').with(
         :command => 'cinder type-key sith set monchichi=hippo',
         :unless  => "cinder extra-specs-list | grep -Eq '\\bsith\\b.*\\bmonchichi\\b.*\\bhippo\\b'",
         :environment => [
@@ -36,7 +36,7 @@ describe 'cinder::type_set' do
       default_params.merge({:value => 'hippi'})
     }
     it 'should have its execs' do
-      should contain_exec('cinder type-key sith set monchichi=hippi').with(
+      is_expected.to contain_exec('cinder type-key sith set monchichi=hippi').with(
         :command => 'cinder type-key sith set monchichi=hippi',
         :unless  => "cinder extra-specs-list | grep -Eq '\\bsith\\b.*\\bmonchichi\\b.*\\bhippi\\b'",
         :environment => [
