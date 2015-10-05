@@ -10,6 +10,12 @@
 # [*email*]
 #   Email for Cinder user. Optional. Defaults to 'cinder@localhost'.
 #
+# [*password_user_v2*]
+#   Password for Cinder v2 user. Optional. Defaults to undef.
+#
+# [*email_user_v2*]
+#   Email for Cinder v2 user. Optional. Defaults to 'cinderv2@localhost'.
+#
 # [*auth_name*]
 #   Username for Cinder service. Optional. Defaults to 'cinder'.
 #
@@ -26,9 +32,16 @@
 # [*configure_user*]
 #   Should the service user be configured? Optional. Defaults to 'true'.
 #
+# [*configure_user_v2*]
+#   Should the service user be configured for cinder v2? Optional. Defaults to 'false'.
+#
 # [*configure_user_role*]
 #   Should the admin role be configured for the service user?
 #   Optional. Defaults to 'true'.
+#
+# [*configure_user_role_v2*]
+#   Should the admin role be configured for the service user for cinder v2?
+#   Optional. Defaults to 'false'.
 #
 # [*service_name*]
 #   (optional) Name of the service.
@@ -71,6 +84,9 @@
 #
 # [*tenant*]
 #    Tenant for Cinder user. Optional. Defaults to 'services'.
+#
+# [*tenant_user_v2*]
+#    Tenant for Cinder v2 user. Optional. Defaults to 'services'.
 #
 # [*public_url*]
 #   (optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s')
@@ -151,10 +167,13 @@
 #
 class cinder::keystone::auth (
   $password,
+  $password_user_v2       = undef,
   $auth_name              = 'cinder',
   $auth_name_v2           = 'cinderv2',
   $tenant                 = 'services',
+  $tenant_user_v2         = 'services',
   $email                  = 'cinder@localhost',
+  $email_user_v2          = 'cinderv2@localhost',
   $public_url             = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
   $internal_url           = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
   $admin_url              = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
@@ -164,7 +183,9 @@ class cinder::keystone::auth (
   $configure_endpoint     = true,
   $configure_endpoint_v2  = true,
   $configure_user         = true,
+  $configure_user_v2      = false,
   $configure_user_role    = true,
+  $configure_user_role_v2 = false,
   $service_name           = undef,
   $service_name_v2        = undef,
   $service_type           = 'volume',
@@ -297,13 +318,17 @@ class cinder::keystone::auth (
   }
 
   keystone::resource::service_identity { 'cinderv2':
-    configure_user      => false,
-    configure_user_role => false,
+    configure_user      => $configure_user_v2,
+    configure_user_role => $configure_user_role_v2,
     configure_endpoint  => $configure_endpoint_v2,
     service_type        => $service_type_v2,
     service_description => $service_description_v2,
     service_name        => $real_service_name_v2,
     region              => $region,
+    auth_name           => $auth_name_v2,
+    password            => $password_user_v2,
+    email               => $email_user_v2,
+    tenant              => $tenant_user_v2,
     public_url          => $public_url_v2_real,
     admin_url           => $admin_url_v2_real,
     internal_url        => $internal_url_v2_real,
