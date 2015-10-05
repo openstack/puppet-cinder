@@ -70,6 +70,8 @@ define cinder::type (
     environment => concat($cinder_env, $region_env),
     require     => Package['python-cinderclient'],
     path        => ['/usr/bin', '/bin'],
+    tries       => '2',
+    try_sleep   => '5',
   }
 
   if ($set_value and $set_key) {

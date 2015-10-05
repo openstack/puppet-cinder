@@ -18,13 +18,15 @@ describe 'cinder::type' do
 
   it 'should have its execs' do
     is_expected.to contain_exec('cinder type-create hippo').with(
-      :command => 'cinder type-create hippo',
+      :command   => 'cinder type-create hippo',
       :environment => [
         'OS_TENANT_NAME=admin',
         'OS_USERNAME=admin',
         'OS_PASSWORD=asdf',
         'OS_AUTH_URL=http://127.127.127.1:5000/v2.0/'],
-      :unless  => "cinder type-list | grep -qP '\\bhippo\\b'",
+      :unless    => "cinder type-list | grep -qP '\\bhippo\\b'",
+      :tries     => '2',
+      :try_sleep => '5',
       :require => 'Package[python-cinderclient]')
     is_expected.to contain_exec('cinder type-key hippo set volume_backend_name=name1')
     is_expected.to contain_exec('cinder type-key hippo set volume_backend_name=name2')
