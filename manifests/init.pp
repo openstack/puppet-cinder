@@ -22,7 +22,7 @@
 #
 # [*rpc_backend*]
 #   (Optional) Use these options to configure the RabbitMQ message system.
-#   Defaults to 'cinder.openstack.common.rpc.impl_kombu'
+#   Defaults to 'rabbit'
 #
 # [*control_exchange*]
 #   (Optional)
@@ -242,7 +242,7 @@ class cinder (
   $database_max_retries               = undef,
   $database_retry_interval            = undef,
   $database_max_overflow              = undef,
-  $rpc_backend                        = 'cinder.openstack.common.rpc.impl_kombu',
+  $rpc_backend                        = 'rabbit',
   $control_exchange                   = 'openstack',
   $rabbit_host                        = '127.0.0.1',
   $rabbit_port                        = 5672,
@@ -320,7 +320,7 @@ class cinder (
     require => Anchor['cinder-start'],
   }
 
-  if $rpc_backend == 'cinder.openstack.common.rpc.impl_kombu' {
+  if $rpc_backend == 'cinder.openstack.common.rpc.impl_kombu' or $rpc_backend == 'rabbit' {
 
     if ! $rabbit_password {
       fail('Please specify a rabbit_password parameter.')
@@ -355,7 +355,7 @@ class cinder (
 
   }
 
-  if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' {
+  if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' or $rpc_backend == 'qpid' {
 
     if ! $qpid_password {
       fail('Please specify a qpid_password parameter.')

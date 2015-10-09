@@ -21,7 +21,7 @@ describe 'cinder' do
     it { is_expected.to contain_class('mysql::bindings::python') }
 
     it 'should contain default config' do
-      is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with(:value => 'cinder.openstack.common.rpc.impl_kombu')
+      is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with(:value => 'rabbit')
       is_expected.to contain_cinder_config('DEFAULT/control_exchange').with(:value => 'openstack')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_password').with(:value => 'guest', :secret => true)
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => '127.0.0.1')
@@ -86,11 +86,11 @@ describe 'cinder' do
       {
         :database_connection => 'mysql://user:password@host/database',
         :qpid_password       => 'guest',
-        :rpc_backend         => 'cinder.openstack.common.rpc.impl_qpid'
+        :rpc_backend         => 'qpid'
       }
     end
 
-    it { is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with_value('cinder.openstack.common.rpc.impl_qpid') }
+    it { is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with_value('qpid') }
     it { is_expected.to contain_cinder_config('DEFAULT/qpid_hostname').with_value('localhost') }
     it { is_expected.to contain_cinder_config('DEFAULT/qpid_port').with_value('5672') }
     it { is_expected.to contain_cinder_config('DEFAULT/qpid_username').with_value('guest') }
@@ -111,7 +111,7 @@ describe 'cinder' do
       {
         :database_connection  => 'mysql://user:password@host/database',
         :qpid_password        => 'guest',
-        :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'
+        :rpc_backend          => 'qpid'
       }
     end
 
@@ -124,7 +124,7 @@ describe 'cinder' do
         :database_connection  => 'mysql://user:password@host/database',
         :qpid_password        => 'guest',
         :qpid_sasl_mechanisms => 'PLAIN',
-        :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'
+        :rpc_backend          => 'qpid'
       }
     end
 
@@ -137,7 +137,7 @@ describe 'cinder' do
         :database_connection  => 'mysql://user:password@host/database',
         :qpid_password        => 'guest',
         :qpid_sasl_mechanisms => [ 'DIGEST-MD5', 'GSSAPI', 'PLAIN' ],
-        :rpc_backend          => 'cinder.openstack.common.rpc.impl_qpid'
+        :rpc_backend          => 'qpid'
       }
     end
 
