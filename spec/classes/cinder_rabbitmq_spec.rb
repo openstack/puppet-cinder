@@ -12,12 +12,6 @@ describe 'cinder::rabbitmq' do
 
     it 'should contain all of the default resources' do
 
-      is_expected.to contain_class('rabbitmq::server').with(
-        :service_ensure    => 'running',
-        :port              => '5672',
-        :delete_guest_user => false
-      )
-
       is_expected.to contain_rabbitmq_vhost('/').with(
         :provider => 'rabbitmqctl'
       )
@@ -66,29 +60,9 @@ describe 'cinder::rabbitmq' do
 
       is_expected.to_not contain_rabbitmq_user('dan')
       is_expected.to_not contain_rabbitmq_user_permissions('dan@/')
-      is_expected.to contain_class('rabbitmq::server').with(
-        :service_ensure    => 'stopped',
-        :port              => '5672',
-        :delete_guest_user => false
-      )
-
       is_expected.to_not contain_rabbitmq_vhost('/')
 
     end
-  end
-
-  describe 'when no rabbitmq class specified' do
-
-    let :params do
-      {
-        :rabbitmq_class => false
-      }
-    end
-
-    it 'should not contain rabbitmq class calls' do
-      is_expected.to_not contain_class('rabbitmq::server')
-    end
-
   end
 
 end
