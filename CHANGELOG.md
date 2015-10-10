@@ -1,3 +1,19 @@
+##2015-10-10 - 6.1.0
+###Summary
+
+This is a feature and bugfix release in the Kilo series.
+
+####Features
+- Add ability to search nova in the service catalog
+- DB purge cron job
+
+####Bugfixes
+- Update default notification_driver for ceilometer
+
+####Maintenance
+- acceptance: checkout stable/kilo puppet modules
+
+
 ##2015-07-08 - 6.0.0
 ###Summary
 
