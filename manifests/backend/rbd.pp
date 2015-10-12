@@ -11,6 +11,12 @@
 # [*rbd_user*]
 #   (required) A required parameter to configure OS init scripts and cephx.
 #
+# [*backend_host*]
+#   (optional) Allows specifying the hostname/key used for the owner of volumes
+#   created.  This must be set to the same value on all nodes in a multi-node
+#   environment.
+#   Defaults to 'rbd:<rbd_pool>'
+#
 # [*volume_backend_name*]
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
@@ -47,6 +53,7 @@
 define cinder::backend::rbd (
   $rbd_pool,
   $rbd_user,
+  $backend_host                     = undef,
   $volume_backend_name              = $name,
   $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
   $rbd_flatten_volume_from_snapshot = false,
@@ -66,9 +73,18 @@ define cinder::backend::rbd (
     "${name}/rbd_pool":                         value => $rbd_pool;
     "${name}/rbd_max_clone_depth":              value => $rbd_max_clone_depth;
     "${name}/rbd_flatten_volume_from_snapshot": value => $rbd_flatten_volume_from_snapshot;
-    "${name}/host":                             value => "rbd:${rbd_pool}";
     "${name}/rbd_secret_uuid":                  value => $rbd_secret_uuid;
     "${name}/volume_tmp_dir":                   value => $volume_tmp_dir;
+  }
+
+  if $backend_host {
+    cinder_config {
+      "${name}/backend_host": value => $backend_host;
+    }
+  } else {
+    cinder_config {
+      "${name}/backend_host": value => "rbd:${rbd_pool}";
+    }
   }
 
   create_resources('cinder_config', $extra_options)
