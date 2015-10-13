@@ -230,10 +230,6 @@
 #   Defaults to: $::cinder::params::lock_path
 #
 # === Deprecated Parameters
-#
-# [*mysql_module*]
-#   DEPRECATED. Does nothing.
-#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -289,16 +285,10 @@ class cinder (
   $enable_v1_api                      = true,
   $enable_v2_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
-  # DEPRECATED PARAMETERS
-  $mysql_module                       = undef,
 )  {
 
   include ::cinder::db
   include ::cinder::params
-
-  if $mysql_module {
-    warning('The mysql_module parameter is deprecated. The latest 2.x mysql module will be used.')
-  }
 
   if $use_ssl {
     if !$cert_file {

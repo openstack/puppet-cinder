@@ -34,9 +34,6 @@
 #
 # === Deprecated Parameters
 #
-#  [*mysql_module*]
-#   (Deprecated) Deprecated. Does nothing.
-#
 class cinder::db::mysql (
   $password,
   $dbname        = 'cinder',
@@ -46,13 +43,7 @@ class cinder::db::mysql (
   $charset       = 'utf8',
   $collate       = 'utf8_general_ci',
   $cluster_id    = 'localzone',
-  # DEPRECATED
-  $mysql_module  = undef,
 ) {
-
-  if $mysql_module {
-    warning('The mysql_module parameter is deprecated. The latest 2.x mysql module will be used.')
-  }
 
   validate_string($password)
 
