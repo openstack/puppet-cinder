@@ -14,19 +14,19 @@
 #
 # [*backup_topic*]
 #   (optional) The topic volume backup nodes listen on.
-#   Defaults to 'cinder-backup'
+#   Defaults to $::os_service_default
 #
 # [*backup_manager*]
 #   (optional) Full class name for the Manager for volume backup.
-#   Defaults to 'cinder.backup.manager.BackupManager'
+#   Defaults to $::os_service_default
 #
 # [*backup_api_class*]
 #   (optional) The full class name of the volume backup API class.
-#   Defaults to 'cinder.backup.api.API'
+#   Defaults to $::os_service_default
 #
 # [*backup_name_template*]
 #   (optional) Template string to be used to generate backup names.
-#   Defaults to 'backup-%s'
+#   Defaults to $::os_service_default
 #
 # === Author(s)
 #
@@ -52,10 +52,10 @@
 class cinder::backup (
   $enabled              = true,
   $package_ensure       = 'present',
-  $backup_topic         = 'cinder-backup',
-  $backup_manager       = 'cinder.backup.manager.BackupManager',
-  $backup_api_class     = 'cinder.backup.api.API',
-  $backup_name_template = 'backup-%s'
+  $backup_topic         = $::os_service_default,
+  $backup_manager       = $::os_service_default,
+  $backup_api_class     = $::os_service_default,
+  $backup_name_template = $::os_service_default,
 ) {
 
   include ::cinder::params

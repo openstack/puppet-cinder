@@ -24,10 +24,10 @@ describe 'cinder::backup' do
 
   let :default_params do
     { :enable               => true,
-      :backup_topic         => 'cinder-backup',
-      :backup_manager       => 'cinder.backup.manager.BackupManager',
-      :backup_api_class     => 'cinder.backup.api.API',
-      :backup_name_template => 'backup-%s' }
+      :backup_topic         => '<SERVICE DEFAULT>',
+      :backup_manager       => '<SERVICE DEFAULT>',
+      :backup_api_class     => '<SERVICE DEFAULT>',
+      :backup_name_template => '<SERVICE DEFAULT>' }
   end
 
   let :params do
@@ -78,7 +78,7 @@ describe 'cinder::backup' do
 
   context 'on Debian platforms' do
     let :facts do
-      { :osfamily => 'Debian' }
+      @default_facts.merge!({ :osfamily => 'Debian' })
     end
 
     let :platform_params do
@@ -91,7 +91,7 @@ describe 'cinder::backup' do
 
   context 'on RedHat platforms' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      @default_facts.merge!({ :osfamily => 'RedHat' })
     end
 
     let :platform_params do

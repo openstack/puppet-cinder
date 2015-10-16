@@ -25,10 +25,10 @@ describe 'cinder::backup::swift' do
   let :default_params do
     { :backup_swift_url             => 'http://localhost:8080/v1/AUTH_',
       :backup_swift_container       => 'volumes_backup',
-      :backup_swift_object_size     => '52428800',
-      :backup_swift_retry_attempts  => '3',
-      :backup_swift_retry_backoff   => '2',
-      :backup_compression_algorithm => 'zlib' }
+      :backup_swift_object_size     => '<SERVICE DEFAULT>',
+      :backup_swift_retry_attempts  => '<SERVICE DEFAULT>',
+      :backup_swift_retry_backoff   => '<SERVICE DEFAULT>',
+      :backup_compression_algorithm => '<SERVICE DEFAULT>' }
   end
 
   let :params do
@@ -72,7 +72,7 @@ describe 'cinder::backup::swift' do
 
   context 'on Debian platforms' do
     let :facts do
-      { :osfamily => 'Debian' }
+      @default_facts.merge({ :osfamily => 'Debian' })
     end
 
     it_configures 'cinder backup with swift'
@@ -80,7 +80,7 @@ describe 'cinder::backup::swift' do
 
   context 'on RedHat platforms' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      @default_facts.merge({ :osfamily => 'RedHat' })
     end
 
     it_configures 'cinder backup with swift'

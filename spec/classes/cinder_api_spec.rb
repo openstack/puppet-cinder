@@ -80,10 +80,10 @@ describe 'cinder::api' do
         :value => 'http://localhost:5000/'
       )
 
-      is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_name').with_ensure('absent')
-      is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_ensure('absent')
-      is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_tenant').with_ensure('absent')
-      is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_auth_url').with_ensure('absent')
+      is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_name').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_tenant').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_auth_url').with_value('<SERVICE DEFAULT>')
     end
   end
 
@@ -141,7 +141,7 @@ describe 'cinder::api' do
       it { is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_name').with_value('admin') }
       it { is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_value('password') }
       it { is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_tenant').with_value('admin') }
-      it { is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_auth_url').with_ensure('absent') }
+      it { is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_auth_url').with_value('<SERVICE DEFAULT>') }
     end
 
     context 'without os_privileged_user' do

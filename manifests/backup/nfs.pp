@@ -17,23 +17,23 @@
 #   backups. If the volume being backed up exceeds this size, then
 #   it will be backed up into multiple files. This must be a multiple
 #   of the backup_sha_block_size_bytes parameter.
-#   Defaults to 1999994880
+#   Defaults to $::os_service_default
 #
 # [*backup_sha_block_size_bytes*]
 #   (optional) The size in bytes that changes are tracked for
 #   incremental backups.
-#   Defaults to 32768
+#   Defaults to $::os_service_default
 #
 # [*backup_enable_progress_timer*]
 #   (optional) Enable or Disable the timer to send the periodic
 #   progress notifications to Ceilometer when backing up the volume
 #   to the backend storage.
-#   Defaults to true
+#   Defaults to $::os_service_default
 #
 # [*backup_mount_point_base*]
 #   (optional) The base directory containing the mount point for the
 #   NFS share.
-#   Defaults to '$state_path/backup_mount'
+#   Defaults to $::os_service_default
 #
 # [*backup_mount_options*]
 #   (optional) The mount options that are passed to the NFS client.
@@ -45,7 +45,7 @@
 #
 # [*backup_compression_algorithm*]
 #   (optional) Compression algorithm to use when writing backup data.
-#   Defaults to 'zlib'
+#   Defaults to $::os_service_default
 #
 # === Author(s)
 #
@@ -71,13 +71,13 @@
 class cinder::backup::nfs (
   $backup_share,
   $backup_driver                = 'cinder.backup.drivers.nfs',
-  $backup_file_size             = 1999994880,
-  $backup_sha_block_size_bytes  = 32768,
-  $backup_enable_progress_timer = true,
-  $backup_mount_point_base      = '$state_path/backup_mount',
+  $backup_file_size             = $::os_service_default,
+  $backup_sha_block_size_bytes  = $::os_service_default,
+  $backup_enable_progress_timer = $::os_service_default,
+  $backup_mount_point_base      = $::os_service_default,
   $backup_mount_options         = $::os_service_default,
   $backup_container             = $::os_service_default,
-  $backup_compression_algorithm = 'zlib',
+  $backup_compression_algorithm = $::os_service_default,
 ) {
 
   validate_string($backup_share)

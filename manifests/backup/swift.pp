@@ -19,19 +19,19 @@
 #
 # [*backup_swift_object_size*]
 #   (optional) The size in bytes of Swift backup objects.
-#   Defaults to '52428800'
+#   Defaults to $::os_service_default
 #
 # [*backup_swift_retry_attempts*]
 #   (optional) The number of retries to make for Swift operations.
-#   Defaults to '3'
+#   Defaults to $::os_service_default
 #
 # [*backup_swift_retry_backoff*]
 #   (optional) The backoff time in seconds between Swift retries.
-#   Defaults to '2'
+#   Defaults to $::os_service_default
 #
 # [*backup_compression_algorithm*]
 #   (optional) The compression algorithm for the chunks sent to swift
-#   Defaults to 'zlib'
+#   Defaults to $::os_service_default
 #   set to None to disable compression
 #
 # === Author(s)
@@ -59,11 +59,15 @@ class cinder::backup::swift (
   $backup_driver                = 'cinder.backup.drivers.swift',
   $backup_swift_url             = 'http://localhost:8080/v1/AUTH_',
   $backup_swift_container       = 'volumes_backup',
-  $backup_swift_object_size     = '52428800',
-  $backup_swift_retry_attempts  = '3',
-  $backup_swift_retry_backoff   = '2',
-  $backup_compression_algorithm = 'zlib',
+  $backup_swift_object_size     = $::os_service_default,
+  $backup_swift_retry_attempts  = $::os_service_default,
+  $backup_swift_retry_backoff   = $::os_service_default,
+  $backup_compression_algorithm = $::os_service_default,
 ) {
+
+  if ($backup_swift_container == 'volumes_backup') {
+    warning('WARNING: The default backup_swift_container value in puppet differs from the OpenStack default and may change in future releases')
+  }
 
   cinder_config {
     'DEFAULT/backup_driver':                value => $backup_driver;
