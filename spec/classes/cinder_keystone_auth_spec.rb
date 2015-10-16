@@ -159,6 +159,23 @@ describe 'cinder::keystone::auth' do
 
   end
 
+  describe 'when user and user role for v2 is_expected.to be configured' do
+    before do
+       params.merge!(
+        :configure_user_v2      => true,
+        :configure_user_role_v2 => true,
+      )
+    end
+
+    it { is_expected.to contain_keystone__resource__service_identity('cinderv2').with(
+      :configure_user      => true,
+      :configure_user_role => true,
+      :email               => 'cinderv2@localhost',
+      :tenant              => 'services'
+    ) }
+
+  end
+
   describe 'when overriding service names' do
 
     before do
