@@ -10,15 +10,11 @@
 #
 # [*verbose*]
 #   (Optional) Should the daemons log verbose messages
-#   Defaults to 'false'
+#   Defaults to undef.
 #
 # [*debug*]
 #   (Optional) Should the daemons log debug messages
-#   Defaults to 'false'
-#
-# [*use_syslog*]
-#   (Optional) Use syslog for logging.
-#   Defaults to false.
+#   Defaults to undef.
 #
 # [*rpc_backend*]
 #   (Optional) Use these options to configure the RabbitMQ message system.
@@ -139,9 +135,9 @@
 #
 # [*qpid_reconnect_interval_max*]
 #
-# [*use_syslog]
-#   Use syslog for logging.
-#   (Optional) Defaults to false.
+# [*use_syslog*]
+#   (Optional) Use syslog for logging.
+#   Defaults to undef.
 #
 # [*database_connection*]
 #    Url used to connect to database.
@@ -174,16 +170,16 @@
 #
 # [*use_stderr*]
 #   (optional) Use stderr for logging
-#   Defaults to true
+#   Defaults to undef.
 #
 # [*log_facility*]
-#   Syslog facility to receive log lines.
-#   (Optional) Defaults to LOG_USER.
+#   (Optional) Syslog facility to receive log lines.
+#   Defaults to undef.
 #
 # [*log_dir*]
 #   (optional) Directory where logs should be stored.
 #   If set to boolean false, it will not log to any directory.
-#   Defaults to $::os_service_default
+#   Defaults to undef.
 #
 # [*use_ssl*]
 #   (optional) Enable SSL on the API server
@@ -274,12 +270,12 @@ class cinder (
   $cert_file                          = false,
   $key_file                           = false,
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
-  $use_syslog                         = false,
-  $use_stderr                         = true,
-  $log_facility                       = 'LOG_USER',
-  $log_dir                            = $::os_service_default,
-  $verbose                            = false,
-  $debug                              = false,
+  $use_syslog                         = undef,
+  $use_stderr                         = undef,
+  $log_facility                       = undef,
+  $log_dir                            = undef,
+  $verbose                            = undef,
+  $debug                              = undef,
   $storage_availability_zone          = 'nova',
   $default_availability_zone          = false,
   $enable_v1_api                      = true,
@@ -288,6 +284,7 @@ class cinder (
 )  {
 
   include ::cinder::db
+  include ::cinder::logging
   include ::cinder::params
 
   if $use_ssl {
@@ -390,10 +387,6 @@ class cinder (
   }
 
   cinder_config {
-    'DEFAULT/log_dir':                   value => $log_dir;
-    'DEFAULT/verbose':                   value => $verbose;
-    'DEFAULT/debug':                     value => $debug;
-    'DEFAULT/use_stderr':                value => $use_stderr;
     'DEFAULT/api_paste_config':          value => $api_paste_config;
     'DEFAULT/rpc_backend':               value => $rpc_backend;
     'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
@@ -412,17 +405,6 @@ class cinder (
       'DEFAULT/ssl_cert_file' : ensure => absent;
       'DEFAULT/ssl_key_file' :  ensure => absent;
       'DEFAULT/ssl_ca_file' :   ensure => absent;
-    }
-  }
-
-  if $use_syslog {
-    cinder_config {
-      'DEFAULT/use_syslog':           value => true;
-      'DEFAULT/syslog_log_facility':  value => $log_facility;
-    }
-  } else {
-    cinder_config {
-      'DEFAULT/use_syslog':           value => false;
     }
   }
 
