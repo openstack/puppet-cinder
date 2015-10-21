@@ -92,19 +92,19 @@ describe 'cinder' do
     end
 
     it { is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with_value('qpid') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_hostname').with_value('localhost') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_port').with_value('5672') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_username').with_value('guest') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_password').with_value('guest').with_secret(true) }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_reconnect').with_value(true) }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_reconnect_timeout').with_value('0') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_reconnect_limit').with_value('0') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_reconnect_interval_min').with_value('0') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_reconnect_interval_max').with_value('0') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_reconnect_interval').with_value('0') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_heartbeat').with_value('60') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_protocol').with_value('tcp') }
-    it { is_expected.to contain_cinder_config('DEFAULT/qpid_tcp_nodelay').with_value(true) }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_hostname').with_value('localhost') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_port').with_value('5672') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_username').with_value('guest') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_password').with_value('guest').with_secret(true) }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_reconnect').with_value(true) }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_reconnect_timeout').with_value('0') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_reconnect_limit').with_value('0') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_reconnect_interval_min').with_value('0') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_reconnect_interval_max').with_value('0') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_reconnect_interval').with_value('0') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_heartbeat').with_value('60') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_protocol').with_value('tcp') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_tcp_nodelay').with_value(true) }
   end
 
   describe 'with qpid rpc and no qpid_sasl_mechanisms' do
