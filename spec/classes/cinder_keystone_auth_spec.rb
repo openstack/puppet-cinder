@@ -14,7 +14,6 @@ describe 'cinder::keystone::auth' do
         :ensure   => 'present',
         :password => 'pw',
         :email    => 'cinder@localhost',
-        :tenant   => 'services'
       )
       is_expected.to contain_keystone_user_role('cinder@services').with(
         :ensure  => 'present',
