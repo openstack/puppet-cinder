@@ -9,7 +9,11 @@ describe 'cinder' do
   end
 
   let :facts do
-    @default_facts.merge!({:osfamily => 'Debian'})
+    @default_facts.merge!({
+      :osfamily => 'Debian',
+      :operatingsystem => 'Debian',
+      :operatingsystemrelease => 'jessie',
+    })
   end
 
   describe 'with only required params' do

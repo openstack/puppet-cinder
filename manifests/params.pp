@@ -20,7 +20,6 @@ class cinder::params {
     $iscsi_helper         = 'tgtadm'
     $lio_package_name     = 'targetcli'
     $lock_path            = '/var/lock/cinder'
-    $psycopg_package_name = 'python-psycopg2'
     $sqlite_package_name  = 'python-pysqlite2'
 
   } elsif($::osfamily == 'RedHat') {
@@ -41,7 +40,6 @@ class cinder::params {
     $ceph_init_override   = '/etc/sysconfig/openstack-cinder-volume'
     $lio_package_name     = 'targetcli'
     $lock_path            = '/var/lib/cinder/tmp'
-    $psycopg_package_name = 'python-psycopg2'
     $sqlite_package_name  = undef
 
     case $::operatingsystem {
