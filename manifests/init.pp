@@ -87,6 +87,11 @@
 #   available on some distributions.
 #   Defaults to $::os_service_default
 #
+# [*kombu_reconnect_delay*]
+#   (optional) How long to wait before reconnecting in response to an AMQP
+#   consumer cancel notification.
+#   Defaults to $::os_service_default
+#
 # [*amqp_durable_queues*]
 #   Use durable queues in amqp.
 #   (Optional) Defaults to false.
@@ -249,6 +254,7 @@ class cinder (
   $kombu_ssl_certfile                 = $::os_service_default,
   $kombu_ssl_keyfile                  = $::os_service_default,
   $kombu_ssl_version                  = $::os_service_default,
+  $kombu_reconnect_delay              = $::os_service_default,
   $amqp_durable_queues                = false,
   $qpid_hostname                      = 'localhost',
   $qpid_port                          = '5672',
@@ -322,6 +328,7 @@ class cinder (
       'oslo_messaging_rabbit/kombu_ssl_ca_certs':           value => $kombu_ssl_ca_certs;
       'oslo_messaging_rabbit/kombu_ssl_certfile':           value => $kombu_ssl_certfile;
       'oslo_messaging_rabbit/kombu_ssl_keyfile':            value => $kombu_ssl_keyfile;
+      'oslo_messaging_rabbit/kombu_reconnect_delay':        value => $kombu_reconnect_delay;
       'oslo_messaging_rabbit/heartbeat_timeout_threshold':  value => $rabbit_heartbeat_timeout_threshold;
       'oslo_messaging_rabbit/heartbeat_rate':               value => $rabbit_heartbeat_rate;
       'DEFAULT/control_exchange':                           value => $control_exchange;
