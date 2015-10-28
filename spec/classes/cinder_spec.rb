@@ -95,6 +95,7 @@ describe 'cinder' do
     it { is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with_value('qpid') }
     it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_hostname').with_value('localhost') }
     it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_port').with_value('5672') }
+    it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_hosts').with_value('localhost:5672') }
     it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_username').with_value('guest') }
     it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_password').with_value('guest').with_secret(true) }
     it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_reconnect').with_value(true) }
@@ -106,6 +107,36 @@ describe 'cinder' do
     it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_heartbeat').with_value('60') }
     it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_protocol').with_value('tcp') }
     it { is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_tcp_nodelay').with_value(true) }
+  end
+
+  describe 'with modified qpid_hosts' do
+    let :params do
+      {
+        :database_connection => 'mysql://user:password@host/database',
+        :qpid_password       => 'guest',
+        :rpc_backend         => 'qpid',
+        :qpid_hosts          => ['qpid1:5672', 'qpid2:5672']
+      }
+    end
+
+    it 'should contain many' do
+      is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_hosts').with(:value => 'qpid1:5672,qpid2:5672')
+    end
+  end
+
+  describe 'with a single qpid_hosts entry' do
+    let :params do
+      {
+        :database_connection => 'mysql://user:password@host/database',
+        :qpid_password       => 'guest',
+        :rpc_backend         => 'qpid',
+        :qpid_hosts          => ['qpid1:5672']
+      }
+    end
+
+    it 'should contain one' do
+      is_expected.to contain_cinder_config('oslo_messaging_qpid/qpid_hosts').with(:value => 'qpid1:5672')
+    end
   end
 
   describe 'with qpid rpc and no qpid_sasl_mechanisms' do

@@ -104,6 +104,10 @@
 #   (Optional) Port for qpid server.
 #   Defaults to '5672'.
 #
+# [*qpid_hosts*]
+#   (Optional) Qpid HA cluster host:port pairs. (list value)
+#   Defaults to false
+#
 # [*qpid_username*]
 #   (Optional) Username to use when connecting to qpid.
 #   Defaults to 'guest'.
@@ -259,6 +263,7 @@ class cinder (
   $amqp_durable_queues                = false,
   $qpid_hostname                      = 'localhost',
   $qpid_port                          = '5672',
+  $qpid_hosts                         = false,
   $qpid_username                      = 'guest',
   $qpid_password                      = false,
   $qpid_sasl_mechanisms               = false,
@@ -357,8 +362,6 @@ class cinder (
     }
 
     cinder_config {
-      'oslo_messaging_qpid/qpid_hostname':               value => $qpid_hostname;
-      'oslo_messaging_qpid/qpid_port':                   value => $qpid_port;
       'oslo_messaging_qpid/qpid_username':               value => $qpid_username;
       'oslo_messaging_qpid/qpid_password':               value => $qpid_password, secret => true;
       'oslo_messaging_qpid/qpid_reconnect':              value => $qpid_reconnect;
@@ -371,6 +374,14 @@ class cinder (
       'oslo_messaging_qpid/qpid_protocol':               value => $qpid_protocol;
       'oslo_messaging_qpid/qpid_tcp_nodelay':            value => $qpid_tcp_nodelay;
       'oslo_messaging_qpid/amqp_durable_queues':         value => $amqp_durable_queues;
+    }
+
+    if $qpid_hosts {
+      cinder_config { 'oslo_messaging_qpid/qpid_hosts':    value => join(any2array($qpid_hosts), ',') }
+    } else {
+      cinder_config { 'oslo_messaging_qpid/qpid_hosts':    value => "${qpid_hostname}:${qpid_port}" }
+      cinder_config { 'oslo_messaging_qpid/qpid_hostname': value => $qpid_hostname }
+      cinder_config { 'oslo_messaging_qpid/qpid_port':     value => $qpid_port }
     }
 
     if is_array($qpid_sasl_mechanisms) {
