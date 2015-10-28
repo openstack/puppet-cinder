@@ -17,7 +17,7 @@ describe 'cinder::backend::rbd' do
       :rbd_ceph_conf                    => '/foo/boo/zoo/ceph.conf',
       :rbd_flatten_volume_from_snapshot => true,
       :volume_tmp_dir                   => '<SERVICE DEFAULT>',
-      :rbd_max_clone_depth              => '0'
+      :rbd_max_clone_depth              => '0',
     }
   end
 
@@ -28,7 +28,7 @@ describe 'cinder::backend::rbd' do
   end
 
   let :facts do
-    {:osfamily => 'Debian'}
+    @default_facts.merge({:osfamily => 'Debian'})
   end
 
   describe 'rbd backend volume driver' do
@@ -93,7 +93,7 @@ describe 'cinder::backend::rbd' do
 
   describe 'with RedHat' do
     let :facts do
-        { :osfamily => 'RedHat' }
+        @default_facts.merge({ :osfamily => 'RedHat' })
     end
 
     let :params do

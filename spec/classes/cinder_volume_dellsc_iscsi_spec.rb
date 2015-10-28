@@ -14,11 +14,15 @@ describe 'cinder::volume::dellsc_iscsi' do
 
   let :default_params do
   {
-      :dell_sc_api_port      => 3033,
+      :dell_sc_api_port      => '<SERVICE DEFAULT>',
       :dell_sc_server_folder => 'srv',
       :dell_sc_volume_folder => 'vol',
-      :iscsi_port            => 3260,
+      :iscsi_port            => '<SERVICE DEFAULT>',
   }
+  end
+
+  let :facts do
+    @default_facts.merge({})
   end
 
    shared_examples_for 'dellsc_iscsi volume driver' do

@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe 'cinder::volume::vmdk' do
 
+  let :facts do
+    @default_facts.merge({:osfamily => 'Debian'})
+  end
+
   let :params do
     {
         :host_ip => '172.16.16.16',
@@ -32,7 +36,7 @@ describe 'cinder::volume::vmdk' do
     is_expected.to contain_cinder_config('DEFAULT/vmware_max_object_retrieval').with_value(100)
     is_expected.to contain_cinder_config('DEFAULT/vmware_task_poll_interval').with_value(5)
     is_expected.to contain_cinder_config('DEFAULT/vmware_image_transfer_timeout_secs').with_value(7200)
-    is_expected.to_not contain_cinder_config('DEFAULT/vmware_wsdl_location')
+    is_expected.to contain_cinder_config('DEFAULT/vmware_wsdl_location').with_value('<SERVICE DEFAULT>')
   end
 
   it 'marks vmware_host_password as secret' do

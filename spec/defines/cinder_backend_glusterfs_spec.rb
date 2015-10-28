@@ -5,6 +5,10 @@ describe 'cinder::backend::glusterfs' do
   shared_examples_for 'glusterfs volume driver' do
     let(:title) {'mygluster'}
 
+    let :facts do
+      @default_facts.merge({})
+    end
+
     let :params do
       {
         :glusterfs_shares           => ['10.10.10.10:/volumes', '10.10.10.11:/volumes'],

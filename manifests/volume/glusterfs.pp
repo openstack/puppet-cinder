@@ -9,16 +9,13 @@
 #   (required) An array of GlusterFS volume locations.
 #   Must be an array even if there is only one volume.
 #
-# [*glusterfs_disk_util*]
-#   Removed in Icehouse.
-#
 # [*glusterfs_sparsed_volumes*]
 #   (optional) Whether or not to use sparse (thin) volumes.
-#   Defaults to undef which uses the driver's default of "true".
+#   Defaults to $::os_service_default which uses the driver's default of "true".
 #
 # [*glusterfs_mount_point_base*]
 #   (optional) Where to mount the Gluster volumes.
-#   Defaults to undef which uses the driver's default of "$state_path/mnt".
+#   Defaults to $::os_service_default which uses the driver's default of "$state_path/mnt".
 #
 # [*glusterfs_shares_config*]
 #   (optional) The config file to store the given $glusterfs_shares.
@@ -30,6 +27,11 @@
 #   Example :
 #     { 'glusterfs_backend/param1' => { 'value' => value1 } }
 #
+# *Deprecated*
+#
+# [*glusterfs_disk_util*]
+#   Removed in Icehouse.
+#
 # === Examples
 #
 # class { 'cinder::volume::glusterfs':
@@ -39,8 +41,8 @@
 class cinder::volume::glusterfs (
   $glusterfs_shares,
   $glusterfs_disk_util        = false,
-  $glusterfs_sparsed_volumes  = undef,
-  $glusterfs_mount_point_base = undef,
+  $glusterfs_sparsed_volumes  = $::os_service_default,
+  $glusterfs_mount_point_base = $::os_service_default,
   $glusterfs_shares_config    = '/etc/cinder/shares.conf',
   $extra_options              = {},
 ) {

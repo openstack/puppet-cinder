@@ -20,7 +20,7 @@
 # [*api_retry_count*]
 #   (optional) The number of times we retry on failures,
 #   e.g., socket error, etc.
-#   Defaults to 10.
+#   Defaults to $::os_service_default.
 #
 # [*max_object_retrieval*]
 #   (optional) The maximum number of ObjectContent data objects that should
@@ -29,7 +29,7 @@
 #   objects reaches the specified maximum. The server may still
 #   limit the count to something less than the configured value.
 #   Any remaining objects may be retrieved with additional requests.
-#   Defaults to 100.
+#   Defaults to $::os_service_default
 #
 # [*task_poll_interval*]
 #   (optional) The interval in seconds used for polling of remote tasks.
@@ -37,13 +37,13 @@
 #
 # [*image_transfer_timeout_secs*]
 #   (optional) The timeout in seconds for VMDK volume transfer between Cinder and Glance.
-#   Defaults to 7200.
+#   Defaults to $::os_service_default
 #
 # [*wsdl_location*]
 #   (optional) VIM Service WSDL Location e.g
 #   http://<server>/vimService.wsdl. Optional over-ride to
 #   default location for bug work-arounds.
-#   Defaults to None.
+#   Defaults to $::os_service_default.
 #
 # [*volume_folder*]
 #   (optional) The name for the folder in the VC datacenter that will contain cinder volumes.
@@ -61,13 +61,21 @@ define cinder::backend::vmdk (
   $host_password,
   $volume_backend_name         = $name,
   $volume_folder               = 'cinder-volumes',
-  $api_retry_count             = 10,
-  $max_object_retrieval        = 100,
+  $api_retry_count             = $::os_service_default,
+  $max_object_retrieval        = $::os_service_default,
   $task_poll_interval          = 5,
-  $image_transfer_timeout_secs = 7200,
-  $wsdl_location               = undef,
+  $image_transfer_timeout_secs = $::os_service_default,
+  $wsdl_location               = $::os_service_default,
   $extra_options               = {},
   ) {
+
+  if $volume_folder == 'cinder-volumes' {
+    warning('The OpenStack default value of volume_folder differs from the puppet module default of "cinder-volumes" and may change in later versions of the module.')
+  }
+
+  if $task_poll_interval == 5 {
+    warning('The OpenStack default value of task_poll_interval differs from the puppet module default of "5" and may change in later versions of the module.')
+  }
 
   cinder_config {
     "${name}/volume_backend_name":                value => $volume_backend_name;
@@ -80,13 +88,8 @@ define cinder::backend::vmdk (
     "${name}/vmware_max_object_retrieval":        value => $max_object_retrieval;
     "${name}/vmware_task_poll_interval":          value => $task_poll_interval;
     "${name}/vmware_image_transfer_timeout_secs": value => $image_transfer_timeout_secs;
+    "${name}/vmware_wsdl_location":               value => $wsdl_location;
     "${name}/host":                               value => "vmdk:${host_ip}-${volume_folder}";
-  }
-
-  if $wsdl_location {
-    cinder_config {
-      "${name}/vmware_wsdl_location":               value => $wsdl_location;
-    }
   }
 
   package { 'python-suds':

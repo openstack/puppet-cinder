@@ -60,18 +60,18 @@
 #
 define cinder::backend::gpfs (
   $gpfs_mount_point_base,
-  $gpfs_images_dir        = '<SERVICE DEFAULT>',
-  $gpfs_images_share_mode = '<SERVICE DEFAULT>',
-  $gpfs_max_clone_depth   = '<SERVICE DEFAULT>',
-  $gpfs_sparse_volumes    = '<SERVICE DEFAULT>',
-  $gpfs_storage_pool      = '<SERVICE DEFAULT>',
+  $gpfs_images_dir        = $::os_service_default,
+  $gpfs_images_share_mode = $::os_service_default,
+  $gpfs_max_clone_depth   = $::os_service_default,
+  $gpfs_sparse_volumes    = $::os_service_default,
+  $gpfs_storage_pool      = $::os_service_default,
   $extra_options          = {},
 ) {
 
-  if ! ($gpfs_images_share_mode in ['copy', 'copy_on_write', '<SERVICE DEFAULT>']) {
+  if ! ($gpfs_images_share_mode in ['copy', 'copy_on_write', $::os_service_default]) {
     fail('gpfs_images_share_mode only support `copy` or `copy_on_write`')
   }
-  if $gpfs_images_share_mode in ['copy', 'copy_on_write'] and $gpfs_images_dir == '<SERVICE DEFAULT>' {
+  if $gpfs_images_share_mode in ['copy', 'copy_on_write'] and is_service_default($gpfs_images_dir) {
     fail('gpfs_images_share_mode only in conjunction with gpfs_images_dir')
   }
 
