@@ -54,7 +54,7 @@ describe 'cinder::db' do
 
   context 'on Debian platforms' do
     let :facts do
-    @default_facts.merge!({
+    @default_facts.merge({
       :osfamily => 'Debian',
       :operatingsystem => 'Debian',
       :operatingsystemrelease => 'jessie',
@@ -66,7 +66,7 @@ describe 'cinder::db' do
 
   context 'on Redhat platforms' do
     let :facts do
-    @default_facts.merge!({
+    @default_facts.merge({
         :osfamily => 'RedHat',
         :operatingsystemrelease => '7.1',
     })

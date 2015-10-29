@@ -7,7 +7,7 @@ describe 'cinder::volume' do
   end
 
   let :facts do
-    @default_facts.merge!({:osfamily => 'Debian'})
+    @default_facts.merge({:osfamily => 'Debian'})
   end
 
   it { is_expected.to contain_package('cinder-volume').with_ensure('present') }

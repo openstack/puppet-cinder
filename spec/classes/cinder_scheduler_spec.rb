@@ -5,7 +5,7 @@ describe 'cinder::scheduler' do
   describe 'on debian platforms' do
 
     let :facts do
-      @default_facts.merge!({ :osfamily => 'Debian' })
+      @default_facts.merge({ :osfamily => 'Debian' })
     end
 
     describe 'with default parameters' do

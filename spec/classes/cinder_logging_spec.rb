@@ -111,7 +111,7 @@ describe 'cinder::logging' do
 
   context 'on Debian platforms' do
     let :facts do
-      @default_facts.merge!({ :osfamily => 'Debian' })
+      @default_facts.merge({ :osfamily => 'Debian' })
     end
 
     it_configures 'cinder-logging'
@@ -119,7 +119,7 @@ describe 'cinder::logging' do
 
   context 'on RedHat platforms' do
     let :facts do
-      @default_facts.merge!({ :osfamily => 'RedHat' })
+      @default_facts.merge({ :osfamily => 'RedHat' })
     end
 
     it_configures 'cinder-logging'
