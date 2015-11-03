@@ -21,6 +21,7 @@ class cinder::params {
     $lio_package_name     = 'targetcli'
     $lock_path            = '/var/lock/cinder'
     $sqlite_package_name  = 'python-pysqlite2'
+    $pymysql_package_name = 'python-pymysql'
 
   } elsif($::osfamily == 'RedHat') {
 
@@ -41,6 +42,7 @@ class cinder::params {
     $lio_package_name     = 'targetcli'
     $lock_path            = '/var/lib/cinder/tmp'
     $sqlite_package_name  = undef
+    $pymysql_package_name = undef
 
     case $::operatingsystem {
       'RedHat', 'CentOS', 'Scientific', 'OracleLinux': {

@@ -29,7 +29,7 @@ describe 'basic cinder' do
 
       # Cinder resources
       class { '::cinder':
-        database_connection => 'mysql://cinder:a_big_secret@127.0.0.1/cinder?charset=utf8',
+        database_connection => 'mysql+pymysql://cinder:a_big_secret@127.0.0.1/cinder?charset=utf8',
         rabbit_userid       => 'cinder',
         rabbit_password     => 'an_even_bigger_secret',
         rabbit_host         => '127.0.0.1',
