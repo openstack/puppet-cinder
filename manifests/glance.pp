@@ -16,11 +16,11 @@
 #
 # [*glance_num_retries*]
 #   (optional) Number retries when downloading an image from glance.
-#   Defaults to 0
+#   Defaults to $::os_service_default
 #
 # [*glance_api_insecure*]
 #   (optional) Allow to perform insecure SSL (https) requests to glance.
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*glance_api_ssl_compression*]
 #   (optional) Whether to attempt to negotiate SSL layer compression when
@@ -28,11 +28,11 @@
 #   layer compression. In some cases disabling this may improve
 #   data throughput, eg when high network bandwidth is available
 #   and you are using already compressed image formats such as qcow2.
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*glance_request_timeout*]
 #   (optional) http/https timeout value for glance operations.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # === Author(s)
 #
@@ -57,23 +57,14 @@
 class cinder::glance (
   $glance_api_servers         = undef,
   $glance_api_version         = '2',
-  $glance_num_retries         = '0',
-  $glance_api_insecure        = false,
-  $glance_api_ssl_compression = false,
-  $glance_request_timeout     = undef
+  $glance_num_retries         = $::os_service_default,
+  $glance_api_insecure        = $::os_service_default,
+  $glance_api_ssl_compression = $::os_service_default,
+  $glance_request_timeout     = $::os_service_default,
 ) {
 
-  if is_array($glance_api_servers) {
-    cinder_config {
-      'DEFAULT/glance_api_servers': value => join($glance_api_servers, ',');
-    }
-  } elsif is_string($glance_api_servers) {
-    cinder_config {
-      'DEFAULT/glance_api_servers': value => $glance_api_servers;
-    }
-  }
-
   cinder_config {
+    'DEFAULT/glance_api_servers':         value => join(any2array($glance_api_servers), ',');
     'DEFAULT/glance_api_version':         value => $glance_api_version;
     'DEFAULT/glance_num_retries':         value => $glance_num_retries;
     'DEFAULT/glance_api_insecure':        value => $glance_api_insecure;

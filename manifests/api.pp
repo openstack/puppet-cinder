@@ -42,19 +42,19 @@
 #   (optional) OpenStack privileged account username. Used for requests to
 #   other services (such as Nova) that require an account with
 #   special rights.
-#   Defaults to undef.
+#   Defaults to $::os_service_default.
 #
 # [*os_privileged_user_password*]
 #   (optional) Password associated with the OpenStack privileged account.
-#   Defaults to undef.
+#   Defaults to $::os_service_default.
 #
 # [*os_privileged_user_tenant*]
 #   (optional) Tenant name associated with the OpenStack privileged account.
-#   Defaults to undef.
+#   Defaults to $::os_service_default.
 #
 # [*os_privileged_user_auth_url*]
 #   (optional) Auth URL associated with the OpenStack privileged account.
-#   Defaults to undef.
+#   Defaults to $::os_service_default.
 #
 # [*os_region_name*]
 #   (optional) Some operations require cinder to make API requests
@@ -117,7 +117,7 @@
 #
 # [*ratelimits*]
 #   (optional) The state of the service
-#   Defaults to undef. If undefined the default ratelimiting values are used.
+#   Defaults to $::os_service_default. If undefined the default ratelimiting values are used.
 #
 # [*ratelimits_factory*]
 #   (optional) Factory to use for ratelimiting
@@ -165,16 +165,16 @@ class cinder::api (
   $nova_catalog_admin_info     = 'compute:Compute Service:adminURL',
   $os_region_name              = $::os_service_default,
   $privileged_user             = false,
-  $os_privileged_user_name     = undef,
-  $os_privileged_user_password = undef,
-  $os_privileged_user_tenant   = undef,
-  $os_privileged_user_auth_url = undef,
+  $os_privileged_user_name     = $::os_service_default,
+  $os_privileged_user_password = $::os_service_default,
+  $os_privileged_user_tenant   = $::os_service_default,
+  $os_privileged_user_auth_url = $::os_service_default,
   $service_workers             = $::processorcount,
   $package_ensure              = 'present',
   $bind_host                   = '0.0.0.0',
   $enabled                     = true,
   $manage_service              = true,
-  $ratelimits                  = undef,
+  $ratelimits                  = $::os_service_default,
   $default_volume_type         = $::os_service_default,
   $ratelimits_factory =
     'cinder.api.v1.limits:RateLimitingMiddleware.factory',
@@ -244,39 +244,24 @@ class cinder::api (
   }
 
   if $privileged_user {
-    if !$os_privileged_user_name {
+    if is_service_default($os_privileged_user_name) {
       fail('The os_privileged_user_name parameter is required when privileged_user is set to true')
     }
-    if !$os_privileged_user_password {
+    if is_service_default($os_privileged_user_password) {
       fail('The os_privileged_user_password parameter is required when privileged_user is set to true')
     }
-    if !$os_privileged_user_tenant {
+    if is_service_default($os_privileged_user_tenant) {
       fail('The os_privileged_user_tenant parameter is required when privileged_user is set to true')
     }
-
-    cinder_config {
-      'DEFAULT/os_privileged_user_password': value => $os_privileged_user_password;
-      'DEFAULT/os_privileged_user_tenant':   value => $os_privileged_user_tenant;
-      'DEFAULT/os_privileged_user_name':     value => $os_privileged_user_name;
-    }
-
-    if $os_privileged_user_auth_url {
-      cinder_config {
-        'DEFAULT/os_privileged_user_auth_url': value => $os_privileged_user_auth_url;
-      }
-    } else {
-      cinder_config {
-        'DEFAULT/os_privileged_user_auth_url': ensure => absent;
-      }
-    }
-  } else {
-    cinder_config {
-      'DEFAULT/os_privileged_user_password': ensure => absent;
-      'DEFAULT/os_privileged_user_tenant':   ensure => absent;
-      'DEFAULT/os_privileged_user_name':     ensure => absent;
-      'DEFAULT/os_privileged_user_auth_url': ensure => absent;
-    }
   }
+
+  cinder_config {
+    'DEFAULT/os_privileged_user_password': value => $os_privileged_user_password;
+    'DEFAULT/os_privileged_user_tenant':   value => $os_privileged_user_tenant;
+    'DEFAULT/os_privileged_user_name':     value => $os_privileged_user_name;
+    'DEFAULT/os_privileged_user_auth_url': value => $os_privileged_user_auth_url;
+  }
+
 
   if $keystone_auth_uri and $auth_uri {
     fail('both keystone_auth_uri and auth_uri are set and they have the same meaning')
@@ -393,7 +378,7 @@ class cinder::api (
     }
   }
 
-  if ($ratelimits != undef) {
+  if (!is_service_default($ratelimits)) {
     cinder_api_paste_ini {
       'filter:ratelimit/paste.filter_factory': value => $ratelimits_factory;
       'filter:ratelimit/limits':               value => $ratelimits;

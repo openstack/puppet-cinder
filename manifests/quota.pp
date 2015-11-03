@@ -6,26 +6,26 @@
 #
 # [*quota_volumes*]
 #   (Optional) Number of volumes allowed per project.
-#   Defaults to '10'.
+#   Defaults to $::os_service_default
 #
 # [*quota_snapshots*]
 #   (Optional) Number of volume snapshots allowed per project.
-#   Defaults to '10'.
+#   Defaults to $::os_service_default
 #
 # [*quota_gigabytes*]
 #   (Optional) Number of volume gigabytes (snapshots are also included)
 #   allowed per project.
-#   Defaults to 1000.
+#   Defaults to $::os_service_default.
 #
 # [*quota_driver*]
 #   (Optional) Default driver to use for quota checks.
-#   Defaults to 'cinder.quota.DbQuotaDriver'.
+#   Defaults to $::os_service_default.
 #
 class cinder::quota (
-  $quota_volumes = 10,
-  $quota_snapshots = 10,
-  $quota_gigabytes = 1000,
-  $quota_driver = 'cinder.quota.DbQuotaDriver'
+  $quota_volumes   = $::os_service_default,
+  $quota_snapshots = $::os_service_default,
+  $quota_gigabytes = $::os_service_default,
+  $quota_driver    = $::os_service_default,
 ) {
 
   cinder_config {

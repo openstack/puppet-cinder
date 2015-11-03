@@ -12,7 +12,7 @@
 #   (optional) Specifies the path of the Image service repository in GPFS.
 #   Leave undefined if not storing images in GPFS. Defaults to "None" via
 #   driver.
-#   Defaults to <SERVICE DEFAULT>
+#   Defaults to $::os_service_default
 #
 # [*gpfs_images_share_mode*]
 #   (optional) Specifies the type of image copy to be used. Set this when the
@@ -22,7 +22,7 @@
 #   the image is made; "copy_on_write" specifies that copy-on-write
 #   optimization strategy is used and unmodified blocks of the image file are
 #   shared efficiently. Defaults to "None" via driver.
-#   Defaults to <SERVICE DEFAULT>
+#   Defaults to $::os_service_default
 #
 # [*gpfs_max_clone_depth*]
 #   (optional) Specifies an upper limit on the number of indirections required
@@ -30,19 +30,19 @@
 #   copy-on-write snapshots or clones can have a negative impact on
 #   performance, but improves space utilization. 0 indicates unlimited clone
 #   depth. Defaults to "0" via driver implementation
-#   Defaults to <SERVICE DEFAULT>
+#   Defaults to $::os_service_default
 #
 # [*gpfs_sparse_volumes*]
 #   (optional) Specifies that volumes are created as sparse files which
 #   initially consume no space. If set to False, the volume is created as a
 #   fully allocated file, in which case, creation may take a significantly
 #   longer time. Defaults to "True" via driver.
-#   Defaults to <SERVICE DEFAULT>
+#   Defaults to $::os_service_default
 #
 # [*gpfs_storage_pool*]
 #   (optional) Specifies the storage pool that volumes are assigned to. By
 #   default, the system storage pool is used. Defaults to "system" via driver.
-#   Defaults to <SERVICE DEFAULT>
+#   Defaults to $::os_service_default
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
@@ -60,11 +60,11 @@
 #
 class cinder::volume::gpfs(
   $gpfs_mount_point_base,
-  $gpfs_images_dir        = '<SERVICE DEFAULT>',
-  $gpfs_images_share_mode = '<SERVICE DEFAULT>',
-  $gpfs_max_clone_depth   = '<SERVICE DEFAULT>',
-  $gpfs_sparse_volumes    = '<SERVICE DEFAULT>',
-  $gpfs_storage_pool      = '<SERVICE DEFAULT>',
+  $gpfs_images_dir        = $::os_service_default,
+  $gpfs_images_share_mode = $::os_service_default,
+  $gpfs_max_clone_depth   = $::os_service_default,
+  $gpfs_sparse_volumes    = $::os_service_default,
+  $gpfs_storage_pool      = $::os_service_default,
   $extra_options          = {}
 ) {
   cinder::backend::gpfs { 'DEFAULT':
