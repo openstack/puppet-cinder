@@ -56,7 +56,7 @@ describe 'cinder::logging' do
       is_expected.to contain_cinder_config('DEFAULT/use_syslog').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/use_stderr').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/syslog_log_facility').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('DEFAULT/log_dir').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/log_dir').with(:value => '/var/log/cinder')
       is_expected.to contain_cinder_config('DEFAULT/verbose').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/debug').with(:value => '<SERVICE DEFAULT>')
     end

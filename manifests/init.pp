@@ -183,8 +183,9 @@
 #
 # [*log_dir*]
 #   (optional) Directory where logs should be stored.
-#   If set to boolean false, it will not log to any directory.
-#   Defaults to undef.
+#   If set to boolean false or the $::os_service_default, it will not log to
+#   any directory.
+#   Defaults to '/var/log/cinder'.
 #
 # [*use_ssl*]
 #   (optional) Enable SSL on the API server
@@ -279,7 +280,7 @@ class cinder (
   $use_syslog                         = undef,
   $use_stderr                         = undef,
   $log_facility                       = undef,
-  $log_dir                            = undef,
+  $log_dir                            = '/var/log/cinder',
   $verbose                            = undef,
   $debug                              = undef,
   $storage_availability_zone          = 'nova',

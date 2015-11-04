@@ -26,8 +26,9 @@
 #
 #  [*log_dir*]
 #    (optional) Directory where logs should be stored.
-#    If set to boolean false, it will not log to any directory.
-#    Defaults to $::os_service_default
+#    If set to boolean false or $::os_service_default, it will not log to any
+#    directory.
+#    Defaults to '/var/log/cinder'
 #
 #  [*logging_context_format_string*]
 #    (Optional) Format string to use for log messages with context.
@@ -94,7 +95,7 @@ class cinder::logging(
   $use_syslog                    = $::os_service_default,
   $use_stderr                    = $::os_service_default,
   $log_facility                  = $::os_service_default,
-  $log_dir                       = $::os_service_default,
+  $log_dir                       = '/var/log/cinder',
   $verbose                       = $::os_service_default,
   $debug                         = $::os_service_default,
   $logging_context_format_string = $::os_service_default,
