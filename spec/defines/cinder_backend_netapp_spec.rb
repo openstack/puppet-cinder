@@ -5,7 +5,7 @@ describe 'cinder::backend::netapp' do
   let(:title) {'netapp'}
 
   let :facts do
-    @default_facts.merge({})
+    OSDefaults.get_facts({})
   end
 
   let :params do

@@ -5,7 +5,7 @@ describe 'cinder::scheduler' do
   describe 'on debian platforms' do
 
     let :facts do
-      @default_facts.merge({ :osfamily => 'Debian' })
+      OSDefaults.get_facts({ :osfamily => 'Debian' })
     end
 
     describe 'with default parameters' do
@@ -57,7 +57,7 @@ describe 'cinder::scheduler' do
   describe 'on rhel platforms' do
 
     let :facts do
-      { :osfamily => 'RedHat' }
+      OSDefaults.get_facts({ :osfamily => 'RedHat' })
     end
 
     describe 'with default parameters' do

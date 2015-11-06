@@ -27,19 +27,15 @@ describe 'cinder::client' do
 
   end
 
-  context 'on Debian platform' do
-    let :facts do
-      { :osfamily => 'Debian' }
+  on_supported_os({
+    :supported_os   => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts({:processorcount => 8}))
+      end
+
+      it_configures 'cinder client'
     end
-
-    it_configures 'cinder client'
-  end
-
-  context 'on RedHat platform' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    it_configures 'cinder client'
   end
 end

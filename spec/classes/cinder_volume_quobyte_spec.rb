@@ -5,7 +5,7 @@ describe 'cinder::volume::quobyte' do
   shared_examples_for 'quobyte volume driver' do
     let :params do
       {
-	:quobyte_volume_url      => 'quobyte://quobyte.cluster.example.com/volume-name',
+        :quobyte_volume_url      => 'quobyte://quobyte.cluster.example.com/volume-name',
         :quobyte_qcow2_volumes   => false,
         :quobyte_sparsed_volumes => true,
       }
@@ -24,20 +24,16 @@ describe 'cinder::volume::quobyte' do
 
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
+  on_supported_os({
+    :supported_os   => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts({:processorcount => 8}))
+      end
+
+      it_configures 'quobyte volume driver'
     end
-
-    it_configures 'quobyte volume driver'
-  end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    it_configures 'quobyte volume driver'
   end
 
 end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cinder::volume::netapp' do
 
   let :facts do
-    @default_facts.merge({})
+    OSDefaults.get_facts({})
   end
 
   let :params do

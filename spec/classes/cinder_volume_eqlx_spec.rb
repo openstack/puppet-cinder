@@ -18,7 +18,7 @@ describe 'cinder::volume::eqlx' do
   end
 
   let :facts do
-    @default_facts.merge({})
+    OSDefaults.get_facts({})
   end
 
   describe 'eqlx volume driver' do

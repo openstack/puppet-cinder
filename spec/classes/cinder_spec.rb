@@ -9,7 +9,7 @@ describe 'cinder' do
   end
 
   let :facts do
-    @default_facts.merge({
+    OSDefaults.get_facts({
       :osfamily => 'Debian',
       :operatingsystem => 'Debian',
       :operatingsystemrelease => 'jessie',

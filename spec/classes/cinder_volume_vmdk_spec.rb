@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cinder::volume::vmdk' do
 
   let :facts do
-    @default_facts.merge({:osfamily => 'Debian'})
+    OSDefaults.get_facts({:osfamily => 'Debian'})
   end
 
   let :params do

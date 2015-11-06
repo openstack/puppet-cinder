@@ -6,7 +6,7 @@ describe 'cinder::backend::glusterfs' do
     let(:title) {'mygluster'}
 
     let :facts do
-      @default_facts.merge({})
+      OSDefaults.get_facts({})
     end
 
     let :params do
@@ -52,20 +52,15 @@ describe 'cinder::backend::glusterfs' do
     end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      { :osfamily => 'Debian' }
+  on_supported_os({
+    :supported_os   => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts({:processorcount => 8}))
+      end
+
+      it_configures 'glusterfs volume driver'
     end
-
-    it_configures 'glusterfs volume driver'
   end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      { :osfamily => 'RedHat' }
-    end
-
-    it_configures 'glusterfs volume driver'
-  end
-
 end

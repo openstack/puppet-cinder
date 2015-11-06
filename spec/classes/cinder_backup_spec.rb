@@ -76,29 +76,24 @@ describe 'cinder::backup' do
     end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      @default_facts.merge!({ :osfamily => 'Debian' })
-    end
+  on_supported_os({
+    :supported_os   => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts({:processorcount => 8}))
+      end
 
-    let :platform_params do
-      { :backup_package => 'cinder-backup',
-        :backup_service => 'cinder-backup' }
-    end
+      let :platform_params do
+        if facts[:osfamily] == 'Debian'
+          { :backup_package => 'cinder-backup',
+            :backup_service => 'cinder-backup' }
+        else
+          { :backup_service => 'opentack-cinder-backup' }
+        end
+      end
 
-    it_configures 'cinder backup'
+      it_configures 'cinder backup'
+    end
   end
-
-  context 'on RedHat platforms' do
-    let :facts do
-      @default_facts.merge!({ :osfamily => 'RedHat' })
-    end
-
-    let :platform_params do
-      { :backup_service => 'opentack-cinder-backup' }
-    end
-
-    it_configures 'cinder backup'
-  end
-
 end
