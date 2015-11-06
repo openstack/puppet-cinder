@@ -6,7 +6,7 @@ describe 'cinder::db::sync' do
 
     it 'runs cinder-manage db_sync' do
       is_expected.to contain_exec('cinder-manage db_sync').with(
-        :command     => 'cinder-manage db sync',
+        :command     => 'cinder-manage  db sync',
         :user        => 'cinder',
         :path        => '/usr/bin',
         :refreshonly => 'true',
@@ -14,7 +14,26 @@ describe 'cinder::db::sync' do
       )
     end
 
+  describe "overriding extra_params" do
+    let :params do
+      {
+        :extra_params => '--config-file /etc/cinder/cinder.conf',
+      }
+    end
+
+    it {
+      is_expected.to contain_exec('cinder-manage db_sync').with(
+        :command     => 'cinder-manage --config-file /etc/cinder/cinder.conf db sync',
+        :user        => 'cinder',
+        :path        => '/usr/bin',
+        :refreshonly => 'true',
+        :logoutput   => 'on_failure'
+      )
+      }
+    end
+
   end
+
 
   context 'on a RedHat osfamily' do
     let :facts do
