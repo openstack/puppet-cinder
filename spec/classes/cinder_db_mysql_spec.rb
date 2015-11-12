@@ -27,6 +27,7 @@ describe 'cinder::db::mysql' do
       :collate       => 'utf8_general_ci',
      ) }
   end
+
   describe "overriding allowed_hosts param to array" do
     let :params do
       {
@@ -35,7 +36,17 @@ describe 'cinder::db::mysql' do
       }
     end
 
+    it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
+      :user          => 'cinder',
+      :password_hash => '*1C8A189441ED992638DD234B6711CD5064DA8C6E',
+      :host          => '127.0.0.1',
+      :charset       => 'utf8',
+      :collate       => 'utf8_general_ci',
+      :allowed_hosts => ['127.0.0.1', '%']
+    ) }
+
   end
+
   describe "overriding allowed_hosts param to string" do
     let :params do
       {
@@ -43,6 +54,15 @@ describe 'cinder::db::mysql' do
         :allowed_hosts  => '192.168.1.1'
       }
     end
+
+    it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
+      :user          => 'cinder',
+      :password_hash => '*0E9E710049E74D36D29D615DFC55F3FFD45413BC',
+      :host          => '127.0.0.1',
+      :charset       => 'utf8',
+      :collate       => 'utf8_general_ci',
+      :allowed_hosts => '192.168.1.1',
+    ) }
 
   end
 
@@ -54,5 +74,15 @@ describe 'cinder::db::mysql' do
       }
     end
 
+    it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
+      :user          => 'cinder',
+      :password_hash => '*0E9E710049E74D36D29D615DFC55F3FFD45413BC',
+      :host          => '127.0.0.1',
+      :charset       => 'utf8',
+      :collate       => 'utf8_general_ci',
+      :allowed_hosts => '127.0.0.1',
+    ) }
+
   end
+
 end
