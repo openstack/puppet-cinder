@@ -1,3 +1,55 @@
+##2015-11-25 - 7.0.0
+###Summary
+
+This is a backwards-incompatible major release for OpenStack Liberty.
+
+####Backwards-incompatible changes
+- rabbitmq: do not manage rabbitmq service anymore
+- remove deprecated mysql_module
+- change section name for AMQP qpid parameters
+- change section name for AMQP rabbit parameters
+
+####Features
+- make it possible to have multiple type_sets with the same value
+- keystone/auth: make service description configurable
+- add support for RabbitMQ connection heartbeat
+- add tag to package and service resources
+- sync cinder::db::sync with new standard
+- set parameter host in vmdk backend
+- add lock_path to cinder config
+- add 'host' parameter to cinder.conf
+- add an ability to manage use_stderr parameter
+- reflect provider change in puppet-openstacklib
+- introduce cinder::db class
+- add support for Pure Volume Drivers
+- implement class and defined type for cinder GPFS driver
+- allow RBD host to be configurable
+- add posibility to specify privileged user for Cinder
+- switch cinder to use os_service_default
+- simplify rpc_backend parameter
+- put all the logging related parameters to the logging class
+- specify a dedicated keystone user for cinderv2
+- db: Use postgresql lib class for psycopg package
+- add kombu_reconnect_delay parameter to cinder
+- allow customization of db sync command line
+- add possibility to use list of qpid hosts in cinder
+
+####Bugfixes
+- rely on autorequire for config resource ordering
+- dont run losetup if it's been done already
+- don't run vgcreate if vg exists
+- make sure cinder user is created before creating Cinder::Type
+- type: Add retry to Exec resource
+
+####Maintenance
+- fix rspec 3.x syntax
+- initial msync run for all Puppet OpenStack modules
+- acceptance: enable debug & verbosity for OpenStack logs
+- try to use zuul-cloner to prepare fixtures
+- remove class_parameter_defaults puppet-lint check
+- add test coverage for cinder::db::mysql
+- acceptance: use common bits from puppet-openstack-integration
+
 ##2015-10-10 - 6.1.0
 ###Summary
 
