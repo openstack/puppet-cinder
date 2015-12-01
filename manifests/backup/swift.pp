@@ -13,6 +13,10 @@
 #   Should be a valid Swift URL
 #   Defaults to 'http://localhost:8080/v1/AUTH_'
 #
+# [*backup_swift_auth_url*]
+#  (optional) The URL of the Keystone endpoint for authentication.
+#  Defaults to 'http://127.0.0.1:5000/v2.0/'
+#
 # [*backup_swift_container*]
 #   (optional) The default Swift container to use.
 #   Defaults to 'volumes_backup'
@@ -58,6 +62,7 @@
 class cinder::backup::swift (
   $backup_driver                = 'cinder.backup.drivers.swift',
   $backup_swift_url             = 'http://localhost:8080/v1/AUTH_',
+  $backup_swift_auth_url        = 'http://127.0.0.1:5000/v2.0/',
   $backup_swift_container       = 'volumes_backup',
   $backup_swift_object_size     = $::os_service_default,
   $backup_swift_retry_attempts  = $::os_service_default,
@@ -72,6 +77,7 @@ class cinder::backup::swift (
   cinder_config {
     'DEFAULT/backup_driver':                value => $backup_driver;
     'DEFAULT/backup_swift_url':             value => $backup_swift_url;
+    'DEFAULT/backup_swift_auth_url':        value => $backup_swift_auth_url;
     'DEFAULT/backup_swift_container':       value => $backup_swift_container;
     'DEFAULT/backup_swift_object_size':     value => $backup_swift_object_size;
     'DEFAULT/backup_swift_retry_attempts':  value => $backup_swift_retry_attempts;
