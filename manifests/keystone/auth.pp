@@ -239,6 +239,14 @@ class cinder::keystone::auth (
   $real_service_name = pick($service_name, $auth_name)
   $real_service_name_v2 = pick($service_name_v2, $auth_name_v2)
 
+  # TODO(mmagr): change default service names according to default_catalog in next (M) cycle
+  if !$service_name {
+    warning('Note that service_name parameter default value will be changed to "Volume Service" (according to Keystone default catalog) in a future release. In case you use different value, please update your manifests accordingly.')
+  }
+  if !$service_name_v2 {
+    warning('Note that service_name_v2 parameter default value will be changed to "Volume Service v2" in a future release. In case you use different value, please update your manifests accordingly.')
+  }
+
   if $real_service_name == $real_service_name_v2 {
     fail('cinder::keystone::auth parameters service_name and service_name_v2 must be different.')
   }
