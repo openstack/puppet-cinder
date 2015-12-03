@@ -96,54 +96,6 @@
 #   Use durable queues in amqp.
 #   (Optional) Defaults to false.
 #
-# [*qpid_hostname*]
-#   (Optional) Location of qpid server
-#   Defaults to 'localhost'.
-#
-# [*qpid_port*]
-#   (Optional) Port for qpid server.
-#   Defaults to '5672'.
-#
-# [*qpid_hosts*]
-#   (Optional) Qpid HA cluster host:port pairs. (list value)
-#   Defaults to false
-#
-# [*qpid_username*]
-#   (Optional) Username to use when connecting to qpid.
-#   Defaults to 'guest'.
-#
-# [*qpid_password*]
-#   (Optional) Password to use when connecting to qpid.
-#   Defaults to 'false'.
-#
-# [*qpid_sasl_mechanisms*]
-#   (Optional) ENable one or more SASL mechanisms.
-#   Defaults to 'false'.
-#
-# [*qpid_heartbeat*]
-#   (Optional) Seconds between connection keepalive heartbeats.
-#   Defaults to '60'.
-#
-# [*qpid_protocol*]
-#   (Optional) Transport to use, either 'tcp' or 'ssl'.
-#   Defaults to 'tcp'.
-#
-# [*qpid_tcp_nodelay*]
-#   (Optional) Disable Nagle Algorithm.
-#   Defaults to 'true'.
-#
-# [*qpid_reconnect*]
-#
-# [*qpid_reconnect_timeout*]
-#
-# [*qpid_reconnect_limit*]
-#
-# [*qpid_reconnect_interval*]
-#
-# [*qpid_reconnect_interval_min*]
-#
-# [*qpid_reconnect_interval_max*]
-#
 # [*use_syslog*]
 #   (Optional) Use syslog for logging.
 #   Defaults to undef.
@@ -236,6 +188,55 @@
 #   Defaults to: $::cinder::params::lock_path
 #
 # === Deprecated Parameters
+#
+# [*qpid_hostname*]
+#   (Optional) Location of qpid server
+#   Defaults to undef.
+#
+# [*qpid_port*]
+#   (Optional) Port for qpid server.
+#   Defaults to undef.
+#
+# [*qpid_hosts*]
+#   (Optional) Qpid HA cluster host:port pairs. (list value)
+#   Defaults to undef.
+#
+# [*qpid_username*]
+#   (Optional) Username to use when connecting to qpid.
+#   Defaults to undef.
+#
+# [*qpid_password*]
+#   (Optional) Password to use when connecting to qpid.
+#   Defaults to undef.
+#
+# [*qpid_sasl_mechanisms*]
+#   (Optional) ENable one or more SASL mechanisms.
+#   Defaults to undef.
+#
+# [*qpid_heartbeat*]
+#   (Optional) Seconds between connection keepalive heartbeats.
+#   Defaults to undef.
+#
+# [*qpid_protocol*]
+#   (Optional) Transport to use, either 'tcp' or 'ssl'.
+#   Defaults to undef.
+#
+# [*qpid_tcp_nodelay*]
+#   (Optional) Disable Nagle Algorithm.
+#   Defaults to undef.
+#
+# [*qpid_reconnect*]
+#
+# [*qpid_reconnect_timeout*]
+#
+# [*qpid_reconnect_limit*]
+#
+# [*qpid_reconnect_interval*]
+#
+# [*qpid_reconnect_interval_min*]
+#
+# [*qpid_reconnect_interval_max*]
+#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -261,21 +262,6 @@ class cinder (
   $kombu_ssl_version                  = $::os_service_default,
   $kombu_reconnect_delay              = $::os_service_default,
   $amqp_durable_queues                = false,
-  $qpid_hostname                      = 'localhost',
-  $qpid_port                          = '5672',
-  $qpid_hosts                         = false,
-  $qpid_username                      = 'guest',
-  $qpid_password                      = false,
-  $qpid_sasl_mechanisms               = false,
-  $qpid_reconnect                     = true,
-  $qpid_reconnect_timeout             = 0,
-  $qpid_reconnect_limit               = 0,
-  $qpid_reconnect_interval_min        = 0,
-  $qpid_reconnect_interval_max        = 0,
-  $qpid_reconnect_interval            = 0,
-  $qpid_heartbeat                     = 60,
-  $qpid_protocol                      = 'tcp',
-  $qpid_tcp_nodelay                   = true,
   $package_ensure                     = 'present',
   $use_ssl                            = false,
   $ca_file                            = $::os_service_default,
@@ -293,6 +279,23 @@ class cinder (
   $enable_v1_api                      = true,
   $enable_v2_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
+  # DEPRECATED PARAMETERS
+  $qpid_hostname                      = undef,
+  $qpid_port                          = undef,
+  $qpid_hosts                         = undef,
+  $qpid_username                      = undef,
+  $qpid_password                      = undef,
+  $qpid_sasl_mechanisms               = undef,
+  $qpid_reconnect                     = undef,
+  $qpid_reconnect_timeout             = undef,
+  $qpid_reconnect_limit               = undef,
+  $qpid_reconnect_interval_min        = undef,
+  $qpid_reconnect_interval_max        = undef,
+  $qpid_reconnect_interval            = undef,
+  $qpid_heartbeat                     = undef,
+  $qpid_protocol                      = undef,
+  $qpid_tcp_nodelay                   = undef,
+
 )  {
 
   include ::cinder::db
@@ -356,47 +359,7 @@ class cinder (
   }
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' or $rpc_backend == 'qpid' {
-
-    if ! $qpid_password {
-      fail('Please specify a qpid_password parameter.')
-    }
-
-    cinder_config {
-      'oslo_messaging_qpid/qpid_username':               value => $qpid_username;
-      'oslo_messaging_qpid/qpid_password':               value => $qpid_password, secret => true;
-      'oslo_messaging_qpid/qpid_reconnect':              value => $qpid_reconnect;
-      'oslo_messaging_qpid/qpid_reconnect_timeout':      value => $qpid_reconnect_timeout;
-      'oslo_messaging_qpid/qpid_reconnect_limit':        value => $qpid_reconnect_limit;
-      'oslo_messaging_qpid/qpid_reconnect_interval_min': value => $qpid_reconnect_interval_min;
-      'oslo_messaging_qpid/qpid_reconnect_interval_max': value => $qpid_reconnect_interval_max;
-      'oslo_messaging_qpid/qpid_reconnect_interval':     value => $qpid_reconnect_interval;
-      'oslo_messaging_qpid/qpid_heartbeat':              value => $qpid_heartbeat;
-      'oslo_messaging_qpid/qpid_protocol':               value => $qpid_protocol;
-      'oslo_messaging_qpid/qpid_tcp_nodelay':            value => $qpid_tcp_nodelay;
-      'oslo_messaging_qpid/amqp_durable_queues':         value => $amqp_durable_queues;
-    }
-
-    if $qpid_hosts {
-      cinder_config { 'oslo_messaging_qpid/qpid_hosts':    value => join(any2array($qpid_hosts), ',') }
-    } else {
-      cinder_config { 'oslo_messaging_qpid/qpid_hosts':    value => "${qpid_hostname}:${qpid_port}" }
-      cinder_config { 'oslo_messaging_qpid/qpid_hostname': value => $qpid_hostname }
-      cinder_config { 'oslo_messaging_qpid/qpid_port':     value => $qpid_port }
-    }
-
-    if is_array($qpid_sasl_mechanisms) {
-      cinder_config {
-        'DEFAULT/qpid_sasl_mechanisms': value => join($qpid_sasl_mechanisms, ' ');
-      }
-    } elsif $qpid_sasl_mechanisms {
-      cinder_config {
-        'DEFAULT/qpid_sasl_mechanisms': value => $qpid_sasl_mechanisms;
-      }
-    } else {
-      cinder_config {
-        'DEFAULT/qpid_sasl_mechanisms': ensure => absent;
-      }
-    }
+    warning('Qpid driver is removed from Oslo.messaging in the Mitaka release')
   }
 
   if ! $default_availability_zone {
