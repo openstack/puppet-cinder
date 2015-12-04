@@ -357,6 +357,8 @@ class cinder (
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' or $rpc_backend == 'qpid' {
 
+    warning('Qpid driver is removed from Oslo.messaging in the Mitaka release')
+
     if ! $qpid_password {
       fail('Please specify a qpid_password parameter.')
     }
