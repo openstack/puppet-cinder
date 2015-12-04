@@ -56,6 +56,11 @@
 #   (optional) Auth URL associated with the OpenStack privileged account.
 #   Defaults to $::os_service_default.
 #
+# [*keymgr_encryption_auth_url*]
+#   (optional) Auth URL for keymgr authentication. Should be in format
+#   http://auth_url:5000/v3
+#   Defaults to $::os_service_default.
+#
 # [*os_region_name*]
 #   (optional) Some operations require cinder to make API requests
 #   to Nova. This sets the keystone region to be used for these
@@ -169,6 +174,7 @@ class cinder::api (
   $os_privileged_user_password = $::os_service_default,
   $os_privileged_user_tenant   = $::os_service_default,
   $os_privileged_user_auth_url = $::os_service_default,
+  $keymgr_encryption_auth_url  = $::os_service_default,
   $service_workers             = $::processorcount,
   $package_ensure              = 'present',
   $bind_host                   = '0.0.0.0',
@@ -280,6 +286,7 @@ class cinder::api (
 
   cinder_config {
     'keystone_authtoken/auth_uri': value => $auth_uri_real;
+    'keymgr/encryption_auth_url' : value => $keymgr_encryption_auth_url;
   }
 
   if $keystone_enabled {
