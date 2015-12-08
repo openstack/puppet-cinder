@@ -33,6 +33,8 @@ class cinder::qpid (
   $realm    ='OPENSTACK'
 ) {
 
+  warning('Qpid driver is removed from Oslo.messaging in the Mitaka release')
+
   # only configure cinder after the queue is up
   Class['qpid::server'] -> Package<| title == 'cinder' |>
 
