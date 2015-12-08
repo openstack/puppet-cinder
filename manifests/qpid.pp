@@ -1,58 +1,36 @@
 # == Class: cinder::qpid
 #
-# class for installing qpid server for cinder
+# Deprecated class for installing qpid server for cinder
 #
 # === Parameters
 #
 # [*enabled*]
 #   (Optional) Whether to enable the qpid service.
-#   Defaults to 'true'.
+#   Defaults to undef.
 #
 # [*user*]
 #   (Optional) The username to use when connecting to qpid.
-#   Defaults to 'guest'.
+#   Defaults to undef.
 #
 # [*password*]
 #   (Optional) The password to use when connecting to qpid
-#   Defaults to 'guest'.
+#   Defaults to undef.
 #
 # [*file*]
 #   (Optional) The SASL database.
-#   Defaults to '/var/lib/qpidd/qpidd.sasldb'.
+#   Defaults to undef.
 #
 # [*realm*]
 #   (Optional) The Realm for qpid.
-#   Defaults to 'OPENSTACK'.
-#
+#   Defaults to undef.
 #
 class cinder::qpid (
-  $enabled  = true,
-  $user     ='guest',
-  $password ='guest',
-  $file     ='/var/lib/qpidd/qpidd.sasldb',
-  $realm    ='OPENSTACK'
+  $enabled  = undef,
+  $user     = undef,
+  $password = undef,
+  $file     = undef,
+  $realm    = undef
 ) {
 
-  # only configure cinder after the queue is up
-  Class['qpid::server'] -> Package<| title == 'cinder' |>
-
-  if ($enabled) {
-    $service_ensure = 'running'
-
-    qpid_user { $user:
-      password => $password,
-      file     => $file,
-      realm    => $realm,
-      provider => 'saslpasswd2',
-      require  => Class['qpid::server'],
-    }
-
-  } else {
-    $service_ensure = 'stopped'
-  }
-
-  class { '::qpid::server':
-    service_ensure => $service_ensure
-  }
-
+  warning('Qpid driver is removed from Oslo.messaging in the Mitaka release')
 }
