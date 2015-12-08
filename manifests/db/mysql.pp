@@ -28,11 +28,10 @@
 # [*collate*]
 #   the database collation. Optional. Defaults to 'utf8_general_ci'
 #
-# [*cluster_id*]
-#   (Optional) TODO
-#   Defaults to 'localzone'.
-#
 # === Deprecated Parameters
+#
+# [*cluster_id*]
+#   Unused. No effect.
 #
 class cinder::db::mysql (
   $password,
@@ -46,6 +45,10 @@ class cinder::db::mysql (
 ) {
 
   validate_string($password)
+
+  if $cluster_id != 'localzone' {
+    warning('The cluster_id parameter is deprecated and has no affect. It will be removed in the next release')
+  }
 
   ::openstacklib::db::mysql { 'cinder':
     user          => $user,
