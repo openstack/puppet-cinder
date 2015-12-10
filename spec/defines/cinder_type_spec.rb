@@ -24,7 +24,7 @@ describe 'cinder::type' do
         'OS_USERNAME=admin',
         'OS_PASSWORD=asdf',
         'OS_AUTH_URL=http://127.127.127.1:5000/v2.0/'],
-      :unless    => "cinder type-list | grep -qP '\\bhippo\\b'",
+      :unless    => "cinder type-list | grep -qP '\\shippo\\s'",
       :tries     => '2',
       :try_sleep => '5',
       :require => 'Package[python-cinderclient]')
