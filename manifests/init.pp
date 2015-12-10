@@ -296,11 +296,10 @@ class cinder (
   $qpid_protocol                      = undef,
   $qpid_tcp_nodelay                   = undef,
 
-)  {
+) inherits cinder::params {
 
   include ::cinder::db
   include ::cinder::logging
-  include ::cinder::params
 
   if $use_ssl {
     if !$cert_file {
