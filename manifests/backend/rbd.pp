@@ -106,11 +106,10 @@ define cinder::backend::rbd (
   # Creates an empty file if it doesn't yet exist
   ensure_resource('file', $::cinder::params::ceph_init_override, {'ensure' => 'present'})
 
-  ensure_resource('file_line', 'set initscript env', {
+  file_line { "set initscript env ${name}":
     line   => $override_line,
     path   => $::cinder::params::ceph_init_override,
-    match  => $override_match,
-    notify => Service['cinder-volume']
-  })
+    notify => Service['cinder-volume'],
+  }
 
 }
