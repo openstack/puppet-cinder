@@ -9,6 +9,15 @@
 #   (required) An array of GlusterFS volume locations.
 #   Must be an array even if there is only one volume.
 #
+# [*glusterfs_backup_mount_point*]
+#   (optional) Base dir containing mount point for gluster share.
+#   Defaults to $::os_service_default
+#
+# [*glusterfs_backup_share*]
+#   (optonal) GlusterFS share in <hostname|ipv4addr|ipv6addr>:<gluster_vol_name>
+#   format. Eg: 1.2.3.4:backup_vol
+#   Defaults to $::os_service_default
+#
 # [*glusterfs_sparsed_volumes*]
 #   (optional) Whether or not to use sparse (thin) volumes.
 #   Defaults to $::os_service_default which uses the driver's default of "true".
@@ -27,11 +36,6 @@
 #   Example :
 #     { 'glusterfs_backend/param1' => { 'value' => value1 } }
 #
-# *Deprecated*
-#
-# [*glusterfs_disk_util*]
-#   Removed in Icehouse.
-#
 # === Examples
 #
 # class { 'cinder::volume::glusterfs':
@@ -40,19 +44,21 @@
 #
 class cinder::volume::glusterfs (
   $glusterfs_shares,
-  $glusterfs_disk_util        = false,
-  $glusterfs_sparsed_volumes  = $::os_service_default,
-  $glusterfs_mount_point_base = $::os_service_default,
-  $glusterfs_shares_config    = '/etc/cinder/shares.conf',
-  $extra_options              = {},
+  $glusterfs_backup_mount_point = $::os_service_default,
+  $glusterfs_backup_share       = $::os_service_default,
+  $glusterfs_sparsed_volumes    = $::os_service_default,
+  $glusterfs_mount_point_base   = $::os_service_default,
+  $glusterfs_shares_config      = '/etc/cinder/shares.conf',
+  $extra_options                = {},
 ) {
 
   cinder::backend::glusterfs { 'DEFAULT':
-    glusterfs_shares           => $glusterfs_shares,
-    glusterfs_disk_util        => $glusterfs_disk_util,
-    glusterfs_sparsed_volumes  => $glusterfs_sparsed_volumes,
-    glusterfs_mount_point_base => $glusterfs_mount_point_base,
-    glusterfs_shares_config    => $glusterfs_shares_config,
-    extra_options              => $extra_options,
+    glusterfs_shares             => $glusterfs_shares,
+    glusterfs_backup_mount_point => $glusterfs_backup_mount_point,
+    glusterfs_backup_share       => $glusterfs_backup_share,
+    glusterfs_sparsed_volumes    => $glusterfs_sparsed_volumes,
+    glusterfs_mount_point_base   => $glusterfs_mount_point_base,
+    glusterfs_shares_config      => $glusterfs_shares_config,
+    extra_options                => $extra_options,
   }
 }

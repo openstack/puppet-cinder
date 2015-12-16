@@ -31,6 +31,10 @@
 #   (optional) Name of the server folder to use on the Storage Center.
 #   Defaults to 'srv'
 #
+# [*dell_sc_verify_cert*]
+#   (optional) Enable HTTPS SC ceritifcate verification
+#   Defaults to $::os_service_default
+#
 # [*dell_sc_volume_folder*]
 #   (optional) Name of the volume folder to use on the Storage Center.
 #   Defaults to 'vol'
@@ -54,6 +58,7 @@ define cinder::backend::dellsc_iscsi (
   $volume_backend_name   = $name,
   $dell_sc_api_port      = $::os_service_default,
   $dell_sc_server_folder = 'srv',
+  $dell_sc_verify_cert   = $::os_service_default,
   $dell_sc_volume_folder = 'vol',
   $iscsi_port            = $::os_service_default,
   $extra_options         = {},
@@ -78,6 +83,7 @@ define cinder::backend::dellsc_iscsi (
     "${name}/dell_sc_ssn":           value => $dell_sc_ssn;
     "${name}/dell_sc_api_port":      value => $dell_sc_api_port;
     "${name}/dell_sc_server_folder": value => $dell_sc_server_folder;
+    "${name}/dell_sc_verify_cert":   value => $dell_sc_verify_cert;
     "${name}/dell_sc_volume_folder": value => $dell_sc_volume_folder;
     "${name}/iscsi_port":            value => $iscsi_port;
   }

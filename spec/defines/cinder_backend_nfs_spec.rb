@@ -7,6 +7,7 @@ describe 'cinder::backend::nfs' do
   let :params do
     {
       :nfs_servers          => ['10.10.10.10:/shares', '10.10.10.10:/shares2'],
+      :nfs_mount_attempts   => '4',
       :nfs_mount_options    => 'vers=3',
       :nfs_shares_config    => '/etc/cinder/other_shares.conf',
       :nfs_disk_util        => 'du',
@@ -26,6 +27,8 @@ describe 'cinder::backend::nfs' do
         'cinder.volume.drivers.nfs.NfsDriver')
       is_expected.to contain_cinder_config('hippo/nfs_shares_config').with_value(
         '/etc/cinder/other_shares.conf')
+      is_expected.to contain_cinder_config('hippo/nfs_mount_attempts').with_value(
+        '4')
       is_expected.to contain_cinder_config('hippo/nfs_mount_options').with_value(
         'vers=3')
       is_expected.to contain_cinder_config('hippo/nfs_sparsed_volumes').with_value(

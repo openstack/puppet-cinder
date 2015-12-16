@@ -21,6 +21,10 @@ describe 'cinder::backend::glusterfs' do
     it 'configures glusterfs volume driver' do
       is_expected.to contain_cinder_config('mygluster/volume_driver').with_value(
         'cinder.volume.drivers.glusterfs.GlusterfsDriver')
+      is_expected.to contain_cinder_config('mygluster/glusterfs_backup_mount_point').with_value(
+        '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('mygluster/glusterfs_backup_share').with_value(
+        '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('mygluster/glusterfs_shares_config').with_value(
         '/etc/cinder/other_shares.conf')
       is_expected.to contain_cinder_config('mygluster/glusterfs_sparsed_volumes').with_value(
@@ -32,15 +36,6 @@ describe 'cinder::backend::glusterfs' do
         :require => 'Package[cinder]',
         :notify  => 'Service[cinder-volume]'
       )
-    end
-
-    context "with an parameter which has been removed" do
-      before do
-        params.merge!({
-          :glusterfs_disk_util => 'foo',
-        })
-      end
-      it_raises 'a Puppet::Error', /glusterfs_disk_util is removed in Icehouse./
     end
 
     context 'glusterfs backend with additional configuration' do

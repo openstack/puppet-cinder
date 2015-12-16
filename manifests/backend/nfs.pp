@@ -10,6 +10,12 @@
 #   (Required) Description
 #   Defaults to '[]'
 #
+# [*nfs_mount_attempts*]
+#   (optional) The number of attempts to mount nfs shares before raising an
+#   error. At least one attempt will be made to mount an nfs share, regardless
+#   of the value specified.
+#   Defaults to $::os_service_default
+#
 # [*nfs_mount_options*]
 #   (Optional) Mount options passed to the nfs client.
 #   Defaults to $::os_service_default
@@ -52,6 +58,7 @@
 define cinder::backend::nfs (
   $volume_backend_name  = $name,
   $nfs_servers          = [],
+  $nfs_mount_attempts   = $::os_service_default,
   $nfs_mount_options    = $::os_service_default,
   $nfs_disk_util        = $::os_service_default,
   $nfs_sparsed_volumes  = $::os_service_default,
@@ -73,6 +80,7 @@ define cinder::backend::nfs (
     "${name}/volume_driver":        value =>
       'cinder.volume.drivers.nfs.NfsDriver';
     "${name}/nfs_shares_config":    value => $nfs_shares_config;
+    "${name}/nfs_mount_attempts":   value => $nfs_mount_attempts;
     "${name}/nfs_mount_options":    value => $nfs_mount_options;
     "${name}/nfs_disk_util":        value => $nfs_disk_util;
     "${name}/nfs_sparsed_volumes":  value => $nfs_sparsed_volumes;
