@@ -44,7 +44,7 @@ describe 'cinder::backend::rbd' do
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_secret_uuid").with_value(req_params[:rbd_secret_uuid])
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/backend_host").with_value('rbd:'"#{req_params[:rbd_pool]}")
       is_expected.to contain_file('/etc/init/cinder-volume.override').with(:ensure => 'present')
-      is_expected.to contain_file_line('set initscript env').with(
+      is_expected.to contain_file_line('set initscript env rbd-ssd').with(
         :line    => /env CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/init/cinder-volume.override',
         :notify  => 'Service[cinder-volume]')
@@ -54,7 +54,7 @@ describe 'cinder::backend::rbd' do
       let :pre_condition do
         "cinder::backend::rbd { 'ceph2':
            rbd_pool => 'volumes2',
-           rbd_user => 'test'
+           rbd_user => 'test2'
          }"
       end
       it { is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver') }
@@ -62,7 +62,7 @@ describe 'cinder::backend::rbd' do
       it { is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_user").with_value(req_params[:rbd_user]) }
       it { is_expected.to contain_cinder_config("ceph2/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver') }
       it { is_expected.to contain_cinder_config("ceph2/rbd_pool").with_value('volumes2') }
-      it { is_expected.to contain_cinder_config("ceph2/rbd_user").with_value('test') }
+      it { is_expected.to contain_cinder_config("ceph2/rbd_user").with_value('test2') }
     end
 
     context 'rbd backend with additional configuration' do
@@ -107,7 +107,7 @@ describe 'cinder::backend::rbd' do
     end
 
     it 'should configure RedHat init override' do
-      is_expected.to contain_file_line('set initscript env').with(
+      is_expected.to contain_file_line('set initscript env rbd-ssd').with(
         :line    => /export CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/sysconfig/openstack-cinder-volume',
         :notify  => 'Service[cinder-volume]')

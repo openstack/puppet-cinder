@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'cinder::volume::rbd' do
+
   let :req_params do
     {
       :rbd_pool                         => 'volumes',
@@ -35,7 +36,7 @@ describe 'cinder::volume::rbd' do
       is_expected.to contain_cinder_config('DEFAULT/rbd_user').with_value(req_params[:rbd_user])
       is_expected.to contain_cinder_config('DEFAULT/rbd_secret_uuid').with_value(req_params[:rbd_secret_uuid])
       is_expected.to contain_file('/etc/init/cinder-volume.override').with(:ensure => 'present')
-      is_expected.to contain_file_line('set initscript env').with(
+      is_expected.to contain_file_line('set initscript env DEFAULT').with(
         :line    => /env CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/init/cinder-volume.override',
         :notify  => 'Service[cinder-volume]')
@@ -70,7 +71,7 @@ describe 'cinder::volume::rbd' do
     end
 
     it 'should configure RedHat init override' do
-      is_expected.to contain_file_line('set initscript env').with(
+      is_expected.to contain_file_line('set initscript env DEFAULT').with(
         :line    => /export CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/sysconfig/openstack-cinder-volume',
         :notify  => 'Service[cinder-volume]')
