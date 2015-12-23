@@ -69,6 +69,16 @@
 #   (optional) Connect over SSL for RabbitMQ
 #   Defaults to false
 #
+# [*report_interval*]
+#  (optional) Interval, in seconds, between nodes reporting state to
+#  datastore (integer value).
+#  Defaults to $::os_service_default
+#
+# [*service_down_time*]
+#  (optional) Maximum time since last check-in for a service to be
+#  considered up (integer value).
+#  Defaults to $::os_service_default
+#
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
 #   Defaults to $::os_service_default
@@ -256,6 +266,8 @@ class cinder (
   $rabbit_userid                      = 'guest',
   $rabbit_password                    = false,
   $rabbit_use_ssl                     = false,
+  $service_down_time                  = $::os_service_default,
+  $report_interval                    = $::os_service_default,
   $kombu_ssl_ca_certs                 = $::os_service_default,
   $kombu_ssl_certfile                 = $::os_service_default,
   $kombu_ssl_keyfile                  = $::os_service_default,
@@ -340,6 +352,8 @@ class cinder (
       'oslo_messaging_rabbit/heartbeat_timeout_threshold':  value => $rabbit_heartbeat_timeout_threshold;
       'oslo_messaging_rabbit/heartbeat_rate':               value => $rabbit_heartbeat_rate;
       'DEFAULT/control_exchange':                           value => $control_exchange;
+      'DEFAULT/report_interval':                            value => $report_interval;
+      'DEFAULT/service_down_time':                          value => $service_down_time;
       'oslo_messaging_rabbit/amqp_durable_queues':          value => $amqp_durable_queues;
     }
 
