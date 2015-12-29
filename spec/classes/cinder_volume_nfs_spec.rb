@@ -47,11 +47,14 @@ describe 'cinder::volume::nfs' do
 
   describe 'nfs volume driver with additional configuration' do
     before :each do
-      params.merge!({:extra_options => {'nfs_backend/param1' => {'value' => 'value1'}}})
+      params.merge!({
+        :nfs_mount_attempts => 4,
+        :extra_options => {'nfs_backend/param1' => {'value' => 'value1'}}})
     end
 
     it 'configure nfs volume with additional configuration' do
       is_expected.to contain_cinder__backend__nfs('DEFAULT').with({
+        :nfs_mount_attempts => params[:nfs_mount_attempts],
         :extra_options => {'nfs_backend/param1' => {'value' => 'value1'}}
       })
     end

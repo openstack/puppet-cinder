@@ -13,8 +13,14 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
-# [*glusterfs_disk_util*]
-#   Removed in Icehouse.
+# [*glusterfs_backup_mount_point*]
+#   (optional) Base dir containing mount point for gluster share.
+#   Defaults to $::os_service_default
+#
+# [*glusterfs_backup_share*]
+#   (optonal) GlusterFS share in <hostname|ipv4addr|ipv6addr>:<gluster_vol_name>
+#   format. Eg: 1.2.3.4:backup_vol
+#   Defaults to $::os_service_default
 #
 # [*glusterfs_sparsed_volumes*]
 #   (optional) Whether or not to use sparse (thin) volumes.
@@ -43,17 +49,14 @@
 #
 define cinder::backend::glusterfs (
   $glusterfs_shares,
-  $volume_backend_name        = $name,
-  $glusterfs_disk_util        = false,
-  $glusterfs_sparsed_volumes  = $::os_service_default,
-  $glusterfs_mount_point_base = $::os_service_default,
-  $glusterfs_shares_config    = '/etc/cinder/shares.conf',
-  $extra_options              = {},
+  $volume_backend_name          = $name,
+  $glusterfs_backup_mount_point = $::os_service_default,
+  $glusterfs_backup_share       = $::os_service_default,
+  $glusterfs_sparsed_volumes    = $::os_service_default,
+  $glusterfs_mount_point_base   = $::os_service_default,
+  $glusterfs_shares_config      = '/etc/cinder/shares.conf',
+  $extra_options                = {},
 ) {
-
-  if $glusterfs_disk_util {
-    fail('glusterfs_disk_util is removed in Icehouse.')
-  }
 
   $content = join($glusterfs_shares, "\n")
 
@@ -67,6 +70,8 @@ define cinder::backend::glusterfs (
     "${name}/volume_backend_name":  value => $volume_backend_name;
     "${name}/volume_driver":        value =>
       'cinder.volume.drivers.glusterfs.GlusterfsDriver';
+    "${name}/glusterfs_backup_mount_point": value => $glusterfs_backup_mount_point;
+    "${name}/glusterfs_backup_share":     value => $glusterfs_backup_share;
     "${name}/glusterfs_shares_config":    value => $glusterfs_shares_config;
     "${name}/glusterfs_sparsed_volumes":  value => $glusterfs_sparsed_volumes;
     "${name}/glusterfs_mount_point_base": value => $glusterfs_mount_point_base;

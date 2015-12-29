@@ -11,6 +11,10 @@ describe 'cinder::volume::rbd' do
       :rbd_flatten_volume_from_snapshot => true,
       :volume_tmp_dir                   => '<SERVICE DEFAULT>',
       :rbd_max_clone_depth              => '0',
+      :rados_connect_timeout            => '<SERVICE DEFAULT>',
+      :rados_connection_interval        => '<SERVICE DEFAULT>',
+      :rados_connection_retries         => '<SERVICE DEFAULT>',
+      :rbd_store_chunk_size             => '<SERVICE DEFAULT>'
     }
   end
 
@@ -35,6 +39,10 @@ describe 'cinder::volume::rbd' do
       is_expected.to contain_cinder_config('DEFAULT/rbd_pool').with_value(req_params[:rbd_pool])
       is_expected.to contain_cinder_config('DEFAULT/rbd_user').with_value(req_params[:rbd_user])
       is_expected.to contain_cinder_config('DEFAULT/rbd_secret_uuid').with_value(req_params[:rbd_secret_uuid])
+      is_expected.to contain_cinder_config('DEFAULT/rados_connect_timeout').with_value(req_params[:rados_connect_timeout])
+      is_expected.to contain_cinder_config('DEFAULT/rados_connection_interval').with_value(req_params[:rados_connection_interval])
+      is_expected.to contain_cinder_config('DEFAULT/rados_connection_retries').with_value(req_params[:rados_connection_retries])
+      is_expected.to contain_cinder_config('DEFAULT/rbd_store_chunk_size').with_value(req_params[:rbd_store_chunk_size])
       is_expected.to contain_file('/etc/init/cinder-volume.override').with(:ensure => 'present')
       is_expected.to contain_file_line('set initscript env DEFAULT').with(
         :line    => /env CEPH_ARGS=\"--id test\"/,

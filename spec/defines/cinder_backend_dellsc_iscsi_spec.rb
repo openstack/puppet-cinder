@@ -20,6 +20,7 @@ describe 'cinder::backend::dellsc_iscsi' do
     {
       :dell_sc_api_port      => '<SERVICE DEFAULT>',
       :dell_sc_server_folder => 'srv',
+      :dell_sc_verify_cert   => '<SERVICE DEFAULT>',
       :dell_sc_volume_folder => 'vol',
       :iscsi_port            => '<SERVICE DEFAULT>',
     }

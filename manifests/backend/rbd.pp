@@ -44,6 +44,24 @@
 #   A value of zero disables cloning
 #   Defaults to $::os_service_default
 #
+# [*rados_connect_timeout*]
+#   (optional) Timeout value (in seconds) used when connecting to ceph cluster.
+#   If value < 0, no timeout is set and default librados value is used.
+#   Defaults to $::os_service_default
+#
+# [*rados_connection_interval*]
+#   (optional) Interval value (in seconds) between connection retries to ceph
+#   cluster.
+#   Defaults to $::os_service_default
+#
+# [*rados_connection_retries*]
+#   (optional) Number of retries if connection to ceph cluster failed.
+#   Defaults to $::os_service_default
+#
+# [*rbd_store_chunk_size*]
+#   (optional) Volumes will be chunked into objects of this size (in megabytes).
+#   Defaults to $::os_service_default
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -60,6 +78,10 @@ define cinder::backend::rbd (
   $rbd_secret_uuid                  = $::os_service_default,
   $volume_tmp_dir                   = $::os_service_default,
   $rbd_max_clone_depth              = $::os_service_default,
+  $rados_connect_timeout            = $::os_service_default,
+  $rados_connection_interval        = $::os_service_default,
+  $rados_connection_retries         = $::os_service_default,
+  $rbd_store_chunk_size             = $::os_service_default,
   $extra_options                    = {},
 ) {
 
@@ -74,6 +96,10 @@ define cinder::backend::rbd (
     "${name}/rbd_max_clone_depth":              value => $rbd_max_clone_depth;
     "${name}/rbd_flatten_volume_from_snapshot": value => $rbd_flatten_volume_from_snapshot;
     "${name}/rbd_secret_uuid":                  value => $rbd_secret_uuid;
+    "${name}/rados_connect_timeout":            value => $rados_connect_timeout;
+    "${name}/rados_connection_interval":        value => $rados_connection_interval;
+    "${name}/rados_connection_retries":         value => $rados_connection_retries;
+    "${name}/rbd_store_chunk_size":             value => $rbd_store_chunk_size;
     "${name}/volume_tmp_dir":                   value => $volume_tmp_dir;
   }
 
