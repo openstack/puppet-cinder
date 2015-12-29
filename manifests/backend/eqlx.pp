@@ -14,8 +14,9 @@
 #   (required) The password for the specified SSH account.
 #
 # [*san_thin_provision*]
-#   (optional) Whether or not to use thin provisioning for volumes.
-#   Defaults to true
+#   (optional) Boolean. Whether or not to use thin provisioning for volumes. The
+#   default value in OpenStack is true.
+#   Defaults to $::os_service_default
 #
 # [*volume_backend_name*]
 #   (optional) The backend name.
@@ -23,15 +24,16 @@
 #
 # [*eqlx_group_name*]
 #   (optional) The CLI prompt message without '>'.
-#   Defaults to 'group-0'
+#   Defaults to $::os_service_default
 #
 # [*eqlx_pool*]
 #   (optional) The pool in which volumes will be created.
-#   Defaults to 'default'
+#   Defaults to $::os_service_default
 #
 # [*eqlx_use_chap*]
-#   (optional) Use CHAP authentification for targets?
-#   Defaults to false
+#   (optional) Boolean. Use CHAP authentification for targets. The default
+#   value in OpenStack is assumed to be false for this.
+#   Defaults to $::os_service_default
 #
 # [*eqlx_chap_login*]
 #   (optional) An existing CHAP account name.
@@ -43,11 +45,11 @@
 #
 # [*eqlx_cli_timeout*]
 #   (optional) The timeout for the Group Manager cli command execution.
-#   Defaults to 30 seconds
+#   Defaults to $::os_service_default
 #
 # [*eqlx_cli_max_retries*]
 #   (optional) The maximum retry count for reconnection.
-#   Defaults to 5
+#   Defaults to $:os_service_default
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
@@ -59,17 +61,36 @@ define cinder::backend::eqlx (
   $san_ip,
   $san_login,
   $san_password,
-  $san_thin_provision   = true,
+  $san_thin_provision   = $::os_service_default,
   $volume_backend_name  = $name,
-  $eqlx_group_name      = 'group-0',
-  $eqlx_pool            = 'default',
-  $eqlx_use_chap        = false,
+  $eqlx_group_name      = $::os_service_default,
+  $eqlx_pool            = $::os_service_default,
+  $eqlx_use_chap        = $::os_service_default, # false
   $eqlx_chap_login      = 'chapadmin',
   $eqlx_chap_password   = '12345',
-  $eqlx_cli_timeout     = 30,
-  $eqlx_cli_max_retries = 5,
+  $eqlx_cli_timeout     = $::os_service_default,
+  $eqlx_cli_max_retries = $::os_service_default,
   $extra_options        = {},
 ) {
+
+  if !is_service_default($san_thin_provision) {
+    validate_bool($san_thin_provision)
+  }
+
+  if !is_service_default($eqlx_use_chap) {
+    validate_bool($eqlx_use_chap)
+  }
+
+  if $eqlx_chap_login == 'chapadmin' {
+    warning('The OpenStack default value of eqlx_chap_login differs from the puppet module default of "chapadmin" and may change in later versions of the module.')
+  }
+
+  if $eqlx_chap_password == '12345' {
+    warning('The OpenStack default value of eqlx_chap_password differs from the puppet module default of "12345" and may change in later versions of the module.')
+  }
+
+
+
   cinder_config {
     "${name}/volume_backend_name":  value => $volume_backend_name;
     "${name}/volume_driver":        value => 'cinder.volume.drivers.eqlx.DellEQLSanISCSIDriver';
@@ -84,7 +105,8 @@ define cinder::backend::eqlx (
     "${name}/eqlx_pool":            value => $eqlx_pool;
   }
 
-  if(str2bool($eqlx_use_chap)) {
+  # the default for this is false
+  if !is_service_default($eqlx_use_chap) and $eqlx_use_chap == true {
     cinder_config {
       "${name}/eqlx_chap_login":      value => $eqlx_chap_login;
       "${name}/eqlx_chap_password":   value => $eqlx_chap_password, secret => true;

@@ -25,7 +25,7 @@
 #
 # [*dell_sc_api_port*]
 #   (optional) The Enterprise Manager API port.
-#   Defaults to 3033
+#   Defaults to $::os_service_default
 #
 # [*dell_sc_server_folder*]
 #   (optional) Name of the server folder to use on the Storage Center.
@@ -37,7 +37,7 @@
 #
 # [*iscsi_port*]
 #   (optional) The ISCSI IP Port of the Storage Center.
-#   Defaults to 3260
+#   Defaults to $::os_service_default
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
@@ -52,12 +52,21 @@ define cinder::backend::dellsc_iscsi (
   $iscsi_ip_address,
   $dell_sc_ssn,
   $volume_backend_name   = $name,
-  $dell_sc_api_port      = 3033,
+  $dell_sc_api_port      = $::os_service_default,
   $dell_sc_server_folder = 'srv',
   $dell_sc_volume_folder = 'vol',
-  $iscsi_port            = 3260,
+  $iscsi_port            = $::os_service_default,
   $extra_options         = {},
 ) {
+
+  if $dell_sc_server_folder == 'srv' {
+    warning('The OpenStack default value of dell_sc_server_folder differs from the puppet module default of "srv" and may change in later versions of the module.')
+  }
+
+  if $dell_sc_volume_folder == 'vol' {
+    warning('The OpenStack default value of dell_sc_volume_folder differs from the puppet module default of "vol" and may change in later versions of the module.')
+  }
+
   $driver = 'dell.dell_storagecenter_iscsi.DellStorageCenterISCSIDriver'
   cinder_config {
     "${name}/volume_backend_name":   value => $volume_backend_name;

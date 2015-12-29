@@ -15,6 +15,10 @@ describe 'cinder::volume::nfs' do
     }
   end
 
+  let :facts do
+    @default_facts.merge({})
+  end
+
   describe 'nfs volume driver' do
     it 'configures nfs volume driver' do
       is_expected.to contain_cinder_config('DEFAULT/volume_driver').with_value(

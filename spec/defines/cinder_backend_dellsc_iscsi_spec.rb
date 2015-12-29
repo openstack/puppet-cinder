@@ -18,11 +18,15 @@ describe 'cinder::backend::dellsc_iscsi' do
 
   let :default_params do
     {
-      :dell_sc_api_port      => 3033,
+      :dell_sc_api_port      => '<SERVICE DEFAULT>',
       :dell_sc_server_folder => 'srv',
       :dell_sc_volume_folder => 'vol',
-      :iscsi_port            => 3260,
+      :iscsi_port            => '<SERVICE DEFAULT>',
     }
+  end
+
+  let :facts do
+    @default_facts.merge({})
   end
 
   shared_examples_for 'dellsc_iscsi volume driver' do
@@ -31,8 +35,9 @@ describe 'cinder::backend::dellsc_iscsi' do
     end
 
     it 'configures cinder volume driver' do
+      is_expected.to contain_cinder__backend__dellsc_iscsi(config_group_name)
       params_hash.each_pair do |config,value|
-        is_expected.to contain_cinder_config("dellsc_iscsi/#{config}").with_value( value )
+        is_expected.to contain_cinder_config("#{config_group_name}/#{config}").with_value( value )
       end
     end
   end

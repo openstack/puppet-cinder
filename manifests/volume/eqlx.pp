@@ -15,19 +15,19 @@
 #
 # [*san_thin_provision*]
 #   (optional) Whether or not to use thin provisioning for volumes.
-#   Defaults to true
+#   Defaults to $::os_service_default
 #
 # [*eqlx_group_name*]
 #   (optional) The CLI prompt message without '>'.
-#   Defaults to 'group-0'
+#   Defaults to $::os_service_default
 #
 # [*eqlx_pool*]
 #   (optional) The pool in which volumes will be created.
-#   Defaults to 'default'
+#   Defaults to $::os_service_default
 #
 # [*eqlx_use_chap*]
 #   (optional) Use CHAP authentification for targets?
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*eqlx_chap_login*]
 #   (optional) An existing CHAP account name.
@@ -39,11 +39,11 @@
 #
 # [*eqlx_cli_timeout*]
 #   (optional) The timeout for the Group Manager cli command execution.
-#   Defaults to 30 seconds
+#   Defaults to $::os_service_default
 #
 # [*eqlx_cli_max_retries*]
 #   (optional) The maximum retry count for reconnection.
-#   Defaults to 5
+#   Defaults to $::os_service_default
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
@@ -55,14 +55,14 @@ class cinder::volume::eqlx (
   $san_ip,
   $san_login,
   $san_password,
-  $san_thin_provision          = true,
-  $eqlx_group_name             = 'group-0',
-  $eqlx_pool                   = 'default',
-  $eqlx_use_chap               = false,
+  $san_thin_provision          = $::os_service_default,
+  $eqlx_group_name             = $::os_service_default,
+  $eqlx_pool                   = $::os_service_default,
+  $eqlx_use_chap               = $::os_service_default,
   $eqlx_chap_login             = 'chapadmin',
   $eqlx_chap_password          = '12345',
-  $eqlx_cli_timeout            = 30,
-  $eqlx_cli_max_retries        = 5,
+  $eqlx_cli_timeout            = $::os_service_default,
+  $eqlx_cli_max_retries        = $::os_service_default,
   $extra_options               = {},
 ) {
   cinder::backend::eqlx { 'DEFAULT':

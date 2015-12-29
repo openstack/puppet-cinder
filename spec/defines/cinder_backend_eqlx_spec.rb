@@ -11,8 +11,8 @@ describe 'cinder::backend::eqlx' do
       :san_login            => 'grpadmin',
       :san_password         => '12345',
       :volume_backend_name  => 'Dell_EQLX',
-      :san_thin_provision   => true,
-      :eqlx_group_name      => 'group-a',
+      :san_thin_provision   => '<SERVICE DEFAULT>',
+      :eqlx_group_name      => '<SERVICE DEFAULT>',
       :eqlx_pool            => 'apool',
       :eqlx_use_chap        => true,
       :eqlx_chap_login      => 'chapadm',
@@ -22,8 +22,9 @@ describe 'cinder::backend::eqlx' do
     }
   end
 
-  describe 'eqlx volume driver' do
+  shared_examples_for 'eqlx volume driver' do
     it 'configure eqlx volume driver' do
+      is_expected.to contain_cinder__backend__eqlx(config_group_name)
       is_expected.to contain_cinder_config(
         "#{config_group_name}/volume_driver").with_value(
         'cinder.volume.drivers.eqlx.DellEQLSanISCSIDriver')
@@ -45,5 +46,17 @@ describe 'cinder::backend::eqlx' do
       })
     end
   end
+
+  context 'eqlx backend with chap' do
+    before :each do
+      params.merge!({
+        :eqlx_use_chap      => true,
+        :eqlx_chap_login    => 'myuser',
+        :eqlx_chap_password => 'mypass'
+      })
+    end
+    it_configures 'eqlx volume driver'
+  end
+
 
 end

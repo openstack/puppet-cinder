@@ -17,6 +17,10 @@ describe 'cinder::volume::eqlx' do
   }
   end
 
+  let :facts do
+    @default_facts.merge({})
+  end
+
   describe 'eqlx volume driver' do
     it 'configures eqlx volume driver' do
       is_expected.to contain_cinder_config('DEFAULT/volume_driver').with_value('cinder.volume.drivers.eqlx.DellEQLSanISCSIDriver')

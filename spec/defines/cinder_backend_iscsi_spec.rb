@@ -11,7 +11,7 @@ describe 'cinder::backend::iscsi' do
   end
 
   let :facts do
-    {:osfamily => 'Debian'}
+    @default_facts.merge({:osfamily => 'Debian'})
   end
 
   let :params do
@@ -38,11 +38,11 @@ describe 'cinder::backend::iscsi' do
       is_expected.to contain_cinder_config('hippo/iscsi_helper').with(
         :value => 'tgtadm')
       is_expected.to contain_cinder_config('hippo/volume_group').with(
-        :value => 'cinder-volumes')
+        :value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('hippo/volumes_dir').with(
         :value => '/var/lib/cinder/volumes')
       is_expected.to contain_cinder_config('hippo/iscsi_protocol').with(
-        :value => 'iscsi')
+        :value => '<SERVICE DEFAULT>')
     end
   end
 

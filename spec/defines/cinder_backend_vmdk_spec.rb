@@ -4,11 +4,18 @@ describe 'cinder::backend::vmdk' do
 
   let(:title) { 'hippo' }
 
+  let :facts do
+    @default_facts.merge({})
+  end
+
   let :params do
     {
         :host_ip => '172.16.16.16',
         :host_password => 'asdf',
-        :host_username => 'user'
+        :host_username => 'user',
+        :api_retry_count => '<SERVICE DEFAULT>',
+        :max_object_retrieval => '<SERVICE DEFAULT>',
+        :image_transfer_timeout_secs => '<SERVICE DEFAULT>'
     }
   end
 
@@ -30,11 +37,11 @@ describe 'cinder::backend::vmdk' do
     is_expected.to contain_cinder_config('hippo/vmware_host_username').with_value(params[:host_username])
     is_expected.to contain_cinder_config('hippo/vmware_host_password').with_value(params[:host_password])
     is_expected.to contain_cinder_config('hippo/vmware_volume_folder').with_value('cinder-volumes')
-    is_expected.to contain_cinder_config('hippo/vmware_api_retry_count').with_value(10)
-    is_expected.to contain_cinder_config('hippo/vmware_max_object_retrieval').with_value(100)
+    is_expected.to contain_cinder_config('hippo/vmware_api_retry_count').with_value(params[:api_retry_count])
+    is_expected.to contain_cinder_config('hippo/vmware_max_object_retrieval').with_value(params[:max_object_retrieval])
     is_expected.to contain_cinder_config('hippo/vmware_task_poll_interval').with_value(5)
-    is_expected.to contain_cinder_config('hippo/vmware_image_transfer_timeout_secs').with_value(7200)
-    is_expected.to_not contain_cinder_config('hippo/vmware_wsdl_location')
+    is_expected.to contain_cinder_config('hippo/vmware_image_transfer_timeout_secs').with_value(params[:image_transfer_timeout_secs])
+    is_expected.to contain_cinder_config('hippo/vmware_wsdl_location').with_value('<SERVICE DEFAULT>')
   end
 
   it 'installs suds python package' do

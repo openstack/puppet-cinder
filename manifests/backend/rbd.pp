@@ -42,7 +42,7 @@
 #   (optional) Maximum number of nested clones that can be taken of a
 #   volume before enforcing a flatten prior to next clone.
 #   A value of zero disables cloning
-#   Defaults to '5'
+#   Defaults to $::os_service_default
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
@@ -56,10 +56,10 @@ define cinder::backend::rbd (
   $backend_host                     = undef,
   $volume_backend_name              = $name,
   $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
-  $rbd_flatten_volume_from_snapshot = false,
+  $rbd_flatten_volume_from_snapshot = $::os_service_default,
   $rbd_secret_uuid                  = $::os_service_default,
   $volume_tmp_dir                   = $::os_service_default,
-  $rbd_max_clone_depth              = '5',
+  $rbd_max_clone_depth              = $::os_service_default,
   $extra_options                    = {},
 ) {
 

@@ -21,7 +21,7 @@ describe 'cinder::volume::rbd' do
   end
 
   let :facts do
-    {:osfamily => 'Debian'}
+    @default_facts.merge({:osfamily => 'Debian'})
   end
 
   describe 'rbd volume driver' do
@@ -57,7 +57,7 @@ describe 'cinder::volume::rbd' do
 
   describe 'with RedHat' do
     let :facts do
-        { :osfamily => 'RedHat' }
+        @default_facts.merge({ :osfamily => 'RedHat' })
     end
 
     let :params do
