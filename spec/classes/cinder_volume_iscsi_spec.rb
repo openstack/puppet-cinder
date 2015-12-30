@@ -37,7 +37,7 @@ describe 'cinder::volume::iscsi' do
 
   end
 
-  describe 'with a unsupported iscsi helper' do
+  describe 'with an unsupported iscsi helper' do
     let(:params) { req_params.merge(:iscsi_helper => 'fooboozoo')}
 
     it_raises 'a Puppet::Error', /Unsupported iscsi helper: fooboozoo/

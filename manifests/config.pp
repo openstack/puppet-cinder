@@ -6,7 +6,7 @@
 #
 # [*xxx_config*]
 #   (optional) Allow configuration of arbitrary cinder configurations.
-#   The value is an hash of xxx_config resources. Example:
+#   The value is a hash of xxx_config resources. Example:
 #   { 'DEFAULT/foo' => { value => 'fooValue'},
 #     'DEFAULT/bar' => { value => 'barValue'}
 #   }
