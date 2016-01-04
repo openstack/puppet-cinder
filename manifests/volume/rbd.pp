@@ -20,12 +20,12 @@
 #
 # [*rbd_secret_uuid*]
 #   (optional) A required parameter to use cephx.
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*volume_tmp_dir*]
 #   (optional) Location to store temporary image files if the volume
 #   driver does not write them directly to the volume
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*rbd_max_clone_depth*]
 #   (optional) Maximum number of nested clones that can be taken of a
@@ -62,8 +62,8 @@ class cinder::volume::rbd (
   $rbd_user,
   $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
   $rbd_flatten_volume_from_snapshot = $::os_service_default,
-  $rbd_secret_uuid                  = false,
-  $volume_tmp_dir                   = false,
+  $rbd_secret_uuid                  = $::os_service_default,
+  $volume_tmp_dir                   = $::os_service_default,
   $rbd_max_clone_depth              = $::os_service_default,
   $rados_connect_timeout            = $::os_service_default,
   $rados_connection_interval        = $::os_service_default,
