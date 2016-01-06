@@ -3,11 +3,7 @@ require 'spec_helper'
 describe 'cinder::setup_test_volume' do
 
   it { is_expected.to contain_package('lvm2').with(
-        :ensure => 'present'
-      ) }
-
-  it { is_expected.to contain_file('/var/lib/cinder').with(
-        :ensure => 'directory',
+        :ensure  => 'present',
         :require => 'Package[cinder]'
       ) }
 

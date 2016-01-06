@@ -23,13 +23,7 @@ class cinder::setup_test_volume(
 ) {
 
   package { 'lvm2':
-    ensure => present,
-  } ~>
-
-  file { $volume_path:
-    ensure  => directory,
-    owner   => 'cinder',
-    group   => 'cinder',
+    ensure  => present,
     require => Package['cinder'],
   } ~>
 
