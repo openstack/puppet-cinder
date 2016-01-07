@@ -3,6 +3,7 @@ source ENV['GEM_SOURCE'] || "https://rubygems.org"
 group :development, :test do
   gem 'puppetlabs_spec_helper',               :require => 'false'
   gem 'rspec-puppet', '~> 2.2.0',             :require => 'false'
+  gem 'rspec-puppet-facts',                   :require => 'false'
   gem 'metadata-json-lint',                   :require => 'false'
   gem 'puppet-lint-param-docs',               :require => 'false'
   gem 'puppet-lint-absolute_classname-check', :require => 'false'
