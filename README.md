@@ -63,9 +63,7 @@ class { 'cinder::api':
   enabled                 => $cinder_api_enabled,
 }
 
-class { 'cinder::scheduler':
-  scheduler_driver => 'cinder.scheduler.simple.SimpleScheduler',
-}
+class { 'cinder::scheduler': }
 ```
 
 **Define a cinder storage node**
