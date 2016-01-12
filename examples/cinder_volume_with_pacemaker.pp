@@ -33,8 +33,7 @@ class { '::cinder::api':
 }
 
 class { '::cinder::scheduler':
-  scheduler_driver => 'cinder.scheduler.simple.SimpleScheduler',
-  enabled          => false,
-  manage_service   => false,
+  enabled        => false,
+  manage_service => false,
 }
 
