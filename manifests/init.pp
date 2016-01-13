@@ -407,7 +407,7 @@ class cinder (
   cinder_config {
     'DEFAULT/enable_v1_api':        value => $enable_v1_api;
     'DEFAULT/enable_v2_api':        value => $enable_v2_api;
-    'DEFAULT/lock_path':            value => $lock_path;
+    'oslo_concurrency/lock_path':   value => $lock_path;
   }
 
 }
