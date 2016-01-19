@@ -11,7 +11,7 @@ describe 'cinder::backend::iscsi' do
   end
 
   let :facts do
-    @default_facts.merge({:osfamily => 'Debian'})
+    OSDefaults.get_facts({:osfamily => 'Debian'})
   end
 
   let :params do

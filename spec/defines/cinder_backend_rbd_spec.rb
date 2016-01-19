@@ -5,7 +5,7 @@ describe 'cinder::backend::rbd' do
   let(:title) {'rbd-ssd'}
 
   let :facts do
-    @default_facts.merge({})
+    OSDefaults.get_facts({})
   end
 
   let :req_params do

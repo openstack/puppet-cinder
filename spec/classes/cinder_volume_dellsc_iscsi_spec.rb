@@ -23,7 +23,7 @@ describe 'cinder::volume::dellsc_iscsi' do
   end
 
   let :facts do
-    @default_facts.merge({})
+    OSDefaults.get_facts({})
   end
 
    shared_examples_for 'dellsc_iscsi volume driver' do

@@ -9,7 +9,7 @@ describe 'cinder::volume::gpfs' do
   end
 
   let :facts do
-    @default_facts.merge({})
+    OSDefaults.get_facts({})
   end
   context 'gpfs volume driver' do
 

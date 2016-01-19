@@ -5,7 +5,7 @@ describe 'cinder::backend::vmdk' do
   let(:title) { 'hippo' }
 
   let :facts do
-    @default_facts.merge({})
+    OSDefaults.get_facts({})
   end
 
   let :params do

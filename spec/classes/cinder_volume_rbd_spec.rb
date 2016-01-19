@@ -25,7 +25,7 @@ describe 'cinder::volume::rbd' do
   end
 
   let :facts do
-    @default_facts.merge({:osfamily => 'Debian'})
+    OSDefaults.get_facts({:osfamily => 'Debian'})
   end
 
   describe 'rbd volume driver' do

@@ -16,7 +16,7 @@ describe 'cinder::volume::nfs' do
   end
 
   let :facts do
-    @default_facts.merge({})
+    OSDefaults.get_facts({})
   end
 
   describe 'nfs volume driver' do
