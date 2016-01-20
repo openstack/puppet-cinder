@@ -16,21 +16,21 @@ cinder
 Overview
 --------
 
-The cinder module is a part of [OpenStack](https://github.com/openstack), an effort by the Openstack infrastructure team to provide continuous integration testing and code review for Openstack and Openstack community projects as part of the core software.  The module its self is used to flexibly configure and manage the block storage service for Openstack.
+The cinder module is a part of [OpenStack](https://www.openstack.org), an effort by the OpenStack infrastructure team to provide continuous integration testing and code review for OpenStack and OpenStack community projects as part of the core software.  The module its self is used to flexibly configure and manage the block storage service for OpenStack.
 
 Module Description
 ------------------
 
 The cinder module is a thorough attempt to make Puppet capable of managing the entirety of cinder.  This includes manifests to provision such things as keystone endpoints, RPC configurations specific to cinder, and database connections.  Types are shipped as part of the cinder module to assist in manipulation of configuration files.
 
-This module is tested in combination with other modules needed to build and leverage an entire Openstack software stack.
+This module is tested in combination with other modules needed to build and leverage an entire OpenStack software stack.
 
 Setup
 -----
 
 **What the cinder module affects**
 
-* [Cinder](https://wiki.openstack.org/wiki/Cinder), the block storage service for Openstack.
+* [Cinder](https://wiki.openstack.org/wiki/Cinder), the block storage service for OpenStack.
 
 ### Installing cinder
 
@@ -38,7 +38,7 @@ Setup
 
 ### Beginning with cinder
 
-To utilize the cinder module's functionality you will need to declare multiple resources. This is not an exhaustive list of all the components needed, we recommend you consult and understand the [core openstack](http://docs.openstack.org) documentation.
+To utilize the cinder module's functionality you will need to declare multiple resources. This is not an exhaustive list of all the components needed, we recommend you consult and understand the [core OpenStack](http://docs.openstack.org) documentation.
 
 **Define a cinder control node**
 
