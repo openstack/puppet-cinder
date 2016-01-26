@@ -82,11 +82,11 @@ define cinder::backend::eqlx (
   }
 
   if $eqlx_chap_login == 'chapadmin' {
-    warning('The OpenStack default value of eqlx_chap_login differs from the puppet module default of "chapadmin" and may change in later versions of the module.')
+    warning('The OpenStack default value of eqlx_chap_login differs from the puppet module default of "chapadmin" and will be changed to the upstream OpenStack default in N-release.')
   }
 
   if $eqlx_chap_password == '12345' {
-    warning('The OpenStack default value of eqlx_chap_password differs from the puppet module default of "12345" and may change in later versions of the module.')
+    warning('The OpenStack default value of eqlx_chap_password differs from the puppet module default of "12345" and will be changed to the upstream OpenStack default in N-release.')
   }
 
 

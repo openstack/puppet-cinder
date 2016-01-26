@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cinder::rabbitmq' do
 
   let :facts do
-    { :puppetversion => '2.7',
+    {
       :osfamily      => 'Debian',
     }
   end
@@ -45,24 +45,6 @@ describe 'cinder::rabbitmq' do
 
     end
 
-  end
-
-  describe 'when disabled' do
-    let :params do
-      {
-        :userid   => 'dan',
-        :password => 'pass',
-        :enabled  => false
-      }
-    end
-
-    it 'should be disabled' do
-
-      is_expected.to_not contain_rabbitmq_user('dan')
-      is_expected.to_not contain_rabbitmq_user_permissions('dan@/')
-      is_expected.to_not contain_rabbitmq_vhost('/')
-
-    end
   end
 
 end
