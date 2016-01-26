@@ -57,7 +57,7 @@
 #    Type of service. Optional. Defaults to 'volume'.
 #
 # [*service_type_v2*]
-#    Type of API v2 service. Optional. Defaults to 'volume2'.
+#    Type of API v2 service. Optional. Defaults to 'volumev2'.
 #
 # [*service_description*]
 #    (optional) Description for keystone service.
