@@ -1,5 +1,3 @@
-# == Define: cinder::backend::hp3par_iscsi
-#
 # Configures Cinder volume HP 3par ISCSI driver.
 # Parameters are particular to each volume driver.
 #

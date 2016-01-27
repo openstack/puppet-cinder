@@ -47,7 +47,7 @@ class cinder::db::mysql (
   validate_string($password)
 
   if $cluster_id != 'localzone' {
-    warning('The cluster_id parameter is deprecated and has no affect. It will be removed in the next release')
+    warning('The cluster_id parameter is deprecated and has no affect. It will be completely removed from puppet-cinder in the N-release')
   }
 
   ::openstacklib::db::mysql { 'cinder':

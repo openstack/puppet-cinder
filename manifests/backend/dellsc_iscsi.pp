@@ -65,11 +65,11 @@ define cinder::backend::dellsc_iscsi (
 ) {
 
   if $dell_sc_server_folder == 'srv' {
-    warning('The OpenStack default value of dell_sc_server_folder differs from the puppet module default of "srv" and may change in later versions of the module.')
+    warning('The OpenStack default value of dell_sc_server_folder differs from the puppet module default of "srv" and will be changed to the upstream OpenStack default in N-release.')
   }
 
   if $dell_sc_volume_folder == 'vol' {
-    warning('The OpenStack default value of dell_sc_volume_folder differs from the puppet module default of "vol" and may change in later versions of the module.')
+    warning('The OpenStack default value of dell_sc_volume_folder differs from the puppet module default of "vol" and will be changed to the upstream OpenStack default in N-release.')
   }
 
   $driver = 'dell.dell_storagecenter_iscsi.DellStorageCenterISCSIDriver'

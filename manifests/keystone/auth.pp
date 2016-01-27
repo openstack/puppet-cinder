@@ -112,51 +112,6 @@
 #   (optional) The v2 endpoint's admin url. (Defaults to 'http://127.0.0.1:8776/v2/%(tenant_id)s')
 #   This url should *not* contain any trailing '/'.
 #
-# [*volume_version*]
-#   (optional) DEPRECATED: Use public_url, internal_url and admin_url instead.
-#   Cinder API version. (Defaults to 'v1')
-#   Setting this parameter overrides public_url, internal_url and admin_url parameters.
-#
-# [*port*]
-#   (optional) DEPRECATED: Use public_url, internal_url and admin_url instead.
-#   Port for endpoint. (Defaults to 8776)
-#   Setting this parameter overrides public_url, internal_url and admin_url parameters.
-#
-# [*public_protocol*]
-#   (optional) DEPRECATED: Use public_url instead.
-#   Protocol for public endpoint. (Defaults to 'http')
-#   Setting this parameter overrides public_url parameter.
-#
-# [*internal_protocol*]
-#   (optional) DEPRECATED: Use internal_url and internal_url_v2 instead.
-#   Protocol for internal endpoint. (Defaults to 'http')
-#   Setting this parameter overrides internal_url and internal_url_v2 parameter.
-#
-# [*admin_protocol*]
-#   (optional) DEPRECATED: Use admin_url and admin_url_v2 instead.
-#   Protocol for admin endpoint. (Defaults to 'http')
-#   Setting this parameter overrides admin_url and admin_url_v2 parameter.
-#
-# [*public_address*]
-#   (optional) DEPRECATED: Use public_url instead.
-#   Public address for endpoint. (Defaults to '127.0.0.1')
-#   Setting this parameter overrides public_url and public_url_v2 parameter.
-#
-# [*internal_address*]
-#   (optional) DEPRECATED: Use internal_url instead.
-#   Internal address for endpoint. (Defaults to '127.0.0.1')
-#   Setting this parameter overrides internal_url and internal_url_v2 parameter.
-#
-# [*admin_address*]
-#   (optional) DEPRECATED: Use admin_url instead.
-#   Admin address for endpoint. (Defaults to '127.0.0.1')
-#   Setting this parameter overrides admin_url and admin_url_v2 parameter.
-#
-# === Deprecation notes
-#
-# If any value is provided for public_protocol, public_address or public_port parameters,
-# public_url will be completely ignored. The same applies for internal and admin parameters.
-#
 # === Examples
 #
 #  class { 'cinder::keystone::auth':
@@ -194,110 +149,13 @@ class cinder::keystone::auth (
   $service_description_v2 = 'Cinder Service v2',
   $region                 = 'RegionOne',
   # DEPRECATED PARAMETERS
-  $port                   = undef,
-  $volume_version         = undef,
-  $public_address         = undef,
-  $admin_address          = undef,
-  $internal_address       = undef,
-  $public_protocol        = undef,
-  $admin_protocol         = undef,
-  $internal_protocol      = undef
 ) {
-
-  if $volume_version {
-    warning('The volume_version parameter is deprecated, use public_url, internal_url and admin_url instead.')
-  }
-
-  if $port {
-    warning('The port parameter is deprecated, use public_url, internal_url and admin_url instead.')
-  }
-
-  if $public_protocol {
-    warning('The public_protocol parameter is deprecated, use public_url instead.')
-  }
-
-  if $internal_protocol {
-    warning('The internal_protocol parameter is deprecated, use internal_url instead.')
-  }
-
-  if $admin_protocol {
-    warning('The admin_protocol parameter is deprecated, use admin_url instead.')
-  }
-
-  if $public_address {
-    warning('The public_address parameter is deprecated, use public_url instead.')
-  }
-
-  if $internal_address {
-    warning('The internal_address parameter is deprecated, use internal_url instead.')
-  }
-
-  if $admin_address {
-    warning('The admin_address parameter is deprecated, use admin_url instead.')
-  }
 
   $real_service_name = pick($service_name, $auth_name)
   $real_service_name_v2 = pick($service_name_v2, $auth_name_v2)
 
   if $real_service_name == $real_service_name_v2 {
     fail('cinder::keystone::auth parameters service_name and service_name_v2 must be different.')
-  }
-
-  if ($public_protocol or $public_address or $port or $volume_version) {
-    $public_url_real = sprintf('%s://%s:%s/%s/%%(tenant_id)s',
-      pick($public_protocol, 'http'),
-      pick($public_address, '127.0.0.1'),
-      pick($port, '8776'),
-      pick($volume_version, 'v1'))
-  } else {
-    $public_url_real = $public_url
-  }
-
-  if ($internal_protocol or $internal_address or $port or $volume_version) {
-    $internal_url_real = sprintf('%s://%s:%s/%s/%%(tenant_id)s',
-      pick($internal_protocol, 'http'),
-      pick($internal_address, '127.0.0.1'),
-      pick($port, '8776'),
-      pick($volume_version, 'v1'))
-  } else {
-    $internal_url_real = $internal_url
-  }
-
-  if ($admin_protocol or $admin_address or $port or $volume_version) {
-    $admin_url_real = sprintf('%s://%s:%s/%s/%%(tenant_id)s',
-      pick($admin_protocol, 'http'),
-      pick($admin_address, '127.0.0.1'),
-      pick($port, '8776'),
-      pick($volume_version, 'v1'))
-  } else {
-    $admin_url_real = $admin_url
-  }
-
-  if ($public_protocol or $public_address or $port) {
-    $public_url_v2_real = sprintf('%s://%s:%s/v2/%%(tenant_id)s',
-      pick($public_protocol, 'http'),
-      pick($public_address, '127.0.0.1'),
-      pick($port, '8776'))
-  } else {
-    $public_url_v2_real = $public_url_v2
-  }
-
-  if ($internal_protocol or $internal_address or $port) {
-    $internal_url_v2_real = sprintf('%s://%s:%s/v2/%%(tenant_id)s',
-      pick($internal_protocol, 'http'),
-      pick($internal_address, '127.0.0.1'),
-      pick($port, '8776'))
-  } else {
-    $internal_url_v2_real = $internal_url_v2
-  }
-
-  if ($admin_protocol or $admin_address or $port) {
-    $admin_url_v2_real = sprintf('%s://%s:%s/v2/%%(tenant_id)s',
-      pick($admin_protocol, 'http'),
-      pick($admin_address, '127.0.0.1'),
-      pick($port, '8776'))
-  } else {
-    $admin_url_v2_real = $admin_url_v2
   }
 
   keystone::resource::service_identity { 'cinder':
@@ -312,9 +170,9 @@ class cinder::keystone::auth (
     password            => $password,
     email               => $email,
     tenant              => $tenant,
-    public_url          => $public_url_real,
-    admin_url           => $admin_url_real,
-    internal_url        => $internal_url_real,
+    public_url          => $public_url,
+    admin_url           => $admin_url,
+    internal_url        => $internal_url,
   }
 
   keystone::resource::service_identity { 'cinderv2':
@@ -329,9 +187,9 @@ class cinder::keystone::auth (
     password            => $password_user_v2,
     email               => $email_user_v2,
     tenant              => $tenant_user_v2,
-    public_url          => $public_url_v2_real,
-    admin_url           => $admin_url_v2_real,
-    internal_url        => $internal_url_v2_real,
+    public_url          => $public_url_v2,
+    admin_url           => $admin_url_v2,
+    internal_url        => $internal_url_v2,
   }
 
   if $configure_user_role {

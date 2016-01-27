@@ -70,11 +70,11 @@ define cinder::backend::vmdk (
   ) {
 
   if $volume_folder == 'cinder-volumes' {
-    warning('The OpenStack default value of volume_folder differs from the puppet module default of "cinder-volumes" and may change in later versions of the module.')
+    warning('The OpenStack default value of volume_folder differs from the puppet module default of "cinder-volumes" and will be changed to the upstream OpenStack default in N-release.')
   }
 
   if $task_poll_interval == 5 {
-    warning('The OpenStack default value of task_poll_interval differs from the puppet module default of "5" and may change in later versions of the module.')
+    warning('The OpenStack default value of task_poll_interval differs from the puppet module default of "5" and will be changed to the upstream OpenStack default in N-release.')
   }
 
   cinder_config {

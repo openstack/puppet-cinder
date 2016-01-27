@@ -32,5 +32,5 @@ class cinder::qpid (
   $realm    = undef
 ) {
 
-  warning('Qpid driver is removed from Oslo.messaging in the Mitaka release')
+  warning('Qpid driver is removed from Oslo.messaging in the Mitaka release and puppet-cinder no longer attempts to configure it. This class will be completely removed from puppet-cinder in the N-release.')
 }

@@ -372,7 +372,7 @@ class cinder (
   }
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' or $rpc_backend == 'qpid' {
-    warning('Qpid driver is removed from Oslo.messaging in the Mitaka release')
+    warning('Qpid driver is removed from Oslo.messaging in the Mitaka release and puppet-cinder no longer attempts to configure it. All qpid related parameters will be removed from puppet-cinder in the N-release.')
   }
 
   if ! $default_availability_zone {

@@ -71,7 +71,7 @@ class cinder::backup::swift (
 ) {
 
   if ($backup_swift_container == 'volumes_backup') {
-    warning('WARNING: The default backup_swift_container value in puppet differs from the OpenStack default and may change in future releases')
+    warning('The OpenStack default value of backup_swift_container differs from the puppet module default of "volumes_backup" and will be changed to the upstream OpenStack default in N-release.')
   }
 
   cinder_config {
