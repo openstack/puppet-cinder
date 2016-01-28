@@ -22,11 +22,6 @@
 #   (optional) A required parameter to use cephx.
 #   Defaults to $::os_service_default
 #
-# [*volume_tmp_dir*]
-#   (optional) Location to store temporary image files if the volume
-#   driver does not write them directly to the volume
-#   Defaults to $::os_service_default
-#
 # [*rbd_max_clone_depth*]
 #   (optional) Maximum number of nested clones that can be taken of a
 #   volume before enforcing a flatten prior to next clone.
@@ -57,19 +52,27 @@
 #   Example :
 #     { 'rbd_backend/param1' => { 'value' => value1 } }
 #
+# === Deprecated Parameters
+#
+# [*volume_tmp_dir*]
+#   (deprecated by image_conversion_dir) Location to store temporary image files
+#   if the volume driver does not write them directly to the volume
+#   Defaults to false
+#
 class cinder::volume::rbd (
   $rbd_pool,
   $rbd_user,
   $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
   $rbd_flatten_volume_from_snapshot = $::os_service_default,
   $rbd_secret_uuid                  = $::os_service_default,
-  $volume_tmp_dir                   = $::os_service_default,
   $rbd_max_clone_depth              = $::os_service_default,
   $rados_connect_timeout            = $::os_service_default,
   $rados_connection_interval        = $::os_service_default,
   $rados_connection_retries         = $::os_service_default,
   $rbd_store_chunk_size             = $::os_service_default,
   $extra_options                    = {},
+  # DEPRECATED PARAMETERS
+  $volume_tmp_dir                   = false,
 ) {
 
   cinder::backend::rbd { 'DEFAULT':
