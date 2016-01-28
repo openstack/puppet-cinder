@@ -181,7 +181,7 @@ class cinder::keystone::auth (
 
   if $configure_user_role {
     Keystone_user_role["${auth_name}@${tenant}"] ~> Service <| name == 'cinder-api' |>
-    Keystone_user_role["${auth_name}@${tenant}"] -> Cinder::Type <| |>
+    Keystone_user_role["${auth_name}@${tenant}"] -> Cinder_type <| |>
   }
 
 }

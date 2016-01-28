@@ -131,22 +131,14 @@ cinder::backend::rbd {'rbd-images':
   rbd_user => 'images',
 }
 
-# Cinder::Type requires keystone credentials
-Cinder::Type {
-  os_password     => 'admin',
-  os_tenant_name  => 'admin',
-  os_username     => 'admin',
-  os_auth_url     => 'http://127.0.0.1:5000/v2.0/',
+cinder_type {'iscsi':
+  ensure     => present,
+  properties => ['volume_backend_name=iscsi,iscsi1,iscsi2'],
 }
 
-cinder::type {'iscsi':
-  set_key   => 'volume_backend_name',
-  set_value => ['iscsi1', 'iscsi2', 'iscsi']
-}
-
-cinder::type {'rbd':
-  set_key   => 'volume_backend_name',
-  set_value => 'rbd-images',
+cinder_type {'rbd-images':
+  ensure     => present,
+  properties => ['volume_backend_name=rbd-images'],
 }
 
 class { 'cinder::backends':
@@ -157,13 +149,14 @@ class { 'cinder::backends':
 Note: that the name passed to any backend resource must be unique accross all
       backends otherwise a duplicate resource will be defined.
 
-** Using type and type_set **
+** Using cinder_type **
 
 Cinder allows for the usage of type to set extended information that can be
-used for various reasons. We have resource provider for ``type`` and
-``type_set`` Since types are rarely defined with out also setting attributes
-with it, the resource for ``type`` can also call ``type_set`` if you pass
-``set_key`` and ``set_value``
+used for various reasons. We have resource provider for ``cinder_type``
+and if you want create some cinder type, you should set ensure to absent.
+Properties field is optional and should be an array. All items of array
+should match pattern key=value1[,value2 ...]. In case when you want to
+delete some type - set ensure to absent.
 
 
 Implementation

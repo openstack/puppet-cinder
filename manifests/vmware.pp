@@ -1,56 +1,59 @@
-# == Define: cinder::vmware
+# == Class: cinder::vmware
 #
 # Creates vmdk specific disk file type & clone type.
 #
 # === Parameters
 #
 # [*os_password*]
-#   (Required) The keystone tenant:username password.
+#   DEPRECATED. The keystone tenant:username password.
+#   Defaults to undef.
 #
 # [*os_tenant_name*]
-#   (Optional) The keystone tenant name.
-#   Defaults to 'admin'.
+#   DEPRECATED. The keystone tenant name.
+#   Defaults to undef.
 #
 # [*os_username*]
-#   (Optional) The keystone user name.
-#   Defaults to 'admin.
+#   DEPRECATED. The keystone user name.
+#   Defaults to undef.
 #
 # [*os_auth_url*]
-#   (Optional) The keystone auth url.
-#   Defaults to 'http://127.0.0.1:5000/v2.0/'.
+#   DEPRECATED. The keystone auth url.
+#   Defaults to undef.
 #
 class cinder::vmware (
-  $os_password,
-  $os_tenant_name = 'admin',
-  $os_username    = 'admin',
-  $os_auth_url    = 'http://127.0.0.1:5000/v2.0/'
-  ) {
+  $os_password    = undef,
+  $os_tenant_name = undef,
+  $os_username    = undef,
+  $os_auth_url    = undef
+) {
 
-  Cinder::Type {
-    os_password     => $os_password,
-    os_tenant_name  => $os_tenant_name,
-    os_username     => $os_username,
-    os_auth_url     => $os_auth_url
+  if $os_password or $os_tenant_name or $os_username or $os_auth_url {
+    warning('Parameters $os_password/$os_tenant_name/$os_username/$os_auth_url are not longer required.')
+    warning('Auth creds will be used from env or /root/openrc file or cinder.conf')
   }
 
-  cinder::type {'vmware-thin':
-    set_value => 'thin',
-    set_key   => 'vmware:vmdk_type'
+  cinder_type { 'vmware-thin':
+    ensure     => present,
+    properties => ['vmware:vmdk_type=thin']
   }
-  cinder::type {'vmware-thick':
-    set_value => 'thick',
-    set_key   => 'vmware:vmdk_type'
+
+  cinder_type { 'vmware-thick':
+    ensure     => present,
+    properties => ['vmware:vmdk_type=thick']
   }
-  cinder::type {'vmware-eagerZeroedThick':
-    set_value => 'eagerZeroedThick',
-    set_key   => 'vmware:vmdk_type'
+
+  cinder_type { 'vmware-eagerZeroedThick':
+    ensure     => present,
+    properties => ['vmware:vmdk_type=eagerZeroedThick']
   }
-  cinder::type {'vmware-full':
-    set_value => 'full',
-    set_key   => 'vmware:clone_type'
+
+  cinder_type { 'vmware-full':
+    ensure     => present,
+    properties => ['vmware:clone_type=full']
   }
-  cinder::type {'vmware-linked':
-    set_value => 'linked',
-    set_key   => 'vmware:clone_type'
+
+  cinder_type { 'vmware-linked':
+    ensure     => present,
+    properties => ['vmware:clone_type=linked']
   }
 }

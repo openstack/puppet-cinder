@@ -1,11 +1,9 @@
 # ==Define: cinder::type_set
 #
 # Assigns keys after the volume type is set.
+# Deprecated class.
 #
 # === Parameters
-#
-# [*os_password*]
-#   (required) The keystone tenant:username password.
 #
 # [*type*]
 #   (required) Accepts single name of type to set.
@@ -16,54 +14,45 @@
 # [*value*]
 #   the value that we are setting. Defaults to content of namevar.
 #
+# === Deprecated parameters
+#
+# [*os_password*]
+#   (optional) DEPRECATED: The keystone tenant:username password.
+#   Defaults to undef.
+#
 # [*os_tenant_name*]
-#   (optional) The keystone tenant name. Defaults to 'admin'.
+#   (optional) DEPRECATED: The keystone tenant name. Defaults to undef.
 #
 # [*os_username*]
-#   (optional) The keystone user name. Defaults to 'admin.
+#   (optional) DEPRECATED: The keystone user name. Defaults to undef.
 #
 # [*os_auth_url*]
-#   (optional) The keystone auth url. Defaults to 'http://127.0.0.1:5000/v2.0/'.
+#   (optional) DEPRECATED: The keystone auth url. Defaults to undef.
 #
 # [*os_region_name*]
-#   (optional) The keystone region name. Default is unset.
+#   (optional) DEPRECATED: The keystone region name. Default is undef.
 #
 # Author: Andrew Woodward <awoodward@mirantis.com>
-
-
+#
 define cinder::type_set (
   $type,
   $key,
-  $os_password,
-  $os_tenant_name = 'admin',
-  $os_username    = 'admin',
-  $os_auth_url    = 'http://127.0.0.1:5000/v2.0/',
-  $os_region_name = undef,
   $value          = $name,
+  # DEPRECATED PARAMETERS
+  $os_password    = undef,
+  $os_tenant_name = undef,
+  $os_username    = undef,
+  $os_auth_url    = undef,
+  $os_region_name = undef,
   ) {
 
-# TODO: (xarses) This should be moved to a ruby provider so that among other
-#   reasons, the credential discovery magic can occur like in neutron.
-
-  $cinder_env = [
-    "OS_TENANT_NAME=${os_tenant_name}",
-    "OS_USERNAME=${os_username}",
-    "OS_PASSWORD=${os_password}",
-    "OS_AUTH_URL=${os_auth_url}",
-  ]
-
-  if $os_region_name {
-    $region_env = ["OS_REGION_NAME=${os_region_name}"]
-  }
-  else {
-    $region_env = []
+  if $os_password or $os_region_name or $os_tenant_name or $os_username or $os_auth_url {
+    warning('Parameters $os_password/$os_region_name/$os_tenant_name/$os_username/$os_auth_url are not longer required.')
+    warning('Auth creds will be used from env or /root/openrc file or cinder.conf')
   }
 
-  exec {"cinder type-key ${type} set ${key}=${value}":
-    path        => ['/usr/bin', '/bin'],
-    command     => "cinder type-key ${type} set ${key}=${value}",
-    unless      => "cinder extra-specs-list | grep -Eq '\\b${type}\\b.*\\b${key}\\b.*\\b${value}\\b'",
-    environment => concat($cinder_env, $region_env),
-    require     => Package['python-cinderclient']
+  cinder_type { $type:
+    ensure     => present,
+    properties => ["${key}=${value}"],
   }
 }

@@ -6,29 +6,20 @@ describe 'cinder::type' do
 
   let(:title) {'hippo'}
 
-  let :params do {
-    :set_value      => ['name1','name2'],
-    :set_key        => 'volume_backend_name',
-    :os_password    => 'asdf',
-    :os_tenant_name => 'admin',
-    :os_username    => 'admin',
-    :os_auth_url    => 'http://127.127.127.1:5000/v2.0/',
-  }
+  context 'default creation' do
+    it 'should create type basic' do
+      should contain_cinder_type('hippo').with(:ensure => :present)
+    end
   end
 
-  it 'should have its execs' do
-    is_expected.to contain_exec('cinder type-create hippo').with(
-      :command   => 'cinder type-create hippo',
-      :environment => [
-        'OS_TENANT_NAME=admin',
-        'OS_USERNAME=admin',
-        'OS_PASSWORD=asdf',
-        'OS_AUTH_URL=http://127.127.127.1:5000/v2.0/'],
-      :unless    => "cinder type-list | grep -qP '\\shippo\\s'",
-      :tries     => '2',
-      :try_sleep => '5',
-      :require => 'Package[python-cinderclient]')
-    is_expected.to contain_exec('cinder type-key hippo set volume_backend_name=name1')
-    is_expected.to contain_exec('cinder type-key hippo set volume_backend_name=name2')
+  context 'creation with properties' do
+    let :params do {
+      :set_value      => ['name1','name2'],
+      :set_key        => 'volume_backend_name',
+    }
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('hippo').with(:ensure => :present, :properties => ['volume_backend_name=name1,name2'])
+    end
   end
 end
