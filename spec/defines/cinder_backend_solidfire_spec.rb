@@ -25,6 +25,10 @@ describe 'cinder::backend::solidfire' do
         'solidfire')
       is_expected.to contain_cinder_config('solidfire/san_password').with_value(
         'password')
+      is_expected.to contain_cinder_config('solidfire/sf_template_account_name').with_value(
+        'openstack-vtemplate')
+      is_expected.to contain_cinder_config('solidfire/sf_allow_template_caching').with_value(
+        'false')
     end
   end
 
