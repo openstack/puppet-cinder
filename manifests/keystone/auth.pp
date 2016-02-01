@@ -67,18 +67,6 @@
 #    (optional) Description for keystone v2 service.
 #    Defaults to 'Cinder Service v2'.
 #
-# [*public_address*]
-#    Public address for endpoint. Optional. Defaults to '127.0.0.1'.
-#
-# [*admin_address*]
-#    Admin address for endpoint. Optional. Defaults to '127.0.0.1'.
-#
-# [*internal_address*]
-#    Internal address for endpoint. Optional. Defaults to '127.0.0.1'.
-#
-# [*port*]
-#    Port for endpoint. Optional. Defaults to '8776'.
-#
 # [*region*]
 #    Region for endpoint. Optional. Defaults to 'RegionOne'.
 #
@@ -148,7 +136,6 @@ class cinder::keystone::auth (
   $service_description    = 'Cinder Service',
   $service_description_v2 = 'Cinder Service v2',
   $region                 = 'RegionOne',
-  # DEPRECATED PARAMETERS
 ) {
 
   $real_service_name = pick($service_name, $auth_name)
