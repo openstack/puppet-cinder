@@ -9,11 +9,6 @@
 #   This should contain names used in ceph::backend::* resources.
 #   Example: ['volume1', 'volume2', 'sata3']
 #
-# === Deprecated Parameters
-#
-# [*default_volume_type*]
-#   (Deprecated) Does nothing.
-#
 # Author: Andrew Woodward <awoodward@mirantis.com>
 class cinder::backends (
   $enabled_backends    = undef,
