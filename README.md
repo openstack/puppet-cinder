@@ -16,21 +16,31 @@ cinder
 Overview
 --------
 
-The cinder module is a part of [OpenStack](https://www.openstack.org), an effort by the OpenStack infrastructure team to provide continuous integration testing and code review for OpenStack and OpenStack community projects as part of the core software.  The module its self is used to flexibly configure and manage the block storage service for OpenStack.
+The cinder module is a part of [OpenStack](https://www.openstack.org),
+an effort by the OpenStack infrastructure team to provide continuous
+integration testing and code review for OpenStack and OpenStack community
+projects as part of the core software. The module its self is used to flexibly
+configure and manage the block storage service for OpenStack.
 
 Module Description
 ------------------
 
-The cinder module is a thorough attempt to make Puppet capable of managing the entirety of cinder.  This includes manifests to provision such things as keystone endpoints, RPC configurations specific to cinder, and database connections.  Types are shipped as part of the cinder module to assist in manipulation of configuration files.
+The cinder module is a thorough attempt to make Puppet capable of managing
+the entirety of cinder. This includes manifests to provision such things as
+keystone endpoints, RPC configurations specific to cinder, and database
+connections. Types are shipped as part of the cinder module to assist in
+manipulation of configuration files.
 
-This module is tested in combination with other modules needed to build and leverage an entire OpenStack software stack.
+This module is tested in combination with other modules needed to build
+and leverage an entire OpenStack software stack.
 
 Setup
 -----
 
 **What the cinder module affects**
 
-* [Cinder](https://wiki.openstack.org/wiki/Cinder), the block storage service for OpenStack.
+* [Cinder](https://wiki.openstack.org/wiki/Cinder), the block storage service
+  for OpenStack.
 
 ### Installing cinder
 
@@ -38,7 +48,10 @@ Setup
 
 ### Beginning with cinder
 
-To utilize the cinder module's functionality you will need to declare multiple resources. This is not an exhaustive list of all the components needed, we recommend you consult and understand the [core OpenStack](http://docs.openstack.org) documentation.
+To utilize the cinder module's functionality you will need to declare
+multiple resources. This is not an exhaustive list of all the components
+needed, we recommend you consult and understand the
+[core OpenStack](http://docs.openstack.org) documentation.
 
 **Define a cinder control node**
 
@@ -141,11 +154,16 @@ class { 'cinder::backends':
 }
 ```
 
-Note: that the name passed to any backend resource must be unique accross all backends otherwise a duplicate resource will be defined.
+Note: that the name passed to any backend resource must be unique accross all
+      backends otherwise a duplicate resource will be defined.
 
 ** Using type and type_set **
 
-Cinder allows for the usage of type to set extended information that can be used for various reasons. We have resource provider for ``type`` and ``type_set`` Since types are rarely defined with out also setting attributes with it, the resource for ``type`` can also call ``type_set`` if you pass ``set_key`` and ``set_value``
+Cinder allows for the usage of type to set extended information that can be
+used for various reasons. We have resource provider for ``type`` and
+``type_set`` Since types are rarely defined with out also setting attributes
+with it, the resource for ``type`` can also call ``type_set`` if you pass
+``set_key`` and ``set_value``
 
 
 Implementation
@@ -153,13 +171,15 @@ Implementation
 
 ### cinder
 
-cinder is a combination of Puppet manifest and ruby code to delivery configuration and extra functionality through types and providers.
+cinder is a combination of Puppet manifest and ruby code to delivery
+configuration and extra functionality through types and providers.
 
 ### Types
 
 #### cinder_config
 
-The `cinder_config` provider is a children of the ini_setting provider. It allows one to write an entry in the `/etc/cinder/cinder.conf` file.
+The `cinder_config` provider is a children of the ini_setting provider.
+It allows one to write an entry in the `/etc/cinder/cinder.conf` file.
 
 ```puppet
 cinder_config { 'DEFAULT/verbose' :
@@ -183,12 +203,15 @@ Whether to hide the value from Puppet logs. Defaults to `false`.
 
 ##### ensure_absent_val
 
-If value is equal to ensure_absent_val then the resource will behave as if `ensure => absent` was specified. Defaults to `<SERVICE DEFAULT>`
+If value is equal to ensure_absent_val then the resource will behave as if
+`ensure => absent` was specified. Defaults to `<SERVICE DEFAULT>`
 
 Limitations
 ------------
 
-* Setup of storage nodes is limited to Linux and LVM, i.e. Puppet won't configure a Nexenta appliance but nova can be configured to use the Nexenta driver with Class['cinder::volume::nexenta'].
+* Setup of storage nodes is limited to Linux and LVM, i.e. Puppet won't
+  configure a Nexenta appliance but nova can be configured to use the Nexenta
+  driver with Class['cinder::volume::nexenta'].
 
 Beaker-Rspec
 ------------
