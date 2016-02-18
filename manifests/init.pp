@@ -208,6 +208,11 @@
 #   'cinder::backend::rdb::volume_tmp_dir' parameter.
 #   Defaults to $::os_service_default
 #
+# [*host*]
+#   (optional) Name of this node. This can be an opaque identifier. It is
+#   not necessarily a host name, FQDN, or IP address.
+#   Defaults to $::os_service_default
+#
 # === Deprecated Parameters
 #
 # [*qpid_hostname*]
@@ -304,6 +309,7 @@ class cinder (
   $enable_v2_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
+  $host                               = $::os_service_default,
   # DEPRECATED PARAMETERS
   $qpid_hostname                      = undef,
   $qpid_port                          = undef,
@@ -409,6 +415,7 @@ class cinder (
     'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
     'DEFAULT/default_availability_zone': value => $default_availability_zone_real;
     'DEFAULT/image_conversion_dir':      value => $image_conversion_dir;
+    'DEFAULT/host':                      value => $host;
   }
 
   # SSL Options

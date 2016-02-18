@@ -254,4 +254,14 @@ describe 'cinder' do
 
     it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_dir').with_value('/tmp/foo') }
   end
+
+  describe 'with host' do
+    let :params do
+      req_params.merge({
+        :host => 'mystring',
+      })
+    end
+
+    it { is_expected.to contain_cinder_config('DEFAULT/host').with_value('mystring') }
+  end
 end
