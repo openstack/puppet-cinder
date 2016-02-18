@@ -327,4 +327,14 @@ describe 'cinder' do
     it { is_expected.to contain_cinder_config('DEFAULT/enable_v2_api').with_value(true) }
 
   end
+
+  describe 'with host' do
+    let :params do
+      req_params.merge({
+        :host => 'mystring',
+      })
+    end
+
+    it { is_expected.to contain_cinder_config('DEFAULT/host').with_value('mystring') }
+  end
 end

@@ -235,6 +235,11 @@
 #   by the user executing the agent
 #   Defaults to: $::cinder::params::lock_path
 #
+# [*host*]
+#   (optional) Name of this node. This can be an opaque identifier. It is
+#   not necessarily a host name, FQDN, or IP address.
+#   Defaults to $::hostname
+#
 # === Deprecated Parameters
 class cinder (
   $database_connection                = undef,
@@ -293,6 +298,7 @@ class cinder (
   $enable_v1_api                      = true,
   $enable_v2_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
+  $host                               = $::hostname,
 )  {
 
   include ::cinder::db
@@ -412,6 +418,7 @@ class cinder (
     'DEFAULT/rpc_backend':               value => $rpc_backend;
     'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
     'DEFAULT/default_availability_zone': value => $default_availability_zone_real;
+    'DEFAULT/host':                      value => $host;
   }
 
   # SSL Options
