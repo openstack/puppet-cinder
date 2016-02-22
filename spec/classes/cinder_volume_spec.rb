@@ -15,6 +15,9 @@ describe 'cinder::volume' do
       'hasstatus' => true,
       'tag'       => 'cinder-service',
   )}
+  it { is_expected.to contain_cinder_config('DEFAULT/volume_clear').with_value('<SERVICE DEFAULT>') }
+  it { is_expected.to contain_cinder_config('DEFAULT/volume_clear_size').with_value('<SERVICE DEFAULT>') }
+  it { is_expected.to contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('<SERVICE DEFAULT>') }
 
   describe 'with manage_service false' do
     let :params do
@@ -22,6 +25,21 @@ describe 'cinder::volume' do
     end
     it 'should not change the state of the service' do
       is_expected.to contain_service('cinder-volume').without_ensure
+    end
+  end
+
+  describe 'with volume_clear parameters' do
+    let :params do
+      {
+        'volume_clear'        => 'none',
+        'volume_clear_size'   => '10',
+        'volume_clear_ionice' => '-c3',
+      }
+    end
+    it 'should set volume_clear parameters' do
+      is_expected.to contain_cinder_config('DEFAULT/volume_clear').with_value('none')
+      is_expected.to contain_cinder_config('DEFAULT/volume_clear_size').with_value('10')
+      is_expected.to contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('-c3')
     end
   end
 end
