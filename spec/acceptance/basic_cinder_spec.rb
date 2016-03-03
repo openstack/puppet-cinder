@@ -12,10 +12,6 @@ describe 'basic cinder' do
       include ::openstack_integration::mysql
       include ::openstack_integration::keystone
 
-      # Workaround to make sure RabbitMQ does not steal Keystone UID
-      # Bug reported to RDO - this code will be dropped soon
-      Package['keystone'] -> Package['rabbitmq-server']
-
       rabbitmq_user { 'cinder':
         admin    => true,
         password => 'an_even_bigger_secret',
