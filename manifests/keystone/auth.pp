@@ -16,11 +16,20 @@
 # [*email_user_v2*]
 #   Email for Cinder v2 user. Optional. Defaults to 'cinderv2@localhost'.
 #
+# [*password_user_v3*]
+#   Password for Cinder v3 user. Optional. Defaults to undef.
+#
+# [*email_user_v3*]
+#   Email for Cinder v3 user. Optional. Defaults to 'cinderv3@localhost'.
+#
 # [*auth_name*]
 #   Username for Cinder service. Optional. Defaults to 'cinder'.
 #
 # [*auth_name_v2*]
 #   Username for Cinder v2 service. Optional. Defaults to 'cinderv2'.
+#
+# [*auth_name_v3*]
+#   Username for Cinder v3 service. Optional. Defaults to 'cinderv3'.
 #
 # [*configure_endpoint*]
 #   Should Cinder endpoint be configured? Optional. Defaults to 'true'.
@@ -29,11 +38,17 @@
 # [*configure_endpoint_v2*]
 #   Should Cinder v2 endpoint be configured? Optional. Defaults to 'true'.
 #
+# [*configure_endpoint_v3*]
+#   Should Cinder v3 endpoint be configured? Optional. Defaults to 'true'.
+#
 # [*configure_user*]
 #   Should the service user be configured? Optional. Defaults to 'true'.
 #
 # [*configure_user_v2*]
 #   Should the service user be configured for cinder v2? Optional. Defaults to 'false'.
+#
+# [*configure_user_v3*]
+#   Should the service user be configured for cinder v3? Optional. Defaults to 'false'.
 #
 # [*configure_user_role*]
 #   Should the admin role be configured for the service user?
@@ -41,6 +56,10 @@
 #
 # [*configure_user_role_v2*]
 #   Should the admin role be configured for the service user for cinder v2?
+#   Optional. Defaults to 'false'.
+#
+# [*configure_user_role_v3*]
+#   Should the admin role be configured for the service user for cinder v3?
 #   Optional. Defaults to 'false'.
 #
 # [*service_name*]
@@ -53,11 +72,19 @@
 #   Defaults to the value of auth_name_v2, but must differ from the value
 #   of service_name.
 #
+# [*service_name_v3*]
+#   (optional) Name of the v3 service.
+#   Defaults to the value of auth_name_v3, but must differ from the value
+#   of service_name.
+#
 # [*service_type*]
 #    Type of service. Optional. Defaults to 'volume'.
 #
 # [*service_type_v2*]
 #    Type of API v2 service. Optional. Defaults to 'volumev2'.
+#
+# [*service_type_v3*]
+#    Type of API v3 service. Optional. Defaults to 'volumev3'.
 #
 # [*service_description*]
 #    (optional) Description for keystone service.
@@ -67,6 +94,10 @@
 #    (optional) Description for keystone v2 service.
 #    Defaults to 'Cinder Service v2'.
 #
+# [*service_description_v3*]
+#    (optional) Description for keystone v3 service.
+#    Defaults to 'Cinder Service v3'.
+#
 # [*region*]
 #    Region for endpoint. Optional. Defaults to 'RegionOne'.
 #
@@ -75,6 +106,9 @@
 #
 # [*tenant_user_v2*]
 #    Tenant for Cinder v2 user. Optional. Defaults to 'services'.
+#
+# [*tenant_user_v3*]
+#    Tenant for Cinder v3 user. Optional. Defaults to 'services'.
 #
 # [*public_url*]
 #   (optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s')
@@ -100,6 +134,18 @@
 #   (optional) The v2 endpoint's admin url. (Defaults to 'http://127.0.0.1:8776/v2/%(tenant_id)s')
 #   This url should *not* contain any trailing '/'.
 #
+# [*public_url_v3*]
+#   (optional) The v3 endpoint's public url. (Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s')
+#   This url should *not* contain any trailing '/'.
+#
+# [*internal_url_v3*]
+#   (optional) The v3 endpoint's internal url. (Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s')
+#   This url should *not* contain any trailing '/'.
+#
+# [*admin_url_v3*]
+#   (optional) The v3 endpoint's admin url. (Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s')
+#   This url should *not* contain any trailing '/'.
+#
 # === Examples
 #
 #  class { 'cinder::keystone::auth':
@@ -111,35 +157,49 @@
 class cinder::keystone::auth (
   $password,
   $password_user_v2       = undef,
+  $password_user_v3       = undef,
   $auth_name              = 'cinder',
   $auth_name_v2           = 'cinderv2',
+  $auth_name_v3           = 'cinderv3',
   $tenant                 = 'services',
   $tenant_user_v2         = 'services',
+  $tenant_user_v3         = 'services',
   $email                  = 'cinder@localhost',
   $email_user_v2          = 'cinderv2@localhost',
+  $email_user_v3          = 'cinderv3@localhost',
   $public_url             = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
   $internal_url           = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
   $admin_url              = 'http://127.0.0.1:8776/v1/%(tenant_id)s',
   $public_url_v2          = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
   $internal_url_v2        = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
   $admin_url_v2           = 'http://127.0.0.1:8776/v2/%(tenant_id)s',
+  $public_url_v3          = 'http://127.0.0.1:8776/v3/%(tenant_id)s',
+  $internal_url_v3        = 'http://127.0.0.1:8776/v3/%(tenant_id)s',
+  $admin_url_v3           = 'http://127.0.0.1:8776/v3/%(tenant_id)s',
   $configure_endpoint     = true,
   $configure_endpoint_v2  = true,
+  $configure_endpoint_v3  = true,
   $configure_user         = true,
   $configure_user_v2      = false,
+  $configure_user_v3      = false,
   $configure_user_role    = true,
   $configure_user_role_v2 = false,
+  $configure_user_role_v3 = false,
   $service_name           = undef,
   $service_name_v2        = undef,
+  $service_name_v3        = undef,
   $service_type           = 'volume',
   $service_type_v2        = 'volumev2',
+  $service_type_v3        = 'volumev3',
   $service_description    = 'Cinder Service',
   $service_description_v2 = 'Cinder Service v2',
+  $service_description_v3 = 'Cinder Service v3',
   $region                 = 'RegionOne',
 ) {
 
   $real_service_name = pick($service_name, $auth_name)
   $real_service_name_v2 = pick($service_name_v2, $auth_name_v2)
+  $real_service_name_v3 = pick($service_name_v3, $auth_name_v3)
 
   if $real_service_name == $real_service_name_v2 {
     fail('cinder::keystone::auth parameters service_name and service_name_v2 must be different.')
@@ -177,6 +237,23 @@ class cinder::keystone::auth (
     public_url          => $public_url_v2,
     admin_url           => $admin_url_v2,
     internal_url        => $internal_url_v2,
+  }
+
+  keystone::resource::service_identity { 'cinderv3':
+    configure_user      => $configure_user_v3,
+    configure_user_role => $configure_user_role_v3,
+    configure_endpoint  => $configure_endpoint_v3,
+    service_type        => $service_type_v3,
+    service_description => $service_description_v3,
+    service_name        => $real_service_name_v3,
+    region              => $region,
+    auth_name           => $auth_name_v3,
+    password            => $password_user_v3,
+    email               => $email_user_v3,
+    tenant              => $tenant_user_v3,
+    public_url          => $public_url_v3,
+    admin_url           => $admin_url_v3,
+    internal_url        => $internal_url_v3,
   }
 
   if $configure_user_role {

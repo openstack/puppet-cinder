@@ -193,7 +193,11 @@
 #   Defaults to 'true'.
 #
 # [*enable_v2_api*]
-#   (Optional) Whether to enable the v1 API (true/false).
+#   (Optional) Whether to enable the v2 API (true/false).
+#   Defaults to 'true'.
+#
+# [*enable_v3_api*]
+#   (Optional) Whether to enable the v3 API (true/false).
 #   Defaults to 'true'.
 #
 # [*lock_path*]
@@ -307,6 +311,7 @@ class cinder (
   $default_availability_zone          = false,
   $enable_v1_api                      = true,
   $enable_v2_api                      = true,
+  $enable_v3_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
   $host                               = $::os_service_default,
@@ -433,10 +438,11 @@ class cinder (
     }
   }
 
-  # V1/V2 APIs
+  # V1/V2/V3 APIs
   cinder_config {
     'DEFAULT/enable_v1_api':        value => $enable_v1_api;
     'DEFAULT/enable_v2_api':        value => $enable_v2_api;
+    'DEFAULT/enable_v3_api':        value => $enable_v3_api;
     'oslo_concurrency/lock_path':   value => $lock_path;
   }
 
