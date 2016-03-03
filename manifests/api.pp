@@ -128,6 +128,14 @@
 #   (Optional) Run db sync on the node.
 #   Defaults to true
 #
+# [*public_endpoint*]
+#   (Optional) Public url to use for versions endpoint.
+#   Defaults to $::os_service_default
+#
+# [*osapi_volume_base_url*]
+#   (Optional) Base URL that will be presented to users in links to the OpenStack Volume API.
+#   Defaults to $::os_service_default
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled            = true,
@@ -155,6 +163,8 @@ class cinder::api (
     'cinder.api.v1.limits:RateLimitingMiddleware.factory',
   $validate                   = false,
   $sync_db                    = true,
+  $public_endpoint            = $::os_service_default,
+  $osapi_volume_base_url      = $::os_service_default,
   # DEPRECATED PARAMETERS
   $validation_options         = {},
 ) {
@@ -201,10 +211,12 @@ class cinder::api (
   }
 
   cinder_config {
-    'DEFAULT/osapi_volume_listen':  value => $bind_host;
-    'DEFAULT/osapi_volume_workers': value => $service_workers;
-    'DEFAULT/os_region_name':       value => $os_region_name;
-    'DEFAULT/default_volume_type':  value => $default_volume_type;
+    'DEFAULT/osapi_volume_listen':   value => $bind_host;
+    'DEFAULT/osapi_volume_workers':  value => $service_workers;
+    'DEFAULT/os_region_name':        value => $os_region_name;
+    'DEFAULT/default_volume_type':   value => $default_volume_type;
+    'DEFAULT/public_endpoint':       value => $public_endpoint;
+    'DEFAULT/osapi_volume_base_URL': value => $osapi_volume_base_url;
   }
 
   cinder_config {
