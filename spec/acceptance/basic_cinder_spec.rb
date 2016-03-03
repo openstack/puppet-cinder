@@ -46,6 +46,11 @@ describe 'basic cinder' do
         keystone_password   => 'a_big_secret',
         identity_uri        => 'http://127.0.0.1:35357/',
         default_volume_type => 'iscsi_backend',
+        service_name        => 'httpd',
+      }
+      include ::apache
+      class { '::cinder::wsgi::apache':
+        ssl => false,
       }
       class { '::cinder::backup': }
       class { '::cinder::ceilometer': }
@@ -65,7 +70,7 @@ describe 'basic cinder' do
     end
 
     describe port(8776) do
-      it { is_expected.to be_listening.with('tcp') }
+      it { is_expected.to be_listening }
     end
 
     describe cron do
