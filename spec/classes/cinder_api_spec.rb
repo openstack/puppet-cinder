@@ -37,6 +37,12 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/default_volume_type').with(
          :value => '<SERVICE DEFAULT>'
         )
+        is_expected.to contain_cinder_config('DEFAULT/public_endpoint').with(
+         :value => '<SERVICE DEFAULT>'
+        )
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_base_URL').with(
+         :value => '<SERVICE DEFAULT>'
+        )
         is_expected.to contain_cinder_config('DEFAULT/os_region_name').with(
          :value => '<SERVICE DEFAULT>'
         )
