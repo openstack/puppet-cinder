@@ -1,0 +1,3 @@
+---
+features:
+  - Add support of Block Device backend for Cinder.

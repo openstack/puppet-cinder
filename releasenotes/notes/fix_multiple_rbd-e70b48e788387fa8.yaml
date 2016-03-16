@@ -1,0 +1,5 @@
+---
+fixes:
+  - Fixes `bug 1526533
+    <https://bugs.launchpad.net/puppet-cinder/+bug/1526533>`__ so we're
+    able to deploy multiple RBD backends with multiple users.
