@@ -1,0 +1,6 @@
+---
+features:
+  - Add Cinder API v3 support.
+    It will activate v2 Keystone resources by default from now,
+    allow to activate cinder v3 api, enabled by default,
+    allow to manage Keystone resources for Cinder v3 API, enabled by default.
