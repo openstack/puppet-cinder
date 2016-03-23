@@ -30,7 +30,7 @@
 #
 # [*iscsi_helper*]
 #   (Optional) iSCSI target user-land tool to use.
-#   Defaults to fake.
+#   Defaults to tgtadm.
 #
 # [*iscsi_protocol*]
 #   (Optional) Protocol to use as iSCSI driver
@@ -64,7 +64,7 @@ define cinder::backend::bdd (
   $volume_driver       = 'cinder.volume.drivers.block_device.BlockDeviceDriver',
   $volume_group        = $::os_service_default,
   $volumes_dir         = '/var/lib/cinder/volumes',
-  $iscsi_helper        = 'fake',
+  $iscsi_helper        = 'tgtadm',
   $iscsi_protocol      = $::os_service_default,
   $volume_clear        = $::os_service_default,
   $extra_options       = {},
@@ -85,5 +85,42 @@ define cinder::backend::bdd (
   }
 
   create_resources('cinder_config', $extra_options)
+
+  case $iscsi_helper {
+    'tgtadm': {
+      ensure_packages('tgt', {
+        ensure => present,
+        name   => $::cinder::params::tgt_package_name})
+
+      ensure_resource('service', 'tgtd', {
+        ensure  => present,
+        name    => $::cinder::params::tgt_service_name,
+        require => Package['tgt']})
+
+      if($::osfamily == 'RedHat') {
+        ensure_resource('file_line', 'cinder include', {
+          path    => '/etc/tgt/targets.conf',
+          line    => "include ${volumes_dir}/*",
+          match   => '#?include /',
+          require => Package['tgt'],
+          notify  => Service['tgtd']})
+      }
+    }
+
+    'lioadm': {
+      ensure_packages('targetcli', {
+        ensure => present,
+        name => $::cinder::params::lio_package_name})
+
+      ensure_resource('service', 'target', {
+        ensure  => running,
+        enable  => true,
+        require => Package['targetcli']})
+    }
+
+    default: {
+      fail("Unsupported iscsi helper: ${iscsi_helper}.")
+    }
+  }
 
 }
