@@ -136,6 +136,11 @@
 #   (Optional) Base URL that will be presented to users in links to the OpenStack Volume API.
 #   Defaults to $::os_service_default
 #
+# [*osapi_max_limit*]
+#   (Optional) The maximum number of items that a collection resource
+#   returns in a single response (integer value)
+#   Defaults to $::os_service_default
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled            = true,
@@ -165,6 +170,7 @@ class cinder::api (
   $sync_db                    = true,
   $public_endpoint            = $::os_service_default,
   $osapi_volume_base_url      = $::os_service_default,
+  $osapi_max_limit            = $::os_service_default,
   # DEPRECATED PARAMETERS
   $validation_options         = {},
 ) {
@@ -217,6 +223,7 @@ class cinder::api (
     'DEFAULT/default_volume_type':   value => $default_volume_type;
     'DEFAULT/public_endpoint':       value => $public_endpoint;
     'DEFAULT/osapi_volume_base_URL': value => $osapi_volume_base_url;
+    'DEFAULT/osapi_max_limit':       value => $osapi_max_limit;
   }
 
   cinder_config {
