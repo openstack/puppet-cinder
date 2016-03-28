@@ -205,6 +205,16 @@ class cinder::keystone::auth (
     fail('cinder::keystone::auth parameters service_name and service_name_v2 must be different.')
   }
 
+  if $configure_endpoint {
+    Keystone_endpoint["${region}/${real_service_name}::${service_type}"] -> Cinder_type<||>
+  }
+  if $configure_endpoint_v2 {
+    Keystone_endpoint["${region}/${real_service_name_v2}::${service_type_v2}"] -> Cinder_type<||>
+  }
+  if $configure_endpoint_v3 {
+    Keystone_endpoint["${region}/${real_service_name_v3}::${service_type_v3}"] -> Cinder_type<||>
+  }
+
   keystone::resource::service_identity { 'cinder':
     configure_user      => $configure_user,
     configure_user_role => $configure_user_role,
