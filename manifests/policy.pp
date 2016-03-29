@@ -29,5 +29,5 @@ class cinder::policy (
   }
 
   create_resources('openstacklib::policy::base', $policies)
-
+  oslo::policy { 'cinder_config': policy_file => $policy_path }
 }

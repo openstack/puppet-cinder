@@ -20,6 +20,7 @@ describe 'cinder::policy' do
         :key   => 'context_is_admin',
         :value => 'foo:bar'
       })
+      is_expected.to contain_cinder_config('oslo_policy/policy_file').with_value('/etc/cinder/policy.json')
     end
   end
 
