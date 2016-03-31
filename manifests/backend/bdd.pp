@@ -93,7 +93,7 @@ define cinder::backend::bdd (
         name   => $::cinder::params::tgt_package_name})
 
       ensure_resource('service', 'tgtd', {
-        ensure  => present,
+        ensure  => running,
         name    => $::cinder::params::tgt_service_name,
         require => Package['tgt']})
 
