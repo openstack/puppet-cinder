@@ -60,6 +60,34 @@ describe 'cinder::backend::bdd' do
     end
   end
 
+  shared_examples_for 'check needed daemons' do
+    context 'tgtadm helper' do
+      it 'is expected to have tgtd daemon' do
+        is_expected.to contain_package('tgt').with(:ensure => :present)
+        is_expected.to contain_service('tgtd').with(:ensure => :running)
+      end
+    end
+
+    context 'lioadm helper' do
+     before do
+       params.merge!({:iscsi_helper => 'lioadm'})
+     end
+     it 'is expected to have target daemon' do
+       is_expected.to contain_package('targetcli').with(:ensure => :present)
+       is_expected.to contain_service('target').with(:ensure => :running)
+     end
+    end
+
+    context 'wrong helper' do
+      before do
+        params.merge!({:iscsi_helper => 'fake'})
+      end
+      it 'is expected to raise error' do
+        is_expected.to raise_error(Puppet::Error, /Unsupported iscsi helper: fake/)
+      end
+    end
+  end
+
   on_supported_os({
     :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
@@ -69,6 +97,7 @@ describe 'cinder::backend::bdd' do
       end
 
       it_configures 'cinder block device'
+      it_configures 'check needed daemons'
     end
   end
 end
