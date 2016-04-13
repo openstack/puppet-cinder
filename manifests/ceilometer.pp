@@ -17,7 +17,7 @@ class cinder::ceilometer (
   $notification_driver = 'messagingv2',
 ) {
 
-  cinder_config {
-    'DEFAULT/notification_driver': value => $notification_driver;
+  oslo::messaging::notifications { 'cinder_config':
+    driver => $notification_driver
   }
 }

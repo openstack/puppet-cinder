@@ -33,8 +33,8 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_password').with(:value => 'guest', :secret => true)
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => '127.0.0.1')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => '5672')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => '127.0.0.1:5672')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => false)
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_virtual_host').with(:value => '/')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('0')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('2')
@@ -53,8 +53,8 @@ describe 'cinder' do
     end
 
     it 'should contain many' do
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => nil)
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => nil)
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => 'rabbit1:5672,rabbit2:5672')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => true)
     end
@@ -66,10 +66,10 @@ describe 'cinder' do
     end
 
     it 'should contain many' do
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => nil)
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => nil)
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => '<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => 'rabbit1:5672')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => false)
+      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => '<SERVICE DEFAULT>')
     end
   end
 
