@@ -28,6 +28,8 @@ class cinder::rabbitmq(
   $virtual_host   = '/',
 ) {
 
+  warning('cinder::rabbitmq class is deprecated and will be removed in next release. Make other plans to configure rabbitmq resources.')
+
   if $userid == 'guest' {
     $delete_guest_user = false
   } else {
