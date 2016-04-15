@@ -141,6 +141,15 @@
 #   returns in a single response (integer value)
 #   Defaults to $::os_service_default
 #
+# [*service_name*]
+#   (optional) Name of the service that will be providing the
+#   server functionality of cinder-api.
+#   If the value is 'httpd', this means cinder-api will be a web
+#   service, and you must use another class to configure that
+#   web service. For example, use class { 'cinder::wsgi::apache'...}
+#   to make cinder-api be a web app using apache mod_wsgi.
+#   Defaults to '$::cinder::params::api_service'
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled            = true,
@@ -171,20 +180,21 @@ class cinder::api (
   $public_endpoint            = $::os_service_default,
   $osapi_volume_base_url      = $::os_service_default,
   $osapi_max_limit            = $::os_service_default,
+  $service_name               = $::cinder::params::api_service,
   # DEPRECATED PARAMETERS
   $validation_options         = {},
-) {
+) inherits cinder::params {
 
   include ::cinder::params
   include ::cinder::policy
 
-  Cinder_config<||> ~> Service['cinder-api']
-  Cinder_api_paste_ini<||> ~> Service['cinder-api']
-  Class['cinder::policy'] ~> Service['cinder-api']
+  Cinder_config<||> ~> Service[$service_name]
+  Cinder_api_paste_ini<||> ~> Service[$service_name]
+  Class['cinder::policy'] ~> Service[$service_name]
 
   if $::cinder::params::api_package {
     Package['cinder-api'] -> Class['cinder::policy']
-    Package['cinder-api'] -> Service['cinder-api']
+    Package['cinder-api'] -> Service[$service_name]
     Package['cinder-api'] ~> Exec<| title == 'cinder-manage db_sync' |>
     package { 'cinder-api':
       ensure => $package_ensure,
@@ -207,13 +217,29 @@ class cinder::api (
     }
   }
 
-  service { 'cinder-api':
-    ensure    => $ensure,
-    name      => $::cinder::params::api_service,
-    enable    => $enabled,
-    hasstatus => true,
-    require   => Package['cinder'],
-    tag       => 'cinder-service',
+  if $service_name == $::cinder::params::api_service {
+    service { 'cinder-api':
+      ensure    => $ensure,
+      name      => $::cinder::params::api_service,
+      enable    => $enabled,
+      hasstatus => true,
+      require   => Package['cinder'],
+      tag       => 'cinder-service',
+    }
+
+  } elsif $service_name == 'httpd' {
+    include ::apache::params
+    service { 'cinder-api':
+      ensure => 'stopped',
+      name   => $::cinder::params::api_service,
+      enable => false,
+      tag    => ['cinder-service'],
+    }
+
+    # we need to make sure cinder-api/eventlet is stopped before trying to start apache
+    Service['cinder-api'] -> Service[$service_name]
+  } else {
+    fail('Invalid service_name. Either cinder-api/openstack-cinder-api for running as a standalone service, or httpd for being run by a httpd server')
   }
 
   cinder_config {

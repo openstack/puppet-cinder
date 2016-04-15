@@ -303,6 +303,37 @@ describe 'cinder::api' do
         )
       end
     end
+    describe 'when running cinder-api in wsgi' do
+      let :params do
+        req_params.merge!({ :service_name   => 'httpd' })
+      end
+
+      let :pre_condition do
+        "include ::apache
+         class { 'cinder': rabbit_password => 'secret' }"
+      end
+
+      it 'configures cinder-api service with Apache' do
+        is_expected.to contain_service('cinder-api').with(
+          :ensure     => 'stopped',
+          :enable     => false,
+          :tag        => ['cinder-service'],
+        )
+      end
+    end
+
+    describe 'when service_name is not valid' do
+      let :params do
+        req_params.merge!({ :service_name   => 'foobar' })
+      end
+
+      let :pre_condition do
+        "include ::apache
+         class { 'cinder': rabbit_password => 'secret' }"
+      end
+
+      it_raises 'a Puppet::Error', /Invalid service_name/
+    end
   end
 
   on_supported_os({
@@ -310,7 +341,11 @@ describe 'cinder::api' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge(OSDefaults.get_facts({:processorcount => 8}))
+        facts.merge(OSDefaults.get_facts({
+          :processorcount => 8,
+          :fqdn           => 'some.host.tld',
+          :concat_basedir => '/var/lib/puppet/concat',
+        }))
       end
 
       it_configures 'cinder api'
