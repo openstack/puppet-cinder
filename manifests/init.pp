@@ -217,56 +217,6 @@
 #   not necessarily a host name, FQDN, or IP address.
 #   Defaults to $::os_service_default
 #
-# === Deprecated Parameters
-#
-# [*qpid_hostname*]
-#   (Optional) Location of qpid server
-#   Defaults to undef.
-#
-# [*qpid_port*]
-#   (Optional) Port for qpid server.
-#   Defaults to undef.
-#
-# [*qpid_hosts*]
-#   (Optional) Qpid HA cluster host:port pairs. (list value)
-#   Defaults to undef.
-#
-# [*qpid_username*]
-#   (Optional) Username to use when connecting to qpid.
-#   Defaults to undef.
-#
-# [*qpid_password*]
-#   (Optional) Password to use when connecting to qpid.
-#   Defaults to undef.
-#
-# [*qpid_sasl_mechanisms*]
-#   (Optional) ENable one or more SASL mechanisms.
-#   Defaults to undef.
-#
-# [*qpid_heartbeat*]
-#   (Optional) Seconds between connection keepalive heartbeats.
-#   Defaults to undef.
-#
-# [*qpid_protocol*]
-#   (Optional) Transport to use, either 'tcp' or 'ssl'.
-#   Defaults to undef.
-#
-# [*qpid_tcp_nodelay*]
-#   (Optional) Disable Nagle Algorithm.
-#   Defaults to undef.
-#
-# [*qpid_reconnect*]
-#
-# [*qpid_reconnect_timeout*]
-#
-# [*qpid_reconnect_limit*]
-#
-# [*qpid_reconnect_interval*]
-#
-# [*qpid_reconnect_interval_min*]
-#
-# [*qpid_reconnect_interval_max*]
-#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -315,22 +265,6 @@ class cinder (
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
   $host                               = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $qpid_hostname                      = undef,
-  $qpid_port                          = undef,
-  $qpid_hosts                         = undef,
-  $qpid_username                      = undef,
-  $qpid_password                      = undef,
-  $qpid_sasl_mechanisms               = undef,
-  $qpid_reconnect                     = undef,
-  $qpid_reconnect_timeout             = undef,
-  $qpid_reconnect_limit               = undef,
-  $qpid_reconnect_interval_min        = undef,
-  $qpid_reconnect_interval_max        = undef,
-  $qpid_reconnect_interval            = undef,
-  $qpid_heartbeat                     = undef,
-  $qpid_protocol                      = undef,
-  $qpid_tcp_nodelay                   = undef,
 
 ) inherits cinder::params {
 
@@ -390,10 +324,6 @@ class cinder (
       'DEFAULT/report_interval':   value => $report_interval;
       'DEFAULT/service_down_time': value => $service_down_time;
     }
-  }
-
-  if $rpc_backend == 'cinder.openstack.common.rpc.impl_qpid' or $rpc_backend == 'qpid' {
-    warning('Qpid driver is removed from Oslo.messaging in the Mitaka release and puppet-cinder no longer attempts to configure it. All qpid related parameters will be removed from puppet-cinder in the N-release.')
   }
 
   if ! $default_availability_zone {
