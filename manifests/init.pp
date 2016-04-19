@@ -217,6 +217,11 @@
 #   not necessarily a host name, FQDN, or IP address.
 #   Defaults to $::os_service_default
 #
+# [*purge_config*]
+#   (optional) Whether to set only the specified config options
+#   in the cinder config.
+#   Defaults to false.
+#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -265,6 +270,7 @@ class cinder (
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
   $host                               = $::os_service_default,
+  $purge_config                       = false,
 
 ) inherits cinder::params {
 
@@ -289,6 +295,10 @@ class cinder (
     name    => $::cinder::params::package_name,
     tag     => ['openstack', 'cinder-package'],
     require => Anchor['cinder-start'],
+  }
+
+  resources { 'cinder_config':
+    purge => $purge_config,
   }
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_kombu' or $rpc_backend == 'rabbit' {

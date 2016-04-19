@@ -25,6 +25,12 @@ describe 'cinder' do
     it { is_expected.to contain_class('cinder::params') }
     it { is_expected.to contain_class('mysql::bindings::python') }
 
+    it 'passes purge to resource' do
+      is_expected.to contain_resources('cinder_config').with({
+        :purge => false
+      })
+    end
+
     it 'should contain default config' do
       is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with(:value => 'rabbit')
       is_expected.to contain_cinder_config('DEFAULT/control_exchange').with(:value => 'openstack')
