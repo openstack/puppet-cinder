@@ -13,12 +13,12 @@
 #   Defaults to 'present'.
 #
 # [*enabled*]
-#   (Optional) The state of the service
-#   Defaults to 'true'.
+#   (Optional) The state of the service (boolean value)
+#   Defaults to true.
 #
 # [*manage_service*]
-#   (Optional) Whether to start/stop the service
-#   Defaults to 'true'.
+#   (Optional) Whether to start/stop the service (boolean value)
+#   Defaults to true.
 #
 #
 class cinder::scheduler (
@@ -29,6 +29,9 @@ class cinder::scheduler (
 ) {
 
   include ::cinder::params
+
+  validate_bool($manage_service)
+  validate_bool($enabled)
 
   Cinder_config<||> ~> Service['cinder-scheduler']
   Cinder_api_paste_ini<||> ~> Service['cinder-scheduler']

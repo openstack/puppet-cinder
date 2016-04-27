@@ -82,11 +82,11 @@
 #   Defaults to 0.0.0.0
 #
 # [*enabled*]
-#   (optional) The state of the service
+#   (optional) The state of the service (boolean value)
 #   Defaults to true
 #
 # [*manage_service*]
-#   (optional) Whether to start/stop the service
+#   (optional) Whether to start/stop the service (boolean value)
 #   Defaults to true
 #
 # [*ratelimits*]
@@ -187,6 +187,9 @@ class cinder::api (
 
   include ::cinder::params
   include ::cinder::policy
+
+  validate_bool($manage_service)
+  validate_bool($enabled)
 
   Cinder_config<||> ~> Service[$service_name]
   Cinder_api_paste_ini<||> ~> Service[$service_name]

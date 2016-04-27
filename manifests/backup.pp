@@ -5,8 +5,12 @@
 # === Parameters
 #
 # [*enabled*]
-#   (Optional) Should the service be enabled.
-#   Defaults to 'true'.
+#   (Optional) Should the service be enabled (boolean value)
+#   Defaults to true.
+#
+# [*manage_service*]
+#   (Optional) Whether to start/stop the service (boolean value)
+#   Defaults to true.
 #
 # [*package_ensure*]
 #   (Optional) Ensure state for package.
@@ -51,6 +55,7 @@
 #
 class cinder::backup (
   $enabled              = true,
+  $manage_service       = true,
   $package_ensure       = 'present',
   $backup_topic         = $::os_service_default,
   $backup_manager       = $::os_service_default,
@@ -59,6 +64,9 @@ class cinder::backup (
 ) {
 
   include ::cinder::params
+
+  validate_bool($manage_service)
+  validate_bool($enabled)
 
   Cinder_config<||> ~> Service['cinder-backup']
   Exec<| title == 'cinder-manage db_sync' |> ~> Service['cinder-backup']
@@ -73,10 +81,12 @@ class cinder::backup (
     }
   }
 
-  if $enabled {
-    $ensure = 'running'
-  } else {
-    $ensure = 'stopped'
+  if $manage_service {
+    if $enabled {
+      $ensure = 'running'
+    } else {
+      $ensure = 'stopped'
+    }
   }
 
   service { 'cinder-backup':

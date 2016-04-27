@@ -190,7 +190,7 @@ describe 'cinder::api' do
       let :params do
         {
           :keystone_password => 'dummy',
-          :enabled           => 'true',
+          :enabled           => true,
           :sync_db           => false,
         }
       end

@@ -24,6 +24,7 @@ describe 'cinder::backup' do
 
   let :default_params do
     { :enable               => true,
+      :manage_service       => true,
       :backup_topic         => '<SERVICE DEFAULT>',
       :backup_manager       => '<SERVICE DEFAULT>',
       :backup_api_class     => '<SERVICE DEFAULT>',
@@ -74,6 +75,16 @@ describe 'cinder::backup' do
         is_expected.to contain_cinder_config('DEFAULT/backup_name_template').with_value(p[:backup_name_template])
       end
     end
+
+    context 'with manage_service false' do
+      before :each do
+        params.merge!(:manage_service => false)
+      end
+      it 'should not change the state of the service' do
+        is_expected.to contain_service('cinder-backup').without_ensure
+      end
+    end
+
   end
 
   on_supported_os({
