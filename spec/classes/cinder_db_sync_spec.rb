@@ -14,21 +14,21 @@ describe 'cinder::db::sync' do
       )
     end
 
-  describe "overriding extra_params" do
-    let :params do
-      {
-        :extra_params => '--config-file /etc/cinder/cinder.conf',
-      }
-    end
+    describe "overriding extra_params" do
+      let :params do
+        {
+          :extra_params => '--config-file /etc/cinder/cinder.conf',
+        }
+      end
 
-    it {
-      is_expected.to contain_exec('cinder-manage db_sync').with(
-        :command     => 'cinder-manage --config-file /etc/cinder/cinder.conf db sync',
-        :user        => 'cinder',
-        :path        => '/usr/bin',
-        :refreshonly => 'true',
-        :logoutput   => 'on_failure'
-      )
+      it {
+        is_expected.to contain_exec('cinder-manage db_sync').with(
+          :command     => 'cinder-manage --config-file /etc/cinder/cinder.conf db sync',
+          :user        => 'cinder',
+          :path        => '/usr/bin',
+          :refreshonly => 'true',
+          :logoutput   => 'on_failure'
+        )
       }
     end
 
