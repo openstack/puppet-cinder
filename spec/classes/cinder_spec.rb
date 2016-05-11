@@ -179,6 +179,66 @@ describe 'cinder' do
     it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/amqp_durable_queues').with_value(true) }
   end
 
+  describe 'with amqp rpc_backend defaults' do
+    let :params do
+      { :rpc_backend => 'amqp' }
+    end
+
+    it 'configures amqp' do
+      is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with_value('amqp')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/server_request_prefix').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/broadcast_prefix').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/group_request_prefix').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/container_name').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/idle_timeout').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/trace').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_ca_file').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_cert_file').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_key_file').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_key_password').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/allow_insecure_clients').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_mechanisms').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_config_dir').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_config_name').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/username').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/password').with_value('<SERVICE DEFAULT>')
+    end
+  end
+
+  describe 'with amqp rpc_backend overrides' do
+    let :params do
+    {
+      :rpc_backend        => 'amqp',
+      :amqp_idle_timeout  => '60',
+      :amqp_trace         => true,
+      :amqp_ssl_ca_file   => '/path/to/ca.cert',
+      :amqp_ssl_cert_file => '/path/to/certfile',
+      :amqp_ssl_key_file  => '/path/to/key',
+      :amqp_username      => 'amqp_user',
+      :amqp_password      => 'password',
+    }
+    end
+
+    it do
+      is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with_value('amqp')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/server_request_prefix').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/broadcast_prefix').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/group_request_prefix').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/container_name').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/idle_timeout').with_value('60')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/trace').with_value('true')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_ca_file').with_value('/path/to/ca.cert')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_cert_file').with_value('/path/to/certfile')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_key_file').with_value('/path/to/key')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/allow_insecure_clients').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_mechanisms').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_config_dir').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_config_name').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/username').with_value('amqp_user')
+      is_expected.to contain_cinder_config('oslo_messaging_amqp/password').with_value('password')
+    end
+  end
+
   describe 'with postgresql' do
     let :params do
       {

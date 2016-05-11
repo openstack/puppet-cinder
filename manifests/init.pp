@@ -110,6 +110,70 @@
 #   Use durable queues in amqp.
 #   (Optional) Defaults to false.
 #
+# [*amqp_server_request_prefix*]
+#   (Optional) Address prefix used when sending to a specific server
+#   Defaults to $::os_service_default.
+#
+# [*amqp_broadcast_prefix*]
+#   (Optional) address prefix used when broadcasting to all servers
+#   Defaults to $::os_service_default.
+#
+# [*amqp_group_request_prefix*]
+#   (Optional) address prefix when sending to any server in group
+#   Defaults to $::os_service_default.
+#
+# [*amqp_container_name*]
+#   (Optional) Name for the AMQP container
+#   Defaults to $::os_service_default.
+#
+# [*amqp_idle_timeout*]
+#   (Optional) Timeout for inactive connections
+#   Defaults to $::os_service_default.
+#
+# [*amqp_trace*]
+#   (Optional) Debug: dump AMQP frames to stdout
+#   Defaults to $::os_service_default.
+#
+# [*amqp_ssl_ca_file*]
+#   (Optional) CA certificate PEM file to verify server certificate
+#   Defaults to $::os_service_default.
+#
+# [*amqp_ssl_cert_file*]
+#   (Optional) Identifying certificate PEM file to present to clients
+#   Defaults to $::os_service_default.
+#
+# [*amqp_ssl_key_file*]
+#   (Optional) Private key PEM file used to sign cert_file certificate
+#   Defaults to $::os_service_default.
+#
+# [*amqp_ssl_key_password*]
+#   (Optional) Password for decrypting ssl_key_file (if encrypted)
+#   Defaults to $::os_service_default.
+#
+# [*amqp_allow_insecure_clients*]
+#   (Optional) Accept clients using either SSL or plain TCP
+#   Defaults to $::os_service_default.
+#
+# [*amqp_sasl_mechanisms*]
+#   (Optional) Space separated list of acceptable SASL mechanisms
+#   Defaults to $::os_service_default.
+#
+# [*amqp_sasl_config_dir*]
+#   (Optional) Path to directory that contains the SASL configuration
+#   Defaults to $::os_service_default.
+#
+# [*amqp_sasl_config_name*]
+#   (Optional) Name of configuration file (without .conf suffix)
+#   Defaults to $::os_service_default.
+#
+# [*amqp_username*]
+#   (Optional) User name for message broker authentication
+#   Defaults to $::os_service_default.
+#
+# [*amqp_password*]
+#   (Optional) Password for message broker authentication
+#   Defaults to $::os_service_default.
+#
 # [*use_syslog*]
 #   (Optional) Use syslog for logging.
 #   Defaults to undef.
@@ -250,6 +314,22 @@ class cinder (
   $kombu_ssl_version                  = $::os_service_default,
   $kombu_reconnect_delay              = $::os_service_default,
   $amqp_durable_queues                = false,
+  $amqp_server_request_prefix         = $::os_service_default,
+  $amqp_broadcast_prefix              = $::os_service_default,
+  $amqp_group_request_prefix          = $::os_service_default,
+  $amqp_container_name                = $::os_service_default,
+  $amqp_idle_timeout                  = $::os_service_default,
+  $amqp_trace                         = $::os_service_default,
+  $amqp_ssl_ca_file                   = $::os_service_default,
+  $amqp_ssl_cert_file                 = $::os_service_default,
+  $amqp_ssl_key_file                  = $::os_service_default,
+  $amqp_ssl_key_password              = $::os_service_default,
+  $amqp_allow_insecure_clients        = $::os_service_default,
+  $amqp_sasl_mechanisms               = $::os_service_default,
+  $amqp_sasl_config_dir               = $::os_service_default,
+  $amqp_sasl_config_name              = $::os_service_default,
+  $amqp_username                      = $::os_service_default,
+  $amqp_password                      = $::os_service_default,
   $package_ensure                     = 'present',
   $use_ssl                            = false,
   $ca_file                            = $::os_service_default,
@@ -324,6 +404,36 @@ class cinder (
       kombu_ssl_certfile          => $kombu_ssl_certfile,
       kombu_ssl_ca_certs          => $kombu_ssl_ca_certs,
       amqp_durable_queues         => $amqp_durable_queues,
+    }
+
+    oslo::messaging::default { 'cinder_config':
+      control_exchange => $control_exchange
+    }
+
+    cinder_config {
+      'DEFAULT/report_interval':   value => $report_interval;
+      'DEFAULT/service_down_time': value => $service_down_time;
+    }
+  }
+  elsif $rpc_backend == 'amqp' {
+
+    oslo::messaging::amqp { 'cinder_config':
+      server_request_prefix  => $amqp_server_request_prefix,
+      broadcast_prefix       => $amqp_broadcast_prefix,
+      group_request_prefix   => $amqp_group_request_prefix,
+      container_name         => $amqp_container_name,
+      idle_timeout           => $amqp_idle_timeout,
+      trace                  => $amqp_trace,
+      ssl_ca_file            => $amqp_ssl_ca_file,
+      ssl_cert_file          => $amqp_ssl_cert_file,
+      ssl_key_file           => $amqp_ssl_key_file,
+      ssl_key_password       => $amqp_ssl_key_password,
+      allow_insecure_clients => $amqp_allow_insecure_clients,
+      sasl_mechanisms        => $amqp_sasl_mechanisms,
+      sasl_config_dir        => $amqp_sasl_config_dir,
+      sasl_config_name       => $amqp_sasl_config_name,
+      username               => $amqp_username,
+      password               => $amqp_password,
     }
 
     oslo::messaging::default { 'cinder_config':
