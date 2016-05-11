@@ -1,0 +1,4 @@
+---
+features:
+  - Switch rabbit related parameters to $::os_service_default.
+  - Add kombu_compression parameter.

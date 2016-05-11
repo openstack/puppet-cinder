@@ -23,33 +23,32 @@
 #
 # [*rabbit_host*]
 #   (Optional) IP or hostname of the rabbit server.
-#   Defaults to '127.0.0.1'
+#   Defaults to $::os_service_default
 #
 # [*rabbit_port*]
 #   (Optional) Port of the rabbit server.
-#   Defaults to 5672.
+#   Defaults to $::os_service_default
 #
 # [*rabbit_hosts*]
 #   (Optional) Array of host:port (used with HA queues).
 #   If defined, will remove rabbit_host & rabbit_port parameters from config
-#   Defaults to undef.
+#   Defaults to $::os_service_default
 #
 # [*rabbit_userid*]
 #   (Optional) User to connect to the rabbit server.
-#   Defaults to 'guest'
+#   Defaults to $::os_service_default
 #
 # [*rabbit_password*]
 #   (Required) Password to connect to the rabbit_server.
-#   Defaults to empty. Required if using the Rabbit (kombu)
-#   backend.
+#   Defaults to empty. Required if using the Rabbit (kombu) backend.
 #
 # [*rabbit_virtual_host*]
 #   (Optional) Virtual_host to use.
-#   Defaults to '/'
+#   Defaults to $::os_service_default
 #
 # [*rabbit_ha_queues*]
 #   (optional) Use HA queues in RabbitMQ (x-ha-policy: all).
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*rabbit_heartbeat_timeout_threshold*]
 #   (optional) Number of seconds after which the RabbitMQ broker is considered
@@ -57,18 +56,18 @@
 #   Heartbeating helps to ensure the TCP connection to RabbitMQ isn't silently
 #   closed, resulting in missed or lost messages from the queue.
 #   (Requires kombu >= 3.0.7 and amqp >= 1.4.0)
-#   Defaults to 0
+#   Defaults to $::os_service_default
 #
 # [*rabbit_heartbeat_rate*]
 #   (optional) How often during the rabbit_heartbeat_timeout_threshold period to
 #   check the heartbeat on RabbitMQ connection.  (i.e. rabbit_heartbeat_rate=2
 #   when rabbit_heartbeat_timeout_threshold=60, the heartbeat will be checked
 #   every 30 seconds.
-#   Defaults to 2
+#   Defaults to $::os_service_default
 #
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*report_interval*]
 #  (optional) Interval, in seconds, between nodes reporting state to
@@ -103,9 +102,15 @@
 #   consumer cancel notification.
 #   Defaults to $::os_service_default
 #
+# [*kombu_compression*]
+#   (optional) Possible values are: gzip, bz2. If not set compression will not
+#   be used. This option may notbe available in future versions. EXPERIMENTAL.
+#   (string value)
+#   Defaults to $::os_service_default
+#
 # [*amqp_durable_queues*]
 #   Use durable queues in amqp.
-#   (Optional) Defaults to false.
+#   (Optional) Defaults to $::os_service_default
 #
 # [*amqp_server_request_prefix*]
 #   (Optional) Address prefix used when sending to a specific server
@@ -198,7 +203,7 @@
 #
 # [*database_retry_interval*]
 #   Interval between retries of opening a sql connection.
-#   (Optional) Defaults to underf.
+#   (Optional) Defaults to undef.
 #
 # [*database_max_overflow*]
 #   If set, use this value for max_overflow with sqlalchemy.
@@ -299,16 +304,16 @@ class cinder (
   $database_max_overflow              = undef,
   $rpc_backend                        = 'rabbit',
   $control_exchange                   = 'openstack',
-  $rabbit_host                        = '127.0.0.1',
-  $rabbit_port                        = 5672,
-  $rabbit_hosts                       = undef,
-  $rabbit_virtual_host                = '/',
-  $rabbit_ha_queues                   = undef,
-  $rabbit_heartbeat_timeout_threshold = 0,
-  $rabbit_heartbeat_rate              = 2,
-  $rabbit_userid                      = 'guest',
-  $rabbit_password                    = false,
-  $rabbit_use_ssl                     = false,
+  $rabbit_host                        = $::os_service_default,
+  $rabbit_port                        = $::os_service_default,
+  $rabbit_hosts                       = $::os_service_default,
+  $rabbit_virtual_host                = $::os_service_default,
+  $rabbit_ha_queues                   = $::os_service_default,
+  $rabbit_heartbeat_timeout_threshold = $::os_service_default,
+  $rabbit_heartbeat_rate              = $::os_service_default,
+  $rabbit_userid                      = $::os_service_default,
+  $rabbit_password                    = $::os_service_default,
+  $rabbit_use_ssl                     = $::os_service_default,
   $service_down_time                  = $::os_service_default,
   $report_interval                    = $::os_service_default,
   $kombu_ssl_ca_certs                 = $::os_service_default,
@@ -316,7 +321,8 @@ class cinder (
   $kombu_ssl_keyfile                  = $::os_service_default,
   $kombu_ssl_version                  = $::os_service_default,
   $kombu_reconnect_delay              = $::os_service_default,
-  $amqp_durable_queues                = false,
+  $kombu_compression                  = $::os_service_default,
+  $amqp_durable_queues                = $::os_service_default,
   $amqp_server_request_prefix         = $::os_service_default,
   $amqp_broadcast_prefix              = $::os_service_default,
   $amqp_group_request_prefix          = $::os_service_default,
@@ -391,7 +397,7 @@ class cinder (
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_kombu' or $rpc_backend == 'rabbit' {
 
-    if ! $rabbit_password {
+    if is_service_default($rabbit_password) {
       fail('Please specify a rabbit_password parameter.')
     }
 
@@ -412,6 +418,7 @@ class cinder (
       kombu_ssl_certfile          => $kombu_ssl_certfile,
       kombu_ssl_ca_certs          => $kombu_ssl_ca_certs,
       amqp_durable_queues         => $amqp_durable_queues,
+      kombu_compression           => $kombu_compression,
     }
 
     cinder_config {
