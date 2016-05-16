@@ -60,7 +60,6 @@ class { 'cinder':
   database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
   rabbit_password         => 'secret_rpc_password_for_blocks',
   rabbit_host             => 'openstack-controller.example.com',
-  verbose                 => true,
 }
 
 class { 'cinder::api':
@@ -86,7 +85,6 @@ class { 'cinder':
   database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
   rabbit_password         => 'secret_rpc_password_for_blocks',
   rabbit_host             => 'openstack-controller.example.com',
-  verbose                 => true,
 }
 
 class { 'cinder::volume': }
@@ -103,7 +101,6 @@ class { 'cinder':
   database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
   rabbit_password         => 'secret_rpc_password_for_blocks',
   rabbit_host             => 'openstack-controller.example.com',
-  verbose                 => true,
 }
 
 class { 'cinder::volume': }
@@ -175,12 +172,12 @@ The `cinder_config` provider is a children of the ini_setting provider.
 It allows one to write an entry in the `/etc/cinder/cinder.conf` file.
 
 ```puppet
-cinder_config { 'DEFAULT/verbose' :
-  value => true,
+cinder_config { 'DEFAULT/api_paste_config' :
+  value => '/etc/cinder/api-paste.ini',
 }
 ```
 
-This will write `verbose=true` in the `[DEFAULT]` section.
+This will write `api_paste_config=/etc/cinder/api-paste.ini` in the `[DEFAULT]` section.
 
 ##### name
 

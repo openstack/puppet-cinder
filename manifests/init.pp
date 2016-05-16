@@ -8,9 +8,6 @@
 #    (Optional) Ensure state for package.
 #    Defaults to 'present'
 #
-# [*verbose*]
-#   (Optional) Should the daemons log verbose messages
-#   Defaults to undef.
 #
 # [*debug*]
 #   (Optional) Should the daemons log debug messages
@@ -286,6 +283,12 @@
 #   in the cinder config.
 #   Defaults to false.
 #
+# DEPRECATED PARAMETERS
+#
+# [*verbose*]
+#   (Optional) DEPRECATED. Should the daemons log verbose messages
+#   Defaults to undef.
+#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -340,7 +343,6 @@ class cinder (
   $use_stderr                         = undef,
   $log_facility                       = undef,
   $log_dir                            = '/var/log/cinder',
-  $verbose                            = undef,
   $debug                              = undef,
   $storage_availability_zone          = 'nova',
   $default_availability_zone          = false,
@@ -351,6 +353,8 @@ class cinder (
   $image_conversion_dir               = $::os_service_default,
   $host                               = $::os_service_default,
   $purge_config                       = false,
+  # DEPRECATED PARAMETERS
+  $verbose                            = undef,
 
 ) inherits cinder::params {
 
@@ -364,6 +368,10 @@ class cinder (
     if !$key_file {
       fail('The key_file parameter is required when use_ssl is set to true')
     }
+  }
+
+  if $verbose {
+    warning('verbose is deprecated, has no effect and will be removed after Newton cycle.')
   }
 
   # this anchor is used to simplify the graph between cinder components by
