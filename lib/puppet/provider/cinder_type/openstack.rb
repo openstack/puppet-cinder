@@ -1,4 +1,4 @@
-require 'puppet/provider/cinder'
+require File.join(File.dirname(__FILE__), '..','..','..', 'puppet/provider/cinder')
 
 Puppet::Type.type(:cinder_type).provide(
   :openstack,
