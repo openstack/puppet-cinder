@@ -406,10 +406,6 @@ class cinder (
       amqp_durable_queues         => $amqp_durable_queues,
     }
 
-    oslo::messaging::default { 'cinder_config':
-      control_exchange => $control_exchange
-    }
-
     cinder_config {
       'DEFAULT/report_interval':   value => $report_interval;
       'DEFAULT/service_down_time': value => $service_down_time;
@@ -436,14 +432,14 @@ class cinder (
       password               => $amqp_password,
     }
 
-    oslo::messaging::default { 'cinder_config':
-      control_exchange => $control_exchange
-    }
-
     cinder_config {
       'DEFAULT/report_interval':   value => $report_interval;
       'DEFAULT/service_down_time': value => $service_down_time;
     }
+  }
+
+  oslo::messaging::default { 'cinder_config':
+    control_exchange => $control_exchange
   }
 
   if ! $default_availability_zone {
