@@ -7,7 +7,7 @@ Puppet::Type.type(:cinder_type).provide(
 
   desc 'Provider for cinder types.'
 
-  @credentials = Puppet::Provider::Openstack::CredentialsV2_0.new
+  @credentials = Puppet::Provider::Openstack::CredentialsV3.new
 
   mk_resource_methods
 

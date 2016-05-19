@@ -1,0 +1,4 @@
+---
+features:
+  - Keystone v3 support is added to the cinder_type
+    provider.
