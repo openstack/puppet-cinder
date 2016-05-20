@@ -139,11 +139,10 @@
 #   used for provisioning.
 #   Defaults to undef
 #
-# [*netapp_eseries_host_type*]
-#   (optional) This option is used to define how the controllers in the
-#   E-Series storage array will work with the particular operating system on
-#   the hosts that are connected to it.
-#   Defaults to 'linux_dm_mp'
+# [*netapp_host_type*]
+#   (optional) This option is used to define how the controllers will work with
+#   the particular operating system on the hosts that are connected to it.
+#   Defaults to $::os_service_default
 #
 # [*netapp_webservice_path*]
 #   (optional) This option is used to specify the path to the E-Series proxy
@@ -158,6 +157,14 @@
 #   Defaults to: {}
 #   Example :
 #     { 'netapp_backend/param1' => { 'value' => value1 } }
+#
+# DEPRECATED PARAMETERS
+#
+# [*netapp_eseries_host_type*]
+#   (optional) Deprecated. This option is used to define how the controllers in
+#   the E-Series storage array will work with the particular operating system on
+#   the hosts that are connected to it.
+#   Defaults to undef
 #
 # === Examples
 #
@@ -202,10 +209,19 @@ define cinder::backend::netapp (
   $netapp_controller_ips        = undef,
   $netapp_sa_password           = undef,
   $netapp_storage_pools         = undef,
-  $netapp_eseries_host_type     = 'linux_dm_mp',
+  $netapp_host_type             = $::os_service_default,
   $netapp_webservice_path       = '/devmgr/v2',
   $extra_options                = {},
+  # DEPRECATED PARAMETERS
+  $netapp_eseries_host_type     = undef,
 ) {
+
+  if $netapp_eseries_host_type {
+    warning('The "netapp_eseries_host_type" parameter is deprecated. Use "netapp_host_type" instead.')
+    $netapp_host_type_real = $netapp_eseries_host_type
+  } else {
+    $netapp_host_type_real = $netapp_host_type
+  }
 
   if $nfs_shares {
     validate_array($nfs_shares)
@@ -240,7 +256,7 @@ define cinder::backend::netapp (
     "${name}/netapp_controller_ips":        value => $netapp_controller_ips;
     "${name}/netapp_sa_password":           value => $netapp_sa_password, secret => true;
     "${name}/netapp_storage_pools":         value => $netapp_storage_pools;
-    "${name}/netapp_eseries_host_type":     value => $netapp_eseries_host_type;
+    "${name}/netapp_host_type":             value => $netapp_host_type_real;
     "${name}/netapp_webservice_path":       value => $netapp_webservice_path;
   }
 

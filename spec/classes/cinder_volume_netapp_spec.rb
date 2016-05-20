@@ -33,7 +33,6 @@ describe 'cinder::volume::netapp' do
       :thres_avl_size_perc_start    => '20',
       :thres_avl_size_perc_stop     => '60',
       :nfs_shares_config            => '/etc/cinder/shares.conf',
-      :netapp_eseries_host_type     => 'linux_dm_mp',
       :nfs_mount_options            => '<SERVICE DEFAULT>',
       :netapp_webservice_path       => '/devmgr/v2',
     }
