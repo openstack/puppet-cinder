@@ -176,10 +176,6 @@
 #   (Optional) Password for message broker authentication
 #   Defaults to $::os_service_default.
 #
-# [*use_syslog*]
-#   (Optional) Use syslog for logging.
-#   Defaults to undef.
-#
 # [*database_connection*]
 #    Url used to connect to database.
 #    (Optional) Defaults to undef.
@@ -253,15 +249,6 @@
 #   (Optional)
 #   Defaults to '/etc/cinder/api-paste.ini',
 #
-# [*enable_v1_api*]
-#   (Optional) Whether to enable the v1 API (true/false).
-#   This will be deprecated in Kilo.
-#   Defaults to 'true'.
-#
-# [*enable_v2_api*]
-#   (Optional) Whether to enable the v2 API (true/false).
-#   Defaults to 'true'.
-#
 # [*enable_v3_api*]
 #   (Optional) Whether to enable the v3 API (true/false).
 #   Defaults to 'true'.
@@ -293,6 +280,18 @@
 # [*verbose*]
 #   (Optional) DEPRECATED. Should the daemons log verbose messages
 #   Defaults to undef.
+#
+# [*use_syslog*]
+#   (Optional) DEPRECATED. Use syslog for logging.
+#   Defaults to undef.
+#
+# [*enable_v1_api*]
+#   (Optional) DEPRECATED. Whether to enable the v1 API (true/false).
+#   Defaults to 'true'.
+#
+# [*enable_v2_api*]
+#   (Optional) DEPRECATED. Whether to enable the v2 API (true/false).
+#   Defaults to 'true'.
 #
 class cinder (
   $database_connection                = undef,
@@ -345,15 +344,12 @@ class cinder (
   $cert_file                          = false,
   $key_file                           = false,
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
-  $use_syslog                         = undef,
   $use_stderr                         = undef,
   $log_facility                       = undef,
   $log_dir                            = '/var/log/cinder',
   $debug                              = undef,
   $storage_availability_zone          = 'nova',
   $default_availability_zone          = false,
-  $enable_v1_api                      = true,
-  $enable_v2_api                      = true,
   $enable_v3_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
@@ -361,7 +357,9 @@ class cinder (
   $purge_config                       = false,
   # DEPRECATED PARAMETERS
   $verbose                            = undef,
-
+  $use_syslog                         = undef,
+  $enable_v1_api                      = true,
+  $enable_v2_api                      = true,
 ) inherits cinder::params {
 
   include ::cinder::db
@@ -378,6 +376,18 @@ class cinder (
 
   if $verbose {
     warning('verbose is deprecated, has no effect and will be removed after Newton cycle.')
+  }
+
+  if $use_syslog {
+    warning('use_syslog is deprecated, has no effect and will be removed in a future release.')
+  }
+
+  if $enable_v1_api == true {
+    warning('enable_v1_api is deprecated, has no effect and will be removed in a future release')
+  }
+
+  if $enable_v2_api == true {
+    warning('enable_v2_api is deprecated, has no effect and will be removed in a future release')
   }
 
   # this anchor is used to simplify the graph between cinder components by
@@ -478,10 +488,8 @@ class cinder (
     }
   }
 
-  # V1/V2/V3 APIs
+  # V3 APIs
   cinder_config {
-    'DEFAULT/enable_v1_api':        value => $enable_v1_api;
-    'DEFAULT/enable_v2_api':        value => $enable_v2_api;
     'DEFAULT/enable_v3_api':        value => $enable_v3_api;
   }
 

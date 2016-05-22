@@ -1,0 +1,6 @@
+---
+deprecations:
+ - use_syslog in DEFAULT section was deprecated in Mitaka, this parameter
+   has no effect and will be removed in a future release.
+ - enable_v1_api and enable_v2_api are deprecated (no parameters to
+   subistitute)

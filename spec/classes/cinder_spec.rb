@@ -301,15 +301,11 @@ describe 'cinder' do
   describe 'with APIs set for Mitaka (proposed)' do
     let :params do
       {
-        :enable_v1_api   => false,
-        :enable_v2_api   => true,
         :enable_v3_api   => true,
         :rabbit_password => 'guest',
       }
     end
 
-    it { is_expected.to contain_cinder_config('DEFAULT/enable_v1_api').with_value(false) }
-    it { is_expected.to contain_cinder_config('DEFAULT/enable_v2_api').with_value(true) }
     it { is_expected.to contain_cinder_config('DEFAULT/enable_v3_api').with_value(true) }
 
   end
