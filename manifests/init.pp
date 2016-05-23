@@ -420,11 +420,6 @@ class cinder (
       amqp_durable_queues         => $amqp_durable_queues,
       kombu_compression           => $kombu_compression,
     }
-
-    cinder_config {
-      'DEFAULT/report_interval':   value => $report_interval;
-      'DEFAULT/service_down_time': value => $service_down_time;
-    }
   }
   elsif $rpc_backend == 'amqp' {
 
@@ -446,11 +441,6 @@ class cinder (
       username               => $amqp_username,
       password               => $amqp_password,
     }
-
-    cinder_config {
-      'DEFAULT/report_interval':   value => $report_interval;
-      'DEFAULT/service_down_time': value => $service_down_time;
-    }
   }
 
   oslo::messaging::default { 'cinder_config':
@@ -464,6 +454,8 @@ class cinder (
   }
 
   cinder_config {
+    'DEFAULT/report_interval':           value => $report_interval;
+    'DEFAULT/service_down_time':         value => $service_down_time;
     'DEFAULT/api_paste_config':          value => $api_paste_config;
     'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
     'DEFAULT/default_availability_zone': value => $default_availability_zone_real;
