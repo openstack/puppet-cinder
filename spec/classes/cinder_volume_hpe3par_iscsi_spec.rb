@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe 'cinder::volume::hp3par_iscsi' do
+describe 'cinder::volume::hpe3par_iscsi' do
   let :req_params do
     {
-      :hp3par_api_url   => 'https://172.0.0.2:8080/api/v1',
-      :hp3par_username  => '3paradm',
-      :hp3par_password  => 'password',
-      :hp3par_iscsi_ips => '172.0.0.3',
-      :san_ip            => '172.0.0.2',
-      :san_login         => '3paradm',
-      :san_password      => 'password',
+      :hpe3par_api_url   => 'https://172.0.0.2:8080/api/v1',
+      :hpe3par_username  => '3paradm',
+      :hpe3par_password  => 'password',
+      :hpe3par_iscsi_ips => '172.0.0.3',
+      :san_ip           => '172.0.0.2',
+      :san_login        => '3paradm',
+      :san_password     => 'password',
     }
   end
 
@@ -17,8 +17,8 @@ describe 'cinder::volume::hp3par_iscsi' do
     req_params
   end
 
-  describe 'hp3par_iscsi volume driver' do
-    it 'configure hp3par_iscsi volume driver' do
+  describe 'hpe3par_iscsi volume driver' do
+    it 'configure hpe3par_iscsi volume driver' do
       is_expected.to contain_cinder_config('DEFAULT/volume_driver').with_value('cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver')
       is_expected.to contain_cinder_config('DEFAULT/hpe3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
       is_expected.to contain_cinder_config('DEFAULT/hpe3par_username').with_value('3paradm')
@@ -30,12 +30,12 @@ describe 'cinder::volume::hp3par_iscsi' do
     end
   end
 
-  describe 'hp3par_iscsi volume driver with additional configuration' do
+  describe 'hpe3par_iscsi volume driver with additional configuration' do
     before :each do
       params.merge!({:extra_options => {'hpe3par_iscsi_backend/param1' => {'value' => 'value1'}}})
     end
 
-    it 'configure hp3par_iscsi volume with additional configuration' do
+    it 'configure hpe3par_iscsi volume with additional configuration' do
       is_expected.to contain_cinder__backend__hpe3par_iscsi('DEFAULT').with({
         :extra_options => {'hpe3par_iscsi_backend/param1' => {'value' => 'value1'}}
       })

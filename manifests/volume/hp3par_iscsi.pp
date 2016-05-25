@@ -1,4 +1,4 @@
-# == Class: cinder::volume::hp3par
+# == Deprecated Class: cinder::volume::hp3par
 #
 # Configures Cinder volume HP 3par driver.
 # Parameters are particular to each volume driver.
@@ -56,7 +56,7 @@ class cinder::volume::hp3par_iscsi(
   $san_ip,
   $san_login,
   $san_password,
-  $volume_driver              = 'cinder.volume.drivers.san.hp.hp_3par_iscsi.HP3PARISCSIDriver',
+  $volume_driver              = 'cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver',
   $hp3par_iscsi_chap_enabled  = false,
   $hp3par_snap_cpg            = 'OpenstackCPG',
   $hp3par_snapshot_retention  = 48,
@@ -64,18 +64,22 @@ class cinder::volume::hp3par_iscsi(
   $extra_options              = {},
 ) {
 
-  cinder::backend::hp3par_iscsi { 'DEFAULT':
-    volume_driver              => $volume_driver,
-    hp3par_username            => $hp3par_username,
-    hp3par_password            => $hp3par_password,
-    san_ip                     => $san_ip,
-    san_login                  => $san_login,
-    san_password               => $san_password,
-    hp3par_iscsi_ips           => $hp3par_iscsi_ips,
-    hp3par_api_url             => $hp3par_api_url,
-    hp3par_snap_cpg            => $hp3par_snap_cpg,
-    hp3par_snapshot_retention  => $hp3par_snapshot_retention,
-    hp3par_snapshot_expiration => $hp3par_snapshot_expiration,
-    extra_options              => $extra_options,
+
+  warning('The class cinder::volume::hp3par_iscsi is deprecated and will be removed after Newton cycle, pleasse use the new class cinder::volume::hpe3par_iscsi.')
+
+  cinder::backend::hpe3par_iscsi { 'DEFAULT':
+    volume_driver               => $volume_driver,
+    hpe3par_username            => $hp3par_username,
+    hpe3par_password            => $hp3par_password,
+    san_ip                      => $san_ip,
+    san_login                   => $san_login,
+    san_password                => $san_password,
+    hpe3par_iscsi_ips           => $hp3par_iscsi_ips,
+    hpe3par_api_url             => $hp3par_api_url,
+    hpe3par_cpg_snap            => $hp3par_snap_cpg,
+    hpe3par_snapshot_retention  => $hp3par_snapshot_retention,
+    hpe3par_snapshot_expiration => $hp3par_snapshot_expiration,
+    extra_options               => $extra_options,
   }
+
 }

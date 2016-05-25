@@ -80,20 +80,22 @@ define cinder::backend::hp3par_iscsi(
     fail ('hp3par_snapshot_expiration must be greater than hp3par_snapshot_retention')
   }
 
+  warning('The define cinder::backend::hp3par_iscsi is deprecated and will be removed after Newton cycle, pleasse use the new define cinder::backend::hpe3par_iscsi.')
+
   cinder_config {
-    "${name}/volume_backend_name":        value => $volume_backend_name;
-    "${name}/volume_driver":              value => $volume_driver;
-    "${name}/hp3par_username":            value => $hp3par_username;
-    "${name}/hp3par_password":            value => $hp3par_password, secret => true;
-    "${name}/san_ip":                     value => $san_ip;
-    "${name}/san_login":                  value => $san_login;
-    "${name}/san_password":               value => $san_password, secret => true;
-    "${name}/hp3par_iscsi_ips":           value => $hp3par_iscsi_ips;
-    "${name}/hp3par_api_url":             value => $hp3par_api_url;
-    "${name}/hp3par_iscsi_chap_enabled":  value => $hp3par_iscsi_chap_enabled;
-    "${name}/hp3par_snap_cpg":            value => $hp3par_snap_cpg;
-    "${name}/hp3par_snapshot_retention":  value => $hp3par_snapshot_retention;
-    "${name}/hp3par_snapshot_expiration": value => $hp3par_snapshot_expiration;
+    "${name}/volume_backend_name":         value => $volume_backend_name;
+    "${name}/volume_driver":               value => $volume_driver;
+    "${name}/hpe3par_username":            value => $hp3par_username;
+    "${name}/hpe3par_password":            value => $hp3par_password, secret => true;
+    "${name}/san_ip":                      value => $san_ip;
+    "${name}/san_login":                   value => $san_login;
+    "${name}/san_password":                value => $san_password, secret => true;
+    "${name}/hpe3par_iscsi_ips":           value => $hp3par_iscsi_ips;
+    "${name}/hpe3par_api_url":             value => $hp3par_api_url;
+    "${name}/hpe3par_iscsi_chap_enabled":  value => $hp3par_iscsi_chap_enabled;
+    "${name}/hpe3par_cpg_snap":            value => $hp3par_snap_cpg;
+    "${name}/hpe3par_snapshot_retention":  value => $hp3par_snapshot_retention;
+    "${name}/hpe3par_snapshot_expiration": value => $hp3par_snapshot_expiration;
   }
 
   create_resources('cinder_config', $extra_options)
