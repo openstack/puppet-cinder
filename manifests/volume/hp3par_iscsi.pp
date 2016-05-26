@@ -58,7 +58,7 @@ class cinder::volume::hp3par_iscsi(
   $san_password,
   $volume_driver              = 'cinder.volume.drivers.san.hp.hp_3par_iscsi.HP3PARISCSIDriver',
   $hp3par_iscsi_chap_enabled  = false,
-  $hp3par_snap_cpg            = OpenstackCPG,
+  $hp3par_snap_cpg            = 'OpenstackCPG',
   $hp3par_snapshot_retention  = 48,
   $hp3par_snapshot_expiration = 72,
   $extra_options              = {},
