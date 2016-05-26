@@ -70,6 +70,7 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_auth_url').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('keymgr/encryption_auth_url').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_middleware/enable_proxy_headers_parsing').with('value' => '<SERVICE DEFAULT>')
       end
     end
 

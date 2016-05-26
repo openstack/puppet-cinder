@@ -150,37 +150,43 @@
 #   to make cinder-api be a web app using apache mod_wsgi.
 #   Defaults to '$::cinder::params::api_service'
 #
+# [*enable_proxy_headers_parsing*]
+#   (optional) This determines if the HTTPProxyToWSGI
+#   middleware should parse the proxy headers or not.(boolean value)
+#   Defaults to $::os_service_default
+#
 class cinder::api (
   $keystone_password,
-  $keystone_enabled            = true,
-  $keystone_tenant             = 'services',
-  $keystone_user               = 'cinder',
-  $auth_uri                    = 'http://localhost:5000/',
-  $identity_uri                = 'http://localhost:35357/',
-  $nova_catalog_info           = 'compute:Compute Service:publicURL',
-  $nova_catalog_admin_info     = 'compute:Compute Service:adminURL',
-  $os_region_name              = $::os_service_default,
-  $privileged_user             = false,
-  $os_privileged_user_name     = $::os_service_default,
-  $os_privileged_user_password = $::os_service_default,
-  $os_privileged_user_tenant   = $::os_service_default,
-  $os_privileged_user_auth_url = $::os_service_default,
-  $keymgr_encryption_auth_url  = $::os_service_default,
-  $service_workers             = $::processorcount,
-  $package_ensure              = 'present',
-  $bind_host                   = '0.0.0.0',
-  $enabled                     = true,
-  $manage_service              = true,
-  $ratelimits                  = $::os_service_default,
-  $default_volume_type         = $::os_service_default,
+  $keystone_enabled             = true,
+  $keystone_tenant              = 'services',
+  $keystone_user                = 'cinder',
+  $auth_uri                     = 'http://localhost:5000/',
+  $identity_uri                 = 'http://localhost:35357/',
+  $nova_catalog_info            = 'compute:Compute Service:publicURL',
+  $nova_catalog_admin_info      = 'compute:Compute Service:adminURL',
+  $os_region_name               = $::os_service_default,
+  $privileged_user              = false,
+  $os_privileged_user_name      = $::os_service_default,
+  $os_privileged_user_password  = $::os_service_default,
+  $os_privileged_user_tenant    = $::os_service_default,
+  $os_privileged_user_auth_url  = $::os_service_default,
+  $keymgr_encryption_auth_url   = $::os_service_default,
+  $service_workers              = $::processorcount,
+  $package_ensure               = 'present',
+  $bind_host                    = '0.0.0.0',
+  $enabled                      = true,
+  $manage_service               = true,
+  $ratelimits                   = $::os_service_default,
+  $default_volume_type          = $::os_service_default,
   $ratelimits_factory =
     'cinder.api.v1.limits:RateLimitingMiddleware.factory',
-  $validate                   = false,
-  $sync_db                    = true,
-  $public_endpoint            = $::os_service_default,
-  $osapi_volume_base_url      = $::os_service_default,
-  $osapi_max_limit            = $::os_service_default,
-  $service_name               = $::cinder::params::api_service,
+  $validate                     = false,
+  $sync_db                      = true,
+  $public_endpoint              = $::os_service_default,
+  $osapi_volume_base_url        = $::os_service_default,
+  $osapi_max_limit              = $::os_service_default,
+  $service_name                 = $::cinder::params::api_service,
+  $enable_proxy_headers_parsing = $::os_service_default,
   # DEPRECATED PARAMETERS
   $validation_options         = {},
 ) inherits cinder::params {
@@ -258,6 +264,10 @@ class cinder::api (
   cinder_config {
     'DEFAULT/nova_catalog_info':       value => $nova_catalog_info;
     'DEFAULT/nova_catalog_admin_info': value => $nova_catalog_admin_info;
+  }
+
+  oslo::middleware {'cinder_config':
+    enable_proxy_headers_parsing => $enable_proxy_headers_parsing,
   }
 
   if $privileged_user {
