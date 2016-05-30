@@ -287,11 +287,11 @@
 #
 # [*enable_v1_api*]
 #   (Optional) DEPRECATED. Whether to enable the v1 API (true/false).
-#   Defaults to 'true'.
+#   Defaults to undef.
 #
 # [*enable_v2_api*]
 #   (Optional) DEPRECATED. Whether to enable the v2 API (true/false).
-#   Defaults to 'true'.
+#   Defaults to undef.
 #
 class cinder (
   $database_connection                = undef,
@@ -358,8 +358,8 @@ class cinder (
   # DEPRECATED PARAMETERS
   $verbose                            = undef,
   $use_syslog                         = undef,
-  $enable_v1_api                      = true,
-  $enable_v2_api                      = true,
+  $enable_v1_api                      = undef,
+  $enable_v2_api                      = undef,
 ) inherits cinder::params {
 
   include ::cinder::db
@@ -382,11 +382,11 @@ class cinder (
     warning('use_syslog is deprecated, has no effect and will be removed in a future release.')
   }
 
-  if $enable_v1_api == true {
+  if $enable_v1_api {
     warning('enable_v1_api is deprecated, has no effect and will be removed in a future release')
   }
 
-  if $enable_v2_api == true {
+  if $enable_v2_api {
     warning('enable_v2_api is deprecated, has no effect and will be removed in a future release')
   }
 
