@@ -176,6 +176,10 @@
 #   (Optional) Password for message broker authentication
 #   Defaults to $::os_service_default.
 #
+# [*use_syslog*]
+#   (Optional) Use syslog for logging.
+#   Defaults to undef
+#
 # [*database_connection*]
 #    Url used to connect to database.
 #    (Optional) Defaults to undef.
@@ -281,10 +285,6 @@
 #   (Optional) DEPRECATED. Should the daemons log verbose messages
 #   Defaults to undef.
 #
-# [*use_syslog*]
-#   (Optional) DEPRECATED. Use syslog for logging.
-#   Defaults to undef.
-#
 # [*enable_v1_api*]
 #   (Optional) DEPRECATED. Whether to enable the v1 API (true/false).
 #   Defaults to undef.
@@ -344,6 +344,7 @@ class cinder (
   $cert_file                          = false,
   $key_file                           = false,
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
+  $use_syslog                         = undef,
   $use_stderr                         = undef,
   $log_facility                       = undef,
   $log_dir                            = '/var/log/cinder',
@@ -357,7 +358,6 @@ class cinder (
   $purge_config                       = false,
   # DEPRECATED PARAMETERS
   $verbose                            = undef,
-  $use_syslog                         = undef,
   $enable_v1_api                      = undef,
   $enable_v2_api                      = undef,
 ) inherits cinder::params {
@@ -376,10 +376,6 @@ class cinder (
 
   if $verbose {
     warning('verbose is deprecated, has no effect and will be removed after Newton cycle.')
-  }
-
-  if $use_syslog {
-    warning('use_syslog is deprecated, has no effect and will be removed in a future release.')
   }
 
   if $enable_v1_api {
