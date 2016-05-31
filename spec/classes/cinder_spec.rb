@@ -32,6 +32,7 @@ describe 'cinder' do
     end
 
     it 'should contain default config' do
+      is_expected.to contain_cinder_config('DEFAULT/transport_url').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with(:value => 'rabbit')
       is_expected.to contain_cinder_config('DEFAULT/control_exchange').with(:value => 'openstack')
       is_expected.to contain_cinder_config('DEFAULT/report_interval').with(:value => '<SERVICE DEFAULT>')
@@ -328,5 +329,15 @@ describe 'cinder' do
     end
 
     it { is_expected.to contain_cinder_config('DEFAULT/host').with_value('mystring') }
+  end
+
+  describe 'with transport_url' do
+    let :params do
+      req_params.merge({
+        :default_transport_url => 'rabbit://rabbit_user:password@localhost:5673',
+      })
+    end
+
+    it { is_expected.to contain_cinder_config('DEFAULT/transport_url').with_value('rabbit://rabbit_user:password@localhost:5673') }
   end
 end
