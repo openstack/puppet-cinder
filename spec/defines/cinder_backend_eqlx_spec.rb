@@ -14,10 +14,10 @@ describe 'cinder::backend::eqlx' do
       :san_thin_provision   => '<SERVICE DEFAULT>',
       :eqlx_group_name      => '<SERVICE DEFAULT>',
       :eqlx_pool            => 'apool',
-      :eqlx_use_chap        => true,
-      :eqlx_chap_login      => 'chapadm',
-      :eqlx_chap_password   => '56789',
-      :eqlx_cli_timeout     => 31,
+      :use_chap_auth        => true,
+      :chap_username        => 'chapadm',
+      :chap_password        => '56789',
+      :ssh_conn_timeout     => 31,
       :eqlx_cli_max_retries => 6,
     }
   end
@@ -50,13 +50,23 @@ describe 'cinder::backend::eqlx' do
   context 'eqlx backend with chap' do
     before :each do
       params.merge!({
-        :eqlx_use_chap      => true,
-        :eqlx_chap_login    => 'myuser',
-        :eqlx_chap_password => 'mypass'
+        :use_chap_auth => true,
+        :chap_username => 'myuser',
+        :chap_password => 'mypass'
       })
     end
     it_configures 'eqlx volume driver'
   end
 
+  describe 'eqlx with invalid values' do
+    it 'should fail with chap_username with default value' do
+      params[:chap_username] = '<SERVICE DEFAULT>'
+      is_expected.to raise_error(Puppet::Error, /chap_username need to be set./)
+    end
+    it 'should fail with chap_password with default value' do
+      params[:chap_password] = '<SERVICE DEFAULT>'
+      is_expected.to raise_error(Puppet::Error, /chap_password need to be set./)
+    end
+  end
 
 end
