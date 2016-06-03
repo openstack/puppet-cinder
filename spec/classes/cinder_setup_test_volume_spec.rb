@@ -15,4 +15,10 @@ describe 'cinder::setup_test_volume' do
     is_expected.to contain_exec('pvcreate /dev/loop2')
     is_expected.to contain_exec('vgcreate cinder-volumes /dev/loop2')
   end
+
+  it 'should set 0640 permissions for cinder-volumes' do
+    is_expected.to contain_file('/var/lib/cinder/cinder-volumes').with(
+        :mode => '0640'
+    )
+  end
 end
