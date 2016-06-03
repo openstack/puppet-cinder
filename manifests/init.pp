@@ -13,6 +13,12 @@
 #   (Optional) Should the daemons log debug messages
 #   Defaults to undef.
 #
+# [*default_transport_url*]
+#    (optional) A URL representing the messaging driver to use and its full
+#    configuration. Transport URLs take the form:
+#      transport://user:pass@host1:port[,hostN:portN]/virtual_host
+#    Defaults to $::os_service_default
+#
 # [*rpc_backend*]
 #   (Optional) Use these options to configure the RabbitMQ message system.
 #   Defaults to 'rabbit'
@@ -301,6 +307,7 @@ class cinder (
   $database_max_retries               = undef,
   $database_retry_interval            = undef,
   $database_max_overflow              = undef,
+  $default_transport_url              = $::os_service_default,
   $rpc_backend                        = 'rabbit',
   $control_exchange                   = 'openstack',
   $rabbit_host                        = $::os_service_default,
@@ -450,7 +457,8 @@ class cinder (
   }
 
   oslo::messaging::default { 'cinder_config':
-    control_exchange => $control_exchange
+    transport_url    => $default_transport_url,
+    control_exchange => $control_exchange,
   }
 
   if ! $default_availability_zone {
