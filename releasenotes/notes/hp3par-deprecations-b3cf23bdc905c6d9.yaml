@@ -1,0 +1,8 @@
+---
+deprecations:
+  - Deprecate hp3par_iscsi define and class.
+  - Deprecate all hp3par parameters in define and class
+features:
+  - add hpe3par parameters in h3par_iscsi define and class.
+  - add hpe3par_iscsi define and class
+  - add tests for define and class hpe3par_iscsi
