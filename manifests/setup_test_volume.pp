@@ -33,6 +33,10 @@ class cinder::setup_test_volume(
     unless  => "stat ${volume_path}/${volume_name}",
   } ~>
 
+  file { "${volume_path}/${volume_name}":
+    mode => '0640',
+  } ~>
+
   exec { "losetup ${loopback_device} ${volume_path}/${volume_name}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless      => "losetup ${loopback_device}",

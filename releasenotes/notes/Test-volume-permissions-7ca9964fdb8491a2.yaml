@@ -1,0 +1,5 @@
+---
+security:
+  - Set the permissions of the file used as backend
+    for the test volume to 0640, to avoid giving read
+    permissions to any user on created volumes.
