@@ -64,18 +64,15 @@
 #
 # [*service_name*]
 #   (optional) Name of the service.
-#   Defaults to the value of auth_name, but must differ from the value
-#   of service_name_v2.
+#   Defaults to 'cinder'.
 #
 # [*service_name_v2*]
 #   (optional) Name of the v2 service.
-#   Defaults to the value of auth_name_v2, but must differ from the value
-#   of service_name.
+#   Defaults to 'cinderv2'.
 #
 # [*service_name_v3*]
 #   (optional) Name of the v3 service.
-#   Defaults to the value of auth_name_v3, but must differ from the value
-#   of service_name.
+#   Defaults to 'cinderv3'.
 #
 # [*service_type*]
 #    Type of service. Optional. Defaults to 'volume'.
@@ -185,9 +182,9 @@ class cinder::keystone::auth (
   $configure_user_role    = true,
   $configure_user_role_v2 = false,
   $configure_user_role_v3 = false,
-  $service_name           = undef,
-  $service_name_v2        = undef,
-  $service_name_v3        = undef,
+  $service_name           = 'cinder',
+  $service_name_v2        = 'cinderv2',
+  $service_name_v3        = 'cinderv3',
   $service_type           = 'volume',
   $service_type_v2        = 'volumev2',
   $service_type_v3        = 'volumev3',
@@ -197,22 +194,14 @@ class cinder::keystone::auth (
   $region                 = 'RegionOne',
 ) {
 
-  $real_service_name = pick($service_name, $auth_name)
-  $real_service_name_v2 = pick($service_name_v2, $auth_name_v2)
-  $real_service_name_v3 = pick($service_name_v3, $auth_name_v3)
-
-  if $real_service_name == $real_service_name_v2 {
-    fail('cinder::keystone::auth parameters service_name and service_name_v2 must be different.')
-  }
-
   if $configure_endpoint {
-    Keystone_endpoint["${region}/${real_service_name}::${service_type}"] -> Cinder_type<||>
+    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Cinder_type<||>
   }
   if $configure_endpoint_v2 {
-    Keystone_endpoint["${region}/${real_service_name_v2}::${service_type_v2}"] -> Cinder_type<||>
+    Keystone_endpoint["${region}/${service_name_v2}::${service_type_v2}"] -> Cinder_type<||>
   }
   if $configure_endpoint_v3 {
-    Keystone_endpoint["${region}/${real_service_name_v3}::${service_type_v3}"] -> Cinder_type<||>
+    Keystone_endpoint["${region}/${service_name_v3}::${service_type_v3}"] -> Cinder_type<||>
   }
 
   keystone::resource::service_identity { 'cinder':
@@ -221,7 +210,7 @@ class cinder::keystone::auth (
     configure_endpoint  => $configure_endpoint,
     service_type        => $service_type,
     service_description => $service_description,
-    service_name        => $real_service_name,
+    service_name        => $service_name,
     region              => $region,
     auth_name           => $auth_name,
     password            => $password,
@@ -238,7 +227,7 @@ class cinder::keystone::auth (
     configure_endpoint  => $configure_endpoint_v2,
     service_type        => $service_type_v2,
     service_description => $service_description_v2,
-    service_name        => $real_service_name_v2,
+    service_name        => $service_name_v2,
     region              => $region,
     auth_name           => $auth_name_v2,
     password            => $password_user_v2,
@@ -255,7 +244,7 @@ class cinder::keystone::auth (
     configure_endpoint  => $configure_endpoint_v3,
     service_type        => $service_type_v3,
     service_description => $service_description_v3,
-    service_name        => $real_service_name_v3,
+    service_name        => $service_name_v3,
     region              => $region,
     auth_name           => $auth_name_v3,
     password            => $password_user_v3,
