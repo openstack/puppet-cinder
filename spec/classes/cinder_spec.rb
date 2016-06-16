@@ -254,51 +254,6 @@ describe 'cinder' do
     it { is_expected.to_not contain_class('mysql::bindings::python') }
   end
 
-  describe 'with SSL socket options set' do
-    let :params do
-      {
-        :use_ssl         => true,
-        :cert_file       => '/path/to/cert',
-        :ca_file         => '/path/to/ca',
-        :key_file        => '/path/to/key',
-        :rabbit_password => 'guest',
-      }
-    end
-
-    it { is_expected.to contain_cinder_config('DEFAULT/ssl_ca_file').with_value('/path/to/ca') }
-    it { is_expected.to contain_cinder_config('DEFAULT/ssl_cert_file').with_value('/path/to/cert') }
-    it { is_expected.to contain_cinder_config('DEFAULT/ssl_key_file').with_value('/path/to/key') }
-  end
-
-  describe 'with SSL socket options set to false' do
-    let :params do
-      {
-        :use_ssl         => false,
-        :cert_file       => false,
-        :ca_file         => false,
-        :key_file        => false,
-        :rabbit_password => 'guest',
-      }
-    end
-
-    it { is_expected.to contain_cinder_config('DEFAULT/ssl_ca_file').with_ensure('absent') }
-    it { is_expected.to contain_cinder_config('DEFAULT/ssl_cert_file').with_ensure('absent') }
-    it { is_expected.to contain_cinder_config('DEFAULT/ssl_key_file').with_ensure('absent') }
-  end
-
-  describe 'with SSL socket options set wrongly configured' do
-    let :params do
-      {
-        :use_ssl         => true,
-        :ca_file         => '/path/to/ca',
-        :key_file        => '/path/to/key',
-        :rabbit_password => 'guest',
-      }
-    end
-
-    it_raises 'a Puppet::Error', /The cert_file parameter is required when use_ssl is set to true/
-  end
-
   describe 'with APIs set for Mitaka (proposed)' do
     let :params do
       {

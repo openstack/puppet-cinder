@@ -155,6 +155,22 @@
 #   middleware should parse the proxy headers or not.(boolean value)
 #   Defaults to $::os_service_default
 #
+# [*use_ssl*]
+#   (optional) Enable SSL on the API server
+#   Defaults to false
+#
+# [*cert_file*]
+#   (optional) Certificate file to use when starting API server securely
+#   Defaults to $::os_service_default
+#
+# [*key_file*]
+#   (optional) Private key file to use when starting API server securely
+#   Defaults to $::os_service_default
+#
+# [*ca_file*]
+#   (optional) CA certificate file to use to verify connecting clients
+#   Defaults to $::os_service_default
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled             = true,
@@ -187,6 +203,10 @@ class cinder::api (
   $osapi_max_limit              = $::os_service_default,
   $service_name                 = $::cinder::params::api_service,
   $enable_proxy_headers_parsing = $::os_service_default,
+  $use_ssl                      = false,
+  $cert_file                    = $::os_service_default,
+  $key_file                     = $::os_service_default,
+  $ca_file                      = $::os_service_default,
   # DEPRECATED PARAMETERS
   $validation_options         = {},
 ) inherits cinder::params {
@@ -196,6 +216,21 @@ class cinder::api (
 
   validate_bool($manage_service)
   validate_bool($enabled)
+
+  # Keep backwards compatibility with SSL values being set in init.pp
+  $use_ssl_real = pick($::cinder::use_ssl, $use_ssl)
+  $cert_file_real = pick($::cinder::cert_file, $cert_file)
+  $key_file_real = pick($::cinder::key_file, $key_file)
+  $ca_file_real = pick($::cinder::ca_file, $ca_file)
+
+  if $use_ssl_real {
+    if is_service_default($cert_file_real) {
+      fail('The cert_file parameter is required when use_ssl is set to true')
+    }
+    if is_service_default($key_file_real) {
+      fail('The key_file parameter is required when use_ssl is set to true')
+    }
+  }
 
   Cinder_config<||> ~> Service[$service_name]
   Cinder_api_paste_ini<||> ~> Service[$service_name]
@@ -301,6 +336,15 @@ class cinder::api (
       'keystone_authtoken/admin_tenant_name': value => $keystone_tenant;
       'keystone_authtoken/admin_user':        value => $keystone_user;
       'keystone_authtoken/admin_password':    value => $keystone_password, secret => true;
+    }
+  }
+
+  # SSL Options
+  if $use_ssl_real {
+    cinder_config {
+      'ssl/cert_file' : value => $cert_file_real;
+      'ssl/key_file' :  value => $key_file_real;
+      'ssl/ca_file' :   value => $ca_file_real;
     }
   }
 

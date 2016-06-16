@@ -1,0 +1,3 @@
+---
+deprecations:
+  - The SSL-related options were removed from init.pp and added to api.pp

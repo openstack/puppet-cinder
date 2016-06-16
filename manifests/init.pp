@@ -229,22 +229,6 @@
 #   any directory.
 #   Defaults to '/var/log/cinder'.
 #
-# [*use_ssl*]
-#   (optional) Enable SSL on the API server
-#   Defaults to false, not set
-#
-# [*cert_file*]
-#   (optinal) Certificate file to use when starting API server securely
-#   Defaults to false, not set
-#
-# [*key_file*]
-#   (optional) Private key file to use when starting API server securely
-#   Defaults to false, not set
-#
-# [*ca_file*]
-#   (optional) CA certificate file to use to verify connecting clients
-#   Defaults to $::os_service_default
-#
 # [*storage_availability_zone*]
 #   (optional) Availability zone of the node.
 #   Defaults to 'nova'
@@ -299,6 +283,25 @@
 #   (Optional) DEPRECATED. Whether to enable the v2 API (true/false).
 #   Defaults to undef.
 #
+# [*use_ssl*]
+#   (optional) DEPRECATED. Enable SSL on the API server
+#   Defaults to undef
+#
+# [*cert_file*]
+#   (optional) DEPRECATED. Certificate file to use when starting API server
+#   securely
+#   Defaults to undef
+#
+# [*key_file*]
+#   (optional) DEPRECATED. Private key file to use when starting API server
+#   securely
+#   Defaults to undef
+#
+# [*ca_file*]
+#   (optional) DEPRECATED. CA certificate file to use to verify connecting
+#   clients
+#   Defaults to undef
+#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -346,10 +349,6 @@ class cinder (
   $amqp_username                      = $::os_service_default,
   $amqp_password                      = $::os_service_default,
   $package_ensure                     = 'present',
-  $use_ssl                            = false,
-  $ca_file                            = $::os_service_default,
-  $cert_file                          = false,
-  $key_file                           = false,
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
   $use_syslog                         = undef,
   $use_stderr                         = undef,
@@ -367,19 +366,14 @@ class cinder (
   $verbose                            = undef,
   $enable_v1_api                      = undef,
   $enable_v2_api                      = undef,
+  $use_ssl                            = undef,
+  $ca_file                            = undef,
+  $cert_file                          = undef,
+  $key_file                           = undef,
 ) inherits cinder::params {
 
   include ::cinder::db
   include ::cinder::logging
-
-  if $use_ssl {
-    if !$cert_file {
-      fail('The cert_file parameter is required when use_ssl is set to true')
-    }
-    if !$key_file {
-      fail('The key_file parameter is required when use_ssl is set to true')
-    }
-  }
 
   if $verbose {
     warning('verbose is deprecated, has no effect and will be removed after Newton cycle.')
@@ -475,21 +469,6 @@ class cinder (
     'DEFAULT/default_availability_zone': value => $default_availability_zone_real;
     'DEFAULT/image_conversion_dir':      value => $image_conversion_dir;
     'DEFAULT/host':                      value => $host;
-  }
-
-  # SSL Options
-  if $use_ssl {
-    cinder_config {
-      'DEFAULT/ssl_cert_file' : value => $cert_file;
-      'DEFAULT/ssl_key_file' :  value => $key_file;
-      'DEFAULT/ssl_ca_file' :   value => $ca_file;
-    }
-  } else {
-    cinder_config {
-      'DEFAULT/ssl_cert_file' : ensure => absent;
-      'DEFAULT/ssl_key_file' :  ensure => absent;
-      'DEFAULT/ssl_ca_file' :   ensure => absent;
-    }
   }
 
   # V3 APIs

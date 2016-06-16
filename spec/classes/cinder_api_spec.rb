@@ -335,6 +335,33 @@ describe 'cinder::api' do
 
       it_raises 'a Puppet::Error', /Invalid service_name/
     end
+
+    describe 'with SSL socket options set' do
+      let :params do
+        req_params.merge!({
+          :use_ssl         => true,
+          :cert_file       => '/path/to/cert',
+          :ca_file         => '/path/to/ca',
+          :key_file        => '/path/to/key',
+        })
+      end
+
+      it { is_expected.to contain_cinder_config('ssl/ca_file').with_value('/path/to/ca') }
+      it { is_expected.to contain_cinder_config('ssl/cert_file').with_value('/path/to/cert') }
+      it { is_expected.to contain_cinder_config('ssl/key_file').with_value('/path/to/key') }
+    end
+
+    describe 'with SSL socket options set wrongly configured' do
+      let :params do
+        req_params.merge!({
+          :use_ssl         => true,
+          :ca_file         => '/path/to/ca',
+          :key_file        => '/path/to/key',
+        })
+      end
+
+      it_raises 'a Puppet::Error', /The cert_file parameter is required when use_ssl is set to true/
+    end
   end
 
   on_supported_os({
