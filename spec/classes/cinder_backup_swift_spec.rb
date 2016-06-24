@@ -23,8 +23,8 @@ require 'spec_helper'
 describe 'cinder::backup::swift' do
 
   let :default_params do
-    { :backup_swift_url             => 'http://localhost:8080/v1/AUTH_',
-      :backup_swift_auth_url        => 'http://127.0.0.1:5000/v2.0/',
+    { :backup_swift_url             => '<SERVICE DEFAULT>',
+      :backup_swift_auth_url        => '<SERVICE DEFAULT>',
       :backup_swift_container       => 'volumes_backup',
       :backup_swift_object_size     => '<SERVICE DEFAULT>',
       :backup_swift_retry_attempts  => '<SERVICE DEFAULT>',
