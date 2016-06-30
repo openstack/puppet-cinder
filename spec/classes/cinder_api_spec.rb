@@ -64,6 +64,7 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('keystone_authtoken/admin_password').with(
          :value => 'foo'
         )
+        is_expected.to contain_cinder_config('keystone_authtoken/memcached_servers').with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_value('<SERVICE DEFAULT>')
@@ -290,6 +291,17 @@ describe 'cinder::api' do
       it 'configures identity_uri and auth_uri but deprecates old auth settings' do
         is_expected.to contain_cinder_config('keystone_authtoken/identity_uri').with_value("https://localhost:35357/")
         is_expected.to contain_cinder_config('keystone_authtoken/auth_uri').with_value("https://localhost:5000/")
+      end
+    end
+
+    describe "with memcached servers for keystone authtoken" do
+      let :params do
+        req_params.merge({
+          :memcached_servers => '1.1.1.1:11211',
+        })
+      end
+      it 'configures memcached servers' do
+        is_expected.to contain_cinder_config('keystone_authtoken/memcached_servers').with_value('1.1.1.1:11211')
       end
     end
 

@@ -141,6 +141,11 @@
 #   returns in a single response (integer value)
 #   Defaults to $::os_service_default
 #
+# [*memcached_servers*]
+#   (optinal) a list of memcached server(s) to use for caching. If left
+#   undefined, tokens will instead be cached in-process.
+#   Defaults to $::os_service_default.
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled            = true,
@@ -171,6 +176,7 @@ class cinder::api (
   $public_endpoint            = $::os_service_default,
   $osapi_volume_base_url      = $::os_service_default,
   $osapi_max_limit            = $::os_service_default,
+  $memcached_servers          = $::os_service_default,
   # DEPRECATED PARAMETERS
   $validation_options         = {},
 ) {
@@ -253,6 +259,7 @@ class cinder::api (
   cinder_config {
     'keystone_authtoken/auth_uri'     : value => $auth_uri;
     'keystone_authtoken/identity_uri' : value => $identity_uri;
+    'keystone_authtoken/memcached_servers': value => join(any2array($memcached_servers), ',');
     'keymgr/encryption_auth_url'      : value => $keymgr_encryption_auth_url;
   }
 
