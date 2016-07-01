@@ -171,6 +171,11 @@
 #   (optional) CA certificate file to use to verify connecting clients
 #   Defaults to $::os_service_default
 #
+# [*memcached_servers*]
+#   (optinal) a list of memcached server(s) to use for caching. If left
+#   undefined, tokens will instead be cached in-process.
+#   Defaults to $::os_service_default.
+#
 class cinder::api (
   $keystone_password,
   $keystone_enabled             = true,
@@ -207,6 +212,7 @@ class cinder::api (
   $cert_file                    = $::os_service_default,
   $key_file                     = $::os_service_default,
   $ca_file                      = $::os_service_default,
+  $memcached_servers            = $::os_service_default,
   # DEPRECATED PARAMETERS
   $validation_options         = {},
 ) inherits cinder::params {
@@ -325,9 +331,10 @@ class cinder::api (
   }
 
   cinder_config {
-    'keystone_authtoken/auth_uri'     : value => $auth_uri;
-    'keystone_authtoken/identity_uri' : value => $identity_uri;
-    'keymgr/encryption_auth_url'      : value => $keymgr_encryption_auth_url;
+    'keystone_authtoken/auth_uri':          value => $auth_uri;
+    'keystone_authtoken/identity_uri':      value => $identity_uri;
+    'keystone_authtoken/memcached_servers': value => join(any2array($memcached_servers), ',');
+    'keymgr/encryption_auth_url':           value => $keymgr_encryption_auth_url;
   }
 
   if $keystone_enabled {
