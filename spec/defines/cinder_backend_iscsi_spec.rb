@@ -84,7 +84,7 @@ describe 'cinder::backend::iscsi' do
   describe 'with RedHat' do
 
     let :facts do
-      {:osfamily => 'RedHat'}
+      OSDefaults.get_facts({:osfamily => 'RedHat'})
     end
 
     it { is_expected.to contain_file_line('cinder include').with(

@@ -1,6 +1,7 @@
 # == Class: cinder::params
 #
 class cinder::params {
+  include ::openstacklib::defaults
 
   if $::osfamily == 'Debian' {
     $package_name              = 'cinder-common'
