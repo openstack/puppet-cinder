@@ -1,0 +1,4 @@
+---
+upgrade:
+  - allow to configure previously hardcoded parameters
+    and add more options in emc vnx.

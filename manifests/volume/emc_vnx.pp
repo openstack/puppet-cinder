@@ -39,28 +39,60 @@
 #   Example :
 #     { 'emc_vnx_backend/param1' => { 'value' => value1 } }
 #
+# [*volume_driver*]
+#   (optional) The EMC VNX Driver you want to use
+#   Defaults to cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver
+#
+# [*initiator_auto_registration*]
+#   (optinal) Automatically register initiators.
+#   Boolean value.
+#   Defaults to $::os_service_default
+#
+# [*storage_vnx_auth_type*]
+#   (optional) VNX authentication scope type.
+#   Defaults to $::os_service_default
+#
+# [*storage_vnx_security_file_dir*]
+#   (optional) Directory path that contains the VNX security file.
+#   Make sure the security file is generated first.
+#   Defaults to $::os_service_default
+#
+# [*naviseccli_path*]
+#   (optional) Naviseccli Path.
+#   Defaults to $::os_service_default
+#
 class cinder::volume::emc_vnx(
   $iscsi_ip_address,
   $san_ip,
   $san_password,
   $storage_vnx_pool_name,
-  $default_timeout            = '10',
-  $max_luns_per_storage_group = '256',
-  $package_ensure             = 'present',
-  $san_login                  = 'admin',
-  $extra_options              = {},
+  $default_timeout               = '10',
+  $max_luns_per_storage_group    = '256',
+  $package_ensure                = 'present',
+  $san_login                     = 'admin',
+  $extra_options                 = {},
+  $volume_driver                 = 'cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver',
+  $initiator_auto_registration   = $::os_service_default,
+  $storage_vnx_auth_type         = $::os_service_default,
+  $storage_vnx_security_file_dir = $::os_service_default,
+  $naviseccli_path               = $::os_service_default,
 ) {
 
   cinder::backend::emc_vnx { 'DEFAULT':
-    default_timeout            => $default_timeout,
-    iscsi_ip_address           => $iscsi_ip_address,
-    max_luns_per_storage_group => $max_luns_per_storage_group,
-    package_ensure             => $package_ensure,
-    san_ip                     => $san_ip,
-    san_login                  => $san_login,
-    san_password               => $san_password,
-    storage_vnx_pool_name      => $storage_vnx_pool_name,
-    extra_options              => $extra_options,
+    default_timeout               => $default_timeout,
+    iscsi_ip_address              => $iscsi_ip_address,
+    max_luns_per_storage_group    => $max_luns_per_storage_group,
+    package_ensure                => $package_ensure,
+    san_ip                        => $san_ip,
+    san_login                     => $san_login,
+    san_password                  => $san_password,
+    storage_vnx_pool_name         => $storage_vnx_pool_name,
+    extra_options                 => $extra_options,
+    volume_driver                 => $volume_driver,
+    initiator_auto_registration   => $initiator_auto_registration,
+    storage_vnx_auth_type         => $storage_vnx_auth_type,
+    storage_vnx_security_file_dir => $storage_vnx_security_file_dir,
+    naviseccli_path               => $naviseccli_path,
   }
 
 }
