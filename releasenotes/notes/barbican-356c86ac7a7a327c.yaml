@@ -1,0 +1,3 @@
+---
+features:
+  - Allow to configure Key Manager api class parameter to communicate with Barbican.

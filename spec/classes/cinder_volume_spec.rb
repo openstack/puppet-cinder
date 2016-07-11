@@ -18,6 +18,7 @@ describe 'cinder::volume' do
   it { is_expected.to contain_cinder_config('DEFAULT/volume_clear').with_value('<SERVICE DEFAULT>') }
   it { is_expected.to contain_cinder_config('DEFAULT/volume_clear_size').with_value('<SERVICE DEFAULT>') }
   it { is_expected.to contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('<SERVICE DEFAULT>') }
+  it { is_expected.to contain_cinder_config('keymgr/api_class').with_value('<SERVICE DEFAULT>') }
 
   describe 'with manage_service false' do
     let :params do
@@ -40,6 +41,17 @@ describe 'cinder::volume' do
       is_expected.to contain_cinder_config('DEFAULT/volume_clear').with_value('none')
       is_expected.to contain_cinder_config('DEFAULT/volume_clear_size').with_value('10')
       is_expected.to contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('-c3')
+    end
+  end
+
+  describe 'with barbican parameters' do
+    let :params do
+      {
+        'keymgr_api_class' => 'cinder.keymgr.barbican.BarbicanKeyManager',
+      }
+    end
+    it 'should set keymgr parameters' do
+      is_expected.to contain_cinder_config('keymgr/api_class').with_value('cinder.keymgr.barbican.BarbicanKeyManager')
     end
   end
 end
