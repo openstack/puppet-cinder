@@ -1,0 +1,5 @@
+---
+features:
+  - Added config options to cinder::backup::swift for V3
+    authentication. The options added are backup_swift_user_domain,
+    backup_swift_project_domain, and backup_swift_project.
