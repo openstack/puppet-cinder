@@ -70,6 +70,8 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_auth_url').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('keymgr/api_class').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('keymgr/encryption_api_url').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('keymgr/encryption_auth_url').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_middleware/enable_proxy_headers_parsing').with('value' => '<SERVICE DEFAULT>')
       end
@@ -374,6 +376,22 @@ describe 'cinder::api' do
 
       it_raises 'a Puppet::Error', /The cert_file parameter is required when use_ssl is set to true/
     end
+
+    describe 'with barbican parameters' do
+      let :params do
+        req_params.merge!({
+          :keymgr_api_class           => 'cinder.keymgr.barbican.BarbicanKeyManager',
+          :keymgr_encryption_api_url  => 'https://localhost:9311/v1',
+          :keymgr_encryption_auth_url => 'https://localhost:5000/v3',
+        })
+      end
+      it 'should set keymgr parameters' do
+        is_expected.to contain_cinder_config('keymgr/api_class').with_value('cinder.keymgr.barbican.BarbicanKeyManager')
+        is_expected.to contain_cinder_config('keymgr/encryption_api_url').with_value('https://localhost:9311/v1')
+        is_expected.to contain_cinder_config('keymgr/encryption_auth_url').with_value('https://localhost:5000/v3')
+      end
+    end
+
   end
 
   on_supported_os({
