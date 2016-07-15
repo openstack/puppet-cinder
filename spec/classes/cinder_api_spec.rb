@@ -19,9 +19,6 @@ describe 'cinder::api' do
       )}
 
       it 'should configure cinder api correctly' do
-        is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with(
-         :value => 'keystone'
-        )
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen').with(
          :value => '0.0.0.0'
         )
@@ -50,18 +47,18 @@ describe 'cinder::api' do
          :value => '<SERVICE DEFAULT>'
         )
         is_expected.to contain_cinder_config('keystone_authtoken/auth_uri').with(
-         :value => 'http://localhost:5000/'
+         :value => 'http://localhost:5000'
         )
-        is_expected.to contain_cinder_config('keystone_authtoken/identity_uri').with(
-         :value => 'http://localhost:35357/'
+        is_expected.to contain_cinder_config('keystone_authtoken/auth_url').with(
+         :value => 'http://localhost:35357'
         )
-        is_expected.to contain_cinder_config('keystone_authtoken/admin_tenant_name').with(
+        is_expected.to contain_cinder_config('keystone_authtoken/project_name').with(
          :value => 'services'
         )
-        is_expected.to contain_cinder_config('keystone_authtoken/admin_user').with(
+        is_expected.to contain_cinder_config('keystone_authtoken/username').with(
          :value => 'cinder'
         )
-        is_expected.to contain_cinder_config('keystone_authtoken/admin_password').with(
+        is_expected.to contain_cinder_config('keystone_authtoken/password').with(
          :value => 'foo'
         )
         is_expected.to contain_cinder_config('keystone_authtoken/memcached_servers').with_value('<SERVICE DEFAULT>')
@@ -86,6 +83,22 @@ describe 'cinder::api' do
       end
       it { is_expected.to contain_cinder_config('DEFAULT/nova_catalog_admin_info').with_value('compute:nova:adminURL') }
       it { is_expected.to contain_cinder_config('DEFAULT/nova_catalog_info').with_value('compute:nova:publicURL') }
+    end
+
+    describe 'without deprecated keystone_authtoken parameters' do
+      let :params do
+        req_params.merge({
+          'keystone_user'   => 'dummy',
+          'keystone_tenant' => 'mytenant',
+          'identity_uri'    => 'https://127.0.0.1:35357/deprecated',
+          'auth_uri'        => 'https://127.0.0.1:5000/deprecated',
+        })
+      end
+
+      it { is_expected.to contain_cinder_config('keystone_authtoken/auth_url').with_value('https://127.0.0.1:35357/deprecated') }
+      it { is_expected.to contain_cinder_config('keystone_authtoken/username').with_value('dummy') }
+      it { is_expected.to contain_cinder_config('keystone_authtoken/project_name').with_value('mytenant') }
+      it { is_expected.to contain_cinder_config('keystone_authtoken/auth_uri').with_value('https://127.0.0.1:5000/deprecated') }
     end
 
     describe 'with a custom region for nova' do
@@ -256,7 +269,7 @@ describe 'cinder::api' do
         :provider    => 'shell',
         :tries       => '10',
         :try_sleep   => '2',
-        :command     => 'cinder --os-auth-url http://localhost:5000/ --os-tenant-name services --os-username cinder --os-password foo list',
+        :command     => 'cinder --os-auth-url http://localhost:5000 --os-project-name services --os-username cinder --os-password foo list',
       )}
 
       it { is_expected.to contain_anchor('create cinder-api anchor').with(
@@ -284,20 +297,7 @@ describe 'cinder::api' do
       )}
     end
 
-    describe "with custom keystone identity_uri and auth_uri" do
-      let :params do
-        req_params.merge({
-          :identity_uri         => 'https://localhost:35357/',
-          :auth_uri             => 'https://localhost:5000/',
-        })
-      end
-      it 'configures identity_uri and auth_uri but deprecates old auth settings' do
-        is_expected.to contain_cinder_config('keystone_authtoken/identity_uri').with_value("https://localhost:35357/")
-        is_expected.to contain_cinder_config('keystone_authtoken/auth_uri').with_value("https://localhost:5000/")
-      end
-    end
-
-    describe "with memcached servers for keystone authtoken" do
+    describe "with deprecated memcached servers for keystone authtoken" do
       let :params do
         req_params.merge({
           :memcached_servers => '1.1.1.1:11211',

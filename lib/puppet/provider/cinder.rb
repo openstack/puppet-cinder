@@ -28,9 +28,9 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
 
   def self.cinder_request(service, action, error, properties=nil)
     properties ||= []
-    @credentials.username = cinder_credentials['admin_user']
-    @credentials.password = cinder_credentials['admin_password']
-    @credentials.project_name = cinder_credentials['admin_tenant_name']
+    @credentials.username = cinder_credentials['username']
+    @credentials.password = cinder_credentials['password']
+    @credentials.project_name = cinder_credentials['project_name']
     @credentials.auth_url = auth_endpoint
     if @credentials.version == '3'
       @credentials.user_domain_name = cinder_credentials['user_domain_name']
@@ -49,8 +49,8 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
   end
 
   def self.get_cinder_credentials
-    auth_keys = ['auth_uri', 'admin_tenant_name', 'admin_user',
-                 'admin_password']
+    auth_keys = ['auth_uri', 'project_name', 'username',
+                 'password']
     conf = cinder_conf
     if conf and conf['keystone_authtoken'] and
         auth_keys.all?{|k| !conf['keystone_authtoken'][k].nil?}

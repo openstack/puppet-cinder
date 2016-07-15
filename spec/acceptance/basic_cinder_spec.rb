@@ -41,9 +41,10 @@ describe 'basic cinder' do
       class { '::cinder::db::mysql':
         password => 'a_big_secret',
       }
+      class { '::cinder::keystone::authtoken':
+        password => 'a_big_secret',
+      }
       class { '::cinder::api':
-        keystone_password   => 'a_big_secret',
-        identity_uri        => 'http://127.0.0.1:35357/',
         default_volume_type => 'iscsi_backend',
         service_name        => 'httpd',
       }
