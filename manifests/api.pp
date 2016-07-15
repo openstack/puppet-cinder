@@ -41,6 +41,16 @@
 #   (optional) Auth URL associated with the OpenStack privileged account.
 #   Defaults to $::os_service_default.
 #
+# [*keymgr_api_class*]
+#   (optional) Key Manager service class.
+#   Example of valid value: cinder.keymgr.barbican.BarbicanKeyManager
+#   Defaults to $::os_service_default
+#
+# [*keymgr_encryption_api_url*]
+#   (optional) Key Manager service URL
+#   Example of valid value: https://localhost:9311/v1
+#   Defaults to $::os_service_default
+#
 # [*keymgr_encryption_auth_url*]
 #   (optional) Auth URL for keymgr authentication. Should be in format
 #   http://auth_url:5000/v3
@@ -191,6 +201,8 @@ class cinder::api (
   $os_privileged_user_password  = $::os_service_default,
   $os_privileged_user_tenant    = $::os_service_default,
   $os_privileged_user_auth_url  = $::os_service_default,
+  $keymgr_api_class             = $::os_service_default,
+  $keymgr_encryption_api_url    = $::os_service_default,
   $keymgr_encryption_auth_url   = $::os_service_default,
   $service_workers              = $::processorcount,
   $package_ensure               = 'present',
@@ -334,6 +346,8 @@ class cinder::api (
     'keystone_authtoken/auth_uri':          value => $auth_uri;
     'keystone_authtoken/identity_uri':      value => $identity_uri;
     'keystone_authtoken/memcached_servers': value => join(any2array($memcached_servers), ',');
+    'keymgr/api_class':                     value => $keymgr_api_class;
+    'keymgr/encryption_api_url':            value => $keymgr_encryption_api_url;
     'keymgr/encryption_auth_url':           value => $keymgr_encryption_auth_url;
   }
 

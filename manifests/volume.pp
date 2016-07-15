@@ -29,11 +29,6 @@
 #   for example "-c3" for idle only priority.
 #   Defaults to $::os_service_default.
 #
-# [*keymgr_api_class*]
-#   (optional) Key Manager service.
-#   Example of valid value: cinder.keymgr.barbican.BarbicanKeyManager
-#   Defaults to $::os_service_default
-#
 class cinder::volume (
   $package_ensure      = 'present',
   $enabled             = true,
@@ -41,7 +36,6 @@ class cinder::volume (
   $volume_clear        = $::os_service_default,
   $volume_clear_size   = $::os_service_default,
   $volume_clear_ionice = $::os_service_default,
-  $keymgr_api_class    = $::os_service_default,
 ) {
 
   include ::cinder::params
@@ -84,6 +78,5 @@ class cinder::volume (
     'DEFAULT/volume_clear':        value => $volume_clear;
     'DEFAULT/volume_clear_size':   value => $volume_clear_size;
     'DEFAULT/volume_clear_ionice': value => $volume_clear_ionice;
-    'keymgr/api_class':            value => $keymgr_api_class;
   }
 }
