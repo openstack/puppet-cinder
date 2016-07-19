@@ -58,6 +58,8 @@ define cinder::backend::nexenta (
   $extra_options                = {},
 ) {
 
+  include ::cinder::deps
+
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
     "${name}/nexenta_user":                value => $nexenta_user;

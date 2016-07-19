@@ -65,12 +65,14 @@ define cinder::backend::glusterfs (
   $extra_options                = {},
 ) {
 
+  include ::cinder::deps
+
   $content = join($glusterfs_shares, "\n")
 
   file { $glusterfs_shares_config:
     content => "${content}\n",
-    require => Package['cinder'],
-    notify  => Service['cinder-volume']
+    require => Anchor['cinder::install::end'],
+    notify  => Anchor['cinder::service::begin'],
   }
 
   cinder_config {

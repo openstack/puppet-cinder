@@ -63,6 +63,8 @@ class cinder::backup::posix (
   $backup_container            = $::os_service_default,
 ) {
 
+  include ::cinder::deps
+
   cinder_config {
     'DEFAULT/backup_driver':               value => $backup_driver;
     'DEFAULT/backup_file_size':            value => $backup_file_size;

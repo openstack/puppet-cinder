@@ -91,6 +91,7 @@ define cinder::backend::emc_vnx (
   $manage_volume_type            = false,
 ) {
 
+  include ::cinder::deps
   include ::cinder::params
 
   cinder_config {

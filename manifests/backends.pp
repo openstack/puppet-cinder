@@ -14,6 +14,8 @@ class cinder::backends (
   $enabled_backends    = undef,
 ) {
 
+  include ::cinder::deps
+
   # Maybe this could be extented to dynamicly find the enabled names
   cinder_config {
     'DEFAULT/enabled_backends': value => join($enabled_backends, ',');

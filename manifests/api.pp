@@ -236,6 +236,7 @@ class cinder::api (
   $memcached_servers              = undef,
 ) inherits cinder::params {
 
+  include ::cinder::deps
   include ::cinder::params
   include ::cinder::policy
 
@@ -283,14 +284,7 @@ class cinder::api (
     }
   }
 
-  Cinder_config<||> ~> Service[$service_name]
-  Cinder_api_paste_ini<||> ~> Service[$service_name]
-  Class['cinder::policy'] ~> Service[$service_name]
-
   if $::cinder::params::api_package {
-    Package['cinder-api'] -> Class['cinder::policy']
-    Package['cinder-api'] -> Service[$service_name]
-    Package['cinder-api'] ~> Exec<| title == 'cinder-manage db_sync' |>
     package { 'cinder-api':
       ensure => $package_ensure,
       name   => $::cinder::params::api_package,
@@ -318,7 +312,6 @@ class cinder::api (
       name      => $::cinder::params::api_service,
       enable    => $enabled,
       hasstatus => true,
-      require   => Package['cinder'],
       tag       => 'cinder-service',
     }
 

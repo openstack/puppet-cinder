@@ -21,7 +21,7 @@ describe 'cinder::client' do
       is_expected.to contain_package('python-cinderclient').with(
         :name   => 'python-cinderclient',
         :ensure => p[:package_ensure],
-        :tag    => 'openstack'
+        :tag    => ['openstack', 'cinder-support-package'],
       )
     end
 

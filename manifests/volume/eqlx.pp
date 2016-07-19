@@ -88,6 +88,8 @@ class cinder::volume::eqlx (
   $eqlx_cli_timeout     = undef,
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::eqlx is deprecated, please use
 cinder::backend::eqlx instead.')
 

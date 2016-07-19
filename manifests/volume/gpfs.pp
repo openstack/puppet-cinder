@@ -93,6 +93,8 @@ class cinder::volume::gpfs(
   $extra_options          = {}
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::gpfs is deprecated, please use
 cinder::backend::gpfs instead.')
 

@@ -32,6 +32,8 @@ class cinder::db::postgresql(
   $privileges = 'ALL',
 ) {
 
+  include ::cinder::deps
+
   ::openstacklib::db::postgresql { 'cinder':
     password_hash => postgresql_password($user, $password),
     dbname        => $dbname,
@@ -40,6 +42,7 @@ class cinder::db::postgresql(
     privileges    => $privileges,
   }
 
-  ::Openstacklib::Db::Postgresql['cinder']    ~> Exec<| title == 'cinder-manage db_sync' |>
-
+  Anchor['cinder::db::begin']
+  ~> Class['cinder::db::postgresql']
+  ~> Anchor['cinder::db::end']
 }

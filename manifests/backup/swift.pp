@@ -88,6 +88,8 @@ class cinder::backup::swift (
   $backup_compression_algorithm = $::os_service_default,
 ) {
 
+  include ::cinder::deps
+
   if ($backup_swift_container == 'volumes_backup') {
     warning('The OpenStack default value of backup_swift_container differs from the puppet module default of "volumes_backup" and will be changed to the upstream OpenStack default in N-release.')
   }

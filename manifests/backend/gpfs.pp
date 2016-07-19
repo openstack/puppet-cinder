@@ -100,6 +100,8 @@ define cinder::backend::gpfs (
   $extra_options          = {},
 ) {
 
+  include ::cinder::deps
+
   if ! ($gpfs_images_share_mode in ['copy', 'copy_on_write', $::os_service_default]) {
     fail('gpfs_images_share_mode only support `copy` or `copy_on_write`')
   }

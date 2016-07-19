@@ -55,7 +55,7 @@ describe 'cinder::backend::rbd' do
       is_expected.to contain_file_line('set initscript env rbd-ssd').with(
         :line    => /env CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/init/cinder-volume.override',
-        :notify  => 'Service[cinder-volume]')
+        :notify  => 'Anchor[cinder::service::begin]')
     end
 
     context 'with another RBD backend' do
@@ -127,7 +127,7 @@ describe 'cinder::backend::rbd' do
       is_expected.to contain_file_line('set initscript env rbd-ssd').with(
         :line    => /export CEPH_ARGS=\"--id test\"/,
         :path    => '/etc/sysconfig/openstack-cinder-volume',
-        :notify  => 'Service[cinder-volume]')
+        :notify  => 'Anchor[cinder::service::begin]')
     end
   end
 

@@ -40,7 +40,7 @@ describe 'cinder::quota_set' do
               'OS_AUTH_URL=http://127.127.127.1:5000/v2.0/',
               'OS_REGION_NAME=test'],
             :onlyif      => 'cinder quota-class-show default | grep -qP -- -1',
-            :require => 'Package[python-cinderclient]')
+            :require => 'Anchor[cinder-support-package]')
         end
       end
     end

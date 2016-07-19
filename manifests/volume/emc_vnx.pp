@@ -78,6 +78,8 @@ class cinder::volume::emc_vnx(
   $naviseccli_path               = $::os_service_default,
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::emc_vnx is deprecated, please use
 cinder::backend::emc_vnx instead.')
 

@@ -90,6 +90,7 @@ class cinder::wsgi::apache (
   $priority      = '10',
 ) {
 
+  include ::cinder::deps
   include ::cinder::params
   include ::apache
   include ::apache::mod::wsgi
@@ -120,5 +121,6 @@ class cinder::wsgi::apache (
     wsgi_script_dir     => $::cinder::params::cinder_wsgi_script_path,
     wsgi_script_file    => 'cinder-api',
     wsgi_script_source  => $::cinder::params::cinder_wsgi_script_source,
+    require             => Anchor['cinder::install::end'],
   }
 }

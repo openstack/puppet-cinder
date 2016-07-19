@@ -4,7 +4,6 @@ describe 'cinder::setup_test_volume' do
 
   it { is_expected.to contain_package('lvm2').with(
         :ensure  => 'present',
-        :require => 'Package[cinder]'
       ) }
 
   it 'should contain volume creation execs' do

@@ -49,6 +49,8 @@ define cinder::type (
   $os_region_name = undef,
   ) {
 
+  include ::cinder::deps
+
   if $os_password or $os_region_name or $os_tenant_name or $os_username or $os_auth_url {
     warning('Parameters $os_password/$os_region_name/$os_tenant_name/$os_username/$os_auth_url are not longer required')
     warning('Auth creds will be used from env or /root/openrc file or cinder.conf')

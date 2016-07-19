@@ -28,6 +28,8 @@ class cinder::quota (
   $quota_driver    = $::os_service_default,
 ) {
 
+  include ::cinder::deps
+
   cinder_config {
     'DEFAULT/quota_volumes':   value => $quota_volumes;
     'DEFAULT/quota_snapshots': value => $quota_snapshots;

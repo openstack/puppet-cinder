@@ -16,7 +16,6 @@ describe 'cinder::scheduler' do
       it { is_expected.to contain_package('cinder-scheduler').with(
         :name   => 'cinder-scheduler',
         :ensure => 'present',
-        :before => ['Service[cinder-scheduler]'],
         :tag    => ['openstack', 'cinder-package'],
       ) }
 
@@ -24,7 +23,6 @@ describe 'cinder::scheduler' do
         :name      => 'cinder-scheduler',
         :enable    => true,
         :ensure    => 'running',
-        :require   => 'Package[cinder]',
         :hasstatus => true,
         :tag       => 'cinder-service',
       ) }
@@ -68,7 +66,6 @@ describe 'cinder::scheduler' do
         :name    => 'openstack-cinder-scheduler',
         :enable  => true,
         :ensure  => 'running',
-        :require => 'Package[cinder]'
       ) }
     end
 

@@ -95,6 +95,7 @@ define cinder::backend::rbd (
   $volume_tmp_dir                   = false,
 ) {
 
+  include ::cinder::deps
   include ::cinder::params
 
   cinder_config {
@@ -156,7 +157,7 @@ define cinder::backend::rbd (
   file_line { "set initscript env ${name}":
     line   => $override_line,
     path   => $::cinder::params::ceph_init_override,
-    notify => Service['cinder-volume'],
+    notify => Anchor['cinder::service::begin'],
   }
 
 }

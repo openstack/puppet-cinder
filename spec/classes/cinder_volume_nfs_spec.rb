@@ -39,8 +39,8 @@ describe 'cinder::volume::nfs' do
         '1.0')
       is_expected.to contain_file('/etc/cinder/other_shares.conf').with(
         :content => "10.10.10.10:/shares\n10.10.10.10:/shares2",
-        :require => 'Package[cinder]',
-        :notify  => 'Service[cinder-volume]'
+        :require => 'Anchor[cinder::install::end]',
+        :notify  => 'Anchor[cinder::service::begin]'
       )
     end
   end

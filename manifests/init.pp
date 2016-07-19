@@ -377,6 +377,7 @@ class cinder (
   $key_file                           = undef,
 ) inherits cinder::params {
 
+  include ::cinder::deps
   include ::cinder::db
   include ::cinder::logging
 
@@ -392,15 +393,10 @@ class cinder (
     warning('enable_v2_api is deprecated, has no effect and will be removed in a future release')
   }
 
-  # this anchor is used to simplify the graph between cinder components by
-  # allowing a resource to serve as a point where the configuration of cinder begins
-  anchor { 'cinder-start': }
-
   package { 'cinder':
-    ensure  => $package_ensure,
-    name    => $::cinder::params::package_name,
-    tag     => ['openstack', 'cinder-package'],
-    require => Anchor['cinder-start'],
+    ensure => $package_ensure,
+    name   => $::cinder::params::package_name,
+    tag    => ['openstack', 'cinder-package'],
   }
 
   resources { 'cinder_config':

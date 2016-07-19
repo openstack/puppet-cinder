@@ -49,7 +49,6 @@ describe 'cinder::backup' do
           :ensure => 'present',
           :tag    => ['openstack', 'cinder-package'],
         )
-        is_expected.to contain_package('cinder-backup').with_before(/Service\[cinder-backup\]/)
       end
     end
 

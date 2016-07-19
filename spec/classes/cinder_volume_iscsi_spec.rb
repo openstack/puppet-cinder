@@ -82,7 +82,6 @@ describe 'cinder::volume::iscsi' do
     it { is_expected.to contain_service('target').with(
       :ensure  => 'running',
       :enable  => 'true',
-      :require => 'Package[targetcli]'
     ) }
 
   end

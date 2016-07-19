@@ -84,6 +84,8 @@ define cinder::backend::hpe3par_iscsi(
   $extra_options               = {},
 ) {
 
+  include ::cinder::deps
+
   if ($hpe3par_snapshot_expiration <= $hpe3par_snapshot_retention) {
     fail ('hp3par_snapshot_expiration must be greater than hp3par_snapshot_retention')
   }

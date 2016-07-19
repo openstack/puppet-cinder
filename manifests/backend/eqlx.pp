@@ -102,6 +102,8 @@ define cinder::backend::eqlx (
   $eqlx_cli_timeout     = undef,
 ) {
 
+  include ::cinder::deps
+
   if $eqlx_chap_login {
     warning('eqlx_chap_login is deprecated and will be removed after Newton cycle. Please use chap_username instead.')
     $chap_username_real = $eqlx_chap_login

@@ -65,6 +65,8 @@ class cinder::volume::nfs (
   $extra_options        = {},
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::nfs is deprecated, please use
 cinder::backend::nfs instead.')
 

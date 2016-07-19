@@ -66,6 +66,8 @@ class cinder::volume::hpe3par_iscsi(
   $extra_options               = {},
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::hpe3par_iscsi is deprecated, please use
 cinder::backend::hpe3par_iscsi instead.')
 

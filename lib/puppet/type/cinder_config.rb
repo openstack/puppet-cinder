@@ -46,8 +46,7 @@ Puppet::Type.newtype(:cinder_config) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-  autorequire(:package) do
-    'cinder'
+  autorequire(:anchor) do
+    ['cinder::install::end']
   end
-
 end

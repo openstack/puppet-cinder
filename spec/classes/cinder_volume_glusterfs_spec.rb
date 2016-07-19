@@ -21,8 +21,8 @@ describe 'cinder::volume::glusterfs' do
       is_expected.to contain_cinder_config('DEFAULT/glusterfs_backup_share').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_file('/etc/cinder/other_shares.conf').with(
         :content => "10.10.10.10:/volumes\n10.10.10.11:/volumes\n",
-        :require => 'Package[cinder]',
-        :notify  => 'Service[cinder-volume]'
+        :require => 'Anchor[cinder::install::end]',
+        :notify  => 'Anchor[cinder::service::begin]'
       )
     end
 

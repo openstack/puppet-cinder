@@ -52,6 +52,8 @@ class cinder::volume::glusterfs (
   $extra_options                = {},
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::glusterfs is deprecated, please use
 cinder::backend::glusterfs instead.')
 

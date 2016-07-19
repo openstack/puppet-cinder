@@ -43,6 +43,7 @@ class cinder::volume::iscsi (
   $extra_options     = {},
 ) {
 
+  include ::cinder::deps
   include ::cinder::params
 
   warning('Usage of cinder::volume::iscsi is deprecated, please use

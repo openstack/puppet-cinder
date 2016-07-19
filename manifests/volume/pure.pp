@@ -44,6 +44,8 @@ class cinder::volume::pure(
   $extra_options                = {},
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::pure is deprecated, please use
 cinder::backend::pure instead.')
 

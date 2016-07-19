@@ -46,6 +46,8 @@ class cinder::volume::nexenta (
   $extra_options                = {},
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::nexenta is deprecated, please use
 cinder::backend::nexenta instead.')
 

@@ -54,6 +54,7 @@ define cinder::backend::iscsi (
   $extra_options       = {},
 ) {
 
+  include ::cinder::deps
   include ::cinder::params
 
   cinder_config {
@@ -80,6 +81,7 @@ define cinder::backend::iscsi (
       package { 'tgt':
         ensure => present,
         name   => $::cinder::params::tgt_package_name,
+        tag    => 'cinder-support-package',
       }
 
       if($::osfamily == 'RedHat') {
@@ -87,29 +89,30 @@ define cinder::backend::iscsi (
           path    => '/etc/tgt/targets.conf',
           line    => "include ${volumes_dir}/*",
           match   => '#?include /',
-          require => Package['tgt'],
-          notify  => Service['tgtd'],
+          require => Anchor['cinder::install:end'],
+          notify  => Anchor['cinder::service::begin'],
         }
       }
 
       service { 'tgtd':
-        ensure  => running,
-        name    => $::cinder::params::tgt_service_name,
-        enable  => true,
-        require => Class['cinder::volume'],
+        ensure => running,
+        name   => $::cinder::params::tgt_service_name,
+        enable => true,
+        tag    => 'cinder-support-service',
       }
     }
 
     'lioadm': {
       service { 'target':
-        ensure  => running,
-        enable  => true,
-        require => Package['targetcli'],
+        ensure => running,
+        enable => true,
+        tag    => 'cinder-support-service',
       }
 
       package { 'targetcli':
         ensure => present,
         name   => $::cinder::params::lio_package_name,
+        tag    => 'cinder-support-package',
       }
     }
 

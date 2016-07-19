@@ -19,8 +19,7 @@ Puppet::Type.newtype(:cinder_type) do
     end
   end
 
-  autorequire(:service) do
-    'cinder-api'
+  autorequire(:anchor) do
+    ['cinder::service::end']
   end
-
 end

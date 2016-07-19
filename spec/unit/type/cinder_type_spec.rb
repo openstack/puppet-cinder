@@ -17,16 +17,16 @@ describe Puppet::Type.type(:cinder_type) do
 
   it 'should autorequire cinder-api service' do
     catalog = Puppet::Resource::Catalog.new
-    service = Puppet::Type.type(:service).new(:name => 'cinder-api')
+    anchor = Puppet::Type.type(:anchor).new(:name => 'cinder::service::end')
     correct_input = {
       :name       => 'test_type',
       :properties => ['some_key1=value', 'some_key2=value1,value2']
     }
     cinder_type = Puppet::Type.type(:cinder_type).new(correct_input)
-    catalog.add_resource service, cinder_type
+    catalog.add_resource anchor, cinder_type
     dependency = cinder_type.autorequire
     expect(dependency.size).to eq(1)
     expect(dependency[0].target).to eq(cinder_type)
-    expect(dependency[0].source).to eq(service)
+    expect(dependency[0].source).to eq(anchor)
   end
 end

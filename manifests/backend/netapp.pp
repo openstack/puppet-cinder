@@ -223,6 +223,8 @@ define cinder::backend::netapp (
   $netapp_eseries_host_type     = undef,
 ) {
 
+  include ::cinder::deps
+
   if $netapp_eseries_host_type {
     warning('The "netapp_eseries_host_type" parameter is deprecated. Use "netapp_host_type" instead.')
     $netapp_host_type_real = $netapp_eseries_host_type
@@ -234,8 +236,8 @@ define cinder::backend::netapp (
     validate_array($nfs_shares)
     file {$nfs_shares_config:
       content => join($nfs_shares, "\n"),
-      require => Package['cinder'],
-      notify  => Service['cinder-volume']
+      require => Anchor['cinder::install:end'],
+      notify  => Anchor['cinder::service::begin'],
     }
   }
 

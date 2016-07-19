@@ -28,19 +28,15 @@ class cinder::scheduler (
   $manage_service   = true
 ) {
 
+  include ::cinder::deps
   include ::cinder::params
 
   validate_bool($manage_service)
   validate_bool($enabled)
 
-  Cinder_config<||> ~> Service['cinder-scheduler']
-  Cinder_api_paste_ini<||> ~> Service['cinder-scheduler']
-  Exec<| title == 'cinder-manage db_sync' |> ~> Service['cinder-scheduler']
-
   cinder_config { 'DEFAULT/scheduler_driver': value => $scheduler_driver; }
 
   if $::cinder::params::scheduler_package {
-    Package['cinder-scheduler'] -> Service['cinder-scheduler']
     package { 'cinder-scheduler':
       ensure => $package_ensure,
       name   => $::cinder::params::scheduler_package,
@@ -61,7 +57,6 @@ class cinder::scheduler (
     name      => $::cinder::params::scheduler_service,
     enable    => $enabled,
     hasstatus => true,
-    require   => Package['cinder'],
     tag       => 'cinder-service',
   }
 }

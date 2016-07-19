@@ -210,6 +210,8 @@ class cinder::volume::netapp (
   $netapp_eseries_host_type     = undef,
 ) {
 
+  include ::cinder::deps
+
   if $netapp_eseries_host_type {
     warning('The "netapp_eseries_host_type" parameter is deprecated. Use "netapp_host_type" instead.')
     $netapp_host_type_real = $netapp_eseries_host_type

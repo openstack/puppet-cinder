@@ -76,10 +76,12 @@ define cinder::backend::nfs (
   $extra_options        = {},
 ) {
 
+  include ::cinder::deps
+
   file {$nfs_shares_config:
     content => join($nfs_servers, "\n"),
-    require => Package['cinder'],
-    notify  => Service['cinder-volume']
+    require => Anchor['cinder::install::end'],
+    notify  => Anchor['cinder::service::begin'],
   }
 
   cinder_config {

@@ -64,6 +64,8 @@ class cinder::volume::vmdk(
   $extra_options               = {},
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::vmdk is deprecated, please use
 cinder::backend::vmdk instead.')
 

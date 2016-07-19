@@ -67,6 +67,8 @@ class cinder::backup::ceph (
   $backup_ceph_stripe_count = '0'
 ) {
 
+  include ::cinder::deps
+
   cinder_config {
     'DEFAULT/backup_driver':            value => $backup_driver;
     'DEFAULT/backup_ceph_conf':         value => $backup_ceph_conf;

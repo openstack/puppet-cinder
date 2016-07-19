@@ -44,6 +44,8 @@ class cinder::backup::glusterfs (
   $glusterfs_backup_share       = $::os_service_default,
 ) {
 
+  include ::cinder::deps
+
   cinder_config {
     'DEFAULT/backup_driver':                value => $backup_driver;
     'DEFAULT/glusterfs_backup_mount_point': value => $glusterfs_backup_mount_point;

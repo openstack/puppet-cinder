@@ -76,6 +76,8 @@ define cinder::backend::vmdk (
   $extra_options               = {},
   ) {
 
+  include ::cinder::deps
+
   if $volume_folder == 'cinder-volumes' {
     warning('The OpenStack default value of volume_folder differs from the puppet module default of "cinder-volumes" and will be changed to the upstream OpenStack default in N-release.')
   }
@@ -107,7 +109,8 @@ define cinder::backend::vmdk (
   }
 
   package { 'python-suds':
-    ensure   => present
+    ensure => present,
+    tag    => 'cinder-support-package',
   }
 
   create_resources('cinder_config', $extra_options)

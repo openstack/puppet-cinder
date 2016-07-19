@@ -27,7 +27,7 @@ describe 'cinder::cron::db_purge' do
       :monthday    => params[:monthday],
       :month       => params[:month],
       :weekday     => params[:weekday],
-      :require     => 'Package[cinder]',
+      :require     => 'Anchor[cinder::install::end]'
     )
   end
 end

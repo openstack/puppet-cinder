@@ -62,6 +62,8 @@ class cinder::cron::db_purge (
   $destination = '/var/log/cinder/cinder-rowsflush.log'
 ) {
 
+  include ::cinder::deps
+
   cron { 'cinder-manage db purge':
     command     => "cinder-manage db purge ${age} >>${destination} 2>&1",
     environment => 'PATH=/bin:/usr/bin:/usr/sbin SHELL=/bin/sh',
@@ -71,6 +73,6 @@ class cinder::cron::db_purge (
     monthday    => $monthday,
     month       => $month,
     weekday     => $weekday,
-    require     => Package['cinder'],
+    require     => Anchor['cinder::install::end'],
   }
 }

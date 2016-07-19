@@ -58,6 +58,8 @@ define cinder::quota_set (
   $volume_type     = $name,
 ) {
 
+  include ::cinder::deps
+
   if $os_region_name {
     $cinder_env = [
       "OS_TENANT_NAME=${os_tenant_name}",
@@ -80,7 +82,7 @@ define cinder::quota_set (
     command     => "cinder quota-class-update ${class_name} --volumes ${quota_volumes} --snapshots ${quota_snapshots} --gigabytes ${quota_gigabytes} --volume-type '${volume_type}'",
     onlyif      => 'cinder quota-class-show default | grep -qP -- -1',
     environment => $cinder_env,
-    require     => Package['python-cinderclient'],
+    require     => Anchor['cinder-support-package'],
     path        => ['/usr/bin', '/bin'],
   }
 }

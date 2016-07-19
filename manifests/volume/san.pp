@@ -71,6 +71,8 @@ class cinder::volume::san (
   $extra_options      = {},
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::san is deprecated, please use
 cinder::backend::san instead.')
 

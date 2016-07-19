@@ -49,6 +49,8 @@ class cinder::db (
   $database_max_overflow   = $::os_service_default,
 ) {
 
+  include ::cinder::deps
+
   # NOTE(spredzy): In order to keep backward compatibility we rely on the pick function
   # to use cinder::<myparam> if cinder::db::<myparam> isn't specified.
   $database_connection_real     = pick($::cinder::database_connection,$database_connection)

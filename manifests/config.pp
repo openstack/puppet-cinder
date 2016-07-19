@@ -32,6 +32,9 @@ class cinder::config (
   $cinder_config         = {},
   $api_paste_ini_config  = {},
 ) {
+
+  include ::cinder::deps
+
   validate_hash($cinder_config)
   validate_hash($api_paste_ini_config)
 

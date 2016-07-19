@@ -33,8 +33,8 @@ describe 'cinder::backend::glusterfs' do
         '/cinder_mount_point')
       is_expected.to contain_file('/etc/cinder/other_shares.conf').with(
         :content => "10.10.10.10:/volumes\n10.10.10.11:/volumes\n",
-        :require => 'Package[cinder]',
-        :notify  => 'Service[cinder-volume]'
+        :require => 'Anchor[cinder::install::end]',
+        :notify  => 'Anchor[cinder::service::begin]'
       )
     end
 

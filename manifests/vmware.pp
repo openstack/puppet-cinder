@@ -27,6 +27,8 @@ class cinder::vmware (
   $os_auth_url    = undef
 ) {
 
+  include ::cinder::deps
+
   if $os_password or $os_tenant_name or $os_username or $os_auth_url {
     warning('Parameters $os_password/$os_tenant_name/$os_username/$os_auth_url are not longer required.')
     warning('Auth creds will be used from env or /root/openrc file or cinder.conf')

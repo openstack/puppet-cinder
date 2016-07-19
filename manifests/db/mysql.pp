@@ -38,6 +38,8 @@ class cinder::db::mysql (
   $collate       = 'utf8_general_ci',
 ) {
 
+  include ::cinder::deps
+
   validate_string($password)
 
   ::openstacklib::db::mysql { 'cinder':
@@ -50,5 +52,7 @@ class cinder::db::mysql (
     allowed_hosts => $allowed_hosts,
   }
 
-  ::Openstacklib::Db::Mysql['cinder'] ~> Exec<| title == 'cinder-manage db_sync' |>
+  Anchor['cinder::db::begin']
+  ~> Class['cinder::db::mysql']
+  ~> Anchor['cinder::db::end']
 }

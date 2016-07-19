@@ -13,13 +13,8 @@ class cinder::db::sync(
   $extra_params = undef,
 ) {
 
+  include ::cinder::deps
   include ::cinder::params
-
-  Package <| tag == 'cinder-package' |> ~> Exec['cinder-manage db_sync']
-  Exec['cinder-manage db_sync'] ~> Service <| tag == 'cinder-service' |>
-
-  Cinder_config <||> ~> Exec['cinder-manage db_sync']
-  Cinder_config <| title == 'database/connection' |> ~> Exec['cinder-manage db_sync']
 
   exec { 'cinder-manage db_sync':
     command     => "cinder-manage ${extra_params} db sync",
@@ -27,6 +22,11 @@ class cinder::db::sync(
     user        => 'cinder',
     refreshonly => true,
     logoutput   => 'on_failure',
+    subscribe   => [
+      Anchor['cinder::install::end'],
+      Anchor['cinder::config::end'],
+      Anchor['cinder::dbsync::begin']
+    ],
+    notify      => Anchor['cinder::dbsync::end'],
   }
-
 }

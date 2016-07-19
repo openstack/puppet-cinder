@@ -63,17 +63,13 @@ class cinder::backup (
   $backup_name_template = $::os_service_default,
 ) {
 
+  include ::cinder::deps
   include ::cinder::params
 
   validate_bool($manage_service)
   validate_bool($enabled)
 
-  Cinder_config<||> ~> Service['cinder-backup']
-  Exec<| title == 'cinder-manage db_sync' |> ~> Service['cinder-backup']
-
   if $::cinder::params::backup_package {
-    Package['cinder-backup'] -> Service['cinder-backup']
-    Package['cinder-backup'] ~> Exec<| title == 'cinder-manage db_sync' |>
     package { 'cinder-backup':
       ensure => $package_ensure,
       name   => $::cinder::params::backup_package,
@@ -94,7 +90,6 @@ class cinder::backup (
     name      => $::cinder::params::backup_service,
     enable    => $enabled,
     hasstatus => true,
-    require   => Package['cinder'],
     tag       => 'cinder-service',
   }
 

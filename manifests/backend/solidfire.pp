@@ -102,6 +102,8 @@ define cinder::backend::solidfire(
   $extra_options             = {},
 ) {
 
+  include ::cinder::deps
+
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
     "${name}/volume_driver":               value => $volume_driver;

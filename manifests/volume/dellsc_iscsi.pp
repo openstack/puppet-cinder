@@ -59,6 +59,8 @@ class cinder::volume::dellsc_iscsi (
   $extra_options         = {},
 ) {
 
+  include ::cinder::deps
+
   warning('Usage of cinder::volume::dellsc_iscsi is deprecated, please use
 cinder::backend::dellsc_iscsi instead.')
 
