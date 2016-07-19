@@ -58,14 +58,6 @@
 #   storage system.
 #   Defaults to undef
 #
-# [*netapp_volume_list*]
-#   (optional) This parameter is only utilized when the storage protocol is
-#   configured to use iSCSI or FC. This parameter is used to restrict
-#   provisioning to the specified controller volumes. Specify the value of
-#   this parameter to be a comma separated list of NetApp controller volume
-#   names to be used for provisioning.
-#   Defaults to undef
-#
 # [*netapp_vserver*]
 #   (optional) This option specifies the virtual storage server (Vserver)
 #   name on the storage cluster on which provisioning of block storage volumes
@@ -132,12 +124,15 @@
 #   (optional) Password for the NetApp E-Series storage array.
 #   Defaults to undef
 #
-# [*netapp_storage_pools*]
-#   (optional) This option is used to restrict provisioning to the specified
-#   storage pools. Only dynamic disk pools are currently supported. Specify the
-#   value of this option to be a comma separated list of disk pool names to be
-#   used for provisioning.
-#   Defaults to undef
+# [*netapp_pool_name_search_pattern*]
+#   (optional) This option is only utilized when the Cinder driver is
+#   configured to use iSCSI or Fibre Channel. It is used to restrict
+#   provisioning to the specified FlexVol volumes. Specify the value of this
+#   option as a regular expression which will be applied to the names of
+#   FlexVol volumes from the storage backend which represent pools in Cinder.
+#   ^ (beginning of string) and $ (end of string) are implicitly wrapped around
+#   the regular expression specified before filtering.
+#   Defaults to (.+)
 #
 # [*netapp_host_type*]
 #   (optional) This option is used to define how the controllers will work with
@@ -172,6 +167,21 @@
 #   the hosts that are connected to it.
 #   Defaults to undef
 #
+# [*netapp_storage_pools*]
+#   (optional) This option is used to restrict provisioning to the specified
+#   storage pools. Only dynamic disk pools are currently supported. Specify the
+#   value of this option to be a comma separated list of disk pool names to be
+#   used for provisioning.
+#   Defaults to undef
+#
+# [*netapp_volume_list*]
+#   (optional) This parameter is only utilized when the storage protocol is
+#   configured to use iSCSI or FC. This parameter is used to restrict
+#   provisioning to the specified controller volumes. Specify the value of
+#   this parameter to be a comma separated list of NetApp controller volume
+#   names to be used for provisioning.
+#   Defaults to undef
+#
 # === Examples
 #
 #  cinder::backend::netapp { 'myBackend':
@@ -195,32 +205,33 @@ define cinder::backend::netapp (
   $netapp_login,
   $netapp_password,
   $netapp_server_hostname,
-  $volume_backend_name          = $name,
-  $netapp_server_port           = '80',
-  $netapp_size_multiplier       = '1.2',
-  $netapp_storage_family        = 'ontap_cluster',
-  $netapp_storage_protocol      = 'nfs',
-  $netapp_transport_type        = 'http',
-  $netapp_vfiler                = undef,
-  $netapp_volume_list           = undef,
-  $netapp_vserver               = undef,
-  $netapp_partner_backend_name  = undef,
-  $expiry_thres_minutes         = '720',
-  $thres_avl_size_perc_start    = '20',
-  $thres_avl_size_perc_stop     = '60',
-  $nfs_shares                   = undef,
-  $nfs_shares_config            = '/etc/cinder/shares.conf',
-  $nfs_mount_options            = $::os_service_default,
-  $netapp_copyoffload_tool_path = undef,
-  $netapp_controller_ips        = undef,
-  $netapp_sa_password           = undef,
-  $netapp_storage_pools         = undef,
-  $netapp_host_type             = $::os_service_default,
-  $netapp_webservice_path       = '/devmgr/v2',
-  $manage_volume_type           = false,
-  $extra_options                = {},
+  $volume_backend_name              = $name,
+  $netapp_server_port               = '80',
+  $netapp_size_multiplier           = '1.2',
+  $netapp_storage_family            = 'ontap_cluster',
+  $netapp_storage_protocol          = 'nfs',
+  $netapp_transport_type            = 'http',
+  $netapp_vfiler                    = undef,
+  $netapp_vserver                   = undef,
+  $netapp_partner_backend_name      = undef,
+  $expiry_thres_minutes             = '720',
+  $thres_avl_size_perc_start        = '20',
+  $thres_avl_size_perc_stop         = '60',
+  $nfs_shares                       = undef,
+  $nfs_shares_config                = '/etc/cinder/shares.conf',
+  $nfs_mount_options                = $::os_service_default,
+  $netapp_copyoffload_tool_path     = undef,
+  $netapp_controller_ips            = undef,
+  $netapp_sa_password               = undef,
+  $netapp_host_type                 = $::os_service_default,
+  $netapp_webservice_path           = '/devmgr/v2',
+  $manage_volume_type               = false,
+  $extra_options                    = {},
+  $netapp_pool_name_search_pattern  = '(.+)',
   # DEPRECATED PARAMETERS
-  $netapp_eseries_host_type     = undef,
+  $netapp_eseries_host_type         = undef,
+  $netapp_storage_pools             = undef,
+  $netapp_volume_list               = undef,
 ) {
 
   include ::cinder::deps
@@ -230,6 +241,19 @@ define cinder::backend::netapp (
     $netapp_host_type_real = $netapp_eseries_host_type
   } else {
     $netapp_host_type_real = $netapp_host_type
+  }
+
+  if $netapp_storage_pools or $netapp_volume_list{
+    if $netapp_storage_pools {
+        warning('The "netapp_storage_pools" parameter is deprecated. Use "netapp_pool_name_search_pattern" instead.')
+    }
+    if $netapp_volume_list {
+        warning('The "netapp_volume_list" parameter is deprecated. Use "netapp_pool_name_search_pattern" instead.')
+    }
+    $list = join(any2array(delete(delete_undef_values([$netapp_storage_pools, $netapp_volume_list]), '')), '|')
+    $netapp_pool_name_search_pattern_real = "(${list})"
+  } else {
+    $netapp_pool_name_search_pattern_real = $netapp_pool_name_search_pattern
   }
 
   if $nfs_shares {
@@ -242,31 +266,30 @@ define cinder::backend::netapp (
   }
 
   cinder_config {
-    "${name}/nfs_mount_options":            value => $nfs_mount_options;
-    "${name}/volume_backend_name":          value => $volume_backend_name;
-    "${name}/volume_driver":                value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
-    "${name}/netapp_login":                 value => $netapp_login;
-    "${name}/netapp_password":              value => $netapp_password, secret => true;
-    "${name}/netapp_server_hostname":       value => $netapp_server_hostname;
-    "${name}/netapp_server_port":           value => $netapp_server_port;
-    "${name}/netapp_size_multiplier":       value => $netapp_size_multiplier;
-    "${name}/netapp_storage_family":        value => $netapp_storage_family;
-    "${name}/netapp_storage_protocol":      value => $netapp_storage_protocol;
-    "${name}/netapp_transport_type":        value => $netapp_transport_type;
-    "${name}/netapp_vfiler":                value => $netapp_vfiler;
-    "${name}/netapp_volume_list":           value => $netapp_volume_list;
-    "${name}/netapp_vserver":               value => $netapp_vserver;
-    "${name}/netapp_partner_backend_name":  value => $netapp_partner_backend_name;
-    "${name}/expiry_thres_minutes":         value => $expiry_thres_minutes;
-    "${name}/thres_avl_size_perc_start":    value => $thres_avl_size_perc_start;
-    "${name}/thres_avl_size_perc_stop":     value => $thres_avl_size_perc_stop;
-    "${name}/nfs_shares_config":            value => $nfs_shares_config;
-    "${name}/netapp_copyoffload_tool_path": value => $netapp_copyoffload_tool_path;
-    "${name}/netapp_controller_ips":        value => $netapp_controller_ips;
-    "${name}/netapp_sa_password":           value => $netapp_sa_password, secret => true;
-    "${name}/netapp_storage_pools":         value => $netapp_storage_pools;
-    "${name}/netapp_host_type":             value => $netapp_host_type_real;
-    "${name}/netapp_webservice_path":       value => $netapp_webservice_path;
+    "${name}/nfs_mount_options":                value => $nfs_mount_options;
+    "${name}/volume_backend_name":              value => $volume_backend_name;
+    "${name}/volume_driver":                    value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
+    "${name}/netapp_login":                     value => $netapp_login;
+    "${name}/netapp_password":                  value => $netapp_password, secret => true;
+    "${name}/netapp_server_hostname":           value => $netapp_server_hostname;
+    "${name}/netapp_server_port":               value => $netapp_server_port;
+    "${name}/netapp_size_multiplier":           value => $netapp_size_multiplier;
+    "${name}/netapp_storage_family":            value => $netapp_storage_family;
+    "${name}/netapp_storage_protocol":          value => $netapp_storage_protocol;
+    "${name}/netapp_transport_type":            value => $netapp_transport_type;
+    "${name}/netapp_vfiler":                    value => $netapp_vfiler;
+    "${name}/netapp_vserver":                   value => $netapp_vserver;
+    "${name}/netapp_partner_backend_name":      value => $netapp_partner_backend_name;
+    "${name}/expiry_thres_minutes":             value => $expiry_thres_minutes;
+    "${name}/thres_avl_size_perc_start":        value => $thres_avl_size_perc_start;
+    "${name}/thres_avl_size_perc_stop":         value => $thres_avl_size_perc_stop;
+    "${name}/nfs_shares_config":                value => $nfs_shares_config;
+    "${name}/netapp_copyoffload_tool_path":     value => $netapp_copyoffload_tool_path;
+    "${name}/netapp_controller_ips":            value => $netapp_controller_ips;
+    "${name}/netapp_sa_password":               value => $netapp_sa_password, secret => true;
+    "${name}/netapp_pool_name_search_pattern":  value => $netapp_pool_name_search_pattern_real;
+    "${name}/netapp_host_type":                 value => $netapp_host_type_real;
+    "${name}/netapp_webservice_path":           value => $netapp_webservice_path;
   }
 
   if $manage_volume_type {

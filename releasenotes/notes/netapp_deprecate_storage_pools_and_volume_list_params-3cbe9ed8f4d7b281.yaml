@@ -1,0 +1,6 @@
+---
+deprecations:
+  - netapp_storage_pools parameter is deprecated in favor
+    of netapp_pool_name_search_pattern.
+  - netapp_volume_list parameter is deprecated in favor
+    of netapp_pool_name_search_pattern.
