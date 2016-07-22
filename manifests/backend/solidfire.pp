@@ -24,51 +24,51 @@
 #
 # [*sf_emulate_512*]
 #   (optional) Use 512 byte emulation for volumes.
-#   Defaults to True
+#   Defaults to $::os_service_default
 #
 # [*sf_allow_tenant_qos*]
 #   (optional) Allow tenants to specify QoS via volume metadata.
-#   Defaults to False
+#   Defaults to $::os_service_default
 #
 # [*sf_account_prefix*]
 #   (optional) Prefix to use when creating tenant accounts on SolidFire Cluster.
-#   Defaults to None, so account name is simply the tenant-uuid
+#   Defaults to $::os_service_default
 #
 # [*sf_template_account_name*]
 #   (optional) Account name on the SolidFire Cluster to use as owner of
 #   template/cache volumes (created if does not exist)
-#   Defaults to openstack-vtemplate
+#   Defaults to $::os_service_default
 #
 # [*sf_allow_template_caching*]
 #   (optional) Create an internal cache of copy of images when a bootable
 #   volume is created to eliminate fetch from glance and qemu-
 #   conversion on subsequent calls.
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*sf_api_port*]
 #   (optional) Port ID to use to connect to SolidFire API.
-#   Defaults to 443
+#   Defaults to $::os_service_default
 #
 # [*sf_volume_prefix*]
 #   (optional) Create SolidFire volumes with this prefix. Volume names
 #   are of the form <sf_volume_prefix><cinder-volume-id>.
-#   Defaults to UUID-
+#   Defaults to $::os_service_default-
 #
 # [*sf_svip*]
 #   (optional) Overrides default cluster SVIP with the one specified.
 #   This is required or deployments that have implemented the use of
 #   VLANs for iSCSI networks in their cloud.
-#   Defaults to none
+#   Defaults to $::os_service_default
 #
 # [*sf_enable_volume_mapping*]
 #   (optional) Create an internal mapping of volume IDs and account.
 #   Optimizes lookups and performance at the expense of memory, very
 #   large deployments may want to consider setting to False.
-#   Defaults to true
+#   Defaults to $::os_service_default
 #
 # [*sf_enable_vag*]
 #   (optional) Utilize volume access groups on a per-tenant basis.
-#   Defaults to false
+#   Defaults to $::os_service_default
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
@@ -82,16 +82,16 @@ define cinder::backend::solidfire(
   $san_password,
   $volume_backend_name       = $name,
   $volume_driver           = 'cinder.volume.drivers.solidfire.SolidFireDriver',
-  $sf_emulate_512            = true,
-  $sf_allow_tenant_qos       = false,
-  $sf_account_prefix         = '',
-  $sf_template_account_name  = 'openstack-vtemplate',
-  $sf_allow_template_caching = false,
-  $sf_api_port               = '443',
-  $sf_volume_prefix          = 'UUID-',
-  $sf_svip                   = '',
-  $sf_enable_volume_mapping  = true,
-  $sf_enable_vag             = false,
+  $sf_emulate_512            = $::os_service_default,
+  $sf_allow_tenant_qos       = $::os_service_default,
+  $sf_account_prefix         = $::os_service_default,
+  $sf_template_account_name  = $::os_service_default,
+  $sf_allow_template_caching = $::os_service_default,
+  $sf_api_port               = $::os_service_default,
+  $sf_volume_prefix          = $::os_service_default,
+  $sf_svip                   = $::os_service_default,
+  $sf_enable_volume_mapping  = $::os_service_default,
+  $sf_enable_vag             = $::os_service_default,
   $extra_options             = {},
 ) {
 

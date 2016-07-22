@@ -1,0 +1,9 @@
+---
+features:
+  - Switch SolidFire backend parameters to $::os_service_default.
+fixes:
+  - Fixes `bug 1605368
+    <https://bugs.launchpad.net/puppet-cinder/+bug/1605368>`__
+    such that the parameter sf_svip is not include when not set.
+other:
+  - Increase code testing coverage for SolidFire backend module.
