@@ -71,6 +71,9 @@ class cinder::volume::san (
   $extra_options      = {},
 ) {
 
+  warning('Usage of cinder::volume::san is deprecated, please use
+cinder::backend::san instead.')
+
   cinder::backend::san { 'DEFAULT':
     volume_driver      => $volume_driver,
     san_thin_provision => $san_thin_provision,

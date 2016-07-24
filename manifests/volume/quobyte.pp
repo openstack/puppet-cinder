@@ -44,6 +44,9 @@ class cinder::volume::quobyte (
   $quobyte_mount_point_base = undef,
 ) {
 
+  warning('Usage of cinder::volume::quobyte is deprecated, please use
+cinder::backend::quobyte instead.')
+
   cinder::backend::quobyte { 'DEFAULT':
     quobyte_volume_url       => $quobyte_volume_url,
     quobyte_client_cfg       => $quobyte_client_cfg,

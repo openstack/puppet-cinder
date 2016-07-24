@@ -45,6 +45,9 @@ class cinder::volume::iscsi (
 
   include ::cinder::params
 
+  warning('Usage of cinder::volume::iscsi is deprecated, please use
+cinder::backend::iscsi instead.')
+
   cinder::backend::iscsi { 'DEFAULT':
     iscsi_ip_address => $iscsi_ip_address,
     volume_driver    => $volume_driver,

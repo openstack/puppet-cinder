@@ -46,6 +46,9 @@ class cinder::volume::nexenta (
   $extra_options                = {},
 ) {
 
+  warning('Usage of cinder::volume::nexenta is deprecated, please use
+cinder::backend::nexenta instead.')
+
   cinder::backend::nexenta { 'DEFAULT':
     nexenta_user                => $nexenta_user,
     nexenta_password            => $nexenta_password,

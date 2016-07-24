@@ -64,6 +64,9 @@ class cinder::volume::vmdk(
   $extra_options               = {},
 ) {
 
+  warning('Usage of cinder::volume::vmdk is deprecated, please use
+cinder::backend::vmdk instead.')
+
   cinder::backend::vmdk { 'DEFAULT':
     host_ip                     => $host_ip,
     host_username               => $host_username,
