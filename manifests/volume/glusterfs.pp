@@ -52,6 +52,9 @@ class cinder::volume::glusterfs (
   $extra_options                = {},
 ) {
 
+  warning('Usage of cinder::volume::glusterfs is deprecated, please use
+cinder::backend::glusterfs instead.')
+
   cinder::backend::glusterfs { 'DEFAULT':
     glusterfs_shares             => $glusterfs_shares,
     glusterfs_backup_mount_point => $glusterfs_backup_mount_point,

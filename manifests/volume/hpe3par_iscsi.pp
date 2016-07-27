@@ -66,6 +66,9 @@ class cinder::volume::hpe3par_iscsi(
   $extra_options               = {},
 ) {
 
+  warning('Usage of cinder::volume::hpe3par_iscsi is deprecated, please use
+cinder::backend::hpe3par_iscsi instead.')
+
   cinder::backend::hpe3par_iscsi { 'DEFAULT':
     volume_driver               => $volume_driver,
     hpe3par_username            => $hpe3par_username,

@@ -44,6 +44,9 @@ class cinder::volume::pure(
   $extra_options                = {},
 ) {
 
+  warning('Usage of cinder::volume::pure is deprecated, please use
+cinder::backend::pure instead.')
+
   cinder::backend::pure { 'DEFAULT':
     san_ip                       => $san_ip,
     pure_api_token               => $pure_api_token,

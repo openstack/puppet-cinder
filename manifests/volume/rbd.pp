@@ -75,6 +75,9 @@ class cinder::volume::rbd (
   $volume_tmp_dir                   = false,
 ) {
 
+  warning('Usage of cinder::volume::rbd is deprecated, please use
+cinder::backend::rbd instead.')
+
   cinder::backend::rbd { 'DEFAULT':
     rbd_pool                         => $rbd_pool,
     rbd_user                         => $rbd_user,

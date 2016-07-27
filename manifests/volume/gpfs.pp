@@ -67,6 +67,10 @@ class cinder::volume::gpfs(
   $gpfs_storage_pool      = $::os_service_default,
   $extra_options          = {}
 ) {
+
+  warning('Usage of cinder::volume::gpfs is deprecated, please use
+cinder::backend::gpfs instead.')
+
   cinder::backend::gpfs { 'DEFAULT':
     gpfs_mount_point_base  => $gpfs_mount_point_base,
     gpfs_images_dir        => $gpfs_images_dir,

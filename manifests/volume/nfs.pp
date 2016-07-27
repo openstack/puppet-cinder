@@ -65,6 +65,9 @@ class cinder::volume::nfs (
   $extra_options        = {},
 ) {
 
+  warning('Usage of cinder::volume::nfs is deprecated, please use
+cinder::backend::nfs instead.')
+
   cinder::backend::nfs { 'DEFAULT':
     nfs_servers          => $nfs_servers,
     nfs_mount_attempts   => $nfs_mount_attempts,

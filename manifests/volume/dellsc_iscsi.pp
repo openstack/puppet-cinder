@@ -58,6 +58,10 @@ class cinder::volume::dellsc_iscsi (
   $iscsi_port            = $::os_service_default,
   $extra_options         = {},
 ) {
+
+  warning('Usage of cinder::volume::dellsc_iscsi is deprecated, please use
+cinder::backend::dellsc_iscsi instead.')
+
   cinder::backend::dellsc_iscsi { 'DEFAULT':
     san_ip                => $san_ip,
     san_login             => $san_login,

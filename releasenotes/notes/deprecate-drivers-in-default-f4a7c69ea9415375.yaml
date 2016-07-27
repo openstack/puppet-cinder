@@ -1,0 +1,5 @@
+---
+deprecations:
+  - Support for drivers in the Cinder.conf DEFAULT section is deprecated
+    and will be removed after the Newton release. Please update your puppet
+    implementations to use cinder\:\:backend instead.

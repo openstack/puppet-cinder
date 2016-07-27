@@ -217,6 +217,9 @@ class cinder::volume::netapp (
     $netapp_host_type_real = $netapp_host_type
   }
 
+  warning('Usage of cinder::volume::netapp is deprecated, please use
+cinder::backend::netapp instead.')
+
   cinder::backend::netapp { 'DEFAULT':
     netapp_login                 => $netapp_login,
     netapp_password              => $netapp_password,

@@ -78,6 +78,9 @@ class cinder::volume::emc_vnx(
   $naviseccli_path               = $::os_service_default,
 ) {
 
+  warning('Usage of cinder::volume::emc_vnx is deprecated, please use
+cinder::backend::emc_vnx instead.')
+
   cinder::backend::emc_vnx { 'DEFAULT':
     default_timeout               => $default_timeout,
     iscsi_ip_address              => $iscsi_ip_address,
