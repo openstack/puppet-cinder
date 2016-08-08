@@ -40,7 +40,7 @@
 #
 # [*auth_type*]
 #  (Optional) Authentication type to load
-#  Defaults to $::os_service_default
+#  Defaults to 'password'
 #
 # [*auth_uri*]
 #  (Optional) Complete public Identity API endpoint.
