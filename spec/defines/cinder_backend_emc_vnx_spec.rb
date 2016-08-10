@@ -44,6 +44,7 @@ describe 'cinder::backend::emc_vnx' do
        :storage_vnx_auth_type         => 'global',
        :storage_vnx_security_file_dir => '/etc/secfile/array1',
        :naviseccli_path               => '/opt/Navisphere/bin/naviseccli',
+       :manage_volume_type            => true,
       })
     end
 
@@ -52,6 +53,10 @@ describe 'cinder::backend::emc_vnx' do
       is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value(params[:storage_vnx_auth_type])
       is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value(params[:storage_vnx_security_file_dir])
       is_expected.to contain_cinder_config('emc/naviseccli_path').with_value(params[:naviseccli_path])
+    end
+
+    it 'should create type with properties' do
+      should contain_cinder_type('emc').with(:ensure => :present, :properties => ['volume_backend_name=emc'])
     end
   end
 

@@ -66,6 +66,12 @@
 #   (optional) Naviseccli Path.
 #   Defaults to $::os_service_default
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 define cinder::backend::emc_vnx (
   $iscsi_ip_address,
   $san_ip,
@@ -82,6 +88,7 @@ define cinder::backend::emc_vnx (
   $storage_vnx_auth_type         = $::os_service_default,
   $storage_vnx_security_file_dir = $::os_service_default,
   $naviseccli_path               = $::os_service_default,
+  $manage_volume_type            = false,
 ) {
 
   include ::cinder::params
@@ -100,6 +107,13 @@ define cinder::backend::emc_vnx (
     "${name}/initiator_auto_registration":     value => $initiator_auto_registration;
     "${name}/storage_vnx_authentication_type": value => $storage_vnx_auth_type;
     "${name}/storage_vnx_security_file_dir":   value => $storage_vnx_security_file_dir;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
   create_resources('cinder_config', $extra_options)

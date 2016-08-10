@@ -28,6 +28,12 @@
 #   (optional) Only affects the PureISCSIDriver.
 #   Defaults to False
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
 #   Defaults to: {}
@@ -41,6 +47,7 @@ define cinder::backend::pure(
   $pure_storage_protocol        = 'iSCSI',
   $use_chap_auth                = false,
   $use_multipath_for_image_xfer = true,
+  $manage_volume_type           = false,
   $extra_options                = {},
 ) {
 
@@ -56,6 +63,13 @@ define cinder::backend::pure(
     "${name}/pure_api_token":                value => $pure_api_token, secret => true;
     "${name}/use_chap_auth":                 value => $use_chap_auth;
     "${name}/use_multipath_for_image_xfer":  value => $use_multipath_for_image_xfer ;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
   create_resources('cinder_config', $extra_options)

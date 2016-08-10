@@ -55,6 +55,12 @@
 #   (optional) The timeout for the Group Manager cli command execution.
 #   Defaults to $::os_service_default
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # === DEPRECATED PARAMETERS
 #
 # [*eqlx_use_chap*]
@@ -88,6 +94,7 @@ define cinder::backend::eqlx (
   $chap_password        = $::os_service_default,
   $use_chap_auth        = $::os_service_default,
   $ssh_conn_timeout     = $::os_service_default,
+  $manage_volume_type   = false,
   # Deprecated
   $eqlx_use_chap        = undef,
   $eqlx_chap_login      = undef,
@@ -143,6 +150,13 @@ define cinder::backend::eqlx (
     "${name}/ssh_conn_timeout":     value => $ssh_conn_timeout_real;
     "${name}/eqlx_cli_max_retries": value => $eqlx_cli_max_retries;
     "${name}/eqlx_pool":            value => $eqlx_pool;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $name:
+      ensure     => present,
+      properties => ["volume_backend_name=${name}"],
+    }
   }
 
   # the default for this is false

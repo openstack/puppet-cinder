@@ -41,6 +41,12 @@
 #   Example :
 #     { 'glusterfs_backend/param1' => { 'value' => value1 } }
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # === Examples
 #
 # cinder::backend::glusterfs { 'myGluster':
@@ -55,6 +61,7 @@ define cinder::backend::glusterfs (
   $glusterfs_sparsed_volumes    = $::os_service_default,
   $glusterfs_mount_point_base   = $::os_service_default,
   $glusterfs_shares_config      = '/etc/cinder/shares.conf',
+  $manage_volume_type           = false,
   $extra_options                = {},
 ) {
 
@@ -75,6 +82,13 @@ define cinder::backend::glusterfs (
     "${name}/glusterfs_shares_config":    value => $glusterfs_shares_config;
     "${name}/glusterfs_sparsed_volumes":  value => $glusterfs_sparsed_volumes;
     "${name}/glusterfs_mount_point_base": value => $glusterfs_mount_point_base;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
   create_resources('cinder_config', $extra_options)

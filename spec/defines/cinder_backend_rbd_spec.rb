@@ -97,6 +97,15 @@ describe 'cinder::backend::rbd' do
       end
     end
 
+    context 'rbd backend with cinder type' do
+      before do
+        params.merge!({:manage_volume_type => true})
+      end
+      it 'should create type with properties' do
+        should contain_cinder_type('rbd-ssd').with(:ensure => :present, :properties => ['volume_backend_name=rbd-ssd'])
+      end
+    end
+
   end
 
   describe 'with RedHat' do

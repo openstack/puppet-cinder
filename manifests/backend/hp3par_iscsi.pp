@@ -53,6 +53,12 @@
 #   than hp3par_snapshot_retention.
 #   Defaults to 72.
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -73,6 +79,7 @@ define cinder::backend::hp3par_iscsi(
   $hp3par_snap_cpg            = 'OpenstackCPG',
   $hp3par_snapshot_retention  = 48,
   $hp3par_snapshot_expiration = 72,
+  $manage_volume_type         = false,
   $extra_options              = {},
 ) {
 
@@ -96,6 +103,13 @@ define cinder::backend::hp3par_iscsi(
     "${name}/hpe3par_cpg_snap":            value => $hp3par_snap_cpg;
     "${name}/hpe3par_snapshot_retention":  value => $hp3par_snapshot_retention;
     "${name}/hpe3par_snapshot_expiration": value => $hp3par_snapshot_expiration;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
   create_resources('cinder_config', $extra_options)

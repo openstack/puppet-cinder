@@ -40,6 +40,12 @@
 #   (Optional) Method used to wipe old volumes
 #   Defaults to $::os_service_default.
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend
 #   Defaults to: {}
@@ -67,6 +73,7 @@ define cinder::backend::bdd (
   $iscsi_helper        = 'tgtadm',
   $iscsi_protocol      = $::os_service_default,
   $volume_clear        = $::os_service_default,
+  $manage_volume_type  = false,
   $extra_options       = {},
 ) {
 
@@ -82,6 +89,13 @@ define cinder::backend::bdd (
     "${name}/volumes_dir":         value => $volumes_dir;
     "${name}/iscsi_protocol":      value => $iscsi_protocol;
     "${name}/volume_clear":        value => $volume_clear;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
   create_resources('cinder_config', $extra_options)

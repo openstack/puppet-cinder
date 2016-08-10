@@ -94,6 +94,18 @@ describe 'cinder::backend::solidfire' do
     end
   end
 
+  context 'solidfire backend with cinder type' do
+    let :params do
+      req_params
+    end
+    before :each do
+      params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('solidfire').with(:ensure => :present, :properties => ['volume_backend_name=solidfire'])
+    end
+  end
+
   context 'without required parameters' do
     before do
       params = {}

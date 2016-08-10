@@ -50,6 +50,15 @@ describe 'cinder::backend::glusterfs' do
       end
 
     end
+
+    context 'glusterfs backend with cinder type' do
+      before do
+        params.merge!({:manage_volume_type => true})
+      end
+      it 'should create type with properties' do
+        should contain_cinder_type('mygluster').with(:ensure => :present, :properties => ['volume_backend_name=mygluster'])
+      end
+    end
   end
 
   on_supported_os({
