@@ -99,6 +99,15 @@ describe 'cinder::backend::netapp' do
     end
   end
 
+  context 'netapp backend with cinder type' do
+    before do
+      params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('netapp').with(:ensure => :present, :properties => ['volume_backend_name=netapp'])
+    end
+  end
+
   context 'netapp backend with additional configuration' do
     before do
       params.merge!({:extra_options => {'netapp/param1' => { 'value' => 'value1' }}})

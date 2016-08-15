@@ -69,6 +69,15 @@ describe 'cinder::backend::iscsi' do
     end
   end
 
+  describe 'iscsi backend with cinder type' do
+    before :each do
+      params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('hippo').with(:ensure => :present, :properties => ['volume_backend_name=hippo'])
+    end
+  end
+
   describe 'iscsi backend with additional configuration' do
     before :each do
       params.merge!({:extra_options => {'hippo/param1' => {'value' => 'value1'}}})

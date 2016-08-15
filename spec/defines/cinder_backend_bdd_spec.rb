@@ -28,12 +28,13 @@ describe 'cinder::backend::bdd' do
     context 'with optional parameters' do
       before :each do
         params.merge!({
-          :iscsi_ip_address  => '10.20.0.2',
-          :available_devices => '/dev/sdb,/dev/sdc',
-          :volumes_dir       => '/var/lib/cinder/bdd-volumes',
-          :volume_clear      => 'zero',
-          :volume_group      => 'cinder',
-          :iscsi_helper      => 'lioadm',
+          :iscsi_ip_address   => '10.20.0.2',
+          :available_devices  => '/dev/sdb,/dev/sdc',
+          :volumes_dir        => '/var/lib/cinder/bdd-volumes',
+          :volume_clear       => 'zero',
+          :volume_group       => 'cinder',
+          :iscsi_helper       => 'lioadm',
+          :manage_volume_type => true,
         })
       end
 
@@ -44,6 +45,9 @@ describe 'cinder::backend::bdd' do
         should contain_cinder_config('hippo/iscsi_helper').with_value('lioadm')
         should contain_cinder_config('hippo/volume_group').with_value('cinder')
         should contain_cinder_config('hippo/volume_clear').with_value('zero')
+      end
+      it 'should create type with properties' do
+        should contain_cinder_type('hippo').with(:ensure => :present, :properties => ['volume_backend_name=hippo'])
       end
     end
 

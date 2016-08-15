@@ -24,6 +24,14 @@ describe 'cinder::backend::quobyte' do
         true)
     end
 
+    context 'quobyte backend with cinder type' do
+      before do
+        params.merge!({:manage_volume_type => true})
+      end
+      it 'should create type with properties' do
+        should contain_cinder_type('myquobyte').with(:ensure => :present, :properties => ['volume_backend_name=myquobyte'])
+      end
+    end
   end
 
   on_supported_os({

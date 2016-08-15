@@ -64,6 +64,12 @@
 #   (optional) SSH port to use to connect to NAS system.
 #   Defaults to $::os_service_default
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -90,6 +96,7 @@ define cinder::backend::gpfs (
   $nas_password           = $::os_service_default,
   $nas_private_key        = $::os_service_default,
   $nas_ssh_port           = $::os_service_default,
+  $manage_volume_type     = false,
   $extra_options          = {},
 ) {
 
@@ -114,6 +121,13 @@ define cinder::backend::gpfs (
     "${name}/nas_password":           value => $nas_password;
     "${name}/nas_private_key":        value => $nas_private_key;
     "${name}/nas_ssh_port":           value => $nas_ssh_port;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $name:
+      ensure     => present,
+      properties => ["volume_backend_name=${name}"],
+    }
   }
 
   create_resources('cinder_config', $extra_options)

@@ -1,0 +1,5 @@
+---
+features:
+  - manage_volume_type is a new parameter present in every Cinder backend.
+    When set to True, it will manage the Cinder Volume type for the backend.
+    For backward compatibility, it is set to False by default.

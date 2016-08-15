@@ -152,6 +152,12 @@
 #   application.
 #   Defaults to '/devmgr/v2'
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -211,6 +217,7 @@ define cinder::backend::netapp (
   $netapp_storage_pools         = undef,
   $netapp_host_type             = $::os_service_default,
   $netapp_webservice_path       = '/devmgr/v2',
+  $manage_volume_type           = false,
   $extra_options                = {},
   # DEPRECATED PARAMETERS
   $netapp_eseries_host_type     = undef,
@@ -258,6 +265,13 @@ define cinder::backend::netapp (
     "${name}/netapp_storage_pools":         value => $netapp_storage_pools;
     "${name}/netapp_host_type":             value => $netapp_host_type_real;
     "${name}/netapp_webservice_path":       value => $netapp_webservice_path;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $name:
+      ensure     => present,
+      properties => ["volume_backend_name=${name}"],
+    }
   }
 
   if $netapp_storage_family == 'eseries' {

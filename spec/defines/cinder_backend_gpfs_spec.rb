@@ -95,6 +95,15 @@ describe 'cinder::backend::gpfs' do
     it_raises 'a Puppet::Error', /gpfs_images_share_mode only support `copy` or `copy_on_write`/
   end
 
+  context 'gpfs backend with cinder type' do
+    before do
+      params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('gpfs').with(:ensure => :present, :properties => ['volume_backend_name=gpfs'])
+    end
+  end
+
   context 'gpfs backend with additional configuration' do
     before do
       params.merge!({:extra_options => {'gpfs/param1' => { 'value' => 'value1' }}})

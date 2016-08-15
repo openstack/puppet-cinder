@@ -67,4 +67,13 @@ describe 'cinder::backend::pure' do
     end
   end
 
+  describe 'pure backend with cinder type' do
+    let :params do
+      req_params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('pure').with(:ensure => :present, :properties => ['volume_backend_name=pure'])
+    end
+  end
+
 end

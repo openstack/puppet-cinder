@@ -49,6 +49,12 @@
 #   Example:
 #     { 'dellsc_iscsi_backend/param1' => { 'value' => value1 } }
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 define cinder::backend::dellsc_iscsi (
   $san_ip,
   $san_login,
@@ -61,6 +67,7 @@ define cinder::backend::dellsc_iscsi (
   $dell_sc_verify_cert   = $::os_service_default,
   $dell_sc_volume_folder = 'vol',
   $iscsi_port            = $::os_service_default,
+  $manage_volume_type    = false,
   $extra_options         = {},
 ) {
 
@@ -86,6 +93,13 @@ define cinder::backend::dellsc_iscsi (
     "${name}/dell_sc_verify_cert":   value => $dell_sc_verify_cert;
     "${name}/dell_sc_volume_folder": value => $dell_sc_volume_folder;
     "${name}/iscsi_port":            value => $iscsi_port;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
   create_resources('cinder_config', $extra_options)

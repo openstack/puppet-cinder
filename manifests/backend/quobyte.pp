@@ -34,6 +34,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # === Examples
 #
 # cinder::backend::quobyte { 'quobyte1':
@@ -47,6 +53,7 @@ define cinder::backend::quobyte (
   $quobyte_sparsed_volumes  = undef,
   $quobyte_mount_point_base = undef,
   $volume_backend_name      = $name,
+  $manage_volume_type       = false,
 ) {
 
   cinder_config {
@@ -58,6 +65,13 @@ define cinder::backend::quobyte (
     "${name}/quobyte_qcow2_volumes":     value => $quobyte_qcow2_volumes;
     "${name}/quobyte_sparsed_volumes":   value => $quobyte_sparsed_volumes;
     "${name}/quobyte_mount_point_base":  value => $quobyte_mount_point_base;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
 }

@@ -50,6 +50,12 @@
 #   (Optional) Maximum ssh connections in the pool.
 #   Defaults to '5'.
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -70,6 +76,7 @@ define cinder::backend::san (
   $ssh_conn_timeout    = 30,
   $ssh_min_pool_conn   = 1,
   $ssh_max_pool_conn   = 5,
+  $manage_volume_type  = false,
   $extra_options       = {},
 ) {
 
@@ -87,6 +94,13 @@ define cinder::backend::san (
     "${name}/ssh_conn_timeout":    value => $ssh_conn_timeout;
     "${name}/ssh_min_pool_conn":   value => $ssh_min_pool_conn;
     "${name}/ssh_max_pool_conn":   value => $ssh_max_pool_conn;
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
   create_resources('cinder_config', $extra_options)

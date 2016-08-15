@@ -77,4 +77,13 @@ describe 'cinder::backend::vmdk' do
     end
   end
 
+  context 'vmdk backend with cinder type' do
+    before do
+      params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('hippo').with(:ensure => :present, :properties => ['volume_backend_name=hippo'])
+    end
+  end
+
 end

@@ -61,4 +61,13 @@ describe 'cinder::backend::nfs' do
     end
   end
 
+  describe 'nfs backend with cinder type' do
+    before :each do
+      params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('hippo').with(:ensure => :present, :properties => ['volume_backend_name=hippo'])
+    end
+  end
+
 end

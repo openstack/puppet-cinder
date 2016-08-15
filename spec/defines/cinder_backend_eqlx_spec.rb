@@ -47,6 +47,15 @@ describe 'cinder::backend::eqlx' do
     end
   end
 
+  describe 'eqlx backend with cinder type' do
+    before :each do
+      params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('eqlx-1').with(:ensure => :present, :properties => ['volume_backend_name=eqlx-1'])
+    end
+  end
+
   context 'eqlx backend with chap' do
     before :each do
       params.merge!({

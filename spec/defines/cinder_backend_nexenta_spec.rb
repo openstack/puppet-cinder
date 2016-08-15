@@ -49,4 +49,13 @@ describe 'cinder::backend::nexenta' do
     end
   end
 
+  context 'nexenta backend with cinder type' do
+    before do
+      params.merge!({:manage_volume_type => true})
+    end
+    it 'should create type with properties' do
+      should contain_cinder_type('nexenta').with(:ensure => :present, :properties => ['volume_backend_name=nexenta'])
+    end
+  end
+
 end

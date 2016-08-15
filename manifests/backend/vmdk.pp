@@ -49,6 +49,12 @@
 #   (optional) The name for the folder in the VC datacenter that will contain cinder volumes.
 #   Defaults to 'cinder-volumes'.
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinde Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -66,6 +72,7 @@ define cinder::backend::vmdk (
   $task_poll_interval          = 5,
   $image_transfer_timeout_secs = $::os_service_default,
   $wsdl_location               = $::os_service_default,
+  $manage_volume_type          = false,
   $extra_options               = {},
   ) {
 
@@ -90,6 +97,13 @@ define cinder::backend::vmdk (
     "${name}/vmware_image_transfer_timeout_secs": value => $image_transfer_timeout_secs;
     "${name}/vmware_wsdl_location":               value => $wsdl_location;
     "${name}/host":                               value => "vmdk:${host_ip}-${volume_folder}";
+  }
+
+  if $manage_volume_type {
+    cinder_type { $volume_backend_name:
+      ensure     => present,
+      properties => ["volume_backend_name=${volume_backend_name}"],
+    }
   }
 
   package { 'python-suds':
