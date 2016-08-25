@@ -239,6 +239,10 @@
 #   the default for new volumes.
 #   Defaults to false
 #
+# [*allow_availability_zone_fallback*]
+#   (optional) Allow availability zone fallback if preferred availabilty zone cannot be deployed to.
+#   Defaults to $::os_service_default
+#
 # [*api_paste_config*]
 #   (Optional)
 #   Defaults to '/etc/cinder/api-paste.ini',
@@ -357,6 +361,7 @@ class cinder (
   $debug                              = undef,
   $storage_availability_zone          = 'nova',
   $default_availability_zone          = false,
+  $allow_availability_zone_fallback   = $::os_service_default,
   $enable_v3_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
@@ -462,13 +467,14 @@ class cinder (
   }
 
   cinder_config {
-    'DEFAULT/report_interval':           value => $report_interval;
-    'DEFAULT/service_down_time':         value => $service_down_time;
-    'DEFAULT/api_paste_config':          value => $api_paste_config;
-    'DEFAULT/storage_availability_zone': value => $storage_availability_zone;
-    'DEFAULT/default_availability_zone': value => $default_availability_zone_real;
-    'DEFAULT/image_conversion_dir':      value => $image_conversion_dir;
-    'DEFAULT/host':                      value => $host;
+    'DEFAULT/report_interval':                  value => $report_interval;
+    'DEFAULT/service_down_time':                value => $service_down_time;
+    'DEFAULT/api_paste_config':                 value => $api_paste_config;
+    'DEFAULT/storage_availability_zone':        value => $storage_availability_zone;
+    'DEFAULT/default_availability_zone':        value => $default_availability_zone_real;
+    'DEFAULT/allow_availability_zone_fallback': value => $allow_availability_zone_fallback;
+    'DEFAULT/image_conversion_dir':             value => $image_conversion_dir;
+    'DEFAULT/host':                             value => $host;
   }
 
   # V3 APIs
