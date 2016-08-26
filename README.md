@@ -62,7 +62,6 @@ class { 'cinder':
 
 class { 'cinder::api':
   keystone_password       => $keystone_password,
-  keystone_enabled        => $keystone_enabled,
   keystone_user           => $keystone_user,
   keystone_auth_uri       => $keystone_auth_uri,
   service_port            => $keystone_service_port,

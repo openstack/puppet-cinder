@@ -4,10 +4,6 @@
 #
 # === Parameters
 #
-# [*keystone_enabled*]
-#   (optional) Use keystone for authentification
-#   Defaults to true
-#
 # [*privileged_user*]
 #   (optional) Enables OpenStack privileged account.
 #   Defaults to false.
@@ -146,7 +142,15 @@
 #   (optional) CA certificate file to use to verify connecting clients
 #   Defaults to $::os_service_default
 #
+# [*auth_strategy*]
+#   (optional) Type of authentication to be used.
+#   Defaults to 'keystone'
+#
 # DEPRECATED PARAMETERS
+#
+# [*keystone_enabled*]
+#   (optional) Deprecated. Use auth_strategy instead.
+#   Defaults to undef
 #
 # [*keystone_tenant*]
 #   (optional) Deprecated. Use cinder::keystone::authtoken::project_name instead.
@@ -221,6 +225,7 @@ class cinder::api (
   $cert_file                      = $::os_service_default,
   $key_file                       = $::os_service_default,
   $ca_file                        = $::os_service_default,
+  $auth_strategy                  = 'keystone',
   # DEPRECATED PARAMETERS
   $validation_options             = {},
   $keystone_tenant                = undef,
@@ -260,6 +265,13 @@ class cinder::api (
   }
   if $memcached_servers {
     warning('cinder::api::memcached_servers is deprecated, use cinder::keystone::authtoken::memcached_servers instead.')
+  }
+
+  if $keystone_enabled {
+    warning('keystone_enabled is deprecated, use auth_strategy instead.')
+    $auth_strategy_real = $keystone_enabled
+  } else {
+    $auth_strategy_real = $auth_strategy
   }
 
   if $use_ssl_real {
@@ -369,7 +381,7 @@ class cinder::api (
     'keymgr/encryption_auth_url': value => $keymgr_encryption_auth_url;
   }
 
-  if $keystone_enabled {
+  if $auth_strategy_real {
     include ::cinder::keystone::authtoken
   }
 
