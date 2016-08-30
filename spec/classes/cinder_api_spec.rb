@@ -67,9 +67,9 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_auth_url').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('keymgr/api_class').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('keymgr/encryption_api_url').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('keymgr/encryption_auth_url').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('key_manager/api_class').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_middleware/enable_proxy_headers_parsing').with('value' => '<SERVICE DEFAULT>')
       end
     end
@@ -253,7 +253,7 @@ describe 'cinder::api' do
         req_params.merge({ :keymgr_encryption_auth_url => 'http://localhost:5000/v3' })
       end
 
-      it { is_expected.to contain_cinder_config('keymgr/encryption_auth_url').with(
+      it { is_expected.to contain_cinder_config('barbican/auth_endpoint').with(
         :value => 'http://localhost:5000/v3'
       )}
     end
@@ -380,15 +380,15 @@ describe 'cinder::api' do
     describe 'with barbican parameters' do
       let :params do
         req_params.merge!({
-          :keymgr_api_class           => 'cinder.keymgr.barbican.BarbicanKeyManager',
+          :keymgr_api_class           => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
           :keymgr_encryption_api_url  => 'https://localhost:9311/v1',
           :keymgr_encryption_auth_url => 'https://localhost:5000/v3',
         })
       end
       it 'should set keymgr parameters' do
-        is_expected.to contain_cinder_config('keymgr/api_class').with_value('cinder.keymgr.barbican.BarbicanKeyManager')
-        is_expected.to contain_cinder_config('keymgr/encryption_api_url').with_value('https://localhost:9311/v1')
-        is_expected.to contain_cinder_config('keymgr/encryption_auth_url').with_value('https://localhost:5000/v3')
+        is_expected.to contain_cinder_config('key_manager/api_class').with_value('castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+        is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('https://localhost:9311/v1')
+        is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('https://localhost:5000/v3')
       end
     end
 

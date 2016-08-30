@@ -28,7 +28,7 @@
 #
 # [*keymgr_api_class*]
 #   (optional) Key Manager service class.
-#   Example of valid value: cinder.keymgr.barbican.BarbicanKeyManager
+#   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
 #   Defaults to $::os_service_default
 #
 # [*keymgr_encryption_api_url*]
@@ -376,9 +376,9 @@ class cinder::api (
   }
 
   cinder_config {
-    'keymgr/api_class':           value => $keymgr_api_class;
-    'keymgr/encryption_api_url':  value => $keymgr_encryption_api_url;
-    'keymgr/encryption_auth_url': value => $keymgr_encryption_auth_url;
+    'key_manager/api_class':      value => $keymgr_api_class;
+    'barbican/barbican_endpoint': value => $keymgr_encryption_api_url;
+    'barbican/auth_endpoint':     value => $keymgr_encryption_auth_url;
   }
 
   if $auth_strategy_real {
