@@ -393,7 +393,7 @@ class cinder (
 
     # By default rabbit_ha_queues is undef
     if $rabbit_ha_queues == undef {
-      if size($rabbit_hosts) > 1 {
+      if size(any2array($rabbit_hosts)) > 1 {
         cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value  => true }
       } else {
         cinder_config { 'oslo_messaging_rabbit/rabbit_ha_queues': value => false }
