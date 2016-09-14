@@ -327,7 +327,8 @@ class cinder::api (
     # we need to make sure cinder-api/eventlet is stopped before trying to start apache
     Service['cinder-api'] -> Service[$service_name]
   } else {
-    fail('Invalid service_name. Either cinder-api/openstack-cinder-api for running as a standalone service, or httpd for being run by a httpd server')
+    fail('Invalid service_name. Either cinder-api/openstack-cinder-api for \
+          running as a standalone service, or httpd for being run by a httpd server')
   }
 
   cinder_config {
@@ -398,9 +399,12 @@ class cinder::api (
     $keystone_tenant_real = pick($keystone_tenant, $::cinder::keystone::authtoken::project_name)
     $keystone_username_real = pick($keystone_user, $::cinder::keystone::authtoken::username)
     $keystone_password_real = pick($keystone_password, $::cinder::keystone::authtoken::password)
+
     $defaults = {
       'cinder-api' => {
+        # lint:ignore:140chars
         'command'  => "cinder --os-auth-url ${::cinder::keystone::authtoken::auth_uri} --os-project-name ${keystone_tenant_real} --os-username ${keystone_username_real} --os-password ${keystone_password_real} list",
+        # lint:endignore
       }
     }
     $validation_options_hash = merge ($defaults, $validation_options)

@@ -66,7 +66,8 @@ class cinder::volume::hp3par_iscsi(
 
   include ::cinder::deps
 
-  warning('The class cinder::volume::hp3par_iscsi is deprecated and will be removed after Newton cycle, pleasse use the new class cinder::volume::hpe3par_iscsi.')
+  warning('The class cinder::volume::hp3par_iscsi is deprecated and will be removed \
+            after Newton cycle, pleasse use the new class cinder::volume::hpe3par_iscsi.')
 
   cinder::backend::hpe3par_iscsi { 'DEFAULT':
     volume_driver               => $volume_driver,
