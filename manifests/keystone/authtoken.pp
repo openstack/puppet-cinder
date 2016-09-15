@@ -228,6 +228,8 @@ class cinder::keystone::authtoken(
   $token_cache_time               = $::os_service_default,
 ) {
 
+  include ::cinder::deps
+
   if is_service_default($password) and ! $::cinder::api::keystone_password {
     fail('Please set password for cinder service user')
   }
