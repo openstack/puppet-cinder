@@ -16,13 +16,15 @@ describe 'cinder::volume::nexenta' do
     { :nexenta_volume              => 'cinder',
       :nexenta_target_prefix       => 'iqn:',
       :nexenta_target_group_prefix => 'cinder/',
-      :nexenta_blocksize           => '8k',
-      :nexenta_sparse              => true }
+      :nexenta_blocksize           => '8192',
+      :nexenta_sparse              => true,
+      :nexenta_rest_port           => '8457',
+      :volume_driver               => 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver' }
   end
 
 
   let :facts do
-    { :osfamily => 'Debian' }
+    OSDefaults.get_facts({})
   end
 
 

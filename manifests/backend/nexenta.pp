@@ -18,19 +18,32 @@
 #   Defaults to: $name
 #
 # [*nexenta_volume*]
-#   (optional) Pool on SA that will hold all volumes. Defaults to 'cinder'.
+#   (optional) Pool on SA that will hold all volumes.
+#   Defaults to 'cinder'.
 #
 # [*nexenta_target_prefix*]
-#   (optional) IQN prefix for iSCSI targets. Defaults to 'iqn:'.
+#   (optional) IQN prefix for iSCSI targets.
+#   Defaults to 'iqn:'.
 #
 # [*nexenta_target_group_prefix*]
-#   (optional) Prefix for iSCSI target groups on SA. Defaults to 'cinder/'.
+#   (optional) Prefix for iSCSI target groups on SA.
+#   Defaults to 'cinder/'.
 #
 # [*nexenta_blocksize*]
-#   (optional) Block size for volumes. Defaults to '8k'.
+#   (optional) Block size for volumes.
+#   Defaults to '8192'.
 #
 # [*nexenta_sparse*]
-#   (optional) Flag to create sparse volumes. Defaults to true.
+#   (optional) Flag to create sparse volumes.
+#   Defaults to true.
+#
+# [*nexenta_rest_port*]
+#   (optional) HTTP port for REST API.
+#   Defaults to '8457'.
+#
+# [*volume_driver*]
+#   (required) Nexenta driver to use.
+#   Defaults to: 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver'.
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -52,8 +65,10 @@ define cinder::backend::nexenta (
   $nexenta_volume               = 'cinder',
   $nexenta_target_prefix        = 'iqn:',
   $nexenta_target_group_prefix  = 'cinder/',
-  $nexenta_blocksize            = '8k',
+  $nexenta_blocksize            = '8192',
   $nexenta_sparse               = true,
+  $nexenta_rest_port            = '8457',
+  $volume_driver                = 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver',
   $manage_volume_type           = false,
   $extra_options                = {},
 ) {
@@ -70,7 +85,8 @@ define cinder::backend::nexenta (
     "${name}/nexenta_target_group_prefix": value => $nexenta_target_group_prefix;
     "${name}/nexenta_blocksize":           value => $nexenta_blocksize;
     "${name}/nexenta_sparse":              value => $nexenta_sparse;
-    "${name}/volume_driver":               value => 'cinder.volume.drivers.nexenta.volume.NexentaDriver';
+    "${name}/nexenta_rest_port":           value => $nexenta_rest_port;
+    "${name}/volume_driver":               value => $volume_driver;
   }
 
   if $manage_volume_type {
