@@ -60,6 +60,7 @@ describe 'basic cinder' do
       class { '::cinder::scheduler::filter': }
       class { '::cinder::volume': }
       class { '::cinder::cron::db_purge': }
+      cinder::type { 'test-type': }
       # TODO: create a backend and spawn a volume
       EOS
 

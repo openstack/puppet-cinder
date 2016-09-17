@@ -10,6 +10,7 @@ Puppet::Type.newtype(:cinder_type) do
 
   newproperty(:properties, :array_matching => :all) do
     desc 'The properties of the cinder type. Should be an array, all items should match pattern <key=value1[,value2 ...]>'
+    defaultto []
     def insync?(is)
       return false unless is.is_a? Array
       is.sort == should.sort
