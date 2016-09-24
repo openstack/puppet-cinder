@@ -1,0 +1,5 @@
+---
+features:
+  - A new parameter allows changing the port that the
+    cinder API service listens on. If it is changed,
+    don't forget to update the catalog URLs.
