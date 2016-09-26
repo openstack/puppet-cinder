@@ -16,10 +16,6 @@
 #   (Optional) Ensure state for package.
 #   Defaults to 'present'.
 #
-# [*backup_topic*]
-#   (optional) The topic volume backup nodes listen on.
-#   Defaults to $::os_service_default
-#
 # [*backup_manager*]
 #   (optional) Full class name for the Manager for volume backup.
 #   Defaults to $::os_service_default
@@ -31,6 +27,12 @@
 # [*backup_name_template*]
 #   (optional) Template string to be used to generate backup names.
 #   Defaults to $::os_service_default
+#
+# DEPRECATED PARAMETERS
+#
+# [*backup_topic*]
+#   (optional) The topic volume backup nodes listen on.
+#   Defaults to undef
 #
 # === Author(s)
 #
@@ -52,15 +54,15 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-#
 class cinder::backup (
   $enabled              = true,
   $manage_service       = true,
   $package_ensure       = 'present',
-  $backup_topic         = $::os_service_default,
   $backup_manager       = $::os_service_default,
   $backup_api_class     = $::os_service_default,
   $backup_name_template = $::os_service_default,
+  #DEPRECATED PARAMETERS
+  $backup_topic         = undef,
 ) {
 
   include ::cinder::deps
@@ -93,8 +95,11 @@ class cinder::backup (
     tag       => 'cinder-service',
   }
 
+  if $backup_topic {
+    warning('The backup_topic parameter is deprecated, has no effect and will be removed in future release.')
+  }
+
   cinder_config {
-    'DEFAULT/backup_topic':         value => $backup_topic;
     'DEFAULT/backup_manager':       value => $backup_manager;
     'DEFAULT/backup_api_class':     value => $backup_api_class;
     'DEFAULT/backup_name_template': value => $backup_name_template;

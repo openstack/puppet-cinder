@@ -25,7 +25,6 @@ describe 'cinder::backup' do
   let :default_params do
     { :enable               => true,
       :manage_service       => true,
-      :backup_topic         => '<SERVICE DEFAULT>',
       :backup_manager       => '<SERVICE DEFAULT>',
       :backup_api_class     => '<SERVICE DEFAULT>',
       :backup_name_template => '<SERVICE DEFAULT>' }
@@ -60,7 +59,6 @@ describe 'cinder::backup' do
     end
 
     it 'configures cinder.conf' do
-      is_expected.to contain_cinder_config('DEFAULT/backup_topic').with_value(p[:backup_topic])
       is_expected.to contain_cinder_config('DEFAULT/backup_manager').with_value(p[:backup_manager])
       is_expected.to contain_cinder_config('DEFAULT/backup_api_class').with_value(p[:backup_api_class])
       is_expected.to contain_cinder_config('DEFAULT/backup_name_template').with_value(p[:backup_name_template])
