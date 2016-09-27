@@ -89,8 +89,8 @@ define cinder::backend::hp3par_iscsi(
     fail ('hp3par_snapshot_expiration must be greater than hp3par_snapshot_retention')
   }
 
-  warning('The define cinder::backend::hp3par_iscsi is deprecated and will be \
-            removed after Newton cycle, pleasse use the new define cinder::backend::hpe3par_iscsi.')
+  warning("The define cinder::backend::hp3par_iscsi is deprecated and will be \
+removed after Newton cycle, pleasse use the new define cinder::backend::hpe3par_iscsi.")
 
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
