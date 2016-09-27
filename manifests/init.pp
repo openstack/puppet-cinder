@@ -275,10 +275,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*verbose*]
-#   (Optional) DEPRECATED. Should the daemons log verbose messages
-#   Defaults to undef.
-#
 # [*enable_v1_api*]
 #   (Optional) DEPRECATED. Whether to enable the v1 API (true/false).
 #   Defaults to undef.
@@ -368,7 +364,6 @@ class cinder (
   $host                               = $::os_service_default,
   $purge_config                       = false,
   # DEPRECATED PARAMETERS
-  $verbose                            = undef,
   $enable_v1_api                      = undef,
   $enable_v2_api                      = undef,
   $use_ssl                            = undef,
@@ -380,10 +375,6 @@ class cinder (
   include ::cinder::deps
   include ::cinder::db
   include ::cinder::logging
-
-  if $verbose {
-    warning('verbose is deprecated, has no effect and will be removed after Newton cycle.')
-  }
 
   if $enable_v1_api {
     warning('enable_v1_api is deprecated, has no effect and will be removed in a future release')
