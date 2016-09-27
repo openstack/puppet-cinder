@@ -192,6 +192,11 @@
 #       try_sleep: 10
 #   Defaults to {}
 #
+# [*osapi_volume_listen_port*]
+#   (optional) What port the API listens on. Defaults to $::os_service_default
+#   If this value is modified the catalog URLs in the keystone::auth class
+#   will also need to be changed to match.
+#
 class cinder::api (
   $keystone_enabled               = true,
   $nova_catalog_info              = 'compute:Compute Service:publicURL',
@@ -226,6 +231,7 @@ class cinder::api (
   $key_file                       = $::os_service_default,
   $ca_file                        = $::os_service_default,
   $auth_strategy                  = 'keystone',
+  $osapi_volume_listen_port       = $::os_service_default,
   # DEPRECATED PARAMETERS
   $validation_options             = {},
   $keystone_tenant                = undef,
@@ -332,13 +338,14 @@ class cinder::api (
   }
 
   cinder_config {
-    'DEFAULT/osapi_volume_listen':   value => $bind_host;
-    'DEFAULT/osapi_volume_workers':  value => $service_workers;
-    'DEFAULT/os_region_name':        value => $os_region_name;
-    'DEFAULT/default_volume_type':   value => $default_volume_type;
-    'DEFAULT/public_endpoint':       value => $public_endpoint;
-    'DEFAULT/osapi_volume_base_URL': value => $osapi_volume_base_url;
-    'DEFAULT/osapi_max_limit':       value => $osapi_max_limit;
+    'DEFAULT/osapi_volume_listen':      value => $bind_host;
+    'DEFAULT/osapi_volume_workers':     value => $service_workers;
+    'DEFAULT/os_region_name':           value => $os_region_name;
+    'DEFAULT/default_volume_type':      value => $default_volume_type;
+    'DEFAULT/public_endpoint':          value => $public_endpoint;
+    'DEFAULT/osapi_volume_base_URL':    value => $osapi_volume_base_url;
+    'DEFAULT/osapi_max_limit':          value => $osapi_max_limit;
+    'DEFAULT/osapi_volume_listen_port': value => $osapi_volume_listen_port;
   }
 
   cinder_config {

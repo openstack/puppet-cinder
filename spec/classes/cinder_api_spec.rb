@@ -71,6 +71,7 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_middleware/enable_proxy_headers_parsing').with('value' => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with('value' => '<SERVICE DEFAULT>')
       end
     end
 
@@ -108,6 +109,17 @@ describe 'cinder::api' do
       it 'should configure the region for nova' do
         is_expected.to contain_cinder_config('DEFAULT/os_region_name').with(
           :value => 'MyRegion'
+        )
+      end
+    end
+
+    describe 'with a customized port' do
+      let :params do
+        req_params.merge({'osapi_volume_listen_port' => 9999})
+      end
+      it 'should customize the port' do
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with(
+          :value => 9999
         )
       end
     end
