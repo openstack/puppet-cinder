@@ -21,6 +21,8 @@ class cinder::db::sync(
     path        => '/usr/bin',
     user        => 'cinder',
     refreshonly => true,
+    try_sleep   => 5,
+    tries       => 10,
     logoutput   => 'on_failure',
     subscribe   => [
       Anchor['cinder::install::end'],
