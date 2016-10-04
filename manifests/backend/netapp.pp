@@ -236,7 +236,7 @@ define cinder::backend::netapp (
     validate_array($nfs_shares)
     file {$nfs_shares_config:
       content => join($nfs_shares, "\n"),
-      require => Anchor['cinder::install:end'],
+      require => Anchor['cinder::install::end'],
       notify  => Anchor['cinder::service::begin'],
     }
   }

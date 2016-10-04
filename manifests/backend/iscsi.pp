@@ -89,7 +89,7 @@ define cinder::backend::iscsi (
           path    => '/etc/tgt/targets.conf',
           line    => "include ${volumes_dir}/*",
           match   => '#?include /',
-          require => Anchor['cinder::install:end'],
+          require => Anchor['cinder::install::end'],
           notify  => Anchor['cinder::service::begin'],
         }
       }
