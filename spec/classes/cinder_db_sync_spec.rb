@@ -40,7 +40,7 @@ describe 'cinder::db::sync' do
     context "on #{os}" do
       let (:facts) do
         facts.merge(OSDefaults.get_facts({
-          :processorcount => 8,
+          :os_workers     => 8,
           :concat_basedir => '/var/lib/puppet/concat'
         }))
       end

@@ -58,7 +58,7 @@
 #
 # [*service_workers*]
 #   (optional) Number of cinder-api workers
-#   Defaults to $::processorcount
+#   Defaults to $::os_workers
 #
 # [*package_ensure*]
 #   (optional) The state of the package
@@ -210,7 +210,7 @@ class cinder::api (
   $keymgr_api_class               = $::os_service_default,
   $keymgr_encryption_api_url      = $::os_service_default,
   $keymgr_encryption_auth_url     = $::os_service_default,
-  $service_workers                = $::processorcount,
+  $service_workers                = $::os_workers,
   $package_ensure                 = 'present',
   $bind_host                      = '0.0.0.0',
   $enabled                        = true,

@@ -29,7 +29,7 @@ describe 'cinder::volume::quobyte' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge(OSDefaults.get_facts({:processorcount => 8}))
+        facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
       it_configures 'quobyte volume driver'

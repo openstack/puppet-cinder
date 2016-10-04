@@ -79,7 +79,7 @@ describe 'cinder::wsgi::apache' do
     context "on #{os}" do
       let (:facts) do
         facts.merge!(OSDefaults.get_facts({
-          :processorcount => 42,
+          :os_workers     => 42,
           :concat_basedir => '/var/lib/puppet/concat',
           :fqdn           => 'some.host.tld',
         }))

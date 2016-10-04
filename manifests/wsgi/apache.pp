@@ -50,7 +50,7 @@
 #
 #   [*threads*]
 #     (optional) The number of threads for the vhost.
-#     Defaults to $::processorcount
+#     Defaults to $::os_workers
 #
 #   [*ssl_cert*]
 #   [*ssl_key*]
@@ -86,7 +86,7 @@ class cinder::wsgi::apache (
   $ssl_crl_path  = undef,
   $ssl_crl       = undef,
   $ssl_certs_dir = undef,
-  $threads       = $::processorcount,
+  $threads       = $::os_workers,
   $priority      = '10',
 ) {
 
