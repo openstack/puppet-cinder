@@ -21,7 +21,20 @@ describe 'cinder::backend::emc_vnx' do
     req_params
   end
 
-  describe 'emc vnx volume driver' do
+  describe 'emc vnx volume driver with only required parameters' do
+    before :each do
+      params.merge!({
+        :iscsi_ip_address      => '<SERVICE DEFAULT>'
+      })
+    end
+    it 'configure with required/default parameters' do
+      expect {
+        is_expected.to compile
+      }.to raise_error(/iscsi_ip_address needs to be set when using the cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver volume_driver/)
+    end
+  end
+
+  describe 'emc vnx volume driver with iscsi configuration' do
     it 'configure emc vnx volume driver' do
       is_expected.to contain_cinder_config('emc/volume_driver').with_value('cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver')
       is_expected.to contain_cinder_config('emc/san_ip').with_value('127.0.0.2')
@@ -33,7 +46,28 @@ describe 'cinder::backend::emc_vnx' do
       is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('emc/naviseccli_path').with_value('<SERVICE DEFAULT>')
+    end
+  end
 
+  describe 'emc vnx volume driver with fc configuration' do
+    before :each do
+      params.merge!({
+       :iscsi_ip_address      => '<SERVICE DEFAULT>',
+       :volume_driver         => 'cinder.volume.drivers.emc.emc_cli_fc.EMCCLIFCDriver',
+      })
+    end
+
+    it 'configure emc vnx volume driver' do
+      is_expected.to contain_cinder_config('emc/volume_driver').with_value('cinder.volume.drivers.emc.emc_cli_fc.EMCCLIFCDriver')
+      is_expected.to contain_cinder_config('emc/san_ip').with_value('127.0.0.2')
+      is_expected.to contain_cinder_config('emc/san_login').with_value('emc')
+      is_expected.to contain_cinder_config('emc/san_password').with_value('password')
+      is_expected.to contain_cinder_config('emc/iscsi_ip_address').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('emc/storage_vnx_pool_name').with_value('emc-storage-pool')
+      is_expected.to contain_cinder_config('emc/initiator_auto_registration').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('emc/naviseccli_path').with_value('<SERVICE DEFAULT>')
     end
   end
 

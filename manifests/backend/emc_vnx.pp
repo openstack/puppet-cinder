@@ -11,7 +11,7 @@
 #   Defaults to: $name
 #
 # [*iscsi_ip_address*]
-#   (Required) The IP address that the iSCSI daemon is listening on
+#   The IP address that the iSCSI daemon is listening on
 #
 # [*san_ip*]
 #   (required) IP address of SAN controller.
@@ -73,10 +73,10 @@
 #   Defaults to false.
 #
 define cinder::backend::emc_vnx (
-  $iscsi_ip_address,
   $san_ip,
   $san_password,
   $storage_vnx_pool_name,
+  $iscsi_ip_address              = $::os_service_default,
   $default_timeout               = '10',
   $max_luns_per_storage_group    = '256',
   $package_ensure                = 'present',
@@ -93,6 +93,11 @@ define cinder::backend::emc_vnx (
 
   include ::cinder::deps
   include ::cinder::params
+
+  if $volume_driver == 'cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver' and
+    $iscsi_ip_address == $::os_service_default {
+    fail('iscsi_ip_address needs to be set when using the cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver volume_driver')
+  }
 
   cinder_config {
     "${name}/default_timeout":                 value => $default_timeout;
