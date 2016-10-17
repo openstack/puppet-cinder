@@ -10,9 +10,6 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
-# [*iscsi_ip_address*]
-#   (Required) The IP address that the iSCSI daemon is listening on
-#
 # [*san_ip*]
 #   (required) IP address of SAN controller.
 #
@@ -72,8 +69,13 @@
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
 #
+# == Deprecated Parameters
+#
+# [*iscsi_ip_address*]
+#   (optional) DEPRECATED The IP address that the iSCSI daemon is listening on
+#   Defaults to undef
+#
 define cinder::backend::emc_vnx (
-  $iscsi_ip_address,
   $san_ip,
   $san_password,
   $storage_vnx_pool_name,
@@ -89,14 +91,19 @@ define cinder::backend::emc_vnx (
   $storage_vnx_security_file_dir = $::os_service_default,
   $naviseccli_path               = $::os_service_default,
   $manage_volume_type            = false,
+  # Deprecated
+  $iscsi_ip_address              = undef,
 ) {
 
   include ::cinder::deps
   include ::cinder::params
 
+  if $iscsi_ip_address {
+    warning('iscsi_ip_address is deprecated, has no effect and will be removed in a future release')
+  }
+
   cinder_config {
     "${name}/default_timeout":                 value => $default_timeout;
-    "${name}/iscsi_ip_address":                value => $iscsi_ip_address;
     "${name}/max_luns_per_storage_group":      value => $max_luns_per_storage_group;
     "${name}/naviseccli_path":                 value => $naviseccli_path;
     "${name}/san_ip":                          value => $san_ip;

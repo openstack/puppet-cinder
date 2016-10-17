@@ -25,7 +25,6 @@ describe 'cinder::volume::emc_vnx' do
       is_expected.to contain_cinder_config('DEFAULT/san_ip').with_value('127.0.0.2')
       is_expected.to contain_cinder_config('DEFAULT/san_login').with_value('emc')
       is_expected.to contain_cinder_config('DEFAULT/san_password').with_value('password')
-      is_expected.to contain_cinder_config('DEFAULT/iscsi_ip_address').with_value('127.0.0.3')
       is_expected.to contain_cinder_config('DEFAULT/storage_vnx_pool_name').with_value('emc-storage-pool')
       is_expected.to contain_cinder_config('DEFAULT/initiator_auto_registration').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/storage_vnx_authentication_type').with_value('<SERVICE DEFAULT>')

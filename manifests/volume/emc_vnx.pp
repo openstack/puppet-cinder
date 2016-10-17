@@ -9,9 +9,6 @@
 #   (Optional) State of the package
 #   Defaults to 'present'.
 #
-# [*iscsi_ip_address*]
-#   (Required) The IP address that the iSCSI daemon is listening on
-#
 # [*san_ip*]
 #   (Required) IP address of SAN controller.
 #
@@ -61,8 +58,14 @@
 #   (optional) Naviseccli Path.
 #   Defaults to $::os_service_default
 #
+# == Deprecated Parameters
+#
+# [*iscsi_ip_address*]
+#   (Optional) DEPRECATED The IP address that the iSCSI daemon is listening on
+#   Defaults to undef
+#
+
 class cinder::volume::emc_vnx(
-  $iscsi_ip_address,
   $san_ip,
   $san_password,
   $storage_vnx_pool_name,
@@ -76,6 +79,8 @@ class cinder::volume::emc_vnx(
   $storage_vnx_auth_type         = $::os_service_default,
   $storage_vnx_security_file_dir = $::os_service_default,
   $naviseccli_path               = $::os_service_default,
+  # Deprecated
+  $iscsi_ip_address              = undef,
 ) {
 
   include ::cinder::deps
