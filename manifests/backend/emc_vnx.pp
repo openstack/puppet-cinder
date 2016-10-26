@@ -43,7 +43,11 @@
 #
 # [*volume_driver*]
 #   (optional) The EMC VNX Driver you want to use
-#   Defaults to cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver
+#   Defaults to cinder.volume.drivers.emc.vnx.driver.EMCVNXDriver
+#
+# [*storage_protocol*]
+#   (optional) Which storage protocol to use.
+#   Defaults to 'iscsi'
 #
 # [*initiator_auto_registration*]
 #   (optinal) Automatically register initiators.
@@ -85,7 +89,8 @@ define cinder::backend::emc_vnx (
   $san_login                     = 'admin',
   $volume_backend_name           = $name,
   $extra_options                 = {},
-  $volume_driver                 = 'cinder.volume.drivers.emc.emc_cli_iscsi.EMCCLIISCSIDriver',
+  $volume_driver                 = 'cinder.volume.drivers.emc.vnx.driver.EMCVNXDriver',
+  $storage_protocol              = 'iscsi',
   $initiator_auto_registration   = $::os_service_default,
   $storage_vnx_auth_type         = $::os_service_default,
   $storage_vnx_security_file_dir = $::os_service_default,
@@ -112,6 +117,7 @@ define cinder::backend::emc_vnx (
     "${name}/storage_vnx_pool_name":           value => $storage_vnx_pool_name;
     "${name}/volume_backend_name":             value => $volume_backend_name;
     "${name}/volume_driver":                   value => $volume_driver;
+    "${name}/storage_protocol":                value => $storage_protocol;
     "${name}/initiator_auto_registration":     value => $initiator_auto_registration;
     "${name}/storage_vnx_authentication_type": value => $storage_vnx_auth_type;
     "${name}/storage_vnx_security_file_dir":   value => $storage_vnx_security_file_dir;
