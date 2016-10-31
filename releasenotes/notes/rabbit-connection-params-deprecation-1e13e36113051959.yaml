@@ -1,0 +1,6 @@
+---
+deprecations:
+  - cinder::rabbit_host, cinder::rabbit_hosts, cinder::rabbit_password,
+    cinder::rabbit_port, cinder::rabbit_userid and cinder::rabbit_virtual_host
+    are deprecated. cinder::default_transport_url should be used to configure
+    the messaging backend connection information.

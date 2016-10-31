@@ -8,7 +8,6 @@
 #    (Optional) Ensure state for package.
 #    Defaults to 'present'
 #
-#
 # [*debug*]
 #   (Optional) Should the daemons log debug messages
 #   Defaults to undef.
@@ -26,31 +25,6 @@
 # [*control_exchange*]
 #   (Optional)
 #   Defaults to 'openstack'.
-#
-# [*rabbit_host*]
-#   (Optional) IP or hostname of the rabbit server.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_port*]
-#   (Optional) Port of the rabbit server.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_hosts*]
-#   (Optional) Array of host:port (used with HA queues).
-#   If defined, will remove rabbit_host & rabbit_port parameters from config
-#   Defaults to $::os_service_default
-#
-# [*rabbit_userid*]
-#   (Optional) User to connect to the rabbit server.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_password*]
-#   (Required) Password to connect to the rabbit_server.
-#   Defaults to empty. Required if using the Rabbit (kombu) backend.
-#
-# [*rabbit_virtual_host*]
-#   (Optional) Virtual_host to use.
-#   Defaults to $::os_service_default
 #
 # [*rabbit_ha_queues*]
 #   (optional) Use HA queues in RabbitMQ (x-ha-policy: all).
@@ -273,7 +247,7 @@
 #   in the cinder config.
 #   Defaults to false.
 #
-# DEPRECATED PARAMETERS
+# === DEPRECATED PARAMETERS
 #
 # [*enable_v1_api*]
 #   (Optional) DEPRECATED. Whether to enable the v1 API (true/false).
@@ -302,6 +276,31 @@
 #   clients
 #   Defaults to undef
 #
+# [*rabbit_host*]
+#   (Optional) DEPRECATED. IP or hostname of the rabbit server.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_port*]
+#   (Optional) DEPRECATED. Port of the rabbit server.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_hosts*]
+#   (Optional) DEPRECATED. Array of host:port (used with HA queues).
+#   If defined, will remove rabbit_host & rabbit_port parameters from config
+#   Defaults to $::os_service_default
+#
+# [*rabbit_userid*]
+#   (Optional) DEPRECATED. User to connect to the rabbit server.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_password*]
+#   (Required) DEPRECATED. Password to connect to the rabbit_server.
+#   Defaults to empty. Required if using the Rabbit (kombu) backend.
+#
+# [*rabbit_virtual_host*]
+#   (Optional) DEPRECATED. Virtual_host to use.
+#   Defaults to $::os_service_default
+#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -313,15 +312,9 @@ class cinder (
   $default_transport_url              = $::os_service_default,
   $rpc_backend                        = 'rabbit',
   $control_exchange                   = 'openstack',
-  $rabbit_host                        = $::os_service_default,
-  $rabbit_port                        = $::os_service_default,
-  $rabbit_hosts                       = $::os_service_default,
-  $rabbit_virtual_host                = $::os_service_default,
   $rabbit_ha_queues                   = $::os_service_default,
   $rabbit_heartbeat_timeout_threshold = $::os_service_default,
   $rabbit_heartbeat_rate              = $::os_service_default,
-  $rabbit_userid                      = $::os_service_default,
-  $rabbit_password                    = $::os_service_default,
   $rabbit_use_ssl                     = $::os_service_default,
   $service_down_time                  = $::os_service_default,
   $report_interval                    = $::os_service_default,
@@ -370,6 +363,12 @@ class cinder (
   $ca_file                            = undef,
   $cert_file                          = undef,
   $key_file                           = undef,
+  $rabbit_host                        = $::os_service_default,
+  $rabbit_hosts                       = $::os_service_default,
+  $rabbit_password                    = $::os_service_default,
+  $rabbit_port                        = $::os_service_default,
+  $rabbit_userid                      = $::os_service_default,
+  $rabbit_virtual_host                = $::os_service_default,
 ) inherits cinder::params {
 
   include ::cinder::deps
@@ -382,6 +381,17 @@ class cinder (
 
   if $enable_v2_api {
     warning('enable_v2_api is deprecated, has no effect and will be removed in a future release')
+  }
+
+  if !is_service_default($rabbit_host) or
+    !is_service_default($rabbit_hosts) or
+    !is_service_default($rabbit_password) or
+    !is_service_default($rabbit_port) or
+    !is_service_default($rabbit_userid) or
+    !is_service_default($rabbit_virtual_host) {
+    warning("cinder::rabbit_host, cinder::rabbit_hosts, cinder::rabbit_password, \
+cinder::rabbit_port, cinder::rabbit_userid and cinder::rabbit_virtual_host are \
+deprecated. Please use cinder::default_transport_url instead.")
   }
 
   package { 'cinder':
