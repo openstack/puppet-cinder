@@ -3,8 +3,14 @@ require 'spec_helper'
 describe 'cinder::api' do
 
   shared_examples_for 'cinder api' do
+    let :pre_condition do
+      "class { '::cinder::keystone::authtoken':
+         password => 'foo',
+      }"
+    end
+
     let :req_params do
-      {:keystone_password => 'foo'}
+      {}
     end
 
     describe 'with only required params' do
@@ -46,22 +52,6 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/os_region_name').with(
          :value => '<SERVICE DEFAULT>'
         )
-        is_expected.to contain_cinder_config('keystone_authtoken/auth_uri').with(
-         :value => 'http://localhost:5000'
-        )
-        is_expected.to contain_cinder_config('keystone_authtoken/auth_url').with(
-         :value => 'http://localhost:35357'
-        )
-        is_expected.to contain_cinder_config('keystone_authtoken/project_name').with(
-         :value => 'services'
-        )
-        is_expected.to contain_cinder_config('keystone_authtoken/username').with(
-         :value => 'cinder'
-        )
-        is_expected.to contain_cinder_config('keystone_authtoken/password').with(
-         :value => 'foo'
-        )
-        is_expected.to contain_cinder_config('keystone_authtoken/memcached_servers').with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_value('<SERVICE DEFAULT>')
@@ -84,22 +74,6 @@ describe 'cinder::api' do
       end
       it { is_expected.to contain_cinder_config('DEFAULT/nova_catalog_admin_info').with_value('compute:nova:adminURL') }
       it { is_expected.to contain_cinder_config('DEFAULT/nova_catalog_info').with_value('compute:nova:publicURL') }
-    end
-
-    describe 'without deprecated keystone_authtoken parameters' do
-      let :params do
-        req_params.merge({
-          'keystone_user'   => 'dummy',
-          'keystone_tenant' => 'mytenant',
-          'identity_uri'    => 'https://127.0.0.1:35357/deprecated',
-          'auth_uri'        => 'https://127.0.0.1:5000/deprecated',
-        })
-      end
-
-      it { is_expected.to contain_cinder_config('keystone_authtoken/auth_url').with_value('https://127.0.0.1:35357/deprecated') }
-      it { is_expected.to contain_cinder_config('keystone_authtoken/username').with_value('dummy') }
-      it { is_expected.to contain_cinder_config('keystone_authtoken/project_name').with_value('mytenant') }
-      it { is_expected.to contain_cinder_config('keystone_authtoken/auth_uri').with_value('https://127.0.0.1:5000/deprecated') }
     end
 
     describe 'with a custom region for nova' do
@@ -218,7 +192,6 @@ describe 'cinder::api' do
     describe 'with sync_db set to false' do
       let :params do
         {
-          :keystone_password => 'dummy',
           :enabled           => true,
           :sync_db           => false,
         }
@@ -309,17 +282,6 @@ describe 'cinder::api' do
       )}
     end
 
-    describe "with deprecated memcached servers for keystone authtoken" do
-      let :params do
-        req_params.merge({
-          :memcached_servers => '1.1.1.1:11211',
-        })
-      end
-      it 'configures memcached servers' do
-        is_expected.to contain_cinder_config('keystone_authtoken/memcached_servers').with_value('1.1.1.1:11211')
-      end
-    end
-
     describe 'with a custom osapi_max_limit' do
       let :params do
         req_params.merge({'osapi_max_limit' => '10000'})
@@ -337,7 +299,10 @@ describe 'cinder::api' do
 
       let :pre_condition do
         "include ::apache
-         class { 'cinder': rabbit_password => 'secret' }"
+         class { 'cinder': rabbit_password => 'secret' }
+         class { '::cinder::keystone::authtoken':
+           password => 'foo',
+         }"
       end
 
       it 'configures cinder-api service with Apache' do
@@ -356,7 +321,10 @@ describe 'cinder::api' do
 
       let :pre_condition do
         "include ::apache
-         class { 'cinder': rabbit_password => 'secret' }"
+         class { 'cinder': rabbit_password => 'secret' }
+         class { '::cinder::keystone::authtoken':
+           password => 'foo',
+         }"
       end
 
       it_raises 'a Puppet::Error', /Invalid service_name/

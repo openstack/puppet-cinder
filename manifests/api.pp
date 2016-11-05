@@ -146,35 +146,12 @@
 #   (optional) Type of authentication to be used.
 #   Defaults to 'keystone'
 #
+# [*osapi_volume_listen_port*]
+#   (optional) What port the API listens on. Defaults to $::os_service_default
+#   If this value is modified the catalog URLs in the keystone::auth class
+#   will also need to be changed to match.
+#
 # DEPRECATED PARAMETERS
-#
-# [*keystone_enabled*]
-#   (optional) Deprecated. Use auth_strategy instead.
-#   Defaults to undef
-#
-# [*keystone_tenant*]
-#   (optional) Deprecated. Use cinder::keystone::authtoken::project_name instead.
-#   Defaults to undef.
-#
-# [*keystone_user*]
-#   (optional) Deprecated. Use cinder::keystone::authtoken::username instead.
-#   Defaults to undef.
-#
-# [*keystone_password*]
-#   (optional) Deprecated. Use cinder::keystone::authtoken::password instead.
-#   Defaults to undef.
-#
-# [*identity_uri*]
-#   (optional) Deprecated. Use cinder::keystone::authtoken::auth_url instead.
-#   Defaults to undef.
-#
-# [*auth_uri*]
-#  (optional) Deprecated. Use cinder::keystone::authtoken::auth_uri instead.
-#  Defaults to undef.
-#
-# [*memcached_servers*]
-#  (Optional) Deprecated. Use cinder::keystone::authtoken::memcached_servers.
-#  Defaults to undef.
 #
 # [*validation_options*]
 #   (optional) Service validation options
@@ -192,13 +169,7 @@
 #       try_sleep: 10
 #   Defaults to {}
 #
-# [*osapi_volume_listen_port*]
-#   (optional) What port the API listens on. Defaults to $::os_service_default
-#   If this value is modified the catalog URLs in the keystone::auth class
-#   will also need to be changed to match.
-#
 class cinder::api (
-  $keystone_enabled               = true,
   $nova_catalog_info              = 'compute:Compute Service:publicURL',
   $nova_catalog_admin_info        = 'compute:Compute Service:adminURL',
   $os_region_name                 = $::os_service_default,
@@ -234,12 +205,6 @@ class cinder::api (
   $osapi_volume_listen_port       = $::os_service_default,
   # DEPRECATED PARAMETERS
   $validation_options             = {},
-  $keystone_tenant                = undef,
-  $keystone_user                  = undef,
-  $keystone_password              = undef,
-  $identity_uri                   = undef,
-  $auth_uri                       = undef,
-  $memcached_servers              = undef,
 ) inherits cinder::params {
 
   include ::cinder::deps
@@ -254,32 +219,6 @@ class cinder::api (
   $cert_file_real = pick($::cinder::cert_file, $cert_file)
   $key_file_real = pick($::cinder::key_file, $key_file)
   $ca_file_real = pick($::cinder::ca_file, $ca_file)
-
-  if $identity_uri {
-    warning('cinder::api::identity_uri is deprecated, use cinder::keystone::authtoken::auth_url instead.')
-  }
-  if $auth_uri {
-    warning('cinder::api::auth_uri is deprecated, use cinder::keystone::authtoken::auth_uri instead.')
-  }
-  if $keystone_tenant {
-    warning('cinder::api::keystone_tenant is deprecated, use cinder::keystone::authtoken::project_name instead.')
-  }
-  if $keystone_user {
-    warning('cinder::api::keystone_user is deprecated, use cinder::keystone::authtoken::username instead.')
-  }
-  if $keystone_password {
-    warning('cinder::api::keystone_password is deprecated, use cinder::keystone::authtoken::password instead.')
-  }
-  if $memcached_servers {
-    warning('cinder::api::memcached_servers is deprecated, use cinder::keystone::authtoken::memcached_servers instead.')
-  }
-
-  if $keystone_enabled {
-    warning('keystone_enabled is deprecated, use auth_strategy instead.')
-    $auth_strategy_real = $keystone_enabled
-  } else {
-    $auth_strategy_real = $auth_strategy
-  }
 
   if $use_ssl_real {
     if is_service_default($cert_file_real) {
@@ -382,7 +321,7 @@ running as a standalone service, or httpd for being run by a httpd server")
     'barbican/auth_endpoint':     value => $keymgr_encryption_auth_url;
   }
 
-  if $auth_strategy_real {
+  if $auth_strategy == 'keystone' {
     include ::cinder::keystone::authtoken
   }
 
@@ -403,9 +342,9 @@ running as a standalone service, or httpd for being run by a httpd server")
   }
 
   if $validate {
-    $keystone_tenant_real = pick($keystone_tenant, $::cinder::keystone::authtoken::project_name)
-    $keystone_username_real = pick($keystone_user, $::cinder::keystone::authtoken::username)
-    $keystone_password_real = pick($keystone_password, $::cinder::keystone::authtoken::password)
+    $keystone_tenant_real = $::cinder::keystone::authtoken::project_name
+    $keystone_username_real = $::cinder::keystone::authtoken::username
+    $keystone_password_real = $::cinder::keystone::authtoken::password
 
     $defaults = {
       'cinder-api' => {

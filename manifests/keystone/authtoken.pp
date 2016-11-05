@@ -82,12 +82,12 @@
 #  server and ignore it if not. "strict" like "permissive" but if the bind
 #  type is unknown the token will be rejected. "required" any form of token
 #  binding is needed to be allowed. Finally the name of a binding method that
-#  must be present in tokens. String value.
 #  Defaults to $::os_service_default.
 #
 # [*hash_algorithms*]
 #  (Optional) Hash algorithms to use for hashing PKI tokens. This may be a
 #  single algorithm or multiple. The algorithms are those supported by Python
+#  must be present in tokens. String value.
 #  standard hashlib.new(). The hashes will be tried in the order given, so put
 #  the preferred one first for performance. The result of the first hash will
 #  be stored in the cache. This will typically be set to multiple values only
@@ -230,23 +230,16 @@ class cinder::keystone::authtoken(
 
   include ::cinder::deps
 
-  if is_service_default($password) and ! $::cinder::api::keystone_password {
+  if is_service_default($password) {
     fail('Please set password for cinder service user')
   }
 
-  $username_real = pick($::cinder::api::keystone_user,$username)
-  $password_real = pick($::cinder::api::keystone_password,$password)
-  $project_name_real = pick($::cinder::api::keystone_tenant,$project_name)
-  $auth_uri_real = pick($::cinder::api::auth_uri,$auth_uri)
-  $auth_url_real = pick($::cinder::api::identity_uri,$auth_url)
-  $memcached_servers_real = pick($::cinder::api::memcached_servers,$memcached_servers)
-
   keystone::resource::authtoken { 'cinder_config':
-    username                       => $username_real,
-    password                       => $password_real,
-    project_name                   => $project_name_real,
-    auth_url                       => $auth_url_real,
-    auth_uri                       => $auth_uri_real,
+    username                       => $username,
+    password                       => $password,
+    project_name                   => $project_name,
+    auth_url                       => $auth_url,
+    auth_uri                       => $auth_uri,
     auth_version                   => $auth_version,
     auth_type                      => $auth_type,
     auth_section                   => $auth_section,
@@ -272,11 +265,10 @@ class cinder::keystone::authtoken(
     memcache_security_strategy     => $memcache_security_strategy,
     memcache_use_advanced_pool     => $memcache_use_advanced_pool,
     memcache_pool_unused_timeout   => $memcache_pool_unused_timeout,
-    memcached_servers              => $memcached_servers_real,
+    memcached_servers              => $memcached_servers,
     region_name                    => $region_name,
     revocation_cache_time          => $revocation_cache_time,
     signing_dir                    => $signing_dir,
     token_cache_time               => $token_cache_time,
   }
 }
-

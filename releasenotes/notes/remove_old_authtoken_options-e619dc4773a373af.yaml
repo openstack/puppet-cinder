@@ -1,0 +1,9 @@
+---
+other:
+  - removed deprecated cinder::api::keystone_user
+  - removed deprecated cinder::api::keystone_password
+  - removed deprecated cinder::api::keystone_tenant
+  - removed deprecated cinder::api::auth_uri
+  - removed deprecated cinder::api::identity_uri
+  - removed deprecated cinder::api::memcached_servers
+  - removed deprecated cinder::api::keystone_enabled
