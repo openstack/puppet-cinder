@@ -405,7 +405,7 @@ class cinder (
 
   if $rpc_backend == 'cinder.openstack.common.rpc.impl_kombu' or $rpc_backend == 'rabbit' {
 
-    if is_service_default($rabbit_password) {
+    if is_service_default($default_transport_url) and is_service_default($rabbit_password) {
       fail('Please specify a rabbit_password parameter.')
     }
 
