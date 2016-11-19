@@ -1,11 +1,15 @@
 # == Class: cinder::params
 #
+# Parameters for puppet-cinder
+#
 class cinder::params {
   include ::openstacklib::defaults
 
+  $client_package            = 'python-cinderclient'
+  $cinder_wsgi_script_source = '/usr/bin/cinder-wsgi'
+
   if $::osfamily == 'Debian' {
     $package_name              = 'cinder-common'
-    $client_package            = 'python-cinderclient'
     $api_package               = 'cinder-api'
     $api_service               = 'cinder-api'
     $backup_package            = 'cinder-backup'
@@ -22,12 +26,10 @@ class cinder::params {
     $lio_package_name          = 'targetcli'
     $lock_path                 = '/var/lock/cinder'
     $cinder_wsgi_script_path   = '/usr/lib/cgi-bin/cinder'
-    $cinder_wsgi_script_source = '/usr/bin/cinder-wsgi'
 
   } elsif($::osfamily == 'RedHat') {
 
     $package_name              = 'openstack-cinder'
-    $client_package            = 'python-cinderclient'
     $api_package               = false
     $api_service               = 'openstack-cinder-api'
     $backup_package            = false
@@ -43,7 +45,6 @@ class cinder::params {
     $lio_package_name          = 'targetcli'
     $lock_path                 = '/var/lib/cinder/tmp'
     $cinder_wsgi_script_path   = '/var/www/cgi-bin/cinder'
-    $cinder_wsgi_script_source = '/usr/bin/cinder-wsgi'
 
     case $::operatingsystem {
       'RedHat', 'CentOS', 'Scientific', 'OracleLinux': {
