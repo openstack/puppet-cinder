@@ -342,14 +342,14 @@ running as a standalone service, or httpd for being run by a httpd server")
   }
 
   if $validate {
-    $keystone_tenant_real = $::cinder::keystone::authtoken::project_name
-    $keystone_username_real = $::cinder::keystone::authtoken::username
-    $keystone_password_real = $::cinder::keystone::authtoken::password
+    $keystone_project_name = $::cinder::keystone::authtoken::project_name
+    $keystone_username = $::cinder::keystone::authtoken::username
+    $keystone_password = $::cinder::keystone::authtoken::password
 
     $defaults = {
       'cinder-api' => {
         # lint:ignore:140chars
-        'command'  => "cinder --os-auth-url ${::cinder::keystone::authtoken::auth_uri} --os-project-name ${keystone_tenant_real} --os-username ${keystone_username_real} --os-password ${keystone_password_real} list",
+        'command'  => "cinder --os-auth-url ${::cinder::keystone::authtoken::auth_uri} --os-project-name ${keystone_project_name} --os-username ${keystone_username} --os-password ${keystone_password} list",
         # lint:endignore
       }
     }
