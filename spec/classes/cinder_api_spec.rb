@@ -20,8 +20,8 @@ describe 'cinder::api' do
 
       it { is_expected.to contain_service('cinder-api').with(
         'hasstatus' => true,
-        'ensure' => 'running',
-        'tag' => 'cinder-service',
+        'ensure'    => 'running',
+        'tag'       => 'cinder-service',
       )}
 
       it 'should configure cinder api correctly' do
@@ -69,7 +69,7 @@ describe 'cinder::api' do
       let :params do
         req_params.merge({
           'nova_catalog_admin_info' => 'compute:nova:adminURL',
-          'nova_catalog_info' => 'compute:nova:publicURL',
+          'nova_catalog_info'       => 'compute:nova:publicURL',
         })
       end
       it { is_expected.to contain_cinder_config('DEFAULT/nova_catalog_admin_info').with_value('compute:nova:adminURL') }
@@ -192,8 +192,8 @@ describe 'cinder::api' do
     describe 'with sync_db set to false' do
       let :params do
         {
-          :enabled           => true,
-          :sync_db           => false,
+          :enabled => true,
+          :sync_db => false,
         }
       end
       it { is_expected.not_to contain_class('cinder::db::sync') }
@@ -250,11 +250,11 @@ describe 'cinder::api' do
         })
       end
       it { is_expected.to contain_exec('execute cinder-api validation').with(
-        :path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-        :provider    => 'shell',
-        :tries       => '10',
-        :try_sleep   => '2',
-        :command     => 'cinder --os-auth-url http://localhost:5000 --os-project-name services --os-username cinder --os-password foo list',
+        :path      => '/usr/bin:/bin:/usr/sbin:/sbin',
+        :provider  => 'shell',
+        :tries     => '10',
+        :try_sleep => '2',
+        :command   => 'cinder --os-auth-url http://localhost:5000 --os-project-name services --os-username cinder --os-password foo list',
       )}
 
       it { is_expected.to contain_anchor('create cinder-api anchor').with(
@@ -265,16 +265,16 @@ describe 'cinder::api' do
     describe 'while validating the service with custom command' do
       let :params do
         req_params.merge({
-          :validate            => true,
-          :validation_options  => { 'cinder-api' => { 'command' => 'my-script' } }
+          :validate           => true,
+          :validation_options => { 'cinder-api' => { 'command' => 'my-script' } }
         })
       end
       it { is_expected.to contain_exec('execute cinder-api validation').with(
-        :path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-        :provider    => 'shell',
-        :tries       => '10',
-        :try_sleep   => '2',
-        :command     => 'my-script',
+        :path      => '/usr/bin:/bin:/usr/sbin:/sbin',
+        :provider  => 'shell',
+        :tries     => '10',
+        :try_sleep => '2',
+        :command   => 'my-script',
       )}
 
       it { is_expected.to contain_anchor('create cinder-api anchor').with(
@@ -294,7 +294,7 @@ describe 'cinder::api' do
     end
     describe 'when running cinder-api in wsgi' do
       let :params do
-        req_params.merge!({ :service_name   => 'httpd' })
+        req_params.merge!({ :service_name => 'httpd' })
       end
 
       let :pre_condition do
@@ -307,16 +307,16 @@ describe 'cinder::api' do
 
       it 'configures cinder-api service with Apache' do
         is_expected.to contain_service('cinder-api').with(
-          :ensure     => 'stopped',
-          :enable     => false,
-          :tag        => ['cinder-service'],
+          :ensure => 'stopped',
+          :enable => false,
+          :tag    => ['cinder-service'],
         )
       end
     end
 
     describe 'when service_name is not valid' do
       let :params do
-        req_params.merge!({ :service_name   => 'foobar' })
+        req_params.merge!({ :service_name => 'foobar' })
       end
 
       let :pre_condition do
@@ -333,10 +333,10 @@ describe 'cinder::api' do
     describe 'with SSL socket options set' do
       let :params do
         req_params.merge!({
-          :use_ssl         => true,
-          :cert_file       => '/path/to/cert',
-          :ca_file         => '/path/to/ca',
-          :key_file        => '/path/to/key',
+          :use_ssl   => true,
+          :cert_file => '/path/to/cert',
+          :ca_file   => '/path/to/ca',
+          :key_file  => '/path/to/key',
         })
       end
 
@@ -348,9 +348,9 @@ describe 'cinder::api' do
     describe 'with SSL socket options set wrongly configured' do
       let :params do
         req_params.merge!({
-          :use_ssl         => true,
-          :ca_file         => '/path/to/ca',
-          :key_file        => '/path/to/key',
+          :use_ssl  => true,
+          :ca_file  => '/path/to/ca',
+          :key_file => '/path/to/key',
         })
       end
 
