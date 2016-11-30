@@ -2,16 +2,16 @@ require 'spec_helper'
 describe 'cinder' do
   let :req_params do
     {
-      :rabbit_password => 'guest',
+      :rabbit_password     => 'guest',
       :database_connection => 'mysql://user:password@host/database',
-      :lock_path => '/var/lock/cinder',
+      :lock_path           => '/var/lock/cinder',
     }
   end
 
   let :facts do
     OSDefaults.get_facts({
-      :osfamily => 'Debian',
-      :operatingsystem => 'Debian',
+      :osfamily               => 'Debian',
+      :operatingsystem        => 'Debian',
       :operatingsystemrelease => 'jessie',
     })
   end
@@ -126,7 +126,7 @@ describe 'cinder' do
   describe 'with SSL enabled without kombu' do
     let :params do
       req_params.merge!({
-        :rabbit_use_ssl     => true,
+        :rabbit_use_ssl => true,
       })
     end
 
@@ -245,8 +245,8 @@ describe 'cinder' do
   describe 'with postgresql' do
     let :params do
       {
-        :database_connection      => 'postgresql://user:drowssap@host/database',
-        :rabbit_password       => 'guest',
+        :database_connection => 'postgresql://user:drowssap@host/database',
+        :rabbit_password     => 'guest',
       }
     end
 
