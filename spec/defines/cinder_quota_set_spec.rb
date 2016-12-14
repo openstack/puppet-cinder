@@ -27,8 +27,8 @@ describe 'cinder::quota_set' do
           params.merge!(param_set)
         end
         it do
-          is_expected.to contain_exec('cinder quota-class-update default').with(
-            :command => "cinder quota-class-update default --volumes 10 --snapshots 10 --gigabytes 1000 --volume-type 'hippo'",
+          is_expected.to contain_exec('openstack quota set --class default').with(
+            :command => "openstack quota set --class default --volumes 10 --snapshots 10 --gigabytes 1000 --volume-type 'hippo'",
             :environment => (param_set == {}) ?
               ['OS_TENANT_NAME=admin',
               'OS_USERNAME=admin',
@@ -39,7 +39,7 @@ describe 'cinder::quota_set' do
               'OS_PASSWORD=asdf',
               'OS_AUTH_URL=http://127.127.127.1:5000/v2.0/',
               'OS_REGION_NAME=test'],
-            :onlyif      => 'cinder quota-class-show default | grep -qP -- -1',
+            :onlyif      => 'openstack quota show --class default | grep -qP -- -1',
             :require => 'Anchor[cinder-support-package]')
         end
       end

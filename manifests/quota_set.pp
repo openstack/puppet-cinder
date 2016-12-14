@@ -78,11 +78,11 @@ define cinder::quota_set (
     ]
   }
 
-  exec {"cinder quota-class-update ${class_name}":
+  exec {"openstack quota set --class ${class_name}":
     # lint:ignore:140chars
-    command     => "cinder quota-class-update ${class_name} --volumes ${quota_volumes} --snapshots ${quota_snapshots} --gigabytes ${quota_gigabytes} --volume-type '${volume_type}'",
+    command     => "openstack quota set --class ${class_name} --volumes ${quota_volumes} --snapshots ${quota_snapshots} --gigabytes ${quota_gigabytes} --volume-type '${volume_type}'",
     # lint:endignore
-    onlyif      => 'cinder quota-class-show default | grep -qP -- -1',
+    onlyif      => 'openstack quota show --class default | grep -qP -- -1',
     environment => $cinder_env,
     require     => Anchor['cinder-support-package'],
     path        => ['/usr/bin', '/bin'],
