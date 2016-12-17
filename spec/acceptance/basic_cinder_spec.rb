@@ -56,6 +56,14 @@ describe 'basic cinder' do
       class { '::cinder::quota': }
       class { '::cinder::scheduler': }
       class { '::cinder::scheduler::filter': }
+      class { '::cinder::setup_test_volume': }
+      cinder::backend::iscsi { 'iscsi_backend':
+        iscsi_ip_address   => '127.0.0.1',
+        manage_volume_type => true,
+      }
+      class { '::cinder::backends':
+        enabled_backends => ['iscsi_backend'],
+      }
       class { '::cinder::volume': }
       class { '::cinder::cron::db_purge': }
       cinder::type { 'test-type': }
