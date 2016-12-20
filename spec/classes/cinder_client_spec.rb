@@ -25,6 +25,13 @@ describe 'cinder::client' do
       )
     end
 
+    it 'installs openstackclient package' do
+      is_expected.to contain_package('python-openstackclient').with(
+        'ensure' => 'present',
+        'tag'    => 'openstack',
+      )
+    end
+
   end
 
   on_supported_os({

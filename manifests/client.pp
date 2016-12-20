@@ -20,4 +20,6 @@ class cinder::client(
     name   => $::cinder::params::client_package,
     tag    => ['openstack', 'cinder-support-package'],
   }
+
+  include '::openstacklib::openstackclient'
 }
