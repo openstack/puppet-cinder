@@ -37,6 +37,13 @@ describe 'cinder::wsgi::apache' do
         'docroot_group'               => 'cinder',
         'ssl'                         => 'true',
         'wsgi_daemon_process'         => 'cinder-api',
+        'wsgi_daemon_process_options' => {
+          'user'         => 'cinder',
+          'group'        => 'cinder',
+          'processes'    => 1,
+          'threads'      => '42',
+          'display-name' => 'cinder_wsgi',
+        },
         'wsgi_process_group'          => 'cinder-api',
         'wsgi_script_aliases'         => { '/' => "#{platform_params[:wsgi_script_path]}/cinder-api" },
         'require'                     => 'File[cinder_wsgi]'
@@ -47,11 +54,12 @@ describe 'cinder::wsgi::apache' do
     describe 'when overriding parameters using different ports' do
       let :params do
         {
-          :servername  => 'dummy.host',
-          :bind_host   => '10.42.51.1',
-          :port        => 12345,
-          :ssl         => false,
-          :workers     => 37,
+          :servername                => 'dummy.host',
+          :bind_host                 => '10.42.51.1',
+          :port                      => 12345,
+          :ssl                       => false,
+          :wsgi_process_display_name => 'cinder-api',
+          :workers                   => 37,
         }
       end
 
@@ -64,6 +72,13 @@ describe 'cinder::wsgi::apache' do
         'docroot_group'               => 'cinder',
         'ssl'                         => 'false',
         'wsgi_daemon_process'         => 'cinder-api',
+        'wsgi_daemon_process_options' => {
+            'user'         => 'cinder',
+            'group'        => 'cinder',
+            'processes'    => '37',
+            'threads'      => '42',
+            'display-name' => 'cinder-api',
+        },
         'wsgi_process_group'          => 'cinder-api',
         'wsgi_script_aliases'         => { '/' => "#{platform_params[:wsgi_script_path]}/cinder-api" },
         'require'                     => 'File[cinder_wsgi]'
