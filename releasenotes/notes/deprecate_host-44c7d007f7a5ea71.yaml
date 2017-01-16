@@ -1,0 +1,4 @@
+---
+deprecations:
+  - host option is deprecated, backend_host
+    option is added instead.

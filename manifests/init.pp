@@ -237,15 +237,14 @@
 #   'cinder::backend::rdb::volume_tmp_dir' parameter.
 #   Defaults to $::os_service_default
 #
-# [*host*]
-#   (optional) Name of this node. This can be an opaque identifier. It is
-#   not necessarily a host name, FQDN, or IP address.
-#   Defaults to $::os_service_default
-#
 # [*purge_config*]
 #   (optional) Whether to set only the specified config options
 #   in the cinder config.
 #   Defaults to false.
+#
+# [*backend_host*]
+#   (optional) Backend override of host value.
+#   Defaults to $::os_service_default.
 #
 # === DEPRECATED PARAMETERS
 #
@@ -301,6 +300,11 @@
 #   (Optional) DEPRECATED. Virtual_host to use.
 #   Defaults to $::os_service_default
 #
+# [*host*]
+#   (optional) DEPRECATED. Name of this node. This can be an opaque identifier. It is
+#   not necessarily a host name, FQDN, or IP address.
+#   Defaults to $::os_service_default.
+#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -354,8 +358,8 @@ class cinder (
   $enable_v3_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
-  $host                               = $::os_service_default,
   $purge_config                       = false,
+  $backend_host                       = $::os_service_default,
   # DEPRECATED PARAMETERS
   $enable_v1_api                      = undef,
   $enable_v2_api                      = undef,
@@ -369,6 +373,7 @@ class cinder (
   $rabbit_port                        = $::os_service_default,
   $rabbit_userid                      = $::os_service_default,
   $rabbit_virtual_host                = $::os_service_default,
+  $host                               = $::os_service_default,
 ) inherits cinder::params {
 
   include ::cinder::deps
@@ -381,6 +386,10 @@ class cinder (
 
   if $enable_v2_api {
     warning('enable_v2_api is deprecated, has no effect and will be removed in a future release')
+  }
+
+  if !is_service_default($host) {
+    warning('host is deprecated, has no effect and will be removed in a future release, use backend_host instead')
   }
 
   if !is_service_default($rabbit_host) or
@@ -472,6 +481,7 @@ deprecated. Please use cinder::default_transport_url instead.")
     'DEFAULT/allow_availability_zone_fallback': value => $allow_availability_zone_fallback;
     'DEFAULT/image_conversion_dir':             value => $image_conversion_dir;
     'DEFAULT/host':                             value => $host;
+    'DEFAULT/backend_host':                     value => $backend_host;
   }
 
   # V3 APIs
