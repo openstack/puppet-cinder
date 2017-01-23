@@ -34,8 +34,14 @@
 #   (optional) Server certificate path.
 #   Defaults to $::os_service_default
 #
+# [*sio_protection_domain_id*]
+#   (String) Protection Domain ID.
+#
 # [*sio_protection_domain_name*]
 #   (String) Protection Domain name.
+#
+# [*sio_storage_pool_id*]
+#   (String) Storage Pool ID.
 #
 # [*sio_storage_pool_name*]
 #   (String) Storage Pool name.
@@ -97,7 +103,9 @@ define cinder::backend::scaleio (
   $sio_login,
   $sio_password,
   $sio_server_hostname,
+  $sio_protection_domain_id,
   $sio_protection_domain_name,
+  $sio_storage_pool_id,
   $sio_storage_pool_name,
   $sio_storage_pools,
   $volume_backend_name              = $name,
@@ -121,7 +129,9 @@ define cinder::backend::scaleio (
     "${name}/sio_rest_server_port":             value => $sio_server_port;
     "${name}/sio_verify_server_certificate":    value => $sio_verify_server_certificate;
     "${name}/sio_server_certificate_path":      value => $sio_server_certificate_path;
+    "${name}/sio_protection_domain_id":         value => $sio_protection_domain_id;
     "${name}/sio_protection_domain_name":       value => $sio_protection_domain_name;
+    "${name}/sio_storage_pool_id":              value => $sio_storage_pool_id;
     "${name}/sio_storage_pool_name":            value => $sio_storage_pool_name;
     "${name}/sio_storage_pools":                value => $sio_storage_pools;
     "${name}/sio_round_volume_capacity":        value => $sio_round_volume_capacity;

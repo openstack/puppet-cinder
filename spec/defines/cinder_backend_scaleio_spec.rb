@@ -19,9 +19,11 @@ describe 'cinder::backend::scaleio' do
       :sio_server_certificate_path      => '/path/cert.pem',
       :sio_max_over_subscription_ratio  => '6.0',
       :sio_verify_server_certificate    => true,
+      :sio_storage_pool_id              => 'poolid1',
       :sio_storage_pools                => 'domain1:pool1,domain2:pool2',
       :sio_storage_pool_name            => 'pool1',
-      :sio_protection_domain_name       => 'doimain1',
+      :sio_protection_domain_id         => 'domainid1',
+      :sio_protection_domain_name       => 'domain1',
       :sio_unmap_volume_before_deletion => false,
       :sio_round_volume_capacity        => true,
     }
