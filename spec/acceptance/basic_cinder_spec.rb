@@ -29,11 +29,9 @@ describe 'basic cinder' do
 
       # Cinder resources
       class { '::cinder':
-        database_connection => 'mysql+pymysql://cinder:a_big_secret@127.0.0.1/cinder?charset=utf8',
-        rabbit_userid       => 'cinder',
-        rabbit_password     => 'an_even_bigger_secret',
-        rabbit_host         => '127.0.0.1',
-        debug               => true,
+        default_transport_url => 'rabbit://cinder:an_even_bigger_secret@127.0.0.1/',
+        database_connection   => 'mysql+pymysql://cinder:a_big_secret@127.0.0.1/cinder?charset=utf8',
+        debug                 => true,
       }
       class { '::cinder::keystone::auth':
         password => 'a_big_secret',
