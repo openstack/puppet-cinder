@@ -145,7 +145,7 @@ class { 'cinder::backends':
 }
 ```
 
-Note: that the name passed to any backend resource must be unique accross all
+Note: that the name passed to any backend resource must be unique across all
       backends otherwise a duplicate resource will be defined.
 
 ** Using cinder_type **
