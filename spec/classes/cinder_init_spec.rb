@@ -34,6 +34,7 @@ describe 'cinder' do
     it 'should contain default config' do
       is_expected.to contain_cinder_config('DEFAULT/transport_url').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/rpc_backend').with(:value => 'rabbit')
+      is_expected.to contain_cinder_config('DEFAULT/rpc_response_timeout').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/control_exchange').with(:value => 'openstack')
       is_expected.to contain_cinder_config('DEFAULT/report_interval').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/service_down_time').with(:value => '<SERVICE DEFAULT>')

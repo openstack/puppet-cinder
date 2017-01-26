@@ -22,6 +22,10 @@
 #   (Optional) Use these options to configure the RabbitMQ message system.
 #   Defaults to 'rabbit'
 #
+# [*rpc_response_timeout*]
+#   (optional) Seconds to wait for a response from a call
+#   Defaults to $::os_service_default
+#
 # [*control_exchange*]
 #   (Optional)
 #   Defaults to 'openstack'.
@@ -315,6 +319,7 @@ class cinder (
   $database_max_overflow              = undef,
   $default_transport_url              = $::os_service_default,
   $rpc_backend                        = 'rabbit',
+  $rpc_response_timeout               = $::os_service_default,
   $control_exchange                   = 'openstack',
   $rabbit_ha_queues                   = $::os_service_default,
   $rabbit_heartbeat_timeout_threshold = $::os_service_default,
@@ -462,8 +467,9 @@ deprecated. Please use cinder::default_transport_url instead.")
   }
 
   oslo::messaging::default { 'cinder_config':
-    transport_url    => $default_transport_url,
-    control_exchange => $control_exchange,
+    transport_url        => $default_transport_url,
+    rpc_response_timeout => $rpc_response_timeout,
+    control_exchange     => $control_exchange,
   }
 
   if ! $default_availability_zone {
