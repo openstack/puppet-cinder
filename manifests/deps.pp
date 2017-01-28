@@ -29,6 +29,10 @@ class cinder::deps {
   -> Cinder_api_paste_ini<||>
   ~> Anchor['cinder::config::end']
 
+  # all db settings should be applied and all packages should be installed
+  # before dbsync starts
+  Oslo::Db<||> -> Anchor['cinder::dbsync::begin']
+
   # policy config should occur in the config block also.
   Anchor['cinder::config::begin']
   -> Openstacklib::Policy::Base<||>
