@@ -12,13 +12,11 @@ describe 'cinder::volume::netapp' do
       :netapp_password              => 'password',
       :netapp_server_hostname       => '127.0.0.2',
       :netapp_vfiler                => 'netapp_vfiler',
-      :netapp_volume_list           => 'vol1,vol2',
       :netapp_vserver               => 'netapp_vserver',
       :netapp_partner_backend_name  => 'fc2',
       :netapp_copyoffload_tool_path => '/tmp/na_copyoffload_64',
       :netapp_controller_ips        => '10.0.0.2,10.0.0.3',
       :netapp_sa_password           => 'password',
-      :netapp_storage_pools         => 'pool1,pool2',
     }
   end
 
