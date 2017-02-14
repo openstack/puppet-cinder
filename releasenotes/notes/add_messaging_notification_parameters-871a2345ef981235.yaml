@@ -1,0 +1,4 @@
+---
+features:
+  - Add new parameter "notification_topics", AMQP topic used
+    for OpenStack notifications.

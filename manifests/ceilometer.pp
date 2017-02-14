@@ -19,9 +19,14 @@
 #   'cinder.openstack.common.notifier.rabbit_notifier' was used. oslo.messaging
 #   was adopted in icehouse/juno. See LP#1425713.
 #
+# [*notification_topics*]
+#   (optional) AMQP topic used for OpenStack notifications
+#   Defaults to $::os_service_default
+#
 class cinder::ceilometer (
   $notification_transport_url = $::os_service_default,
   $notification_driver        = 'messagingv2',
+  $notification_topics        = $::os_service_default,
 ) {
 
   include ::cinder::deps
@@ -29,5 +34,6 @@ class cinder::ceilometer (
   oslo::messaging::notifications { 'cinder_config':
     transport_url => $notification_transport_url,
     driver        => $notification_driver,
+    topics        => $notification_topics,
   }
 }
