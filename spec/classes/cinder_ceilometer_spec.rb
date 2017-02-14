@@ -12,6 +12,8 @@ describe 'cinder::ceilometer' do
         :value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_notifications/driver').with(
         :value => 'messagingv2')
+      is_expected.to contain_cinder_config('oslo_messaging_notifications/topics').with(
+        :value => '<SERVICE DEFAULT>')
     end
   end
 end
