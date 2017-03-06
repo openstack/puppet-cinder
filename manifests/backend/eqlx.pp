@@ -61,25 +61,6 @@
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
 #
-# === DEPRECATED PARAMETERS
-#
-# [*eqlx_use_chap*]
-#   (optional) DEPRECATED.Boolean. Use CHAP authentification for targets. The default
-#   value in OpenStack is assumed to be false for this.
-#   Defaults to undef
-#
-# [*eqlx_chap_login*]
-#   (optional) DEPRECATED. An existing CHAP account name.
-#   Defaults to undef
-#
-# [*eqlx_chap_password*]
-#   (optional) DEPRECATED. The password for the specified CHAP account name.
-#   Defaults to undef
-#
-# [*eqlx_cli_timeout*]
-#   (optional) The timeout for the Group Manager cli command execution.
-#   Defaults to undef
-#
 define cinder::backend::eqlx (
   $san_ip,
   $san_login,
@@ -95,49 +76,16 @@ define cinder::backend::eqlx (
   $use_chap_auth        = $::os_service_default,
   $ssh_conn_timeout     = $::os_service_default,
   $manage_volume_type   = false,
-  # Deprecated
-  $eqlx_use_chap        = undef,
-  $eqlx_chap_login      = undef,
-  $eqlx_chap_password   = undef,
-  $eqlx_cli_timeout     = undef,
 ) {
 
   include ::cinder::deps
 
-  if $eqlx_chap_login {
-    warning('eqlx_chap_login is deprecated and will be removed after Newton cycle. Please use chap_username instead.')
-    $chap_username_real = $eqlx_chap_login
-  } else {
-    if is_service_default($chap_username) {
-      fail('chap_username need to be set.')
-    } else {
-      $chap_username_real = $chap_username
-    }
+  if is_service_default($chap_username) {
+    fail('chap_username need to be set.')
   }
 
-  if $eqlx_chap_password {
-    warning('eqlx_chap_password is deprecated and will be removed after Newton cycle. Please use chap_password instead.')
-    $chap_password_real = $eqlx_chap_password
-  } else {
-    if is_service_default($chap_password) {
-      fail('chap_password need to be set.')
-    } else {
-      $chap_password_real = $chap_password
-    }
-  }
-
-  if $eqlx_use_chap {
-    warning('eqlx_use_chap is deprecated and will be removed after Newton cycle. Please use use_chap_auth instead.')
-    $use_chap_auth_real = $eqlx_use_chap
-  } else {
-    $use_chap_auth_real = $use_chap_auth
-  }
-
-  if $eqlx_cli_timeout {
-    warning('eqlx_cli_timeout is deprecated and will be removed after Newton cycle. Please use ssh_conn_timeout instead.')
-    $ssh_conn_timeout_real = $eqlx_cli_timeout
-  } else {
-    $ssh_conn_timeout_real = $ssh_conn_timeout
+  if is_service_default($chap_password) {
+    fail('chap_password need to be set.')
   }
 
   cinder_config {
@@ -148,8 +96,8 @@ define cinder::backend::eqlx (
     "${name}/san_password":         value => $san_password, secret => true;
     "${name}/san_thin_provision":   value => $san_thin_provision;
     "${name}/eqlx_group_name":      value => $eqlx_group_name;
-    "${name}/use_chap_auth":        value => $use_chap_auth_real;
-    "${name}/ssh_conn_timeout":     value => $ssh_conn_timeout_real;
+    "${name}/use_chap_auth":        value => $use_chap_auth;
+    "${name}/ssh_conn_timeout":     value => $ssh_conn_timeout;
     "${name}/eqlx_cli_max_retries": value => $eqlx_cli_max_retries;
     "${name}/eqlx_pool":            value => $eqlx_pool;
   }
@@ -162,10 +110,10 @@ define cinder::backend::eqlx (
   }
 
   # the default for this is false
-  if !is_service_default($use_chap_auth_real) and $use_chap_auth_real == true {
+  if !is_service_default($use_chap_auth) and $use_chap_auth == true {
     cinder_config {
-      "${name}/chap_username": value => $chap_username_real;
-      "${name}/chap_password": value => $chap_password_real, secret => true;
+      "${name}/chap_username": value => $chap_username;
+      "${name}/chap_password": value => $chap_password, secret => true;
     }
   }
 
