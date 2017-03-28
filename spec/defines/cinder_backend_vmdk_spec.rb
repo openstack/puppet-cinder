@@ -35,7 +35,7 @@ describe 'cinder::backend::vmdk' do
     is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.vmware.vmdk.VMwareVcVmdkDriver')
     is_expected.to contain_cinder_config('hippo/vmware_host_ip').with_value(params[:host_ip])
     is_expected.to contain_cinder_config('hippo/vmware_host_username').with_value(params[:host_username])
-    is_expected.to contain_cinder_config('hippo/vmware_host_password').with_value(params[:host_password])
+    is_expected.to contain_cinder_config('hippo/vmware_host_password').with_value(params[:host_password]).with_secret(true)
     is_expected.to contain_cinder_config('hippo/vmware_volume_folder').with_value('cinder-volumes')
     is_expected.to contain_cinder_config('hippo/vmware_api_retry_count').with_value(params[:api_retry_count])
     is_expected.to contain_cinder_config('hippo/vmware_max_object_retrieval').with_value(params[:max_object_retrieval])

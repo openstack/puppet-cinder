@@ -120,7 +120,7 @@ define cinder::backend::gpfs (
     "${name}/gpfs_images_dir":        value => $gpfs_images_dir;
     "${name}/nas_host":               value => $nas_host;
     "${name}/nas_login":              value => $nas_login;
-    "${name}/nas_password":           value => $nas_password;
+    "${name}/nas_password":           value => $nas_password, secret => true;
     "${name}/nas_private_key":        value => $nas_private_key;
     "${name}/nas_ssh_port":           value => $nas_ssh_port;
   }

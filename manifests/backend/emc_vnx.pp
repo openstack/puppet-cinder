@@ -113,7 +113,7 @@ define cinder::backend::emc_vnx (
     "${name}/naviseccli_path":                 value => $naviseccli_path;
     "${name}/san_ip":                          value => $san_ip;
     "${name}/san_login":                       value => $san_login;
-    "${name}/san_password":                    value => $san_password;
+    "${name}/san_password":                    value => $san_password, secret => true;
     "${name}/storage_vnx_pool_name":           value => $storage_vnx_pool_name;
     "${name}/volume_backend_name":             value => $volume_backend_name;
     "${name}/volume_driver":                   value => $volume_driver;

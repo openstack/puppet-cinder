@@ -53,7 +53,7 @@ class cinder::backup::tsm (
   cinder_config {
     'DEFAULT/backup_driver':            value => $backup_driver;
     'DEFAULT/backup_tsm_volume_prefix': value => $backup_tsm_volume_prefix;
-    'DEFAULT/backup_tsm_password':      value => $backup_tsm_password;
+    'DEFAULT/backup_tsm_password':      value => $backup_tsm_password, secret => true;
     'DEFAULT/backup_tsm_compression':   value => $backup_tsm_compression;
   }
 

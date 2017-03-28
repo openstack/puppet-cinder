@@ -26,7 +26,7 @@ describe 'cinder::backend::emc_vnx' do
       is_expected.to contain_cinder_config('emc/storage_protocol').with_value('iscsi')
       is_expected.to contain_cinder_config('emc/san_ip').with_value('127.0.0.2')
       is_expected.to contain_cinder_config('emc/san_login').with_value('emc')
-      is_expected.to contain_cinder_config('emc/san_password').with_value('password')
+      is_expected.to contain_cinder_config('emc/san_password').with_value('password').with_secret(true)
       is_expected.to contain_cinder_config('emc/storage_vnx_pool_name').with_value('emc-storage-pool')
       is_expected.to contain_cinder_config('emc/initiator_auto_registration').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value('<SERVICE DEFAULT>')
