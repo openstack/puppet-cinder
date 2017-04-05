@@ -1,77 +1,77 @@
 {
-  "name": "openstack-cinder",
-  "version": "11.0.0-dev",
-  "author": "Puppet Labs and OpenStack Contributors",
-  "summary": "Puppet module for OpenStack Cinder",
-  "license": "Apache-2.0",
-  "source": "git://github.com/openstack/puppet-cinder.git",
-  "project_page": "https://launchpad.net/puppet-cinder",
-  "issues_url": "https://bugs.launchpad.net/puppet-cinder",
-  "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": "4.x"
-    },
-    {
-      "name": "puppet",
-      "version_requirement": "4.x"
-    }
-  ],
-  "operatingsystem_support": [
-    {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Fedora",
-      "operatingsystemrelease": [
-        "24"
-      ]
-    },
-    {
-      "operatingsystem": "RedHat",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [
-        "16.04"
-      ]
-    }
-  ],
-  "description": "Installs and configures OpenStack Cinder (Block Storage).",
-  "dependencies": [
-    {
-      "name": "puppetlabs/inifile",
-      "version_requirement": ">=1.0.0 <2.0.0"
-    },
-    {
-      "name": "openstack/keystone",
-      "version_requirement": ">=11.0.0 <12.0.0"
-    },
-    {
-      "name": "puppetlabs/rabbitmq",
-      "version_requirement": ">=2.0.2 <6.0.0"
-    },
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.0.0 <5.0.0"
-    },
-    {
-      "name": "openstack/openstacklib",
-      "version_requirement": ">=11.0.0 <12.0.0"
-    },
-    {
-      "name": "openstack/oslo",
-      "version_requirement": ">=11.0.0 <12.0.0"
-    },
-    {
-      "name": "puppetlabs/apache",
-      "version_requirement": ">=1.0.0 <2.0.0"
-    }
-  ]
+    "author": "Puppet Labs and OpenStack Contributors",
+    "dependencies": [
+        {
+            "name": "puppetlabs/inifile",
+            "version_requirement": ">=1.0.0 <2.0.0"
+        },
+        {
+            "name": "openstack/keystone",
+            "version_requirement": ">=11.0.0 <12.0.0"
+        },
+        {
+            "name": "puppetlabs/rabbitmq",
+            "version_requirement": ">=2.0.2 <6.0.0"
+        },
+        {
+            "name": "puppetlabs/stdlib",
+            "version_requirement": ">=4.0.0 <5.0.0"
+        },
+        {
+            "name": "openstack/openstacklib",
+            "version_requirement": ">=11.0.0 <12.0.0"
+        },
+        {
+            "name": "openstack/oslo",
+            "version_requirement": ">=11.0.0 <12.0.0"
+        },
+        {
+            "name": "puppetlabs/apache",
+            "version_requirement": ">=1.0.0 <2.0.0"
+        }
+    ],
+    "description": "Installs and configures OpenStack Cinder (Block Storage).",
+    "issues_url": "https://bugs.launchpad.net/puppet-cinder",
+    "license": "Apache-2.0",
+    "name": "openstack-cinder",
+    "operatingsystem_support": [
+        {
+            "operatingsystem": "Debian",
+            "operatingsystemrelease": [
+                "7"
+            ]
+        },
+        {
+            "operatingsystem": "Fedora",
+            "operatingsystemrelease": [
+                "24"
+            ]
+        },
+        {
+            "operatingsystem": "RedHat",
+            "operatingsystemrelease": [
+                "7"
+            ]
+        },
+        {
+            "operatingsystem": "Ubuntu",
+            "operatingsystemrelease": [
+                "16.04"
+            ]
+        }
+    ],
+    "project_page": "https://launchpad.net/puppet-cinder",
+    "requirements": [
+        {
+            "name": "pe",
+            "version_requirement": "4.x"
+        },
+        {
+            "name": "puppet",
+            "version_requirement": "4.x"
+        }
+    ],
+    "source": "git://github.com/openstack/puppet-cinder.git",
+    "summary": "Puppet module for OpenStack Cinder",
+    "version": "11.0.0"
 }
