@@ -6,12 +6,14 @@ describe 'cinder::db' do
 
     context 'with default parameters' do
 
-      it { is_expected.to contain_cinder_config('database/db_max_retries').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_cinder_config('database/connection').with_value('sqlite:////var/lib/cinder/cinder.sqlite').with_secret(true) }
-      it { is_expected.to contain_cinder_config('database/idle_timeout').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_cinder_config('database/min_pool_size').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_cinder_config('database/max_retries').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_cinder_config('database/retry_interval').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_oslo__db('cinder_config').with(
+        :db_max_retries => '<SERVICE DEFAULT>',
+        :connection     => 'sqlite:////var/lib/cinder/cinder.sqlite',
+        :idle_timeout   => '<SERVICE DEFAULT>',
+        :min_pool_size  => '<SERVICE DEFAULT>',
+        :max_retries    => '<SERVICE DEFAULT>',
+        :retry_interval => '<SERVICE DEFAULT>',
+      )}
 
     end
 
@@ -25,17 +27,19 @@ describe 'cinder::db' do
           :database_retry_interval => '11', }
       end
 
-      it { is_expected.to contain_cinder_config('database/db_max_retries').with_value('-1') }
-      it { is_expected.to contain_cinder_config('database/connection').with_value('mysql+pymysql://cinder:cinder@localhost/cinder').with_secret(true) }
-      it { is_expected.to contain_cinder_config('database/idle_timeout').with_value('3601') }
-      it { is_expected.to contain_cinder_config('database/min_pool_size').with_value('2') }
-      it { is_expected.to contain_cinder_config('database/max_retries').with_value('11') }
-      it { is_expected.to contain_cinder_config('database/retry_interval').with_value('11') }
+      it { is_expected.to contain_oslo__db('cinder_config').with(
+        :db_max_retries => '-1',
+        :connection     => 'mysql+pymysql://cinder:cinder@localhost/cinder',
+        :idle_timeout   => '3601',
+        :min_pool_size  => '2',
+        :max_retries    => '11',
+        :retry_interval => '11',
+      )}
     end
 
     context 'with postgresql backend' do
       let :params do
-        { :database_connection     => 'postgresql://cinder:cinder@localhost/cinder', }
+        { :database_connection => 'postgresql://cinder:cinder@localhost/cinder', }
       end
 
       it 'install the proper backend package' do
@@ -46,7 +50,7 @@ describe 'cinder::db' do
 
     context 'with MySQL-python library as backend package' do
       let :params do
-        { :database_connection     => 'mysql://cinder:cinder@localhost/cinder', }
+        { :database_connection => 'mysql://cinder:cinder@localhost/cinder', }
       end
 
       it { is_expected.to contain_package('python-mysqldb').with(:ensure => 'present') }
@@ -54,7 +58,7 @@ describe 'cinder::db' do
 
     context 'with incorrect database_connection string' do
       let :params do
-        { :database_connection     => 'redis://cinder:cinder@localhost/cinder', }
+        { :database_connection => 'redis://cinder:cinder@localhost/cinder', }
       end
 
       it_raises 'a Puppet::Error', /validate_re/
@@ -62,7 +66,7 @@ describe 'cinder::db' do
 
     context 'with incorrect pymysql database_connection string' do
       let :params do
-        { :database_connection     => 'foo+pymysql://cinder:cinder@localhost/cinder', }
+        { :database_connection => 'foo+pymysql://cinder:cinder@localhost/cinder', }
       end
 
       it_raises 'a Puppet::Error', /validate_re/
