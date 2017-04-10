@@ -39,6 +39,10 @@
 #   (optional) The Storage Center iSCSI IP port.
 #   Defaults to $::os_service_default
 #
+# [*excluded_domain_ip*]
+#   (optional) Domain IP to be excluded from iSCSI returns of Storage Center.
+#   Defaults to $::os_service_default
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
 #   Defaults to: {}
@@ -56,6 +60,7 @@ class cinder::volume::dellsc_iscsi (
   $dell_sc_verify_cert   = $::os_service_default,
   $dell_sc_volume_folder = 'vol',
   $iscsi_port            = $::os_service_default,
+  $excluded_domain_ip    = $::os_service_default,
   $extra_options         = {},
 ) {
 
@@ -75,6 +80,7 @@ cinder::backend::dellsc_iscsi instead.')
     dell_sc_verify_cert   => $dell_sc_verify_cert,
     dell_sc_volume_folder => $dell_sc_volume_folder,
     iscsi_port            => $iscsi_port,
+    excluded_domain_ip    => $excluded_domain_ip,
     extra_options         => $extra_options,
   }
 }

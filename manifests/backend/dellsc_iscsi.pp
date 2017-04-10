@@ -43,6 +43,10 @@
 #   (optional) The ISCSI IP Port of the Storage Center.
 #   Defaults to $::os_service_default
 #
+# [*excluded_domain_ip*]
+#   (optional) Domain IP to be excluded from iSCSI returns of Storage Center.
+#   Defaults to $::os_service_default
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
 #   Defaults to: {}
@@ -67,6 +71,7 @@ define cinder::backend::dellsc_iscsi (
   $dell_sc_verify_cert   = $::os_service_default,
   $dell_sc_volume_folder = 'vol',
   $iscsi_port            = $::os_service_default,
+  $excluded_domain_ip    = $::os_service_default,
   $manage_volume_type    = false,
   $extra_options         = {},
 ) {
@@ -97,6 +102,7 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
     "${name}/dell_sc_verify_cert":   value => $dell_sc_verify_cert;
     "${name}/dell_sc_volume_folder": value => $dell_sc_volume_folder;
     "${name}/iscsi_port":            value => $iscsi_port;
+    "${name}/excluded_domain_ip":    value => $excluded_domain_ip;
   }
 
   if $manage_volume_type {
