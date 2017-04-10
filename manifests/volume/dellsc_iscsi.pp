@@ -43,6 +43,22 @@
 #   (optional) Domain IP to be excluded from iSCSI returns of Storage Center.
 #   Defaults to $::os_service_default
 #
+# [*secondary_san_ip*]
+#   (optional) IP address of secondary DSM controller.
+#   Defaults to $::os_service_default
+#
+# [*secondary_san_login*]
+#   (optional) Secondary DSM user name.
+#   Defaults to $::os_service_default
+#
+# [*secondary_san_password*]
+#   (optional) Secondary DSM user password.
+#   Defaults to $::os_service_default
+#
+# [*secondary_sc_api_port*]
+#   (optional) Secondary Dell API port.
+#   Defaults to os_service_default
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
 #   Defaults to: {}
@@ -55,13 +71,17 @@ class cinder::volume::dellsc_iscsi (
   $san_password,
   $iscsi_ip_address,
   $dell_sc_ssn,
-  $dell_sc_api_port      = $::os_service_default,
-  $dell_sc_server_folder = 'srv',
-  $dell_sc_verify_cert   = $::os_service_default,
-  $dell_sc_volume_folder = 'vol',
-  $iscsi_port            = $::os_service_default,
-  $excluded_domain_ip    = $::os_service_default,
-  $extra_options         = {},
+  $dell_sc_api_port       = $::os_service_default,
+  $dell_sc_server_folder  = 'srv',
+  $dell_sc_verify_cert    = $::os_service_default,
+  $dell_sc_volume_folder  = 'vol',
+  $iscsi_port             = $::os_service_default,
+  $excluded_domain_ip     = $::os_service_default,
+  $secondary_san_ip       = $::os_service_default,
+  $secondary_san_login    = $::os_service_default,
+  $secondary_san_password = $::os_service_default,
+  $secondary_sc_api_port  = $::os_service_default,
+  $extra_options          = {},
 ) {
 
   include ::cinder::deps
@@ -70,17 +90,21 @@ class cinder::volume::dellsc_iscsi (
 cinder::backend::dellsc_iscsi instead.')
 
   cinder::backend::dellsc_iscsi { 'DEFAULT':
-    san_ip                => $san_ip,
-    san_login             => $san_login,
-    san_password          => $san_password,
-    iscsi_ip_address      => $iscsi_ip_address,
-    dell_sc_ssn           => $dell_sc_ssn,
-    dell_sc_api_port      => $dell_sc_api_port,
-    dell_sc_server_folder => $dell_sc_server_folder,
-    dell_sc_verify_cert   => $dell_sc_verify_cert,
-    dell_sc_volume_folder => $dell_sc_volume_folder,
-    iscsi_port            => $iscsi_port,
-    excluded_domain_ip    => $excluded_domain_ip,
-    extra_options         => $extra_options,
+    san_ip                 => $san_ip,
+    san_login              => $san_login,
+    san_password           => $san_password,
+    iscsi_ip_address       => $iscsi_ip_address,
+    dell_sc_ssn            => $dell_sc_ssn,
+    dell_sc_api_port       => $dell_sc_api_port,
+    dell_sc_server_folder  => $dell_sc_server_folder,
+    dell_sc_verify_cert    => $dell_sc_verify_cert,
+    dell_sc_volume_folder  => $dell_sc_volume_folder,
+    iscsi_port             => $iscsi_port,
+    excluded_domain_ip     => $excluded_domain_ip,
+    secondary_san_ip       => $secondary_san_ip,
+    secondary_san_login    => $secondary_san_login,
+    secondary_san_password => $secondary_san_password,
+    secondary_sc_api_port  => $secondary_sc_api_port,
+    extra_options          => $extra_options,
   }
 }
