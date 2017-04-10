@@ -18,12 +18,16 @@ describe 'cinder::backend::dellsc_iscsi' do
 
   let :default_params do
     {
-      :dell_sc_api_port      => '<SERVICE DEFAULT>',
-      :dell_sc_server_folder => 'srv',
-      :dell_sc_verify_cert   => '<SERVICE DEFAULT>',
-      :dell_sc_volume_folder => 'vol',
-      :iscsi_port            => '<SERVICE DEFAULT>',
-      :excluded_domain_ip    => '<SERVICE DEFAULT>',
+      :dell_sc_api_port       => '<SERVICE DEFAULT>',
+      :dell_sc_server_folder  => 'srv',
+      :dell_sc_verify_cert    => '<SERVICE DEFAULT>',
+      :dell_sc_volume_folder  => 'vol',
+      :iscsi_port             => '<SERVICE DEFAULT>',
+      :excluded_domain_ip     => '<SERVICE DEFAULT>',
+      :secondary_san_ip       => '<SERVICE DEFAULT>',
+      :secondary_san_login    => '<SERVICE DEFAULT>',
+      :secondary_san_password => '<SERVICE DEFAULT>',
+      :secondary_sc_api_port  => '<SERVICE DEFAULT>',
     }
   end
 
