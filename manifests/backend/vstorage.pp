@@ -52,6 +52,10 @@
 #   (optional) Mount permissions.
 #   Defaults to: 0770
 #
+# [*manage_package*]
+#   (optional) Ensures VStorage client package is installed if true.
+#   Defaults to: true
+#
 define cinder::backend::vstorage (
   $cluster_name,
   $cluster_password,
@@ -65,6 +69,7 @@ define cinder::backend::vstorage (
   $mount_user            = 'cinder',
   $mount_group           = 'root',
   $mount_permissions     = '0770',
+  $manage_package        = true,
 ) {
 
   include ::cinder::deps
@@ -86,21 +91,20 @@ define cinder::backend::vstorage (
     }
   }
 
-  package { 'vstorage-client':
-    ensure => present,
-    tag    => 'cinder-support-package',
+  if $manage_package {
+    package { 'vstorage-client':
+      ensure => present,
+      tag    => 'cinder-support-package',
+    }
   }
 
   $mount_opts = ['-u', $mount_user, '-g', $mount_group, '-m', $mount_permissions]
 
   file { $shares_config_path:
     content => inline_template("${cluster_name}:${cluster_password} <%= @mount_opts %>"),
-    require => Anchor['cinder::install::end'],
-    notify  => Anchor['cinder::service::begin'],
-  }
-
-  file { '/var/log/pstorage':
-    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'cinder',
+    mode    => '0640',
     require => Anchor['cinder::install::end'],
     notify  => Anchor['cinder::service::begin'],
   }

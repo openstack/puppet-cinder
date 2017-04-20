@@ -6,7 +6,7 @@ describe 'cinder::backend::vstorage' do
 
   let :params do
     {
-      :cluster_name          => 'vstorage',
+      :cluster_name          => 'stor1',
       :cluster_password      => 'passw0rd',
       :shares_config_path    => '/etc/cinder/vstorage_shares.conf',
       :use_sparsed_volumes   => true,
@@ -16,6 +16,7 @@ describe 'cinder::backend::vstorage' do
       :mount_user            => 'cinder',
       :mount_group           => 'root',
       :mount_permissions     => '0770',
+      :manage_package        => true,
     }
   end
 
@@ -43,13 +44,8 @@ describe 'cinder::backend::vstorage' do
 
   it 'creates shares config file' do
     is_expected.to contain_file('/etc/cinder/vstorage_shares.conf').with_content(
-      "vstorage:passw0rd [\"-u\", \"cinder\", \"-g\", \"root\", \"-m\", \"0770\"]"
+      "stor1:passw0rd [\"-u\", \"cinder\", \"-g\", \"root\", \"-m\", \"0770\"]"
     )
-  end
-
-  it 'creates log directory' do
-    is_expected.to contain_file('/var/log/pstorage').with(
-      :ensure => 'directory')
   end
 
   context 'vstorage backend with cinder type' do
