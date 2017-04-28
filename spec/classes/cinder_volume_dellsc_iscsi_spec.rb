@@ -19,6 +19,7 @@ describe 'cinder::volume::dellsc_iscsi' do
       :dell_sc_verify_cert   => '<SERVICE DEFAULT>',
       :dell_sc_volume_folder => 'vol',
       :iscsi_port            => '<SERVICE DEFAULT>',
+      :excluded_domain_ip    => '<SERVICE DEFAULT>',
   }
   end
 
