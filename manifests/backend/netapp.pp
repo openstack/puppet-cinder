@@ -147,6 +147,23 @@
 #   application.
 #   Defaults to '/devmgr/v2'
 #
+# [*nas_secure_file_operations*]
+#   (Optional) Allow network-attached storage systems to operate in a secure
+#   environment where root level access is not permitted. If set to False,
+#   access is as the root user and insecure. If set to True, access is not as
+#   root. If set to auto, a check is done to determine if this is a new
+#   installation: True is used if so, otherwise False. Default is auto.
+#   Defaults to $::os_service_default
+#
+# [*nas_secure_file_permissions*]
+#   (Optional) Set more secure file permissions on network-attached storage
+#   volume files to restrict broad other/world access. If set to False,
+#   volumes are created with open permissions. If set to True, volumes are
+#   created with permissions for the cinder user and group (660). If set to
+#   auto, a check is done to determine if this is a new installation: True is
+#   used if so, otherwise False. Default is auto.
+#   Defaults to $::os_service_default
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinde Volume type will be created
@@ -228,6 +245,8 @@ define cinder::backend::netapp (
   $manage_volume_type               = false,
   $extra_options                    = {},
   $netapp_pool_name_search_pattern  = '(.+)',
+  $nas_secure_file_operations       = $::os_service_default,
+  $nas_secure_file_permissions      = $::os_service_default,
   # DEPRECATED PARAMETERS
   $netapp_eseries_host_type         = undef,
   $netapp_storage_pools             = undef,
@@ -290,6 +309,8 @@ define cinder::backend::netapp (
     "${name}/netapp_pool_name_search_pattern":  value => $netapp_pool_name_search_pattern_real;
     "${name}/netapp_host_type":                 value => $netapp_host_type_real;
     "${name}/netapp_webservice_path":           value => $netapp_webservice_path;
+    "${name}/nas_secure_file_operations":       value => $nas_secure_file_operations;
+    "${name}/nas_secure_file_permissions":      value => $nas_secure_file_permissions;
   }
 
   if $manage_volume_type {

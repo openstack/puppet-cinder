@@ -49,6 +49,23 @@
 #   longer be valid.
 #   Defaults to $::os_service_default
 #
+# [*nas_secure_file_operations*]
+#   (Optional) Allow network-attached storage systems to operate in a secure
+#   environment where root level access is not permitted. If set to False,
+#   access is as the root user and insecure. If set to True, access is not as
+#   root. If set to auto, a check is done to determine if this is a new
+#   installation: True is used if so, otherwise False. Default is auto.
+#   Defaults to $::os_service_default
+#
+# [*nas_secure_file_permissions*]
+#   (Optional) Set more secure file permissions on network-attached storage
+#   volume files to restrict broad other/world access. If set to False,
+#   volumes are created with open permissions. If set to True, volumes are
+#   created with permissions for the cinder user and group (660). If set to
+#   auto, a check is done to determine if this is a new installation: True is
+#   used if so, otherwise False. Default is auto.
+#   Defaults to $::os_service_default
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinde Volume type will be created
@@ -62,18 +79,20 @@
 #     { 'nfs_backend/param1' => { 'value' => value1 } }
 #
 define cinder::backend::nfs (
-  $volume_backend_name  = $name,
-  $nfs_servers          = [],
-  $nfs_mount_attempts   = $::os_service_default,
-  $nfs_mount_options    = $::os_service_default,
-  $nfs_disk_util        = $::os_service_default,
-  $nfs_sparsed_volumes  = $::os_service_default,
-  $nfs_mount_point_base = $::os_service_default,
-  $nfs_shares_config    = '/etc/cinder/shares.conf',
-  $nfs_used_ratio       = $::os_service_default,
-  $nfs_oversub_ratio    = $::os_service_default,
-  $manage_volume_type   = false,
-  $extra_options        = {},
+  $volume_backend_name         = $name,
+  $nfs_servers                 = [],
+  $nfs_mount_attempts          = $::os_service_default,
+  $nfs_mount_options           = $::os_service_default,
+  $nfs_disk_util               = $::os_service_default,
+  $nfs_sparsed_volumes         = $::os_service_default,
+  $nfs_mount_point_base        = $::os_service_default,
+  $nfs_shares_config           = '/etc/cinder/shares.conf',
+  $nfs_used_ratio              = $::os_service_default,
+  $nfs_oversub_ratio           = $::os_service_default,
+  $nas_secure_file_operations  = $::os_service_default,
+  $nas_secure_file_permissions = $::os_service_default,
+  $manage_volume_type          = false,
+  $extra_options               = {},
 ) {
 
   include ::cinder::deps
@@ -85,17 +104,21 @@ define cinder::backend::nfs (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":  value => $volume_backend_name;
-    "${name}/volume_driver":        value =>
+    "${name}/volume_backend_name":         value => $volume_backend_name;
+    "${name}/volume_driver":               value =>
       'cinder.volume.drivers.nfs.NfsDriver';
-    "${name}/nfs_shares_config":    value => $nfs_shares_config;
-    "${name}/nfs_mount_attempts":   value => $nfs_mount_attempts;
-    "${name}/nfs_mount_options":    value => $nfs_mount_options;
-    "${name}/nfs_disk_util":        value => $nfs_disk_util;
-    "${name}/nfs_sparsed_volumes":  value => $nfs_sparsed_volumes;
-    "${name}/nfs_mount_point_base": value => $nfs_mount_point_base;
-    "${name}/nfs_used_ratio":       value => $nfs_used_ratio;
-    "${name}/nfs_oversub_ratio":    value => $nfs_oversub_ratio;
+    "${name}/nfs_shares_config":           value => $nfs_shares_config;
+    "${name}/nfs_mount_attempts":          value => $nfs_mount_attempts;
+    "${name}/nfs_mount_options":           value => $nfs_mount_options;
+    "${name}/nfs_disk_util":               value => $nfs_disk_util;
+    "${name}/nfs_sparsed_volumes":         value => $nfs_sparsed_volumes;
+    "${name}/nfs_mount_point_base":        value => $nfs_mount_point_base;
+    "${name}/nfs_used_ratio":              value => $nfs_used_ratio;
+    "${name}/nfs_oversub_ratio":           value => $nfs_oversub_ratio;
+    "${name}/nas_secure_file_operations":  value =>
+      $nas_secure_file_operations;
+    "${name}/nas_secure_file_permissions": value =>
+      $nas_secure_file_permissions;
   }
 
   if $manage_volume_type {

@@ -36,6 +36,8 @@ describe 'cinder::backend::netapp' do
       :nfs_shares_config            => '/etc/cinder/shares.conf',
       :nfs_mount_options            => '<SERVICE DEFAULT>',
       :netapp_webservice_path       => '/devmgr/v2',
+      :nas_secure_file_operations   => '<SERVICE DEFAULT>',
+      :nas_secure_file_permissions  => '<SERVICE DEFAULT>',
     }
   end
 
