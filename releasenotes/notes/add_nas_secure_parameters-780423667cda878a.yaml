@@ -1,0 +1,5 @@
+---
+features:
+  - Add new "nas_secure_file_operations" and "nas_secure_file_permissions"
+    parameters for controlling the similarly named settings in the NFS and
+    NetApp driver back ends.
