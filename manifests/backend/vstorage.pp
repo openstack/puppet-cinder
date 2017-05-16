@@ -87,7 +87,11 @@ define cinder::backend::vstorage (
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => ["volume_backend_name=${volume_backend_name}"],
+      properties => ['vz:volume_format=qcow2'],
+    }
+    cinder_type { "${volume_backend_name}-ploop":
+      ensure     => present,
+      properties => ['vz:volume_format=ploop'],
     }
   }
 
