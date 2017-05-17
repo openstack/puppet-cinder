@@ -58,4 +58,12 @@ class cinder::setup_test_volume(
     unless      => "vgdisplay | grep ${volume_name}",
     refreshonly => true,
   }
+
+  # Ensure the loopback device and volume group are restored if the system
+  # were to reboot.
+  exec { "losetup -f ${volume_path}/${volume_name} && udevadm settle && vgchange -a y ${volume_name}":
+    path   => ['/bin','/usr/bin','/sbin','/usr/sbin'],
+    unless => "losetup -l | grep ${volume_path}/${volume_name}",
+    before => Anchor['cinder::service::begin'],
+  }
 }
