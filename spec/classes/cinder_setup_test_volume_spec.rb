@@ -20,4 +20,8 @@ describe 'cinder::setup_test_volume' do
         :mode => '0640'
     )
   end
+
+  it 'should restore loopback device and volume group' do
+    is_expected.to contain_exec('losetup -f /var/lib/cinder/cinder-volumes && udevadm settle && vgchange -a y cinder-volumes')
+  end
 end
