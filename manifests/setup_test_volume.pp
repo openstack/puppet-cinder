@@ -33,6 +33,7 @@ class cinder::setup_test_volume(
     command => "dd if=/dev/zero of=\"${volume_path}/${volume_name}\" bs=1 count=0 seek=${size}",
     path    => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless  => "stat ${volume_path}/${volume_name}",
+    require => Anchor['cinder::install::end'],
     before  => Anchor['cinder::service::begin'],
   } ~>
 
@@ -57,7 +58,7 @@ class cinder::setup_test_volume(
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless      => "vgdisplay | grep ${volume_name}",
     refreshonly => true,
-  }
+  } ->
 
   # Ensure the loopback device and volume group are restored if the system
   # were to reboot.
