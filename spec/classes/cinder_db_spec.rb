@@ -11,8 +11,10 @@ describe 'cinder::db' do
         :connection     => 'sqlite:////var/lib/cinder/cinder.sqlite',
         :idle_timeout   => '<SERVICE DEFAULT>',
         :min_pool_size  => '<SERVICE DEFAULT>',
+        :max_pool_size  => '<SERVICE DEFAULT>',
         :max_retries    => '<SERVICE DEFAULT>',
         :retry_interval => '<SERVICE DEFAULT>',
+        :max_overflow   => '<SERVICE DEFAULT>',
       )}
 
     end
@@ -23,8 +25,10 @@ describe 'cinder::db' do
           :database_connection     => 'mysql+pymysql://cinder:cinder@localhost/cinder',
           :database_idle_timeout   => '3601',
           :database_min_pool_size  => '2',
+          :database_max_pool_size  => '11',
           :database_max_retries    => '11',
-          :database_retry_interval => '11', }
+          :database_retry_interval => '11',
+          :database_max_overflow   => '21', }
       end
 
       it { is_expected.to contain_oslo__db('cinder_config').with(
@@ -32,8 +36,10 @@ describe 'cinder::db' do
         :connection     => 'mysql+pymysql://cinder:cinder@localhost/cinder',
         :idle_timeout   => '3601',
         :min_pool_size  => '2',
+        :max_pool_size  => '11',
         :max_retries    => '11',
         :retry_interval => '11',
+        :max_overflow   => '21',
       )}
     end
 
