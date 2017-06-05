@@ -53,8 +53,11 @@ describe 'cinder::backup' do
 
     it 'ensure cinder backup service is running' do
       is_expected.to contain_service('cinder-backup').with(
-        'hasstatus' => true,
-        'tag'       => 'cinder-service',
+        :ensure    => 'running',
+        :name      => platform_params[:backup_service],
+        :enable    => true,
+        :hasstatus => true,
+        :tag       => 'cinder-service',
       )
     end
 
@@ -78,7 +81,12 @@ describe 'cinder::backup' do
         params.merge!(:manage_service => false)
       end
       it 'should not change the state of the service' do
-        is_expected.to contain_service('cinder-backup').without_ensure
+        is_expected.to contain_service('cinder-backup').with(
+          :ensure    => nil,
+          :name      => platform_params[:backup_service],
+          :hasstatus => true,
+          :tag       => 'cinder-service',
+        )
       end
     end
 
@@ -97,7 +105,7 @@ describe 'cinder::backup' do
           { :backup_package => 'cinder-backup',
             :backup_service => 'cinder-backup' }
         else
-          { :backup_service => 'opentack-cinder-backup' }
+          { :backup_service => 'openstack-cinder-backup' }
         end
       end
 
