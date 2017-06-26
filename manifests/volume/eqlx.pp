@@ -13,6 +13,10 @@
 # [*san_password*]
 #   (required) The password for the specified SSH account.
 #
+# [*san_private_key*]
+#   (optional) Filename of private key to use for SSH authentication.
+#   Defaults to $::os_service_default
+#
 # [*san_thin_provision*]
 #   (optional) Whether or not to use thin provisioning for volumes.
 #   Defaults to $::os_service_default
@@ -72,6 +76,7 @@ class cinder::volume::eqlx (
   $san_ip,
   $san_login,
   $san_password,
+  $san_private_key      = $::os_service_default,
   $san_thin_provision   = $::os_service_default,
   $eqlx_group_name      = $::os_service_default,
   $eqlx_pool            = $::os_service_default,
@@ -133,6 +138,7 @@ cinder::backend::eqlx instead.')
     san_ip               => $san_ip,
     san_login            => $san_login,
     san_password         => $san_password,
+    san_private_key      => $san_private_key,
     san_thin_provision   => $san_thin_provision,
     eqlx_group_name      => $eqlx_group_name,
     eqlx_pool            => $eqlx_pool,

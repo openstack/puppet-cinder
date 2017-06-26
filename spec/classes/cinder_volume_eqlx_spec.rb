@@ -6,6 +6,7 @@ describe 'cinder::volume::eqlx' do
       :san_ip               => '192.168.100.10',
       :san_login            => 'grpadmin',
       :san_password         => '12345',
+      :san_private_key      => '',
       :san_thin_provision   => true,
       :eqlx_group_name      => 'group-a',
       :eqlx_pool            => 'apool',

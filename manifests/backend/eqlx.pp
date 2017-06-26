@@ -13,6 +13,10 @@
 # [*san_password*]
 #   (required) The password for the specified SSH account.
 #
+# [*san_private_key*]
+#   (optional) Filename of private key to use for SSH authentication.
+#   Defaults to $::os_service_default
+#
 # [*san_thin_provision*]
 #   (optional) Boolean. Whether or not to use thin provisioning for volumes. The
 #   default value in OpenStack is true.
@@ -65,6 +69,7 @@ define cinder::backend::eqlx (
   $san_ip,
   $san_login,
   $san_password,
+  $san_private_key      = $::os_service_default,
   $san_thin_provision   = $::os_service_default,
   $volume_backend_name  = $name,
   $eqlx_group_name      = $::os_service_default,
@@ -94,6 +99,7 @@ define cinder::backend::eqlx (
     "${name}/san_ip":               value => $san_ip;
     "${name}/san_login":            value => $san_login;
     "${name}/san_password":         value => $san_password, secret => true;
+    "${name}/san_private_key":      value => $san_private_key;
     "${name}/san_thin_provision":   value => $san_thin_provision;
     "${name}/eqlx_group_name":      value => $eqlx_group_name;
     "${name}/use_chap_auth":        value => $use_chap_auth;
