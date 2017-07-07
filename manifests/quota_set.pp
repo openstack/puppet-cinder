@@ -84,7 +84,7 @@ define cinder::quota_set (
     # lint:endignore
     onlyif      => 'openstack quota show --class default | grep -qP -- -1',
     environment => $cinder_env,
-    require     => Anchor['cinder-support-package'],
+    require     => Anchor['cinder::install::end'],
     path        => ['/usr/bin', '/bin'],
   }
 }
