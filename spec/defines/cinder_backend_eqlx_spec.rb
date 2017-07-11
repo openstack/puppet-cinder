@@ -10,6 +10,7 @@ describe 'cinder::backend::eqlx' do
       :san_ip               => '192.168.100.10',
       :san_login            => 'grpadmin',
       :san_password         => '12345',
+      :san_private_key      => '',
       :volume_backend_name  => 'Dell_EQLX',
       :san_thin_provision   => '<SERVICE DEFAULT>',
       :eqlx_group_name      => '<SERVICE DEFAULT>',
