@@ -1,0 +1,5 @@
+---
+deprecations:
+  - The block device driver backend is deprecated in P
+    and will be removed in the future. Pleasse use LVM
+    driver with LIO iSCSI target for same purpose.

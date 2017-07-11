@@ -80,6 +80,11 @@ define cinder::backend::bdd (
   include ::cinder::deps
   include ::cinder::params
 
+  if ($volume_driver == 'cinder.volume.drivers.block_device.BlockDeviceDriver') {
+    warning('Cinder block device driver is deprecated. Please use LVM backend')
+  }
+
+
   cinder_config {
     "${name}/available_devices":   value => $available_devices;
     "${name}/volume_backend_name": value => $volume_backend_name;
