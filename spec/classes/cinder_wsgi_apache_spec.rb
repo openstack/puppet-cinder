@@ -3,55 +3,29 @@ require 'spec_helper'
 describe 'cinder::wsgi::apache' do
 
   shared_examples_for 'apache serving cinder with mod_wsgi' do
-    it { is_expected.to contain_service('httpd').with_name(platform_params[:httpd_service_name]) }
-    it { is_expected.to contain_class('cinder::params') }
-    it { is_expected.to contain_class('apache') }
-    it { is_expected.to contain_class('apache::mod::wsgi') }
-
-    describe 'with default parameters' do
-
-      it { is_expected.to contain_file("#{platform_params[:wsgi_script_path]}").with(
-        'ensure'  => 'directory',
-        'owner'   => 'cinder',
-        'group'   => 'cinder',
-        'require' => 'Package[httpd]'
+    context 'with default parameters' do
+      it { is_expected.to contain_class('cinder::params') }
+      it { is_expected.to contain_class('apache') }
+      it { is_expected.to contain_class('apache::mod::wsgi') }
+      it { is_expected.to contain_class('apache::mod::ssl') }
+      it { is_expected.to contain_openstacklib__wsgi__apache('cinder_wsgi').with(
+        :bind_port           => 8776,
+        :group               => 'cinder',
+        :path                => '/',
+        :servername          => facts[:fqdn],
+        :ssl                 => true,
+        :threads             => facts[:os_workers],
+        :user                => 'cinder',
+        :workers             => 1,
+        :wsgi_daemon_process => 'cinder-api',
+        :wsgi_process_group  => 'cinder-api',
+        :wsgi_script_dir     => platform_params[:wsgi_script_path],
+        :wsgi_script_file    => 'cinder-api',
+        :wsgi_script_source  => platform_params[:wsgi_script_source],
       )}
-
-
-      it { is_expected.to contain_file('cinder_wsgi').with(
-        'ensure'  => 'file',
-        'path'    => "#{platform_params[:wsgi_script_path]}/cinder-api",
-        'source'  => platform_params[:wsgi_script_source],
-        'owner'   => 'cinder',
-        'group'   => 'cinder',
-        'mode'    => '0644'
-      )}
-      it { is_expected.to contain_file('cinder_wsgi').that_requires("File[#{platform_params[:wsgi_script_path]}]") }
-
-      it { is_expected.to contain_apache__vhost('cinder_wsgi').with(
-        'servername'                  => 'some.host.tld',
-        'ip'                          => nil,
-        'port'                        => '8776',
-        'docroot'                     => "#{platform_params[:wsgi_script_path]}",
-        'docroot_owner'               => 'cinder',
-        'docroot_group'               => 'cinder',
-        'ssl'                         => 'true',
-        'wsgi_daemon_process'         => 'cinder-api',
-        'wsgi_daemon_process_options' => {
-          'user'         => 'cinder',
-          'group'        => 'cinder',
-          'processes'    => 1,
-          'threads'      => '42',
-          'display-name' => 'cinder_wsgi',
-        },
-        'wsgi_process_group'          => 'cinder-api',
-        'wsgi_script_aliases'         => { '/' => "#{platform_params[:wsgi_script_path]}/cinder-api" },
-        'require'                     => 'File[cinder_wsgi]'
-      )}
-      it { is_expected.to contain_concat("#{platform_params[:httpd_ports_file]}") }
     end
 
-    describe 'when overriding parameters using different ports' do
+    context'when overriding parameters using different ports' do
       let :params do
         {
           :servername                => 'dummy.host',
@@ -62,29 +36,27 @@ describe 'cinder::wsgi::apache' do
           :workers                   => 37,
         }
       end
-
-      it { is_expected.to contain_apache__vhost('cinder_wsgi').with(
-        'servername'                  => 'dummy.host',
-        'ip'                          => '10.42.51.1',
-        'port'                        => '12345',
-        'docroot'                     => "#{platform_params[:wsgi_script_path]}",
-        'docroot_owner'               => 'cinder',
-        'docroot_group'               => 'cinder',
-        'ssl'                         => 'false',
-        'wsgi_daemon_process'         => 'cinder-api',
-        'wsgi_daemon_process_options' => {
-            'user'         => 'cinder',
-            'group'        => 'cinder',
-            'processes'    => '37',
-            'threads'      => '42',
-            'display-name' => 'cinder-api',
-        },
-        'wsgi_process_group'          => 'cinder-api',
-        'wsgi_script_aliases'         => { '/' => "#{platform_params[:wsgi_script_path]}/cinder-api" },
-        'require'                     => 'File[cinder_wsgi]'
+      it { is_expected.to contain_class('cinder::params') }
+      it { is_expected.to contain_class('apache') }
+      it { is_expected.to contain_class('apache::mod::wsgi') }
+      it { is_expected.to_not contain_class('apache::mod::ssl') }
+      it { is_expected.to contain_openstacklib__wsgi__apache('cinder_wsgi').with(
+        :bind_host                 => '10.42.51.1',
+        :bind_port                 => 12345,
+        :group                     => 'cinder',
+        :path                      => '/',
+        :servername                => 'dummy.host',
+        :ssl                       => false,
+        :threads                   => facts[:os_workers],
+        :user                      => 'cinder',
+        :workers                   => 37,
+        :wsgi_daemon_process       => 'cinder-api',
+        :wsgi_process_display_name => 'cinder-api',
+        :wsgi_process_group        => 'cinder-api',
+        :wsgi_script_dir           => platform_params[:wsgi_script_path],
+        :wsgi_script_file          => 'cinder-api',
+        :wsgi_script_source        => platform_params[:wsgi_script_source],
       )}
-
-      it { is_expected.to contain_concat("#{platform_params[:httpd_ports_file]}") }
     end
   end
 

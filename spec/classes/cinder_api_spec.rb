@@ -249,16 +249,9 @@ describe 'cinder::api' do
           :validate => true,
         })
       end
-      it { is_expected.to contain_exec('execute cinder-api validation').with(
-        :path      => '/usr/bin:/bin:/usr/sbin:/sbin',
-        :provider  => 'shell',
-        :tries     => '10',
-        :try_sleep => '2',
+      it { is_expected.to contain_openstacklib__service_validation('cinder-api').with(
         :command   => 'cinder --os-auth-url http://localhost:5000 --os-project-name services --os-username cinder --os-password foo list',
-      )}
-
-      it { is_expected.to contain_anchor('create cinder-api anchor').with(
-        :require => 'Exec[execute cinder-api validation]',
+        :subscribe => 'Service[cinder-api]',
       )}
     end
 
@@ -269,16 +262,9 @@ describe 'cinder::api' do
           :validation_options => { 'cinder-api' => { 'command' => 'my-script' } }
         })
       end
-      it { is_expected.to contain_exec('execute cinder-api validation').with(
-        :path      => '/usr/bin:/bin:/usr/sbin:/sbin',
-        :provider  => 'shell',
-        :tries     => '10',
-        :try_sleep => '2',
+      it { is_expected.to contain_openstacklib__service_validation('cinder-api').with(
         :command   => 'my-script',
-      )}
-
-      it { is_expected.to contain_anchor('create cinder-api anchor').with(
-        :require => 'Exec[execute cinder-api validation]',
+        :subscribe => 'Service[cinder-api]',
       )}
     end
 
