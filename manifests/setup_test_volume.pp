@@ -27,42 +27,42 @@ class cinder::setup_test_volume(
   package { 'lvm2':
     ensure => present,
     tag    => 'cinder-support-package',
-  } ~>
+  }
 
-  exec { "create_${volume_path}/${volume_name}":
+  ~> exec { "create_${volume_path}/${volume_name}":
     command => "dd if=/dev/zero of=\"${volume_path}/${volume_name}\" bs=1 count=0 seek=${size}",
     path    => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless  => "stat ${volume_path}/${volume_name}",
     require => Anchor['cinder::install::end'],
     before  => Anchor['cinder::service::begin'],
-  } ~>
+  }
 
-  file { "${volume_path}/${volume_name}":
+  ~> file { "${volume_path}/${volume_name}":
     mode => '0640',
-  } ~>
+  }
 
-  exec { "losetup ${loopback_device} ${volume_path}/${volume_name}":
+  ~> exec { "losetup ${loopback_device} ${volume_path}/${volume_name}":
     command     => "losetup ${loopback_device} ${volume_path}/${volume_name} && udevadm settle",
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless      => "losetup ${loopback_device}",
     refreshonly => true,
-  } ~>
+  }
 
-  exec { "pvcreate ${loopback_device}":
+  ~> exec { "pvcreate ${loopback_device}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless      => "pvdisplay | grep ${volume_name}",
     refreshonly => true,
-  } ~>
+  }
 
-  exec { "vgcreate ${volume_name} ${loopback_device}":
+  ~> exec { "vgcreate ${volume_name} ${loopback_device}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless      => "vgdisplay | grep ${volume_name}",
     refreshonly => true,
-  } ->
+  }
 
   # Ensure the loopback device and volume group are restored if the system
   # were to reboot.
-  exec { "losetup -f ${volume_path}/${volume_name} && udevadm settle && vgchange -a y ${volume_name}":
+  -> exec { "losetup -f ${volume_path}/${volume_name} && udevadm settle && vgchange -a y ${volume_name}":
     path   => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless => "losetup -l | grep ${volume_path}/${volume_name}",
     before => Anchor['cinder::service::begin'],
