@@ -1,0 +1,3 @@
+---
+features:
+  - Add Dell EMC XtremIO backend cinder iscsi driver support
