@@ -1,7 +1,7 @@
 # == Class: cinder::ceilometer
 #
 # Setup Cinder to enable ceilometer can retrieve volume samples
-# Ref: http://docs.openstack.org/developer/ceilometer/install/manual.html
+# Ref: https://docs.openstack.org/ceilometer/latest/install/manual.html
 #
 # === Parameters
 #
