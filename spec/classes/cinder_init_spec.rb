@@ -180,11 +180,7 @@ describe 'cinder' do
     it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/amqp_durable_queues').with_value(true) }
   end
 
-  describe 'with amqp rpc_backend defaults' do
-    let :params do
-      { :rpc_backend => 'amqp' }
-    end
-
+  describe 'with amqp defaults' do
     it 'configures amqp' do
       is_expected.to contain_cinder_config('oslo_messaging_amqp/server_request_prefix').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_amqp/broadcast_prefix').with_value('<SERVICE DEFAULT>')
@@ -205,10 +201,9 @@ describe 'cinder' do
     end
   end
 
-  describe 'with amqp rpc_backend overrides' do
+  describe 'with amqp overrides' do
     let :params do
     {
-      :rpc_backend        => 'amqp',
       :amqp_idle_timeout  => '60',
       :amqp_trace         => true,
       :amqp_ssl_ca_file   => '/path/to/ca.cert',
