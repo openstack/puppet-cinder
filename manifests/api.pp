@@ -285,6 +285,7 @@ running as a standalone service, or httpd for being run by a httpd server")
     'DEFAULT/osapi_volume_base_URL':    value => $osapi_volume_base_url;
     'DEFAULT/osapi_max_limit':          value => $osapi_max_limit;
     'DEFAULT/osapi_volume_listen_port': value => $osapi_volume_listen_port;
+    'DEFAULT/auth_strategy':            value => $auth_strategy;
   }
 
   cinder_config {

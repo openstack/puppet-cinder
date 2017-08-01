@@ -52,6 +52,9 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/os_region_name').with(
          :value => '<SERVICE DEFAULT>'
         )
+        is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with(
+         :value => 'keystone'
+        )
 
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_value('<SERVICE DEFAULT>')
@@ -266,6 +269,17 @@ describe 'cinder::api' do
         :command   => 'my-script',
         :subscribe => 'Service[cinder-api]',
       )}
+    end
+
+    describe 'with a custom auth_strategy' do
+      let :params do
+        req_params.merge({'auth_strategy' => 'noauth'})
+      end
+      it 'should configure the auth_strategy to noauth' do
+        is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with(
+          :value => 'noauth'
+        )
+      end
     end
 
     describe 'with a custom osapi_max_limit' do

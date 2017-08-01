@@ -1,0 +1,4 @@
+---
+fixes:
+  - auth_strategy will now be configured in cinder.conf
+    with the value passed for cinder::api::auth_strategy
