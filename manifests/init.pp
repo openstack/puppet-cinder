@@ -307,7 +307,7 @@
 #
 # [*rpc_backend*]
 #   (Optional) DEPRECATED. Use these options to configure the RabbitMQ message system.
-#   Defaults to 'rabbit'
+#   Defaults to undef
 #
 class cinder (
   $database_connection                = undef,
@@ -378,7 +378,7 @@ class cinder (
   $rabbit_userid                      = $::os_service_default,
   $rabbit_virtual_host                = $::os_service_default,
   $host                               = $::os_service_default,
-  $rpc_backend                        = 'rabbit',
+  $rpc_backend                        = undef,
 ) inherits cinder::params {
 
   include ::cinder::deps
@@ -402,7 +402,7 @@ class cinder (
     !is_service_default($rabbit_password) or
     !is_service_default($rabbit_port) or
     !is_service_default($rabbit_userid) or
-    !is_service_default($rpc_backend) or
+    $rpc_backend or
     !is_service_default($rabbit_virtual_host) {
     warning("cinder::rabbit_host, cinder::rabbit_hosts, cinder::rabbit_password, \
 cinder::rabbit_port, cinder::rabbit_userid, cinder::rabbit_virtual_host and \
