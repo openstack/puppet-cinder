@@ -52,10 +52,13 @@ describe 'cinder::backend::vstorage' do
     before do
       params.merge!({:manage_volume_type => true})
     end
-    it 'should create volume type' do
+    it 'should create volume types' do
       should contain_cinder_type('vstorage').with(
         :ensure => :present,
-        :properties => ['volume_backend_name=vstorage'])
+        :properties => ['vz:volume_format=qcow2'])
+      should contain_cinder_type('vstorage-ploop').with(
+        :ensure => :present,
+        :properties => ['vz:volume_format=ploop'])
     end
   end
 
