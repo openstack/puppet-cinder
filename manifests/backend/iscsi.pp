@@ -57,6 +57,15 @@ define cinder::backend::iscsi (
   include ::cinder::deps
   include ::cinder::params
 
+  # NOTE(mnaser): Cinder requires /usr/sbin/thin_check to create volumes which
+  #               does not get installed with Cinder (see LP#1615134).
+  if $::osfamily == 'Debian' {
+    package { 'thin-provisioning-tools':
+      ensure => present,
+      tag    => 'cinder-support-package',
+    }
+  }
+
   cinder_config {
     "${name}/volume_backend_name":  value => $volume_backend_name;
     "${name}/volume_driver":        value => $volume_driver;
