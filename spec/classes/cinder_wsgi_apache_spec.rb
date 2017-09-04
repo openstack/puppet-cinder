@@ -9,31 +9,35 @@ describe 'cinder::wsgi::apache' do
       it { is_expected.to contain_class('apache::mod::wsgi') }
       it { is_expected.to contain_class('apache::mod::ssl') }
       it { is_expected.to contain_openstacklib__wsgi__apache('cinder_wsgi').with(
-        :bind_port           => 8776,
-        :group               => 'cinder',
-        :path                => '/',
-        :servername          => facts[:fqdn],
-        :ssl                 => true,
-        :threads             => facts[:os_workers],
-        :user                => 'cinder',
-        :workers             => 1,
-        :wsgi_daemon_process => 'cinder-api',
-        :wsgi_process_group  => 'cinder-api',
-        :wsgi_script_dir     => platform_params[:wsgi_script_path],
-        :wsgi_script_file    => 'cinder-api',
-        :wsgi_script_source  => platform_params[:wsgi_script_source],
+        :bind_port                   => 8776,
+        :group                       => 'cinder',
+        :path                        => '/',
+        :servername                  => facts[:fqdn],
+        :ssl                         => true,
+        :threads                     => facts[:os_workers],
+        :user                        => 'cinder',
+        :workers                     => 1,
+        :wsgi_daemon_process         => 'cinder-api',
+        :wsgi_process_group          => 'cinder-api',
+        :wsgi_script_dir             => platform_params[:wsgi_script_path],
+        :wsgi_script_file            => 'cinder-api',
+        :wsgi_script_source          => platform_params[:wsgi_script_source],
+	:custom_wsgi_process_options => {},
       )}
     end
 
     context'when overriding parameters using different ports' do
       let :params do
         {
-          :servername                => 'dummy.host',
-          :bind_host                 => '10.42.51.1',
-          :port                      => 12345,
-          :ssl                       => false,
-          :wsgi_process_display_name => 'cinder-api',
-          :workers                   => 37,
+          :servername                  => 'dummy.host',
+          :bind_host                   => '10.42.51.1',
+          :port                        => 12345,
+          :ssl                         => false,
+          :wsgi_process_display_name   => 'cinder-api',
+          :workers                     => 37,
+          :custom_wsgi_process_options => {
+            'python_path' => '/my/python/admin/path',
+          },
         }
       end
       it { is_expected.to contain_class('cinder::params') }
@@ -56,6 +60,9 @@ describe 'cinder::wsgi::apache' do
         :wsgi_script_dir           => platform_params[:wsgi_script_path],
         :wsgi_script_file          => 'cinder-api',
         :wsgi_script_source        => platform_params[:wsgi_script_source],
+        :custom_wsgi_process_options => {
+          'python_path'  => '/my/python/admin/path',
+        },
       )}
     end
   end
