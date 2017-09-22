@@ -36,7 +36,7 @@ describe 'cinder::backend::scaleio' do
   describe 'scaleio volume driver' do
     it 'configures scaleio volume driver' do
       is_expected.to contain_cinder_config("#{title}/volume_driver").with_value(
-            'cinder.volume.drivers.emc.scaleio.ScaleIODriver')
+            'cinder.volume.drivers.dell_emc.scaleio.driver.ScaleIODriver')
       is_expected.to contain_cinder_config("#{title}/san_login").with_value('admin')
       is_expected.to contain_cinder_config("#{title}/san_ip").with_value('scaleio.example.com')
       is_expected.to contain_cinder_config("#{title}/san_thin_provision").with_value('false')

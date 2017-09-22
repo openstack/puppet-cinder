@@ -122,7 +122,7 @@ define cinder::backend::scaleio (
 
   cinder_config {
     "${name}/volume_backend_name":              value => $volume_backend_name;
-    "${name}/volume_driver":                    value => 'cinder.volume.drivers.emc.scaleio.ScaleIODriver';
+    "${name}/volume_driver":                    value => 'cinder.volume.drivers.dell_emc.scaleio.driver.ScaleIODriver';
     "${name}/san_login":                        value => $sio_login;
     "${name}/san_password":                     value => $sio_password, secret => true;
     "${name}/san_ip":                           value => $sio_server_hostname;
