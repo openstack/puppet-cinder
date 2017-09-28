@@ -45,6 +45,8 @@ describe 'basic cinder' do
       class { '::cinder::api':
         default_volume_type => 'iscsi_backend',
         service_name        => 'httpd',
+        # TODO(mnaser): Remove this once https://review.openstack.org/#/c/468252 merges
+        keymgr_api_class    => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
       }
       include ::apache
       class { '::cinder::wsgi::apache':
