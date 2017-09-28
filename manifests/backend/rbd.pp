@@ -135,6 +135,11 @@ define cinder::backend::rbd (
     warning('The rbd volume_tmp_dir parameter is deprecated. Please use image_conversion_dir in the cinder base class instead.')
   }
 
+  ensure_packages( 'ceph-common', {
+    ensure => present,
+    name   => $::cinder::params::ceph_common_package_name,
+    tag    => 'cinder-support-package'})
+
   create_resources('cinder_config', $extra_options)
 
   case $::osfamily {

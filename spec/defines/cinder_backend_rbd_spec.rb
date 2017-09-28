@@ -37,6 +37,7 @@ describe 'cinder::backend::rbd' do
 
   describe 'rbd backend volume driver' do
     it 'configure rbd volume driver' do
+      is_expected.to contain_package('ceph-common').with(:ensure => :present)
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_backend_name").with_value(req_params[:volume_backend_name])
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver')
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_ceph_conf").with_value(req_params[:rbd_ceph_conf])
