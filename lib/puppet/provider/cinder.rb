@@ -32,6 +32,9 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
     @credentials.password = cinder_credentials['password']
     @credentials.project_name = cinder_credentials['project_name']
     @credentials.auth_url = auth_endpoint
+    if cinder_credentials['region_name']
+      @credentials.region_name = cinder_credentials['region_name']
+    end
     if @credentials.version == '3'
       @credentials.user_domain_name = cinder_credentials['user_domain_name']
       @credentials.project_domain_name = cinder_credentials['project_domain_name']
@@ -65,6 +68,9 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
         creds['user_domain_name'] = conf['user_domain_name']
       else
         creds['user_domain_name'] = 'Default'
+      end
+      if conf['DEFAULT'] and conf['DEFAULT']['os_region_name']
+        creds['region_name'] = conf['DEFAULT']['os_region_name']
       end
       return creds
     else
