@@ -22,7 +22,9 @@ describe 'cinder::wsgi::apache' do
         :wsgi_script_dir             => platform_params[:wsgi_script_path],
         :wsgi_script_file            => 'cinder-api',
         :wsgi_script_source          => platform_params[:wsgi_script_source],
-	:custom_wsgi_process_options => {},
+        :custom_wsgi_process_options => {},
+        :access_log_file             => false,
+        :access_log_format           => false,
       )}
     end
 
@@ -38,6 +40,9 @@ describe 'cinder::wsgi::apache' do
           :custom_wsgi_process_options => {
             'python_path' => '/my/python/admin/path',
           },
+          :access_log_file             => '/var/log/httpd/access_log',
+          :access_log_format           => 'some format',
+          :error_log_file              => '/var/log/httpd/error_log'
         }
       end
       it { is_expected.to contain_class('cinder::params') }
@@ -63,6 +68,9 @@ describe 'cinder::wsgi::apache' do
         :custom_wsgi_process_options => {
           'python_path'  => '/my/python/admin/path',
         },
+        :access_log_file           => '/var/log/httpd/access_log',
+        :access_log_format         => 'some format',
+        :error_log_file            => '/var/log/httpd/error_log'
       )}
     end
   end
