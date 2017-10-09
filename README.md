@@ -91,8 +91,9 @@ class { 'cinder':
 
 class { 'cinder::volume': }
 
-class { 'cinder::volume::iscsi':
-  iscsi_ip_address => '10.0.0.2',
+cinder::backend::iscsi {
+  'iscsi_example':
+    iscsi_ip_address => '10.0.0.2',
 }
 ```
 
