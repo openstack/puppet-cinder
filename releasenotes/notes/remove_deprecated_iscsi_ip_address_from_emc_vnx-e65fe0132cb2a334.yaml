@@ -1,0 +1,3 @@
+---
+upgrade:
+  - Deprecated cinder::backend::emc_vnx::iscsi_ip_address had no effect.

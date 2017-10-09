@@ -73,12 +73,6 @@
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
 #
-# == Deprecated Parameters
-#
-# [*iscsi_ip_address*]
-#   (optional) DEPRECATED The IP address that the iSCSI daemon is listening on
-#   Defaults to undef
-#
 define cinder::backend::emc_vnx (
   $san_ip,
   $san_password,
@@ -96,16 +90,10 @@ define cinder::backend::emc_vnx (
   $storage_vnx_security_file_dir = $::os_service_default,
   $naviseccli_path               = $::os_service_default,
   $manage_volume_type            = false,
-  # Deprecated
-  $iscsi_ip_address              = undef,
 ) {
 
   include ::cinder::deps
   include ::cinder::params
-
-  if $iscsi_ip_address {
-    warning('iscsi_ip_address is deprecated, has no effect and will be removed in a future release')
-  }
 
   cinder_config {
     "${name}/default_timeout":                 value => $default_timeout;
