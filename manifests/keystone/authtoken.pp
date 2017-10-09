@@ -22,11 +22,11 @@
 #
 # [*user_domain_name*]
 #   (Optional) Name of domain for $username
-#   Defaults to $::os_service_default
+#   Defaults to 'Default'
 #
 # [*project_domain_name*]
 #   (Optional) Name of domain for $project_name
-#   Defaults to $::os_service_default
+#   Defaults to 'Default'
 #
 # [*insecure*]
 #  (Optional) If true, explicitly allow TLS without checking server cert
@@ -197,8 +197,8 @@ class cinder::keystone::authtoken(
   $password                       = $::os_service_default,
   $auth_url                       = 'http://localhost:35357',
   $project_name                   = 'services',
-  $user_domain_name               = $::os_service_default,
-  $project_domain_name            = $::os_service_default,
+  $user_domain_name               = 'Default',
+  $project_domain_name            = 'Default',
   $insecure                       = $::os_service_default,
   $auth_section                   = $::os_service_default,
   $auth_type                      = 'password',
