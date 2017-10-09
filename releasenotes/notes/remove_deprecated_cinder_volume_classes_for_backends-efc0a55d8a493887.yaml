@@ -1,0 +1,23 @@
+---
+upgrade:
+  - |
+
+    Removing all deprecated cinder::volume::-classes for setting up backends.
+    Please replace old classes with the backend-defines.
+
+    * Removed cinder::volume::dellsc_iscsi, use cinder::backend::dellsc_iscsi
+    * Removed cinder::volume::emc_vnx, use cinder::backend::emc_vnc
+    * Removed cinder::volume::eqlx, use cinder::backend::eqlx
+    * Removed cinder::volume::glusterfs, use cinder::backend::glusterfs
+    * Removed cinder::volume::gpfs, use cinder::backend::gpfs
+    * Removed cinder::volume::hpe3par_iscsi, use cinder::backend::hpe3par_iscsi
+    * Removed cinder::volume::iscsi, use cinder::backend::iscsi
+    * Removed cinder::volume::netapp, use cinder::backend::netapp
+    * Removed cinder::volume::nexenta, use cinder::backend::nexenta
+    * Removed cinder::volume::nfs, use cinder::backend::nfs
+    * Removed cinder::volume::pure, use cinder::backend::pure
+    * Removed cinder::volume::quobyte, use cinder::backend::quobyte
+    * Removed cinder::volume::rbd, use cinder::backend::rbd
+    * Removed cinder::volume::san, use cinder::backend::san
+    * Removed cinder::volume::solidfire, use cinder::backend::solidfire
+    * Removed cinder::volume::vmdk, use cinder::backend::vmdk
