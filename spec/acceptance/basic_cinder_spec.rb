@@ -11,65 +11,7 @@ describe 'basic cinder' do
       include ::openstack_integration::rabbitmq
       include ::openstack_integration::mysql
       include ::openstack_integration::keystone
-
-      rabbitmq_user { 'cinder':
-        admin    => true,
-        password => 'an_even_bigger_secret',
-        provider => 'rabbitmqctl',
-        require  => Class['rabbitmq'],
-      }
-
-      rabbitmq_user_permissions { 'cinder@/':
-        configure_permission => '.*',
-        write_permission     => '.*',
-        read_permission      => '.*',
-        provider             => 'rabbitmqctl',
-        require              => Class['rabbitmq'],
-      }
-
-      # Cinder resources
-      class { '::cinder':
-        default_transport_url => 'rabbit://cinder:an_even_bigger_secret@127.0.0.1/',
-        database_connection   => 'mysql+pymysql://cinder:a_big_secret@127.0.0.1/cinder?charset=utf8',
-        debug                 => true,
-      }
-      class { '::cinder::keystone::auth':
-        password => 'a_big_secret',
-      }
-      class { '::cinder::db::mysql':
-        password => 'a_big_secret',
-      }
-      class { '::cinder::keystone::authtoken':
-        password => 'a_big_secret',
-      }
-      class { '::cinder::api':
-        default_volume_type => 'iscsi_backend',
-        service_name        => 'httpd',
-        # TODO(mnaser): Remove this once https://review.openstack.org/#/c/468252 merges
-        keymgr_api_class    => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
-      }
-      include ::apache
-      class { '::cinder::wsgi::apache':
-        ssl => false,
-      }
-      class { '::cinder::backup': }
-      class { '::cinder::ceilometer': }
-      class { '::cinder::client': }
-      class { '::cinder::quota': }
-      class { '::cinder::scheduler': }
-      class { '::cinder::scheduler::filter': }
-      class { '::cinder::setup_test_volume': }
-      cinder::backend::iscsi { 'iscsi_backend':
-        iscsi_ip_address   => '127.0.0.1',
-        manage_volume_type => true,
-      }
-      class { '::cinder::backends':
-        enabled_backends => ['iscsi_backend'],
-      }
-      class { '::cinder::volume': }
-      class { '::cinder::cron::db_purge': }
-      cinder::type { 'test-type': }
-      # TODO: create a backend and spawn a volume
+      include ::openstack_integration::cinder
       EOS
 
 
