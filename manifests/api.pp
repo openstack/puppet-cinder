@@ -26,11 +26,6 @@
 #   (optional) Auth URL associated with the OpenStack privileged account.
 #   Defaults to $::os_service_default.
 #
-# [*keymgr_api_class*]
-#   (optional) Key Manager service class.
-#   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
-#   Defaults to $::os_service_default
-#
 # [*keymgr_encryption_api_url*]
 #   (optional) Key Manager service URL
 #   Example of valid value: https://localhost:9311/v1
@@ -151,6 +146,11 @@
 #   If this value is modified the catalog URLs in the keystone::auth class
 #   will also need to be changed to match.
 #
+# [*keymgr_backend*]
+#   (optional) Key Manager service class.
+#   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
+#   Defaults to 'cinder.keymgr.conf_key_mgr.ConfKeyManager'.
+#
 # DEPRECATED PARAMETERS
 #
 # [*validation_options*]
@@ -169,6 +169,11 @@
 #       try_sleep: 10
 #   Defaults to {}
 #
+# [*keymgr_api_class*]
+#   (optional) Deprecated. Key Manager service class.
+#   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
+#   Defaults to undef.
+#
 class cinder::api (
   $nova_catalog_info              = 'compute:Compute Service:publicURL',
   $nova_catalog_admin_info        = 'compute:Compute Service:adminURL',
@@ -178,7 +183,6 @@ class cinder::api (
   $os_privileged_user_password    = $::os_service_default,
   $os_privileged_user_tenant      = $::os_service_default,
   $os_privileged_user_auth_url    = $::os_service_default,
-  $keymgr_api_class               = $::os_service_default,
   $keymgr_encryption_api_url      = $::os_service_default,
   $keymgr_encryption_auth_url     = $::os_service_default,
   $service_workers                = $::os_workers,
@@ -203,8 +207,10 @@ class cinder::api (
   $ca_file                        = $::os_service_default,
   $auth_strategy                  = 'keystone',
   $osapi_volume_listen_port       = $::os_service_default,
+  $keymgr_backend                 = 'cinder.keymgr.conf_key_mgr.ConfKeyManager',
   # DEPRECATED PARAMETERS
   $validation_options             = {},
+  $keymgr_api_class               = undef,
 ) inherits cinder::params {
 
   include ::cinder::deps
@@ -227,6 +233,13 @@ class cinder::api (
     if is_service_default($key_file_real) {
       fail('The key_file parameter is required when use_ssl is set to true')
     }
+  }
+
+  if $keymgr_api_class {
+    warning('The keymgr_api_class parameter is deprecated, use keymgr_backend')
+    $keymgr_backend_real = $keymgr_api_class
+  } else {
+    $keymgr_backend_real = $keymgr_backend
   }
 
   if $::cinder::params::api_package {
@@ -317,7 +330,7 @@ running as a standalone service, or httpd for being run by a httpd server")
   }
 
   cinder_config {
-    'key_manager/api_class':      value => $keymgr_api_class;
+    'key_manager/backend':        value => $keymgr_backend_real;
     'barbican/barbican_endpoint': value => $keymgr_encryption_api_url;
     'barbican/auth_endpoint':     value => $keymgr_encryption_auth_url;
   }

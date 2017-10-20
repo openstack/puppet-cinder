@@ -60,7 +60,7 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_password').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/os_privileged_user_auth_url').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('key_manager/api_class').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('key_manager/backend').with_value('cinder.keymgr.conf_key_mgr.ConfKeyManager')
         is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_middleware/enable_proxy_headers_parsing').with('value' => '<SERVICE DEFAULT>')
@@ -360,15 +360,26 @@ describe 'cinder::api' do
     describe 'with barbican parameters' do
       let :params do
         req_params.merge!({
-          :keymgr_api_class           => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
+          :keymgr_backend             => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
           :keymgr_encryption_api_url  => 'https://localhost:9311/v1',
           :keymgr_encryption_auth_url => 'https://localhost:5000/v3',
         })
       end
       it 'should set keymgr parameters' do
-        is_expected.to contain_cinder_config('key_manager/api_class').with_value('castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+        is_expected.to contain_cinder_config('key_manager/backend').with_value('castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
         is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('https://localhost:9311/v1')
         is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('https://localhost:5000/v3')
+      end
+    end
+
+    describe 'with barbican deprecated parameters' do
+      let :params do
+        req_params.merge!({
+          :keymgr_api_class           => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
+        })
+      end
+      it 'should set keymgr parameter' do
+        is_expected.to contain_cinder_config('key_manager/backend').with_value('castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
       end
     end
 

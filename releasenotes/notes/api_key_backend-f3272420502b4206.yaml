@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    keymgr_api_class is now deprecated in favor of keymgr_backend, with
+    full backward compatibility for users.
+    keymgr_backend is set to cinder.keymgr.conf_key_mgr.ConfKeyManager
+    by default and configure key_manager/backend instead of
+    key_manager/api_class. It reflects what openstack/cinder did in Queens
+    cycle.
