@@ -1,0 +1,5 @@
+---
+fixes:
+  - Fixes `bug 1731309
+    <https://bugs.launchpad.net/puppet-cinder/+bug/1731309>`__
+    to ensure package dependency of pywben for VMAX driver.
