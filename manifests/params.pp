@@ -27,6 +27,7 @@ class cinder::params {
     $lio_package_name          = 'targetcli'
     $lock_path                 = '/var/lock/cinder'
     $cinder_wsgi_script_path   = '/usr/lib/cgi-bin/cinder'
+    $pywbem_package_name       = 'python-pywbem'
 
   } elsif($::osfamily == 'RedHat') {
 
@@ -47,6 +48,7 @@ class cinder::params {
     $lio_package_name          = 'targetcli'
     $lock_path                 = '/var/lib/cinder/tmp'
     $cinder_wsgi_script_path   = '/var/www/cgi-bin/cinder'
+    $pywbem_package_name       = 'pywbem'
 
     case $::operatingsystem {
       'RedHat', 'CentOS', 'Scientific', 'OracleLinux': {
