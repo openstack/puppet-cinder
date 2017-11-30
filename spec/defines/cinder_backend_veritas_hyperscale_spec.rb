@@ -15,6 +15,8 @@ describe 'cinder::backend::veritas_hyperscale' do
         'cinder.volume.drivers.veritas.vrtshyperscale.HyperScaleDriver')
       should contain_cinder_config("#{title}/volume_backend_name").with_value(
         "#{title}")
+      should contain_cinder_config("#{title}/image_volume_cache_enabled").with_value(
+        true)
     end
 
     describe 'veritas_hyperscale backend with additional configuration' do
