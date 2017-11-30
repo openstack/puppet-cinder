@@ -72,6 +72,11 @@
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
 #
+# [*nfs_snapshot_support*]
+#   (Optional) Enable support for snapshots on the NFS driver.
+#   Platforms using libvirt <1.2.7 will encounter issues with this feature.
+#   Defaults to $::os_service_default
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -91,6 +96,7 @@ define cinder::backend::nfs (
   $nfs_oversub_ratio           = $::os_service_default,
   $nas_secure_file_operations  = $::os_service_default,
   $nas_secure_file_permissions = $::os_service_default,
+  $nfs_snapshot_support        = $::os_service_default,
   $manage_volume_type          = false,
   $extra_options               = {},
 ) {
@@ -115,6 +121,7 @@ define cinder::backend::nfs (
     "${name}/nfs_mount_point_base":        value => $nfs_mount_point_base;
     "${name}/nfs_used_ratio":              value => $nfs_used_ratio;
     "${name}/nfs_oversub_ratio":           value => $nfs_oversub_ratio;
+    "${name}/nfs_snapshot_support":        value => $nfs_snapshot_support;
     "${name}/nas_secure_file_operations":  value =>
       $nas_secure_file_operations;
     "${name}/nas_secure_file_permissions": value =>
