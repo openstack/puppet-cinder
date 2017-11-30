@@ -38,8 +38,9 @@ define cinder::backend::veritas_hyperscale (
   include ::cinder::deps
 
   cinder_config {
-    "${name}/volume_backend_name": value => $volume_backend_name;
-    "${name}/volume_driver":       value => 'cinder.volume.drivers.veritas.vrtshyperscale.HyperScaleDriver';
+    "${name}/volume_backend_name":        value => $volume_backend_name;
+    "${name}/volume_driver":              value => 'cinder.volume.drivers.veritas.vrtshyperscale.HyperScaleDriver';
+    "${name}/image_volume_cache_enabled": value => true
   }
 
   if $manage_volume_type {
