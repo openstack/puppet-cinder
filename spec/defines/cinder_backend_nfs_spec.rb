@@ -18,6 +18,7 @@ describe 'cinder::backend::nfs' do
       :nas_secure_file_operations  => 'auto',
       :nas_secure_file_permissions => 'false',
       :nfs_snapshot_support        => 'true',
+      :nfs_qcow2_volumes           => 'true',
     }
   end
 
@@ -49,6 +50,8 @@ describe 'cinder::backend::nfs' do
       is_expected.to contain_cinder_config('hippo/nas_secure_file_permissions').with_value(
         'false')
       is_expected.to contain_cinder_config('hippo/nfs_snapshot_support').with_value(
+        'true')
+      is_expected.to contain_cinder_config('hippo/nfs_qcow2_volumes').with_value(
         'true')
       is_expected.to contain_file('/etc/cinder/other_shares.conf').with(
         :content => "10.10.10.10:/shares\n10.10.10.10:/shares2",

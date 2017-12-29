@@ -77,6 +77,10 @@
 #   Platforms using libvirt <1.2.7 will encounter issues with this feature.
 #   Defaults to $::os_service_default
 #
+# [*nfs_qcow2_volumes*]
+#   (Optional) Create volumes as QCOW2 files rather than raw files.
+#   Defaults to $::os_service_default
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -97,6 +101,7 @@ define cinder::backend::nfs (
   $nas_secure_file_operations  = $::os_service_default,
   $nas_secure_file_permissions = $::os_service_default,
   $nfs_snapshot_support        = $::os_service_default,
+  $nfs_qcow2_volumes           = $::os_service_default,
   $manage_volume_type          = false,
   $extra_options               = {},
 ) {
@@ -122,6 +127,7 @@ define cinder::backend::nfs (
     "${name}/nfs_used_ratio":              value => $nfs_used_ratio;
     "${name}/nfs_oversub_ratio":           value => $nfs_oversub_ratio;
     "${name}/nfs_snapshot_support":        value => $nfs_snapshot_support;
+    "${name}/nfs_qcow2_volumes":           value => $nfs_qcow2_volumes;
     "${name}/nas_secure_file_operations":  value =>
       $nas_secure_file_operations;
     "${name}/nas_secure_file_permissions": value =>

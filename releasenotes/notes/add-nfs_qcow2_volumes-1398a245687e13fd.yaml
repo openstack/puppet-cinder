@@ -1,0 +1,4 @@
+---
+features:
+  - Add new parameter "nfs_qcow2_volumes" to configure that create
+    volumes as QCOW2 files rather than raw files.
