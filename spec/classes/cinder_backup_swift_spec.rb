@@ -25,7 +25,7 @@ describe 'cinder::backup::swift' do
   let :default_params do
     { :backup_swift_url             => '<SERVICE DEFAULT>',
       :backup_swift_auth_url        => '<SERVICE DEFAULT>',
-      :backup_swift_container       => 'volumes_backup',
+      :backup_swift_container       => 'volumebackups',
       :backup_swift_object_size     => '<SERVICE DEFAULT>',
       :backup_swift_retry_attempts  => '<SERVICE DEFAULT>',
       :backup_swift_retry_backoff   => '<SERVICE DEFAULT>',

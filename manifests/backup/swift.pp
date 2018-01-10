@@ -19,7 +19,7 @@
 #
 # [*backup_swift_container*]
 #   (optional) The default Swift container to use.
-#   Defaults to 'volumes_backup'
+#   Defaults to 'volumebackups'
 #
 # [*backup_swift_object_size*]
 #   (optional) The size in bytes of Swift backup objects.
@@ -78,7 +78,7 @@ class cinder::backup::swift (
   $backup_driver                = 'cinder.backup.drivers.swift',
   $backup_swift_url             = $::os_service_default,
   $backup_swift_auth_url        = $::os_service_default,
-  $backup_swift_container       = 'volumes_backup',
+  $backup_swift_container       = 'volumebackups',
   $backup_swift_object_size     = $::os_service_default,
   $backup_swift_retry_attempts  = $::os_service_default,
   $backup_swift_retry_backoff   = $::os_service_default,
@@ -89,11 +89,6 @@ class cinder::backup::swift (
 ) {
 
   include ::cinder::deps
-
-  if ($backup_swift_container == 'volumes_backup') {
-    warning("The OpenStack default value of backup_swift_container differs from the puppet module \
-default of \"volumes_backup\" and will be changed to the upstream OpenStack default in N-release.")
-  }
 
   cinder_config {
     'DEFAULT/backup_driver':                value => $backup_driver;

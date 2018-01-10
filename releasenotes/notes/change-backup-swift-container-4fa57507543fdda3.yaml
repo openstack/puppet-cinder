@@ -1,0 +1,5 @@
+---
+other:
+  - |
+    Changed the default value of cinder::backup::swift::backup_swift_container
+    to volumebackups. This matches the default from tht and removes a warning.
