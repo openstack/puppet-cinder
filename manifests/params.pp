@@ -6,6 +6,7 @@ class cinder::params {
   include ::openstacklib::defaults
 
   $client_package            = 'python-cinderclient'
+  $group                     = 'cinder'
   $cinder_wsgi_script_source = '/usr/bin/cinder-wsgi'
 
   if $::osfamily == 'Debian' {
