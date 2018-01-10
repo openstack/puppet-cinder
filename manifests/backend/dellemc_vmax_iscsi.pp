@@ -55,7 +55,7 @@ define cinder::backend::dellemc_vmax_iscsi (
 
   ensure_packages( 'pywbem', {
     ensure => present,
-    name   => $::cinder::param::pywbem_package_name,
+    name   => $::cinder::params::pywbem_package_name,
     tag    => 'cinder-support-package'})
 
   create_resources('cinder_config', $extra_options)
