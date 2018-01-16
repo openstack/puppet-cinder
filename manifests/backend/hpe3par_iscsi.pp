@@ -56,7 +56,7 @@
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
-#   If set to true, a Cinde Volume type will be created
+#   If set to true, a Cinder Volume type will be created
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
 #
