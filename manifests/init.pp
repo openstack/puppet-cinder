@@ -248,14 +248,6 @@
 #
 # === DEPRECATED PARAMETERS
 #
-# [*enable_v1_api*]
-#   (Optional) DEPRECATED. Whether to enable the v1 API (true/false).
-#   Defaults to undef.
-#
-# [*enable_v2_api*]
-#   (Optional) DEPRECATED. Whether to enable the v2 API (true/false).
-#   Defaults to undef.
-#
 # [*use_ssl*]
 #   (optional) DEPRECATED. Enable SSL on the API server
 #   Defaults to undef
@@ -365,8 +357,6 @@ class cinder (
   $purge_config                       = false,
   $backend_host                       = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $enable_v1_api                      = undef,
-  $enable_v2_api                      = undef,
   $use_ssl                            = undef,
   $ca_file                            = undef,
   $cert_file                          = undef,
@@ -384,14 +374,6 @@ class cinder (
   include ::cinder::deps
   include ::cinder::db
   include ::cinder::logging
-
-  if $enable_v1_api {
-    warning('enable_v1_api is deprecated, has no effect and will be removed in a future release')
-  }
-
-  if $enable_v2_api {
-    warning('enable_v2_api is deprecated, has no effect and will be removed in a future release')
-  }
 
   if !is_service_default($host) {
     warning('host is deprecated, has no effect and will be removed in a future release, use backend_host instead')

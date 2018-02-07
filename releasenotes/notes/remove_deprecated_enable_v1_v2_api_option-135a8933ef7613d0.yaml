@@ -1,0 +1,4 @@
+---
+other:
+  - Remove deprecated cinder::enable_v1_api option.
+  - Remove deprecated cinder::enable_v2_api option.
