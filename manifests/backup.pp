@@ -28,12 +28,6 @@
 #   (optional) Template string to be used to generate backup names.
 #   Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*backup_topic*]
-#   (optional) The topic volume backup nodes listen on.
-#   Defaults to undef
-#
 # === Author(s)
 #
 # Emilien Macchi <emilien.macchi@enovance.com>
@@ -61,8 +55,6 @@ class cinder::backup (
   $backup_manager       = $::os_service_default,
   $backup_api_class     = $::os_service_default,
   $backup_name_template = $::os_service_default,
-  #DEPRECATED PARAMETERS
-  $backup_topic         = undef,
 ) {
 
   include ::cinder::deps
@@ -93,10 +85,6 @@ class cinder::backup (
     enable    => $enabled,
     hasstatus => true,
     tag       => 'cinder-service',
-  }
-
-  if $backup_topic {
-    warning('The backup_topic parameter is deprecated, has no effect and will be removed in future release.')
   }
 
   cinder_config {

@@ -1,0 +1,3 @@
+---
+other:
+  - Remove deprecated cinder::backup::backup_topic option. 
