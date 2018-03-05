@@ -56,7 +56,7 @@ describe 'cinder::db' do
 
     context 'with MySQL-python library as backend package' do
       let :params do
-        { :database_connection => 'mysql://cinder:cinder@localhost/cinder', }
+        { :database_connection => 'mysql+pymysql://cinder:cinder@localhost/cinder', }
       end
 
       it { is_expected.to contain_package('python-mysqldb').with(:ensure => 'present') }
