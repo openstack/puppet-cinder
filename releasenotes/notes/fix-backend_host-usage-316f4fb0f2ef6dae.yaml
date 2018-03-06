@@ -1,0 +1,14 @@
+---
+fixes:
+  - |
+    Fixes `bug 1753596
+    <https://bugs.launchpad.net/tripleo/+bug/1753596>`__ so the backend_host
+    option is set in each cinder-volume backend driver's section, and not in
+    the DEFAULT section where the option isn't relevant.
+other:
+  - |
+    A previous deprecation notice stated the host option was deprecated in
+    favor of the backend_host option. This was misleading because the note
+    failed to clarify this only applied to options in the cinder-volume
+    backend driver sections. In the DEFAULT section, the host option is not
+    deprecated, and the backend_host option isn't relevant.

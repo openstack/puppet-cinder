@@ -53,8 +53,10 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
       is_expected.to contain_cinder_config('DEFAULT/allow_availability_zone_fallback').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
-      is_expected.to contain_cinder_config('DEFAULT/backend_host').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
+
+      # backend_host should not be written to DEFAULT section
+      is_expected.to_not contain_cinder_config('DEFAULT/backend_host')
     end
 
   end
@@ -286,16 +288,6 @@ describe 'cinder' do
     end
 
     it { is_expected.to contain_cinder_config('DEFAULT/transport_url').with_value('rabbit://rabbit_user:password@localhost:5673') }
-  end
-
-  describe 'with backend_host' do
-    let :params do
-      req_params.merge({
-        :backend_host => 'cinder_backend',
-      })
-    end
-
-    it { is_expected.to contain_cinder_config('DEFAULT/backend_host').with_value('cinder_backend') }
   end
 
 end
