@@ -243,6 +243,11 @@
 #   'cinder::backend::rdb::volume_tmp_dir' parameter.
 #   Defaults to $::os_service_default
 #
+# [*host*]
+#   (optional) Name of this node. This can be an opaque identifier. It is
+#   not necessarily a host name, FQDN, or IP address.
+#   Defaults to $::os_service_default.
+#
 # [*purge_config*]
 #   (optional) Whether to set only the specified config options
 #   in the cinder config.
@@ -297,11 +302,6 @@
 # [*rabbit_virtual_host*]
 #   (Optional) DEPRECATED. Virtual_host to use.
 #   Defaults to $::os_service_default
-#
-# [*host*]
-#   (optional) DEPRECATED. Name of this node. This can be an opaque identifier. It is
-#   not necessarily a host name, FQDN, or IP address.
-#   Defaults to $::os_service_default.
 #
 # [*rpc_backend*]
 #   (Optional) DEPRECATED. Use these options to configure the RabbitMQ message system.
@@ -361,6 +361,7 @@ class cinder (
   $enable_v3_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
+  $host                               = $::os_service_default,
   $purge_config                       = false,
   $backend_host                       = $::os_service_default,
   # DEPRECATED PARAMETERS
@@ -374,17 +375,12 @@ class cinder (
   $rabbit_port                        = $::os_service_default,
   $rabbit_userid                      = $::os_service_default,
   $rabbit_virtual_host                = $::os_service_default,
-  $host                               = $::os_service_default,
   $rpc_backend                        = undef,
 ) inherits cinder::params {
 
   include ::cinder::deps
   include ::cinder::db
   include ::cinder::logging
-
-  if !is_service_default($host) {
-    warning('host is deprecated, has no effect and will be removed in a future release, use backend_host instead')
-  }
 
   if !is_service_default($rabbit_host) or
     !is_service_default($rabbit_hosts) or
@@ -470,7 +466,10 @@ instead.")
     'DEFAULT/allow_availability_zone_fallback': value => $allow_availability_zone_fallback;
     'DEFAULT/image_conversion_dir':             value => $image_conversion_dir;
     'DEFAULT/host':                             value => $host;
-    'DEFAULT/backend_host':                     value => $backend_host;
+
+    # NOTE(abishop): $backend_host is not written here because it is not a valid
+    # DEFAULT option. It is only recognized in the backend sections. Instead,
+    # for backward compatibility, backends.pp references this parameter.
   }
 
   # V3 APIs
