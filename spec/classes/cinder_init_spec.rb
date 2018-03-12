@@ -3,7 +3,7 @@ describe 'cinder' do
   let :req_params do
     {
       :rabbit_password     => 'guest',
-      :database_connection => 'mysql://user:password@host/database',
+      :database_connection => 'mysql+pymysql://user:password@host/database',
       :lock_path           => '/var/lock/cinder',
     }
   end
