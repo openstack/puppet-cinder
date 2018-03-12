@@ -1,0 +1,4 @@
+---
+features:
+  - Add new parameter "nfs_snapshot_support", which enables support
+    for snapshots on the NFS driver.

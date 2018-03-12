@@ -17,6 +17,7 @@ describe 'cinder::backend::nfs' do
       :nfs_oversub_ratio           => '0.9',
       :nas_secure_file_operations  => 'auto',
       :nas_secure_file_permissions => 'false',
+      :nfs_snapshot_support        => 'true',
     }
   end
 
@@ -47,6 +48,8 @@ describe 'cinder::backend::nfs' do
         'auto')
       is_expected.to contain_cinder_config('hippo/nas_secure_file_permissions').with_value(
         'false')
+      is_expected.to contain_cinder_config('hippo/nfs_snapshot_support').with_value(
+        'true')
       is_expected.to contain_file('/etc/cinder/other_shares.conf').with(
         :content => "10.10.10.10:/shares\n10.10.10.10:/shares2",
         :require => 'Anchor[cinder::install::end]',
