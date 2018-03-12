@@ -17,6 +17,7 @@ describe 'cinder::db::sync' do
                          'Anchor[cinder::config::end]',
                          'Anchor[cinder::dbsync::begin]'],
         :notify      => 'Anchor[cinder::dbsync::end]',
+        :tag         => 'openstack-db',
       )
     end
 
@@ -40,6 +41,7 @@ describe 'cinder::db::sync' do
                          'Anchor[cinder::config::end]',
                          'Anchor[cinder::dbsync::begin]'],
           :notify      => 'Anchor[cinder::dbsync::end]',
+          :tag         => 'openstack-db',
         )
       }
     end
