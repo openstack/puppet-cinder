@@ -30,5 +30,6 @@ class cinder::db::sync(
       Anchor['cinder::dbsync::begin']
     ],
     notify      => Anchor['cinder::dbsync::end'],
+    tag         => 'openstack-db',
   }
 }
