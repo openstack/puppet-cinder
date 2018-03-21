@@ -63,8 +63,10 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('key_manager/backend').with_value('cinder.keymgr.conf_key_mgr.ConfKeyManager')
         is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('oslo_middleware/enable_proxy_headers_parsing').with('value' => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with('value' => '<SERVICE DEFAULT>')
+        is_expected.to contain_oslo__middleware('cinder_config').with(
+          :enable_proxy_headers_parsing => '<SERVICE DEFAULT>',
+        )
       end
     end
 
