@@ -28,7 +28,7 @@ describe 'cinder::backend::eqlx' do
       is_expected.to contain_cinder__backend__eqlx(config_group_name)
       is_expected.to contain_cinder_config(
         "#{config_group_name}/volume_driver").with_value(
-        'cinder.volume.drivers.eqlx.DellEQLSanISCSIDriver')
+        'cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver')
       params.each_pair do |config,value|
         is_expected.to contain_cinder_config(
           "#{config_group_name}/#{config}").with_value(value)

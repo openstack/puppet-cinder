@@ -95,7 +95,7 @@ define cinder::backend::eqlx (
 
   cinder_config {
     "${name}/volume_backend_name":  value => $volume_backend_name;
-    "${name}/volume_driver":        value => 'cinder.volume.drivers.eqlx.DellEQLSanISCSIDriver';
+    "${name}/volume_driver":        value => 'cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver';
     "${name}/san_ip":               value => $san_ip;
     "${name}/san_login":            value => $san_login;
     "${name}/san_password":         value => $san_password, secret => true;

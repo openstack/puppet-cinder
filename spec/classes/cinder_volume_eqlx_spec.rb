@@ -24,7 +24,7 @@ describe 'cinder::volume::eqlx' do
 
   describe 'eqlx volume driver' do
     it 'configures eqlx volume driver' do
-      is_expected.to contain_cinder_config('DEFAULT/volume_driver').with_value('cinder.volume.drivers.eqlx.DellEQLSanISCSIDriver')
+      is_expected.to contain_cinder_config('DEFAULT/volume_driver').with_value('cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver')
       is_expected.to contain_cinder_config('DEFAULT/volume_backend_name').with_value('DEFAULT')
 
       params.each_pair do |config,value|
