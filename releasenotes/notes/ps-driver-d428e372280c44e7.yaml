@@ -1,0 +1,5 @@
+---
+fixes:
+  - Fixes `bug 1758133
+    <https://bugs.launchpad.net/puppet-cinder/+bug/1758133>`__
+    to use the new driver path for Dell EMC PS Driver.
