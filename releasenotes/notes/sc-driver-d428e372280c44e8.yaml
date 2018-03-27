@@ -1,0 +1,5 @@
+---
+fixes:
+  - Fixes `bug 1758145
+    <https://bugs.launchpad.net/puppet-cinder/+bug/1758145>`__
+    to ignore the excluded_domain_ip Dell EMC SC Driver when blank.

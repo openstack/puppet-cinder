@@ -121,11 +121,16 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
     "${name}/dell_sc_verify_cert":    value => $dell_sc_verify_cert;
     "${name}/dell_sc_volume_folder":  value => $dell_sc_volume_folder;
     "${name}/iscsi_port":             value => $iscsi_port;
-    "${name}/excluded_domain_ip":     value => $excluded_domain_ip;
     "${name}/secondary_san_ip":       value => $secondary_san_ip;
     "${name}/secondary_san_login":    value => $secondary_san_login;
     "${name}/secondary_san_password": value => $secondary_san_password;
     "${name}/secondary_sc_api_port":  value => $secondary_sc_api_port;
+  }
+
+  if $excluded_domain_ip {
+    cinder_config {
+      "${name}/excluded_domain_ip": value => $excluded_domain_ip;
+    }
   }
 
   if $manage_volume_type {
