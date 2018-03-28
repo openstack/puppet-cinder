@@ -124,7 +124,7 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
     "${name}/excluded_domain_ip":     value => $excluded_domain_ip;
     "${name}/secondary_san_ip":       value => $secondary_san_ip;
     "${name}/secondary_san_login":    value => $secondary_san_login;
-    "${name}/secondary_san_password": value => $secondary_san_password;
+    "${name}/secondary_san_password": value => $secondary_san_password, secret => true;
     "${name}/secondary_sc_api_port":  value => $secondary_sc_api_port;
   }
 
