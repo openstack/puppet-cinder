@@ -45,6 +45,29 @@ describe 'cinder::backends' do
 
       it 'configures cinder.conf with default params' do
         is_expected.to contain_cinder_config('DEFAULT/enabled_backends').with_value(p[:enabled_backends].join(','))
+        is_expected.to_not contain_cinder_config('lowcost/backend_host')
+        is_expected.to_not contain_cinder_config('regular/backend_host')
+        is_expected.to_not contain_cinder_config('premium/backend_host')
+      end
+    end
+
+    context 'configure cinder with backend_host' do
+      before :each do
+        params.merge!(
+          :enabled_backends => ['lowcost', 'regular', 'premium'],
+          :backend_host     => 'somehost',
+        )
+      end
+
+      let(:pre_condition) do
+        # Verify there are no collisions with any previously defined value.
+        "cinder_config { 'regular/backend_host': value => 'anotherhost' }"
+      end
+
+      it 'configures backend_host in each backend' do
+        is_expected.to contain_cinder_config('lowcost/backend_host').with_value('somehost')
+        is_expected.to contain_cinder_config('regular/backend_host').with_value('anotherhost')
+        is_expected.to contain_cinder_config('premium/backend_host').with_value('somehost')
       end
     end
   end

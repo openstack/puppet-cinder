@@ -120,13 +120,16 @@ define cinder::backend::rbd (
     }
   }
 
-  if $backend_host {
-    cinder_config {
-      "${name}/backend_host": value => $backend_host;
-    }
-  } else {
-    cinder_config {
-      "${name}/backend_host": value => "rbd:${rbd_pool}";
+  # Avoid colliding with code in backends.pp
+  unless defined(Cinder_config["${name}/backend_host"]) {
+    if $backend_host {
+      cinder_config {
+        "${name}/backend_host": value => $backend_host;
+      }
+    } else {
+      cinder_config {
+        "${name}/backend_host": value => "rbd:${rbd_pool}";
+      }
     }
   }
 
