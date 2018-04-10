@@ -47,10 +47,6 @@
 #   catalog.
 #   Defaults to 'compute:Compute Service:publicURL'
 #
-# [*nova_catalog_admin_info*]
-#   (optional) Same as nova_catalog_info, but for admin endpoint.
-#   Defaults to 'compute:Compute Service:adminURL'
-#
 # [*service_workers*]
 #   (optional) Number of cinder-api workers
 #   Defaults to $::os_workers
@@ -174,9 +170,12 @@
 #   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
 #   Defaults to undef.
 #
+# [*nova_catalog_admin_info*]
+#   (optional) Same as nova_catalog_info, but for admin endpoint.
+#   Defaults to 'compute:Compute Service:adminURL'
+#
 class cinder::api (
   $nova_catalog_info              = 'compute:Compute Service:publicURL',
-  $nova_catalog_admin_info        = 'compute:Compute Service:adminURL',
   $os_region_name                 = $::os_service_default,
   $privileged_user                = false,
   $os_privileged_user_name        = $::os_service_default,
@@ -211,6 +210,7 @@ class cinder::api (
   # DEPRECATED PARAMETERS
   $validation_options             = {},
   $keymgr_api_class               = undef,
+  $nova_catalog_admin_info        = 'compute:Compute Service:adminURL',
 ) inherits cinder::params {
 
   include ::cinder::deps
@@ -303,7 +303,6 @@ running as a standalone service, or httpd for being run by a httpd server")
 
   cinder_config {
     'DEFAULT/nova_catalog_info':       value => $nova_catalog_info;
-    'DEFAULT/nova_catalog_admin_info': value => $nova_catalog_admin_info;
   }
 
   oslo::middleware {'cinder_config':

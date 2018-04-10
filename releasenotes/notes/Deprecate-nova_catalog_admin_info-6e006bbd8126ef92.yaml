@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    The nova_catalog_admin_info parameter was deprecated from cinder and is no
+    longer being used in the cinder code-base. So, the parameter with the same
+    name in the api.pp manifest was set as deprecated as well.
