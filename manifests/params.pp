@@ -5,7 +5,13 @@
 class cinder::params {
   include ::openstacklib::defaults
 
-  $client_package            = 'python-cinderclient'
+  if ($::os_package_type == 'debian') {
+    $pyvers = '3'
+  } else {
+    $pyvers = ''
+  }
+
+  $client_package            = "python${pyvers}-cinderclient"
   $group                     = 'cinder'
   $cinder_wsgi_script_source = '/usr/bin/cinder-wsgi'
 

@@ -19,7 +19,7 @@ describe 'cinder::client' do
 
     it 'installs cinder client package' do
       is_expected.to contain_package('python-cinderclient').with(
-        :name   => 'python-cinderclient',
+        :name   => platform_params[:client_package_name],
         :ensure => p[:package_ensure],
         :tag    => ['openstack', 'cinder-support-package'],
       )
@@ -40,6 +40,19 @@ describe 'cinder::client' do
     context "on #{os}" do
       let (:facts) do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
+      end
+
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          if facts[:os_package_type] == 'debian'
+            { :client_package_name => 'python3-cinderclient' }
+          else
+            { :client_package_name => 'python-cinderclient' }
+          end
+        when 'RedHat'
+          { :client_package_name => 'python-cinderclient' }
+        end
       end
 
       it_configures 'cinder client'
