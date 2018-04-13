@@ -362,7 +362,7 @@ running as a standalone service, or httpd for being run by a httpd server")
     $defaults = {
       'cinder-api' => {
         # lint:ignore:140chars
-        'command'  => "cinder --os-auth-url ${::cinder::keystone::authtoken::auth_uri} --os-project-name ${keystone_project_name} --os-username ${keystone_username} --os-password ${keystone_password} list",
+        'command'  => "cinder --os-auth-url ${::cinder::keystone::authtoken::www_authenticate_uri} --os-project-name ${keystone_project_name} --os-username ${keystone_username} --os-password ${keystone_password} list",
         # lint:endignore
       }
     }

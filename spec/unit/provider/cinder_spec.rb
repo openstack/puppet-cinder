@@ -24,19 +24,19 @@ describe Puppet::Provider::Cinder do
 
     it 'should read conf file with all sections' do
       creds_hash = {
-        'auth_uri'            => 'https://192.168.56.210:35357/v2.0/',
-        'project_name'        => 'admin_tenant',
-        'username'            => 'admin',
-        'password'            => 'password',
-        'project_domain_name' => 'Default',
-        'user_domain_name'    => 'Default',
+        'www_authenticate_uri' => 'https://192.168.56.210:35357/v2.0/',
+        'project_name'         => 'admin_tenant',
+        'username'             => 'admin',
+        'password'             => 'password',
+        'project_domain_name'  => 'Default',
+        'user_domain_name'     => 'Default',
       }
       mock = {
         'keystone_authtoken' => {
-          'auth_uri'     => 'https://192.168.56.210:35357/v2.0/',
-          'project_name' => 'admin_tenant',
-          'username'     => 'admin',
-          'password'     => 'password',
+          'www_authenticate_uri' => 'https://192.168.56.210:35357/v2.0/',
+          'project_name'         => 'admin_tenant',
+          'username'             => 'admin',
+          'password'             => 'password',
         }
       }
       Puppet::Util::IniConfig::File.expects(:new).returns(mock)
