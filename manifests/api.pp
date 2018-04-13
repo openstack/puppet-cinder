@@ -226,6 +226,10 @@ class cinder::api (
   $key_file_real = pick($::cinder::key_file, $key_file)
   $ca_file_real = pick($::cinder::ca_file, $ca_file)
 
+  if $nova_catalog_admin_info {
+    warning('The nova_catalog_admin_info parameter has been deprecated and will be removed in the future release.')
+  }
+
   if $use_ssl_real {
     if is_service_default($cert_file_real) {
       fail('The cert_file parameter is required when use_ssl is set to true')
