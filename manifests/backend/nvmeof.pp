@@ -17,15 +17,15 @@
 #
 # [*target_prefix*]
 #   (Optional) Prefix for LVM volumes.
-#   Defaults to '$::cinder::params::target_prefix'.
+#   Defaults to '$::os_service_default'.
 #
 # [*nvmet_port_id*]
 #   (Optional) Port id of the NVMe target.
-#   Defaults to '$::cinder::params::nvmet_port_id'.
+#   Defaults to '1'.
 #
 # [*nvmet_ns_id*]
 #   (Optional) The namespace id associated with the subsystem.
-#   Defaults to '$::cinder::params::nvmet_ns_id'.
+#   Defaults to '10'.
 #
 # [*volume_backend_name*]
 #   (optional) Allows for the volume_backend_name to be separate of $name.
