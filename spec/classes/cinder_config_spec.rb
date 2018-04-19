@@ -14,6 +14,8 @@ describe 'cinder::config' do
       { :cinder_config => config_hash }
     end
 
+    it { is_expected.to contain_class('cinder::deps') }
+
     it 'configures arbitrary cinder-config configurations' do
       is_expected.to contain_cinder_config('DEFAULT/foo').with_value('fooValue')
       is_expected.to contain_cinder_config('DEFAULT/bar').with_value('barValue')
