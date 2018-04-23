@@ -40,6 +40,13 @@ describe 'cinder::backend::nvmeof' do
       is_expected.to contain_cinder_config('nvme-backend/volume_driver').with(
         :value => 'cinder.volume.drivers.lvm.LVMVolumeDriver')
     end
+
+    it { is_expected.to contain_package('nvmetcli').with(
+      :name   => 'nvmetcli',
+      :ensure => 'present',
+      :tag    => 'cinder-support-package',
+    ) }
+
   end
 
 end

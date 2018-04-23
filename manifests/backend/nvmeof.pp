@@ -68,4 +68,10 @@ define cinder::backend::nvmeof (
     "${name}/volume_group":         value => $volume_group;
   }
 
+  package { 'nvmetcli':
+    ensure => present,
+    name   => 'nvmetcli',
+    tag    => 'cinder-support-package',
+  }
+
 }
