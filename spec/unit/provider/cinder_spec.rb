@@ -24,7 +24,7 @@ describe Puppet::Provider::Cinder do
 
     it 'should read conf file with all sections' do
       creds_hash = {
-        'www_authenticate_uri' => 'https://192.168.56.210:35357/v2.0/',
+        'www_authenticate_uri' => 'https://192.168.56.210:5000/v2.0/',
         'project_name'         => 'admin_tenant',
         'username'             => 'admin',
         'password'             => 'password',
@@ -33,7 +33,7 @@ describe Puppet::Provider::Cinder do
       }
       mock = {
         'keystone_authtoken' => {
-          'www_authenticate_uri' => 'https://192.168.56.210:35357/v2.0/',
+          'www_authenticate_uri' => 'https://192.168.56.210:5000/v2.0/',
           'project_name'         => 'admin_tenant',
           'username'             => 'admin',
           'password'             => 'password',
