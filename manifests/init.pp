@@ -257,56 +257,6 @@
 #   (optional) Backend override of host value.
 #   Defaults to $::os_service_default.
 #
-# === DEPRECATED PARAMETERS
-#
-# [*use_ssl*]
-#   (optional) DEPRECATED. Enable SSL on the API server
-#   Defaults to undef
-#
-# [*cert_file*]
-#   (optional) DEPRECATED. Certificate file to use when starting API server
-#   securely
-#   Defaults to undef
-#
-# [*key_file*]
-#   (optional) DEPRECATED. Private key file to use when starting API server
-#   securely
-#   Defaults to undef
-#
-# [*ca_file*]
-#   (optional) DEPRECATED. CA certificate file to use to verify connecting
-#   clients
-#   Defaults to undef
-#
-# [*rabbit_host*]
-#   (Optional) DEPRECATED. IP or hostname of the rabbit server.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_port*]
-#   (Optional) DEPRECATED. Port of the rabbit server.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_hosts*]
-#   (Optional) DEPRECATED. Array of host:port (used with HA queues).
-#   If defined, will remove rabbit_host & rabbit_port parameters from config
-#   Defaults to $::os_service_default
-#
-# [*rabbit_userid*]
-#   (Optional) DEPRECATED. User to connect to the rabbit server.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_password*]
-#   (Required) DEPRECATED. Password to connect to the rabbit_server.
-#   Defaults to empty. Required if using the Rabbit (kombu) backend.
-#
-# [*rabbit_virtual_host*]
-#   (Optional) DEPRECATED. Virtual_host to use.
-#   Defaults to $::os_service_default
-#
-# [*rpc_backend*]
-#   (Optional) DEPRECATED. Use these options to configure the RabbitMQ message system.
-#   Defaults to undef
-#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
@@ -364,36 +314,11 @@ class cinder (
   $host                               = $::os_service_default,
   $purge_config                       = false,
   $backend_host                       = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $use_ssl                            = undef,
-  $ca_file                            = undef,
-  $cert_file                          = undef,
-  $key_file                           = undef,
-  $rabbit_host                        = $::os_service_default,
-  $rabbit_hosts                       = $::os_service_default,
-  $rabbit_password                    = $::os_service_default,
-  $rabbit_port                        = $::os_service_default,
-  $rabbit_userid                      = $::os_service_default,
-  $rabbit_virtual_host                = $::os_service_default,
-  $rpc_backend                        = undef,
 ) inherits cinder::params {
 
   include ::cinder::deps
   include ::cinder::db
   include ::cinder::logging
-
-  if !is_service_default($rabbit_host) or
-    !is_service_default($rabbit_hosts) or
-    !is_service_default($rabbit_password) or
-    !is_service_default($rabbit_port) or
-    !is_service_default($rabbit_userid) or
-    $rpc_backend or
-    !is_service_default($rabbit_virtual_host) {
-    warning("cinder::rabbit_host, cinder::rabbit_hosts, cinder::rabbit_password, \
-cinder::rabbit_port, cinder::rabbit_userid, cinder::rabbit_virtual_host and \
-cinder::rpc_backend are deprecated. Please use cinder::default_transport_url \
-instead.")
-  }
 
   package { 'cinder':
     ensure => $package_ensure,
@@ -406,12 +331,6 @@ instead.")
   }
 
   oslo::messaging::rabbit { 'cinder_config':
-    rabbit_userid               => $rabbit_userid,
-    rabbit_password             => $rabbit_password,
-    rabbit_virtual_host         => $rabbit_virtual_host,
-    rabbit_host                 => $rabbit_host,
-    rabbit_port                 => $rabbit_port,
-    rabbit_hosts                => $rabbit_hosts,
     rabbit_ha_queues            => $rabbit_ha_queues,
     heartbeat_timeout_threshold => $rabbit_heartbeat_timeout_threshold,
     heartbeat_rate              => $rabbit_heartbeat_rate,
@@ -474,7 +393,7 @@ instead.")
 
   # V3 APIs
   cinder_config {
-    'DEFAULT/enable_v3_api':        value => $enable_v3_api;
+    'DEFAULT/enable_v3_api': value => $enable_v3_api;
   }
 
   oslo::concurrency { 'cinder_config':

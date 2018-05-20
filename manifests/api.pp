@@ -149,22 +149,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*validation_options*]
-#   (optional) Service validation options
-#   Should be a hash of options defined in openstacklib::service_validation
-#   If empty, defaults values are taken from openstacklib function.
-#   Default command list volumes.
-#   Require validate set at True.
-#   Example:
-#   glance::api::validation_options:
-#     glance-api:
-#       command: check_cinder-api.py
-#       path: /usr/bin:/bin:/usr/sbin:/sbin
-#       provider: shell
-#       tries: 5
-#       try_sleep: 10
-#   Defaults to {}
-#
 # [*keymgr_api_class*]
 #   (optional) Deprecated. Key Manager service class.
 #   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
@@ -208,7 +192,6 @@ class cinder::api (
   $osapi_volume_listen_port       = $::os_service_default,
   $keymgr_backend                 = 'cinder.keymgr.conf_key_mgr.ConfKeyManager',
   # DEPRECATED PARAMETERS
-  $validation_options             = {},
   $keymgr_api_class               = undef,
   $nova_catalog_admin_info        = 'compute:Compute Service:adminURL',
 ) inherits cinder::params {
@@ -220,21 +203,15 @@ class cinder::api (
   validate_bool($manage_service)
   validate_bool($enabled)
 
-  # Keep backwards compatibility with SSL values being set in init.pp
-  $use_ssl_real = pick($::cinder::use_ssl, $use_ssl)
-  $cert_file_real = pick($::cinder::cert_file, $cert_file)
-  $key_file_real = pick($::cinder::key_file, $key_file)
-  $ca_file_real = pick($::cinder::ca_file, $ca_file)
-
   if $nova_catalog_admin_info {
     warning('The nova_catalog_admin_info parameter has been deprecated and will be removed in the future release.')
   }
 
-  if $use_ssl_real {
-    if is_service_default($cert_file_real) {
+  if $use_ssl {
+    if is_service_default($cert_file) {
       fail('The cert_file parameter is required when use_ssl is set to true')
     }
-    if is_service_default($key_file_real) {
+    if is_service_default($key_file) {
       fail('The key_file parameter is required when use_ssl is set to true')
     }
   }
@@ -343,11 +320,11 @@ running as a standalone service, or httpd for being run by a httpd server")
   }
 
   # SSL Options
-  if $use_ssl_real {
+  if $use_ssl {
     cinder_config {
-      'ssl/cert_file' : value => $cert_file_real;
-      'ssl/key_file' :  value => $key_file_real;
-      'ssl/ca_file' :   value => $ca_file_real;
+      'ssl/cert_file' : value => $cert_file;
+      'ssl/key_file' :  value => $key_file;
+      'ssl/ca_file' :   value => $ca_file;
     }
   }
 
@@ -363,15 +340,14 @@ running as a standalone service, or httpd for being run by a httpd server")
     $keystone_username = $::cinder::keystone::authtoken::username
     $keystone_password = $::cinder::keystone::authtoken::password
 
-    $defaults = {
+    $validation_cmd = {
       'cinder-api' => {
         # lint:ignore:140chars
         'command'  => "cinder --os-auth-url ${::cinder::keystone::authtoken::www_authenticate_uri} --os-project-name ${keystone_project_name} --os-username ${keystone_username} --os-password ${keystone_password} list",
         # lint:endignore
       }
     }
-    $validation_options_hash = merge ($defaults, $validation_options)
-    create_resources('openstacklib::service_validation', $validation_options_hash, {'subscribe' => 'Service[cinder-api]'})
+    create_resources('openstacklib::service_validation', $validation_cmd, {'subscribe' => 'Service[cinder-api]'})
   }
 
 }

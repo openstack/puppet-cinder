@@ -7,8 +7,8 @@ describe 'cinder::type_set' do
   let(:title) {'hippo'}
 
   let :default_params do {
-    :type           => 'sith',
-    :key            => 'monchichi',
+    :type => 'sith',
+    :key  => 'monchichi',
   }
   end
 

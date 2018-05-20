@@ -1,8 +1,8 @@
 require 'spec_helper'
+
 describe 'cinder' do
   let :req_params do
     {
-      :rabbit_password     => 'guest',
       :database_connection => 'mysql+pymysql://user:password@host/database',
       :lock_path           => '/var/lock/cinder',
     }
@@ -37,15 +37,9 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('DEFAULT/control_exchange').with(:value => 'openstack')
       is_expected.to contain_cinder_config('DEFAULT/report_interval').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/service_down_time').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_password').with(:value => 'guest', :secret => true)
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_virtual_host').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_userid').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_reconnect_delay').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_failover_strategy').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_compression').with(:value => '<SERVICE DEFAULT>')
@@ -60,33 +54,8 @@ describe 'cinder' do
     end
 
   end
-  describe 'with modified rabbit_hosts' do
-    let :params do
-      req_params.merge({'rabbit_hosts' => ['rabbit1:5672', 'rabbit2:5672']})
-    end
 
-    it 'should contain many' do
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => 'rabbit1:5672,rabbit2:5672')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => true)
-    end
-  end
-
-  describe 'with a single rabbit_hosts entry' do
-    let :params do
-      req_params.merge({'rabbit_hosts' => ['rabbit1:5672']})
-    end
-
-    it 'should contain many' do
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_host').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_port').with(:value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_hosts').with(:value => 'rabbit1:5672')
-      is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => '<SERVICE DEFAULT>')
-    end
-  end
-
-  describe 'a single rabbit_host with enable ha queues' do
+  describe 'with enable ha queues' do
     let :params do
       req_params.merge({'rabbit_ha_queues' => true})
     end
@@ -135,7 +104,7 @@ describe 'cinder' do
     end
 
     it { is_expected.to contain_oslo__messaging__rabbit('cinder_config').with(
-        :rabbit_use_ssl     => true,
+        :rabbit_use_ssl => true,
     )}
   end
 
@@ -239,7 +208,6 @@ describe 'cinder' do
     let :params do
       {
         :database_connection => 'postgresql://user:drowssap@host/database',
-        :rabbit_password     => 'guest',
       }
     end
 
@@ -251,8 +219,7 @@ describe 'cinder' do
   describe 'with APIs set for Mitaka (proposed)' do
     let :params do
       {
-        :enable_v3_api   => true,
-        :rabbit_password => 'guest',
+        :enable_v3_api => true,
       }
     end
 

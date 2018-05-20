@@ -1,0 +1,29 @@
+---
+upgrade:
+  - |
+    The deprecated parameters cinder::rabbit_host, cinder::rabbit_hosts, cinder::rabbit_password,
+    cinder::rabbit_port, cinder::rabbit_userid, cinder::rabbit_virtual_host and cinder::rpc_backend
+    is removed. Please use cinder::default_transport_url instead.
+  - |
+    The deprecated parameters cinder::use_ssl, cinder::cert_file, cinder::key_file and cinder::ca_file
+    is removed. You should now set them in the cinder::api class.
+  - |
+    The deprecated parameter cinder::api::validation_options is removed.
+  - |
+    The deprecated parameter netapp_eseries_host_type in cinder::backend::netapp is removed.
+    Please use netapp_host_type instead.
+  - |
+    The deprecated parameters netapp_storage_pool and netapp_volume_list in cinder::backend::netapp is
+    removed. Please use netapp_pool_name_search_pattern instead.
+  - |
+    The deprecated parameter cinder::backend::rbd::volume_tmp_dir is removed.
+    Please use cinder::image_conversion_dir instead.
+  - |
+    The deprecated parameters os_password, os_tenant_name, os_username, os_auth_url and os_region_name
+    in cinder::type_set is removed.
+  - |
+    The deprecated parameters os_password, os_tenant_name, os_username and os_auth_url in
+    cinder::vmware is removed.
+  - |
+    The deprecated parameters os_password, os_tenant_name, os_userne, os_auth_url and os_region_name
+    in cinder::type is removed.

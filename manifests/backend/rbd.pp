@@ -69,13 +69,6 @@
 #   Example :
 #     { 'rbd_backend/param1' => { 'value' => value1 } }
 #
-# === Deprecated Parameters
-#
-# [*volume_tmp_dir*]
-#   (deprecated by image_conversion_dir) Location to store temporary image files
-#   if the volume driver does not write them directly to the volumea.
-#   Defaults to false
-#
 define cinder::backend::rbd (
   $rbd_pool,
   $rbd_user,
@@ -91,8 +84,6 @@ define cinder::backend::rbd (
   $rbd_store_chunk_size             = $::os_service_default,
   $manage_volume_type               = false,
   $extra_options                    = {},
-  # DEPRECATED PARAMETERS
-  $volume_tmp_dir                   = false,
 ) {
 
   include ::cinder::deps
@@ -131,11 +122,6 @@ define cinder::backend::rbd (
         "${name}/backend_host": value => "rbd:${rbd_pool}";
       }
     }
-  }
-
-  if $volume_tmp_dir {
-    cinder_config {"${name}/volume_tmp_dir": value => $volume_tmp_dir;}
-    warning('The rbd volume_tmp_dir parameter is deprecated. Please use image_conversion_dir in the cinder base class instead.')
   }
 
   ensure_packages( 'ceph-common', {

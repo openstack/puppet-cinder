@@ -16,7 +16,6 @@ describe 'cinder::backend::rbd' do
       :rbd_secret_uuid                  => '<SERVICE DEFAULT>',
       :rbd_ceph_conf                    => '/foo/boo/zoo/ceph.conf',
       :rbd_flatten_volume_from_snapshot => true,
-      :volume_tmp_dir                   => '<SERVICE DEFAULT>',
       :rbd_max_clone_depth              => '0',
       :rados_connect_timeout            => '<SERVICE DEFAULT>',
       :rados_connection_interval        => '<SERVICE DEFAULT>',
@@ -42,7 +41,6 @@ describe 'cinder::backend::rbd' do
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver')
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_ceph_conf").with_value(req_params[:rbd_ceph_conf])
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_flatten_volume_from_snapshot").with_value(req_params[:rbd_flatten_volume_from_snapshot])
-      is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_tmp_dir").with_value(req_params[:volume_tmp_dir])
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_max_clone_depth").with_value(req_params[:rbd_max_clone_depth])
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_pool").with_value(req_params[:rbd_pool])
       is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_user").with_value(req_params[:rbd_user])

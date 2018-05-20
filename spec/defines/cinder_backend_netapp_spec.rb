@@ -143,38 +143,6 @@ describe 'cinder::backend::netapp' do
     it_raises 'a Puppet::Error', /"not an array" is not an Array.  It looks to be a String/
   end
 
-  context 'with storage pools' do
-    before do
-     params.merge!({ :netapp_storage_pools => 'foo' })
-    end
-
-    it 'configures name seach pattern' do
-        is_expected.to contain_cinder_config('netapp/netapp_pool_name_search_pattern').with_value('(foo)')
-    end
-  end
-
-  context 'with volume list' do
-    before do
-      params.merge!({ :netapp_volume_list=> 'bar' })
-    end
-
-    it 'configures name seach pattern' do
-        is_expected.to contain_cinder_config('netapp/netapp_pool_name_search_pattern').with_value('(bar)')
-    end
-  end
-
-  context 'with storage pools and volume list' do
-    before do
-      params.merge!({
-        :netapp_storage_pools => 'foo',
-        :netapp_volume_list=> 'bar' })
-    end
-
-    it 'configures name seach pattern' do
-        is_expected.to contain_cinder_config('netapp/netapp_pool_name_search_pattern').with_value('(foo|bar)')
-    end
-  end
-
   context 'with name search pattern' do
     before do
       params.merge!({ :netapp_pool_name_search_pattern => '(something)' })

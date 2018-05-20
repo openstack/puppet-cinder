@@ -176,29 +176,6 @@
 #   Example :
 #     { 'netapp_backend/param1' => { 'value' => value1 } }
 #
-# DEPRECATED PARAMETERS
-#
-# [*netapp_eseries_host_type*]
-#   (optional) Deprecated. This option is used to define how the controllers in
-#   the E-Series storage array will work with the particular operating system on
-#   the hosts that are connected to it.
-#   Defaults to undef
-#
-# [*netapp_storage_pools*]
-#   (optional) This option is used to restrict provisioning to the specified
-#   storage pools. Only dynamic disk pools are currently supported. Specify the
-#   value of this option to be a comma separated list of disk pool names to be
-#   used for provisioning.
-#   Defaults to undef
-#
-# [*netapp_volume_list*]
-#   (optional) This parameter is only utilized when the storage protocol is
-#   configured to use iSCSI or FC. This parameter is used to restrict
-#   provisioning to the specified controller volumes. Specify the value of
-#   this parameter to be a comma separated list of NetApp controller volume
-#   names to be used for provisioning.
-#   Defaults to undef
-#
 # === Examples
 #
 #  cinder::backend::netapp { 'myBackend':
@@ -247,33 +224,9 @@ define cinder::backend::netapp (
   $netapp_pool_name_search_pattern  = '(.+)',
   $nas_secure_file_operations       = $::os_service_default,
   $nas_secure_file_permissions      = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $netapp_eseries_host_type         = undef,
-  $netapp_storage_pools             = undef,
-  $netapp_volume_list               = undef,
 ) {
 
   include ::cinder::deps
-
-  if $netapp_eseries_host_type {
-    warning('The "netapp_eseries_host_type" parameter is deprecated. Use "netapp_host_type" instead.')
-    $netapp_host_type_real = $netapp_eseries_host_type
-  } else {
-    $netapp_host_type_real = $netapp_host_type
-  }
-
-  if $netapp_storage_pools or $netapp_volume_list{
-    if $netapp_storage_pools {
-        warning('The "netapp_storage_pools" parameter is deprecated. Use "netapp_pool_name_search_pattern" instead.')
-    }
-    if $netapp_volume_list {
-        warning('The "netapp_volume_list" parameter is deprecated. Use "netapp_pool_name_search_pattern" instead.')
-    }
-    $list = join(any2array(delete(delete_undef_values([$netapp_storage_pools, $netapp_volume_list]), '')), '|')
-    $netapp_pool_name_search_pattern_real = "(${list})"
-  } else {
-    $netapp_pool_name_search_pattern_real = $netapp_pool_name_search_pattern
-  }
 
   if $nfs_shares {
     validate_array($nfs_shares)
@@ -306,8 +259,8 @@ define cinder::backend::netapp (
     "${name}/netapp_copyoffload_tool_path":     value => $netapp_copyoffload_tool_path;
     "${name}/netapp_controller_ips":            value => $netapp_controller_ips;
     "${name}/netapp_sa_password":               value => $netapp_sa_password, secret => true;
-    "${name}/netapp_pool_name_search_pattern":  value => $netapp_pool_name_search_pattern_real;
-    "${name}/netapp_host_type":                 value => $netapp_host_type_real;
+    "${name}/netapp_pool_name_search_pattern":  value => $netapp_pool_name_search_pattern;
+    "${name}/netapp_host_type":                 value => $netapp_host_type;
     "${name}/netapp_webservice_path":           value => $netapp_webservice_path;
     "${name}/nas_secure_file_operations":       value => $nas_secure_file_operations;
     "${name}/nas_secure_file_permissions":      value => $nas_secure_file_permissions;

@@ -14,8 +14,8 @@ describe 'cinder::type' do
 
   context 'creation with properties' do
     let :params do {
-      :set_value      => ['name1','name2'],
-      :set_key        => 'volume_backend_name',
+      :set_value => ['name1','name2'],
+      :set_key   => 'volume_backend_name',
     }
     end
     it 'should create type with properties' do

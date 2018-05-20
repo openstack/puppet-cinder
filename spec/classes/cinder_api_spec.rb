@@ -255,19 +255,6 @@ describe 'cinder::api' do
       )}
     end
 
-    describe 'while validating the service with custom command' do
-      let :params do
-        req_params.merge({
-          :validate           => true,
-          :validation_options => { 'cinder-api' => { 'command' => 'my-script' } }
-        })
-      end
-      it { is_expected.to contain_openstacklib__service_validation('cinder-api').with(
-        :command   => 'my-script',
-        :subscribe => 'Service[cinder-api]',
-      )}
-    end
-
     describe 'with a custom auth_strategy' do
       let :params do
         req_params.merge({'auth_strategy' => 'noauth'})
@@ -296,7 +283,7 @@ describe 'cinder::api' do
 
       let :pre_condition do
         "include ::apache
-         class { 'cinder': rabbit_password => 'secret' }
+         class { 'cinder': }
          class { '::cinder::keystone::authtoken':
            password => 'foo',
          }"
@@ -318,7 +305,7 @@ describe 'cinder::api' do
 
       let :pre_condition do
         "include ::apache
-         class { 'cinder': rabbit_password => 'secret' }
+         class { 'cinder': }
          class { '::cinder::keystone::authtoken':
            password => 'foo',
          }"
