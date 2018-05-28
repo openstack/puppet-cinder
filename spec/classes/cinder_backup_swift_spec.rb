@@ -61,7 +61,7 @@ describe 'cinder::backup::swift' do
     context 'when overriding default parameters' do
       before :each do
         params.merge!(:backup_swift_url => 'https://controller2:8080/v1/AUTH_')
-        params.merge!(:backup_swift_auth_url => 'https://controller2:35357')
+        params.merge!(:backup_swift_auth_url => 'https://controller2:5000')
         params.merge!(:backup_swift_container => 'toto')
         params.merge!(:backup_swift_object_size => '123')
         params.merge!(:backup_swift_retry_attempts => '99')
