@@ -36,7 +36,7 @@
 #
 # [*eqlx_cli_max_retries*]
 #   (optional) The maximum retry count for reconnection.
-#   Defaults to $:os_service_default
+#   Defaults to $::os_service_default
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
