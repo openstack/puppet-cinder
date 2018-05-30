@@ -74,4 +74,10 @@ define cinder::backend::nvmeof (
     tag    => 'cinder-support-package',
   }
 
+  package { 'nvme-cli':
+    ensure => present,
+    name   => 'nvme-cli',
+    tag    => 'cinder-support-package',
+  }
+
 }

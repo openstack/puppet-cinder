@@ -47,6 +47,12 @@ describe 'cinder::backend::nvmeof' do
       :tag    => 'cinder-support-package',
     ) }
 
+    it { is_expected.to contain_package('nvme-cli').with(
+      :name   => 'nvme-cli',
+      :ensure => 'present',
+      :tag    => 'cinder-support-package',
+    ) }
+
   end
 
 end
