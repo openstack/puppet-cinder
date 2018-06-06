@@ -1,0 +1,4 @@
+---
+deprecations:
+  - storage_vnx_pool_name is deprecated and will be removed in a future release.
+    Please use storage_vnx_pool_names instead.
