@@ -229,3 +229,8 @@ Contributors
 ------------
 
 * https://github.com/openstack/puppet-cinder/graphs/contributors
+
+Release Notes
+-------------
+
+* https://docs.openstack.org/releasenotes/puppet-cinder
