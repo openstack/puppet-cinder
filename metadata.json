@@ -27,7 +27,7 @@
         },
         {
             "name": "puppetlabs/apache",
-            "version_requirement": ">=1.0.0 <2.0.0"
+            "version_requirement": ">=3.0.0"
         }
     ],
     "description": "Installs and configures OpenStack Cinder (Block Storage).",
@@ -38,7 +38,7 @@
         {
             "operatingsystem": "Debian",
             "operatingsystemrelease": [
-                "7"
+                "9"
             ]
         },
         {
