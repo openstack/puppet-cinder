@@ -1,0 +1,5 @@
+---
+fixes:
+  - |
+    Notify Apache in case the API is served in that context when the API is
+    supposed to be restarted, for instance due to configuration changes.

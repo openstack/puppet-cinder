@@ -281,6 +281,7 @@ class cinder::api (
       enable => false,
       tag    => ['cinder-service'],
     }
+    Service <| title == 'httpd' |> { tag +> 'cinder-service' }
 
     # we need to make sure cinder-api/eventlet is stopped before trying to start apache
     Service['cinder-api'] -> Service[$service_name]
