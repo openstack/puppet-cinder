@@ -234,3 +234,9 @@ Release Notes
 -------------
 
 * https://docs.openstack.org/releasenotes/puppet-cinder
+
+Repository
+-------------
+
+* https://git.openstack.org/cgit/openstack/puppet-cinder
+
