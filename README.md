@@ -200,7 +200,7 @@ If value is equal to ensure_absent_val then the resource will behave as if
 `ensure => absent` was specified. Defaults to `<SERVICE DEFAULT>`
 
 Limitations
-------------
+-----------
 
 * Setup of storage nodes is limited to Linux and LVM, i.e. Puppet won't
   configure a Nexenta appliance but nova can be configured to use the Nexenta
@@ -236,7 +236,7 @@ Release Notes
 * https://docs.openstack.org/releasenotes/puppet-cinder
 
 Repository
--------------
+----------
 
 * https://git.openstack.org/cgit/openstack/puppet-cinder
 
