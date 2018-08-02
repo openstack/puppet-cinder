@@ -45,6 +45,8 @@ describe 'cinder::backend::dellsc_iscsi' do
       params_hash.each_pair do |config,value|
         is_expected.to contain_cinder_config("#{config_group_name}/#{config}").with_value( value )
       end
+      is_expected.to contain_cinder_config("#{config_group_name}/volume_driver").with_value(
+        'cinder.volume.drivers.dell_emc.sc.storagecenter_iscsi.SCISCSIDriver')
     end
   end
 

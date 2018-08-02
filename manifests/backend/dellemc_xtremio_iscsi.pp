@@ -59,7 +59,7 @@ define cinder::backend::dellemc_xtremio_iscsi (
 
   include ::cinder::deps
 
-  $driver = 'emc.xtremio.XtremIOISCSIDriver'
+  $driver = 'dell_emc.xtremio.XtremIOISCSIDriver'
   cinder_config {
     "${name}/volume_backend_name":               value => $volume_backend_name;
     "${name}/volume_driver":                     value => "cinder.volume.drivers.${driver}";

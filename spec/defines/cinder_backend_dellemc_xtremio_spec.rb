@@ -35,7 +35,7 @@ describe 'cinder::backend::dellemc_xtremio_iscsi' do
     it 'configures cinder volume driver' do
       is_expected.to contain_cinder__backend__dellemc_xtremio_iscsi(config_group_name)
       is_expected.to contain_cinder_config("#{title}/volume_driver").with_value(
-            'cinder.volume.drivers.emc.xtremio.XtremIOISCSIDriver')
+            'cinder.volume.drivers.dell_emc.xtremio.XtremIOISCSIDriver')
       params_hash.each_pair do |config,value|
         is_expected.to contain_cinder_config("#{config_group_name}/#{config}").with_value( value )
       end

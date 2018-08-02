@@ -22,7 +22,7 @@ describe 'cinder::backend::emc_vnx' do
 
   describe 'emc vnx volume driver' do
     it 'configure emc vnx volume driver' do
-      is_expected.to contain_cinder_config('emc/volume_driver').with_value('cinder.volume.drivers.emc.vnx.driver.EMCVNXDriver')
+      is_expected.to contain_cinder_config('emc/volume_driver').with_value('cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver')
       is_expected.to contain_cinder_config('emc/storage_protocol').with_value('iscsi')
       is_expected.to contain_cinder_config('emc/san_ip').with_value('127.0.0.2')
       is_expected.to contain_cinder_config('emc/san_login').with_value('emc')

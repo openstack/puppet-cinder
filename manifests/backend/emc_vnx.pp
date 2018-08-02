@@ -43,7 +43,7 @@
 #
 # [*volume_driver*]
 #   (optional) The EMC VNX Driver you want to use
-#   Defaults to cinder.volume.drivers.emc.vnx.driver.EMCVNXDriver
+#   Defaults to cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver
 #
 # [*storage_protocol*]
 #   (optional) Which storage protocol to use.
@@ -88,7 +88,7 @@ define cinder::backend::emc_vnx (
   $san_login                     = 'admin',
   $volume_backend_name           = $name,
   $extra_options                 = {},
-  $volume_driver                 = 'cinder.volume.drivers.emc.vnx.driver.EMCVNXDriver',
+  $volume_driver                 = 'cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver',
   $storage_protocol              = 'iscsi',
   $initiator_auto_registration   = $::os_service_default,
   $storage_vnx_auth_type         = $::os_service_default,

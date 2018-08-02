@@ -15,7 +15,7 @@
 #
 # [*volume_driver*]
 #   (optional) The Dell EMC VMAX ISCSI Driver
-#   Defaults to cinder.volume.drivers.emc.emc_vmax_fc.EMCVMAXISCSIDriver
+#   Defaults to cinder.volume.drivers.dell_emc.vmax.iscsi.VMAXISCSIDriver
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -33,7 +33,7 @@ define cinder::backend::dellemc_vmax_iscsi (
   $cinder_emc_config_file,
   $volume_backend_name           = $name,
   $extra_options                 = {},
-  $volume_driver                 = 'cinder.volume.drivers.emc.emc_vmax_iscsi.EMCVMAXISCSIDriver',
+  $volume_driver                 = 'cinder.volume.drivers.dell_emc.vmax.iscsi.VMAXISCSIDriver',
   $manage_volume_type            = false,
 ) {
 

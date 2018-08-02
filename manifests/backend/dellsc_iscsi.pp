@@ -107,7 +107,7 @@ default of \"srv\" and will be changed to the upstream OpenStack default in N-re
 default of \"vol\" and will be changed to the upstream OpenStack default in N-release.")
   }
 
-  $driver = 'dell.dell_storagecenter_iscsi.DellStorageCenterISCSIDriver'
+  $driver = 'dell_emc.sc.storagecenter_iscsi.SCISCSIDriver'
   cinder_config {
     "${name}/volume_backend_name":    value => $volume_backend_name;
     "${name}/volume_driver":          value => "cinder.volume.drivers.${driver}";

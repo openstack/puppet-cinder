@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Update the driver paths for several Dell EMC backends.
+    Fixes `bug 1785085
+    <https://bugs.launchpad.net/puppet-cinder/+bug/1785085>`__.
