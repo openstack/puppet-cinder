@@ -52,7 +52,7 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
   end
 
   def self.get_cinder_credentials
-    auth_keys = ['www_authenticate_uri', 'project_name', 'username',
+    auth_keys = ['auth_url', 'project_name', 'username',
                  'password']
     conf = cinder_conf
     if conf and conf['keystone_authtoken'] and
@@ -82,7 +82,7 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
 
   def self.get_auth_endpoint
     q = cinder_credentials
-    "#{q['www_authenticate_uri']}"
+    "#{q['auth_url']}"
   end
 
   def self.auth_endpoint
