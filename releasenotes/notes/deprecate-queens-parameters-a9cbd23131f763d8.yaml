@@ -1,0 +1,12 @@
+---
+deprecations:
+  - |
+    The following parameters are deprecated because support for them was
+    removed from cinder during the Queens cycle.
+    * glance_api_version
+    * nova_catalog_info
+    * os_privileged_user_name
+    * os_privileged_user_password
+    * os_privileged_user_tenant
+    * os_privileged_user_auth_url
+
