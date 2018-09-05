@@ -4,28 +4,6 @@
 #
 # === Parameters
 #
-# [*privileged_user*]
-#   (optional) Enables OpenStack privileged account.
-#   Defaults to false.
-#
-# [*os_privileged_user_name*]
-#   (optional) OpenStack privileged account username. Used for requests to
-#   other services (such as Nova) that require an account with
-#   special rights.
-#   Defaults to $::os_service_default.
-#
-# [*os_privileged_user_password*]
-#   (optional) Password associated with the OpenStack privileged account.
-#   Defaults to $::os_service_default.
-#
-# [*os_privileged_user_tenant*]
-#   (optional) Tenant name associated with the OpenStack privileged account.
-#   Defaults to $::os_service_default.
-#
-# [*os_privileged_user_auth_url*]
-#   (optional) Auth URL associated with the OpenStack privileged account.
-#   Defaults to $::os_service_default.
-#
 # [*keymgr_encryption_api_url*]
 #   (optional) Key Manager service URL
 #   Example of valid value: https://localhost:9311/v1
@@ -41,11 +19,6 @@
 #   to Nova. This sets the keystone region to be used for these
 #   requests. For example, boot-from-volume.
 #   Defaults to $::os_service_default
-#
-# [*nova_catalog_info*]
-#   (optional) Match this value when searching for nova in the service
-#   catalog.
-#   Defaults to 'compute:Compute Service:publicURL'
 #
 # [*service_workers*]
 #   (optional) Number of cinder-api workers
@@ -158,14 +131,35 @@
 #   (optional) Same as nova_catalog_info, but for admin endpoint.
 #   Defaults to 'compute:Compute Service:adminURL'
 #
+# [*nova_catalog_info*]
+#   (optional) Match this value when searching for nova in the service
+#   catalog.
+#   Defaults to undef.
+#
+# [*os_privileged_user_name*]
+#   (optional) OpenStack privileged account username. Used for requests to
+#   other services (such as Nova) that require an account with
+#   special rights.
+#   Defaults to undef.
+#
+# [*os_privileged_user_password*]
+#   (optional) Password associated with the OpenStack privileged account.
+#   Defaults to undef.
+#
+# [*os_privileged_user_tenant*]
+#   (optional) Tenant name associated with the OpenStack privileged account.
+#   Defaults to undef.
+#
+# [*os_privileged_user_auth_url*]
+#   (optional) Auth URL associated with the OpenStack privileged account.
+#   Defaults to undef.
+#
+# [*privileged_user*]
+#   (optional) Enables OpenStack privileged account.
+#   Defaults to undef.
+#
 class cinder::api (
-  $nova_catalog_info              = 'compute:Compute Service:publicURL',
   $os_region_name                 = $::os_service_default,
-  $privileged_user                = false,
-  $os_privileged_user_name        = $::os_service_default,
-  $os_privileged_user_password    = $::os_service_default,
-  $os_privileged_user_tenant      = $::os_service_default,
-  $os_privileged_user_auth_url    = $::os_service_default,
   $keymgr_encryption_api_url      = $::os_service_default,
   $keymgr_encryption_auth_url     = $::os_service_default,
   $service_workers                = $::os_workers,
@@ -194,6 +188,12 @@ class cinder::api (
   # DEPRECATED PARAMETERS
   $keymgr_api_class               = undef,
   $nova_catalog_admin_info        = 'compute:Compute Service:adminURL',
+  $nova_catalog_info              = undef,
+  $os_privileged_user_name        = undef,
+  $os_privileged_user_password    = undef,
+  $os_privileged_user_tenant      = undef,
+  $os_privileged_user_auth_url    = undef,
+  $privileged_user                = undef,
 ) inherits cinder::params {
 
   include ::cinder::deps
@@ -205,6 +205,21 @@ class cinder::api (
 
   if $nova_catalog_admin_info {
     warning('The nova_catalog_admin_info parameter has been deprecated and will be removed in the future release.')
+  }
+
+  $deprecated_param_names = [
+    'nova_catalog_info',
+    'privileged_user',
+    'os_privileged_user_name',
+    'os_privileged_user_password',
+    'os_privileged_user_tenant',
+    'os_privileged_user_auth_url',
+  ]
+  $deprecated_param_names.each |$param_name| {
+    $param = getvar("${param_name}")
+    if $param != undef{
+      warning("The ${param_name} parameter is deprecated, has no effect and will be removed in the future release.")
+    }
   }
 
   if $use_ssl {
@@ -283,31 +298,8 @@ running as a standalone service, or httpd for being run by a httpd server")
     'DEFAULT/auth_strategy':            value => $auth_strategy;
   }
 
-  cinder_config {
-    'DEFAULT/nova_catalog_info':       value => $nova_catalog_info;
-  }
-
   oslo::middleware {'cinder_config':
     enable_proxy_headers_parsing => $enable_proxy_headers_parsing,
-  }
-
-  if $privileged_user {
-    if is_service_default($os_privileged_user_name) {
-      fail('The os_privileged_user_name parameter is required when privileged_user is set to true')
-    }
-    if is_service_default($os_privileged_user_password) {
-      fail('The os_privileged_user_password parameter is required when privileged_user is set to true')
-    }
-    if is_service_default($os_privileged_user_tenant) {
-      fail('The os_privileged_user_tenant parameter is required when privileged_user is set to true')
-    }
-  }
-
-  cinder_config {
-    'DEFAULT/os_privileged_user_password': value => $os_privileged_user_password;
-    'DEFAULT/os_privileged_user_tenant':   value => $os_privileged_user_tenant;
-    'DEFAULT/os_privileged_user_name':     value => $os_privileged_user_name;
-    'DEFAULT/os_privileged_user_auth_url': value => $os_privileged_user_auth_url;
   }
 
   cinder_config {
