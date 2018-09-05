@@ -20,6 +20,20 @@ Puppet::Type.newtype(:cinder_type) do
     end
   end
 
+  newparam(:is_public, :boolean => true) do
+    desc 'Whether the type is public or not. Default to `true`'
+    newvalues(:true, :false)
+    defaultto true
+  end
+
+  newproperty(:access_project_ids,  :array_matching => :all) do
+    desc 'Project ids which have access to private cinder type. Should be an array, [project1, project2, ...]'
+    def insync?(is)
+      return false unless is.is_a? Array
+      is.sort == should.sort
+    end
+  end
+
   autorequire(:anchor) do
     ['cinder::service::end']
   end
