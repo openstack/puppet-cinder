@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added new class cinder::nova which can be used to configure the options
+    in the nova section in cinder.conf
