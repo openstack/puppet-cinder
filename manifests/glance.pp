@@ -9,11 +9,6 @@
 #   Should be an array with [hostname|ip]:port
 #   Defaults to undef
 #
-# [*glance_api_version*]
-#   (optional) Glance API version.
-#   Should be 1 or 2
-#   Defaults to 2 (current version)
-#
 # [*glance_num_retries*]
 #   (optional) Number retries when downloading an image from glance.
 #   Defaults to $::os_service_default
@@ -33,6 +28,12 @@
 # [*glance_request_timeout*]
 #   (optional) http/https timeout value for glance operations.
 #   Defaults to $::os_service_default
+#
+# DEPRECATED PARAMETERS
+#
+# [*glance_api_version*]
+#   (optional) Glance API version.
+#   Defaults to undef.
 #
 # === Author(s)
 #
@@ -56,18 +57,22 @@
 #
 class cinder::glance (
   $glance_api_servers         = undef,
-  $glance_api_version         = '2',
   $glance_num_retries         = $::os_service_default,
   $glance_api_insecure        = $::os_service_default,
   $glance_api_ssl_compression = $::os_service_default,
   $glance_request_timeout     = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $glance_api_version         = undef,
 ) {
 
   include ::cinder::deps
 
+  if $glance_api_version != undef {
+    warning("The glance_api_version parameter is deprecated, has no effect and will be removed in the future release.")
+  }
+
   cinder_config {
     'DEFAULT/glance_api_servers':         value => join(any2array($glance_api_servers), ',');
-    'DEFAULT/glance_api_version':         value => $glance_api_version;
     'DEFAULT/glance_num_retries':         value => $glance_num_retries;
     'DEFAULT/glance_api_insecure':        value => $glance_api_insecure;
     'DEFAULT/glance_api_ssl_compression': value => $glance_api_ssl_compression;

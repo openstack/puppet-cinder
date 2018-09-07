@@ -40,7 +40,8 @@ describe 'cinder::glance' do
     end
 
     it 'configures cinder.conf with default params' do
-      is_expected.to contain_cinder_config('DEFAULT/glance_api_version').with_value(p[:glance_api_version])
+      # glance_api_version is fully deprecated from cinder, and should not be added to the config.
+      is_expected.not_to contain_cinder_config('DEFAULT/glance_api_version')
       is_expected.to contain_cinder_config('DEFAULT/glance_num_retries').with_value(p[:glance_num_retries])
       is_expected.to contain_cinder_config('DEFAULT/glance_api_insecure').with_value(p[:glance_api_insecure])
       is_expected.to contain_cinder_config('DEFAULT/glance_api_ssl_compression').with_value(p[:glance_api_ssl_compression])
