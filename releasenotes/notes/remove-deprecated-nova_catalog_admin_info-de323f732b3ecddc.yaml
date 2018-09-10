@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The deprecated cinder::api::nova_catalog_admin_info parameter has been
+    removed.
