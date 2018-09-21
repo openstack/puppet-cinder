@@ -49,8 +49,10 @@
 #   (optional) The ISCSI IP Port of the Storage Center.
 #   Defaults to $::os_service_default
 #
-# [*excluded_domain_ip*]
-#   (optional) Domain IP to be excluded from iSCSI returns of Storage Center.
+# [*excluded_domain_ips*]
+#   (optional)Comma separated list of domain IPs to be excluded from
+#   iSCSI returns of Storage Center.
+#   Defaults to $::os_service_default
 #
 # [*secondary_san_ip*]
 #   (optional) IP address of secondary DSM controller.
@@ -84,6 +86,11 @@
 #   (Optional) Enables multipath configuration.
 #   Defaults to true.
 #
+# DEPRECATED PARAMETERS
+# [*excluded_domain_ip*]
+#   (optional) Domain IP to be excluded from iSCSI returns of Storage Center.
+#   Defaults to undef.
+#
 define cinder::backend::dellsc_iscsi (
   $san_ip,
   $san_login,
@@ -97,7 +104,7 @@ define cinder::backend::dellsc_iscsi (
   $dell_sc_verify_cert          = $::os_service_default,
   $dell_sc_volume_folder        = 'vol',
   $iscsi_port                   = $::os_service_default,
-  $excluded_domain_ip           = $::os_service_default,
+  $excluded_domain_ips          = $::os_service_default,
   $secondary_san_ip             = $::os_service_default,
   $secondary_san_login          = $::os_service_default,
   $secondary_san_password       = $::os_service_default,
@@ -105,6 +112,8 @@ define cinder::backend::dellsc_iscsi (
   $manage_volume_type           = false,
   $use_multipath_for_image_xfer = true,
   $extra_options                = {},
+  # DEPRECATED PARAMETERS
+  $excluded_domain_ip           = undef,
 ) {
 
   include ::cinder::deps
@@ -134,6 +143,7 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
     "${name}/dell_sc_verify_cert":          value => $dell_sc_verify_cert;
     "${name}/dell_sc_volume_folder":        value => $dell_sc_volume_folder;
     "${name}/iscsi_port":                   value => $iscsi_port;
+    "${name}/excluded_domain_ips":          value => $excluded_domain_ips;
     "${name}/secondary_san_ip":             value => $secondary_san_ip;
     "${name}/secondary_san_login":          value => $secondary_san_login;
     "${name}/secondary_san_password":       value => $secondary_san_password, secret => true;
@@ -142,6 +152,7 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
   }
 
   if $excluded_domain_ip {
+    warning('The excluded_domain_ip is deprecated. Please use excluded_domain_ips instead.')
     cinder_config {
       "${name}/excluded_domain_ip": value => $excluded_domain_ip;
     }
