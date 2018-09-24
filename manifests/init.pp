@@ -248,6 +248,10 @@
 #   not necessarily a host name, FQDN, or IP address.
 #   Defaults to $::os_service_default.
 #
+# [*enable_new_services*]
+#   (optional) Services to be added to the available pool on create.
+#   Defaults to $::os_service_default
+#
 # [*purge_config*]
 #   (optional) Whether to set only the specified config options
 #   in the cinder config.
@@ -312,6 +316,7 @@ class cinder (
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
   $host                               = $::os_service_default,
+  $enable_new_services                = $::os_service_default,
   $purge_config                       = false,
   $backend_host                       = $::os_service_default,
 ) inherits cinder::params {
@@ -385,6 +390,7 @@ class cinder (
     'DEFAULT/allow_availability_zone_fallback': value => $allow_availability_zone_fallback;
     'DEFAULT/image_conversion_dir':             value => $image_conversion_dir;
     'DEFAULT/host':                             value => $host;
+    'DEFAULT/enable_new_services':              value => $enable_new_services;
 
     # NOTE(abishop): $backend_host is not written here because it is not a valid
     # DEFAULT option. It is only recognized in the backend sections. Instead,

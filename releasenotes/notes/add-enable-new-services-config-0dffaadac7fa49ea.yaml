@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added new parameter cinder::enable_new_services that can be used to set
+    the enable_new_services configuration option in the DEFAULT section.
