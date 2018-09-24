@@ -47,6 +47,8 @@ describe 'cinder' do
       is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
       is_expected.to contain_cinder_config('DEFAULT/allow_availability_zone_fallback').with(:value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
+      is_expected.to contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
 
       # backend_host should not be written to DEFAULT section
@@ -237,14 +239,16 @@ describe 'cinder' do
     it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_dir').with_value('/tmp/foo') }
   end
 
-  describe 'with host' do
+  describe 'with host and enable_new_services' do
     let :params do
       req_params.merge({
-        :host => 'mystring',
+        :host                => 'mystring',
+        :enable_new_services => true,
       })
     end
 
     it { is_expected.to contain_cinder_config('DEFAULT/host').with_value('mystring') }
+    it { is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value(true) }
   end
 
   describe 'with transport_url' do
