@@ -18,16 +18,17 @@ describe 'cinder::backend::dellsc_iscsi' do
 
   let :default_params do
     {
-      :dell_sc_api_port       => '<SERVICE DEFAULT>',
-      :dell_sc_server_folder  => 'srv',
-      :dell_sc_verify_cert    => '<SERVICE DEFAULT>',
-      :dell_sc_volume_folder  => 'vol',
-      :iscsi_port             => '<SERVICE DEFAULT>',
-      :excluded_domain_ip     => '<SERVICE DEFAULT>',
-      :secondary_san_ip       => '<SERVICE DEFAULT>',
-      :secondary_san_login    => '<SERVICE DEFAULT>',
-      :secondary_san_password => '<SERVICE DEFAULT>',
-      :secondary_sc_api_port  => '<SERVICE DEFAULT>',
+      :dell_sc_api_port             => '<SERVICE DEFAULT>',
+      :dell_sc_server_folder        => 'srv',
+      :dell_sc_verify_cert          => '<SERVICE DEFAULT>',
+      :dell_sc_volume_folder        => 'vol',
+      :iscsi_port                   => '<SERVICE DEFAULT>',
+      :excluded_domain_ip           => '<SERVICE DEFAULT>',
+      :secondary_san_ip             => '<SERVICE DEFAULT>',
+      :secondary_san_login          => '<SERVICE DEFAULT>',
+      :secondary_san_password       => '<SERVICE DEFAULT>',
+      :secondary_sc_api_port        => '<SERVICE DEFAULT>',
+      :use_multipath_for_image_xfer => 'true',
     }
   end
 
@@ -47,6 +48,7 @@ describe 'cinder::backend::dellsc_iscsi' do
       end
       is_expected.to contain_cinder_config("#{config_group_name}/volume_driver").with_value(
         'cinder.volume.drivers.dell_emc.sc.storagecenter_iscsi.SCISCSIDriver')
+      is_expected.to contain_cinder_config("#{config_group_name}/use_multipath_for_image_xfer").with_value('true')
     end
   end
 

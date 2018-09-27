@@ -1,0 +1,7 @@
+---
+features:
+  - Added Dell EMC SC multipath support
+    This change implements the documented best practice to use multipath
+    with a Cinder deployment by setting a Cinder configuration setting
+    to ensure that multipath is appropriately used by the Dell EMC
+    SC iSCSI driver. Multipath is true by default.
