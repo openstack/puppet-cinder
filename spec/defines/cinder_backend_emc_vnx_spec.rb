@@ -13,7 +13,10 @@ describe 'cinder::backend::emc_vnx' do
   end
 
   let :facts do
-    OSDefaults.get_facts({:osfamily => 'Redhat' })
+    OSDefaults.get_facts({
+      :osfamily => 'Redhat',
+      :os       => { :name  => 'CentOS', :family => 'RedHat', :release => { :major => '7', :minor => '0' } },
+    })
   end
 
   let :params do

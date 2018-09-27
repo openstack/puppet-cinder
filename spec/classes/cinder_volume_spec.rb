@@ -7,7 +7,10 @@ describe 'cinder::volume' do
   end
 
   let :facts do
-    OSDefaults.get_facts({:osfamily => 'Debian'})
+    OSDefaults.get_facts({
+      :osfamily => 'Debian',
+      :os       => { :name  => 'Debian', :family => 'Debian', :release => { :major => '8', :minor => '0' } },
+    })
   end
 
   it { is_expected.to contain_package('cinder-volume').with_ensure('present') }

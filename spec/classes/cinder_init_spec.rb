@@ -13,6 +13,7 @@ describe 'cinder' do
       :osfamily               => 'Debian',
       :operatingsystem        => 'Debian',
       :operatingsystemrelease => 'jessie',
+      :os                     => { :name  => 'Debian', :family => 'Debian', :release => { :major => '8', :minor => '0' } },
     })
   end
 
