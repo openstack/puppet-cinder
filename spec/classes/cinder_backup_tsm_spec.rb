@@ -38,7 +38,7 @@ describe 'cinder::backup::tsm' do
     end
 
     it 'configures cinder.conf' do
-      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.tsm')
+      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.tsm.TSMBackupDriver')
       is_expected.to contain_cinder_config('DEFAULT/backup_tsm_volume_prefix').with_value(p[:backup_tsm_volume_prefix])
       is_expected.to contain_cinder_config('DEFAULT/backup_tsm_password').with_value(p[:backup_tsm_password]).with_secret(true)
       is_expected.to contain_cinder_config('DEFAULT/backup_tsm_compression').with_value(p[:backup_tsm_compression])

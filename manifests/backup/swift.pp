@@ -6,7 +6,7 @@
 #
 # [*backup_driver*]
 #   (Optional) The backup driver for Swift back-end.
-#   Defaults to 'cinder.backup.drivers.swift'.
+#   Defaults to 'cinder.backup.drivers.swift.SwiftBackupDriver'.
 #
 # [*backup_swift_url*]
 #   (optional) The URL of the Swift endpoint.
@@ -75,7 +75,7 @@
 #
 #
 class cinder::backup::swift (
-  $backup_driver                = 'cinder.backup.drivers.swift',
+  $backup_driver                = 'cinder.backup.drivers.swift.SwiftBackupDriver',
   $backup_swift_url             = $::os_service_default,
   $backup_swift_auth_url        = $::os_service_default,
   $backup_swift_container       = 'volumebackups',

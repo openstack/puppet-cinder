@@ -45,7 +45,7 @@ describe 'cinder::backup::swift' do
     end
 
     it 'configures cinder.conf' do
-      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.swift')
+      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.swift.SwiftBackupDriver')
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_url').with_value(p[:backup_swift_url])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_auth_url').with_value(p[:backup_swift_auth_url])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_container').with_value(p[:backup_swift_container])

@@ -6,7 +6,7 @@
 #
 # [*backup_driver*]
 #   (Optional) The backup driver for posix backend.
-#   Defaults to 'cinder.backup.drivers.posix'.
+#   Defaults to 'cinder.backup.drivers.posix.PosixBackupDriver'.
 #
 # [*backup_file_size*]
 #   (optional) The maximum size in bytes of the files used to hold backups.
@@ -56,7 +56,7 @@
 #
 #
 class cinder::backup::posix (
-  $backup_driver               = 'cinder.backup.drivers.posix',
+  $backup_driver               = 'cinder.backup.drivers.posix.PosixBackupDriver',
   $backup_file_size            = $::os_service_default,
   $backup_sha_block_size_bytes = $::os_service_default,
   $backup_posix_path           = $::os_service_default,

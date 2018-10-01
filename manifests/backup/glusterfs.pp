@@ -6,7 +6,7 @@
 #
 # [*backup_driver*]
 #   (Optional) The backup driver for GlisterFS backend.
-#   Defaults to 'cinder.backup.drivers.glusterfs'.
+#   Defaults to 'cinder.backup.drivers.glusterfs.GlusterfsBackupDriver'.
 #
 # [*glusterfs_backup_mount_point*]
 #   (optional) Base dir container mount point for gluster share.
@@ -39,7 +39,7 @@
 #
 #
 class cinder::backup::glusterfs (
-  $backup_driver                = 'cinder.backup.drivers.glusterfs',
+  $backup_driver                = 'cinder.backup.drivers.glusterfs.GlusterfsBackupDriver',
   $glusterfs_backup_mount_point = $::os_service_default,
   $glusterfs_backup_share       = $::os_service_default,
 ) {

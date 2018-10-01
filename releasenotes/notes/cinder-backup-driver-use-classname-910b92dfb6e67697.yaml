@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    The ability to specify a Cinder backup driver by module name was deprecated
+    in the Queens release and the ability has now been removed in Cinder. This
+    fix updates the defaults to use the full module name, for example
+    ``cinder.backup.drivers.swift.SwiftBackupDriver``.

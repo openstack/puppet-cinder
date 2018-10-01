@@ -10,7 +10,7 @@
 #
 # [*backup_driver*]
 #   (optional) The backup driver for NFS back-end.
-#   Defaults to 'cinder.backup.drivers.nfs'.
+#   Defaults to 'cinder.backup.drivers.nfs.NFSBackupDriver'.
 #
 # [*backup_file_size*]
 #   (optional) The maximum size in bytes of the files used to hold
@@ -70,7 +70,7 @@
 #
 class cinder::backup::nfs (
   $backup_share,
-  $backup_driver                = 'cinder.backup.drivers.nfs',
+  $backup_driver                = 'cinder.backup.drivers.nfs.NFSBackupDriver',
   $backup_file_size             = $::os_service_default,
   $backup_sha_block_size_bytes  = $::os_service_default,
   $backup_enable_progress_timer = $::os_service_default,
