@@ -19,7 +19,9 @@ describe 'cinder::backend::nexenta' do
       :nexenta_blocksize           => '8192',
       :nexenta_sparse              => true,
       :nexenta_rest_port           => '8457',
-      :volume_driver               => 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver' }
+      :volume_driver               => 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver',
+      :backend_availability_zone   => '<SERVICE DEFAULT>',
+    }
   end
 
   let :facts do

@@ -26,6 +26,12 @@
 #   (optional) The backend name.
 #   Defaults to the name of the resource
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*eqlx_group_name*]
 #   (optional) The CLI prompt message without '>'.
 #   Defaults to $::os_service_default
@@ -69,18 +75,19 @@ define cinder::backend::eqlx (
   $san_ip,
   $san_login,
   $san_password,
-  $san_private_key      = $::os_service_default,
-  $san_thin_provision   = $::os_service_default,
-  $volume_backend_name  = $name,
-  $eqlx_group_name      = $::os_service_default,
-  $eqlx_pool            = $::os_service_default,
-  $eqlx_cli_max_retries = $::os_service_default,
-  $extra_options        = {},
-  $chap_username        = $::os_service_default,
-  $chap_password        = $::os_service_default,
-  $use_chap_auth        = $::os_service_default,
-  $ssh_conn_timeout     = $::os_service_default,
-  $manage_volume_type   = false,
+  $san_private_key           = $::os_service_default,
+  $san_thin_provision        = $::os_service_default,
+  $volume_backend_name       = $name,
+  $backend_availability_zone = $::os_service_default,
+  $eqlx_group_name           = $::os_service_default,
+  $eqlx_pool                 = $::os_service_default,
+  $eqlx_cli_max_retries      = $::os_service_default,
+  $extra_options             = {},
+  $chap_username             = $::os_service_default,
+  $chap_password             = $::os_service_default,
+  $use_chap_auth             = $::os_service_default,
+  $ssh_conn_timeout          = $::os_service_default,
+  $manage_volume_type        = false,
 ) {
 
   include ::cinder::deps
@@ -94,18 +101,19 @@ define cinder::backend::eqlx (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":  value => $volume_backend_name;
-    "${name}/volume_driver":        value => 'cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver';
-    "${name}/san_ip":               value => $san_ip;
-    "${name}/san_login":            value => $san_login;
-    "${name}/san_password":         value => $san_password, secret => true;
-    "${name}/san_private_key":      value => $san_private_key;
-    "${name}/san_thin_provision":   value => $san_thin_provision;
-    "${name}/eqlx_group_name":      value => $eqlx_group_name;
-    "${name}/use_chap_auth":        value => $use_chap_auth;
-    "${name}/ssh_conn_timeout":     value => $ssh_conn_timeout;
-    "${name}/eqlx_cli_max_retries": value => $eqlx_cli_max_retries;
-    "${name}/eqlx_pool":            value => $eqlx_pool;
+    "${name}/volume_backend_name":       value => $volume_backend_name;
+    "${name}/backend_availability_zone": value => $backend_availability_zone;
+    "${name}/volume_driver":             value => 'cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver';
+    "${name}/san_ip":                    value => $san_ip;
+    "${name}/san_login":                 value => $san_login;
+    "${name}/san_password":              value => $san_password, secret => true;
+    "${name}/san_private_key":           value => $san_private_key;
+    "${name}/san_thin_provision":        value => $san_thin_provision;
+    "${name}/eqlx_group_name":           value => $eqlx_group_name;
+    "${name}/use_chap_auth":             value => $use_chap_auth;
+    "${name}/ssh_conn_timeout":          value => $ssh_conn_timeout;
+    "${name}/eqlx_cli_max_retries":      value => $eqlx_cli_max_retries;
+    "${name}/eqlx_pool":                 value => $eqlx_pool;
   }
 
   if $manage_volume_type {

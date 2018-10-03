@@ -18,6 +18,7 @@ describe 'cinder::backend::dellsc_iscsi' do
 
   let :default_params do
     {
+      :backend_availability_zone    => '<SERVICE DEFAULT>',
       :dell_sc_api_port             => '<SERVICE DEFAULT>',
       :dell_sc_server_folder        => 'srv',
       :dell_sc_verify_cert          => '<SERVICE DEFAULT>',
@@ -29,6 +30,22 @@ describe 'cinder::backend::dellsc_iscsi' do
       :secondary_san_password       => '<SERVICE DEFAULT>',
       :secondary_sc_api_port        => '<SERVICE DEFAULT>',
       :use_multipath_for_image_xfer => 'true',
+    }
+  end
+
+  let :custom_params do
+    {
+      :backend_availability_zone => 'my_zone',
+      :dell_sc_api_port          => 111,
+      :dell_sc_server_folder     => 'other_srv',
+      :dell_sc_verify_cert       => true,
+      :dell_sc_volume_folder     => 'other_vol',
+      :iscsi_port                => 222,
+      :excluded_domain_ip        => '127.0.0.2',
+      :secondary_san_ip          => '127.0.0.3',
+      :secondary_san_login       => 'Foo',
+      :secondary_san_password    => 'Bar',
+      :secondary_sc_api_port     => 333,
     }
   end
 
@@ -53,7 +70,14 @@ describe 'cinder::backend::dellsc_iscsi' do
   end
 
 
-  context 'with parameters' do
+  context 'with default parameters' do
+    it_configures 'dellsc_iscsi volume driver'
+  end
+
+  context 'with custom parameters' do
+    before do
+      params.merge(custom_params)
+    end
     it_configures 'dellsc_iscsi volume driver'
   end
 

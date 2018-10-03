@@ -9,6 +9,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use SolidFire volume driver.
 #   Defaults to 'cinder.volume.drivers.solidfire.SolidFireDriver'
@@ -87,7 +93,8 @@ define cinder::backend::solidfire(
   $san_login,
   $san_password,
   $volume_backend_name       = $name,
-  $volume_driver           = 'cinder.volume.drivers.solidfire.SolidFireDriver',
+  $backend_availability_zone = $::os_service_default,
+  $volume_driver             = 'cinder.volume.drivers.solidfire.SolidFireDriver',
   $sf_emulate_512            = $::os_service_default,
   $sf_allow_tenant_qos       = $::os_service_default,
   $sf_account_prefix         = $::os_service_default,
@@ -106,6 +113,7 @@ define cinder::backend::solidfire(
 
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
+    "${name}/backend_availability_zone":   value => $backend_availability_zone;
     "${name}/volume_driver":               value => $volume_driver;
     "${name}/san_ip":                      value => $san_ip;
     "${name}/san_login":                   value => $san_login;

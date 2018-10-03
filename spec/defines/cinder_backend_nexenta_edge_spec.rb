@@ -11,11 +11,13 @@ describe 'cinder::backend::nexenta_edge' do
   end
 
   let :default_params do
-    { :nexenta_rest_port     => '8080',
-      :nexenta_lun_container => 'cinder',
-      :nexenta_iscsi_service => 'cinder',
-      :nexenta_chunksize     => '32768',
-      :volume_driver         => 'cinder.volume.drivers.nexenta.nexentaedge.iscsi.NexentaEdgeISCSIDriver' }
+    { :nexenta_rest_port         => '8080',
+      :nexenta_lun_container     => 'cinder',
+      :nexenta_iscsi_service     => 'cinder',
+      :nexenta_chunksize         => '32768',
+      :volume_driver             => 'cinder.volume.drivers.nexenta.nexentaedge.iscsi.NexentaEdgeISCSIDriver',
+      :backend_availability_zone => '<SERVICE DEFAULT>',
+    }
   end
 
   let :facts do

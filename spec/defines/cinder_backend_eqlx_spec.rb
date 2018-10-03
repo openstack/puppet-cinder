@@ -7,19 +7,20 @@ describe 'cinder::backend::eqlx' do
 
   let :params do
     {
-      :san_ip               => '192.168.100.10',
-      :san_login            => 'grpadmin',
-      :san_password         => '12345',
-      :san_private_key      => '',
-      :volume_backend_name  => 'Dell_EQLX',
-      :san_thin_provision   => '<SERVICE DEFAULT>',
-      :eqlx_group_name      => '<SERVICE DEFAULT>',
-      :eqlx_pool            => 'apool',
-      :use_chap_auth        => true,
-      :chap_username        => 'chapadm',
-      :chap_password        => '56789',
-      :ssh_conn_timeout     => 31,
-      :eqlx_cli_max_retries => 6,
+      :backend_availability_zone => 'my_zone',
+      :san_ip                    => '192.168.100.10',
+      :san_login                 => 'grpadmin',
+      :san_password              => '12345',
+      :san_private_key           => '',
+      :volume_backend_name       => 'Dell_EQLX',
+      :san_thin_provision        => '<SERVICE DEFAULT>',
+      :eqlx_group_name           => '<SERVICE DEFAULT>',
+      :eqlx_pool                 => 'apool',
+      :use_chap_auth             => true,
+      :chap_username             => 'chapadm',
+      :chap_password             => '56789',
+      :ssh_conn_timeout          => 31,
+      :eqlx_cli_max_retries      => 6,
     }
   end
 

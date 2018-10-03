@@ -10,6 +10,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*san_ip*]
 #   (required) IP address of SAN controller.
 #
@@ -87,6 +93,7 @@ define cinder::backend::emc_vnx (
   $package_ensure                = 'present',
   $san_login                     = 'admin',
   $volume_backend_name           = $name,
+  $backend_availability_zone     = $::os_service_default,
   $extra_options                 = {},
   $volume_driver                 = 'cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver',
   $storage_protocol              = 'iscsi',
@@ -116,6 +123,7 @@ define cinder::backend::emc_vnx (
     "${name}/san_password":                    value => $san_password, secret => true;
     "${name}/storage_vnx_pool_names":          value => $storage_vnx_pool_names_real;
     "${name}/volume_backend_name":             value => $volume_backend_name;
+    "${name}/backend_availability_zone":       value => $backend_availability_zone;
     "${name}/volume_driver":                   value => $volume_driver;
     "${name}/storage_protocol":                value => $storage_protocol;
     "${name}/initiator_auto_registration":     value => $initiator_auto_registration;

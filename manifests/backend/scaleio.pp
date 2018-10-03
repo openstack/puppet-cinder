@@ -9,6 +9,12 @@
 #   (optional) The name of the cinder::backend::scaleio ressource
 #   Defaults to $name.
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*sio_login*]
 #   (required) Administrative user account name used to access the storage
 #   system or proxy server.
@@ -109,6 +115,7 @@ define cinder::backend::scaleio (
   $sio_storage_pool_name,
   $sio_storage_pools,
   $volume_backend_name              = $name,
+  $backend_availability_zone        = $::os_service_default,
   $sio_server_port                  = $::os_service_default,
   $sio_verify_server_certificate    = $::os_service_default,
   $sio_server_certificate_path      = $::os_service_default,
@@ -122,6 +129,7 @@ define cinder::backend::scaleio (
 
   cinder_config {
     "${name}/volume_backend_name":              value => $volume_backend_name;
+    "${name}/backend_availability_zone":        value => $backend_availability_zone;
     "${name}/volume_driver":                    value => 'cinder.volume.drivers.dell_emc.scaleio.driver.ScaleIODriver';
     "${name}/san_login":                        value => $sio_login;
     "${name}/san_password":                     value => $sio_password, secret => true;

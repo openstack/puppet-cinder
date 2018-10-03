@@ -84,14 +84,21 @@ describe 'cinder::backend::rbd' do
       end
     end
 
-    context 'override backend_host parameter' do
+    context 'override backend_host and backend_availability_zone parameters' do
       before do
-        params.merge!({:backend_host => 'test_host.fqdn.com' })
+        params.merge!(
+          {
+            :backend_host              => 'test_host.fqdn.com',
+            :backend_availability_zone => 'my_zone',
+          })
       end
 
-      it 'configure rbd backend with specific hostname' do
+      it 'configure rbd backend with specific hostname and availability zone' do
         is_expected.to contain_cinder_config('rbd-ssd/backend_host').with({
           :value => 'test_host.fqdn.com',
+        })
+        is_expected.to contain_cinder_config('rbd-ssd/backend_availability_zone').with({
+          :value => 'my_zone',
         })
       end
     end

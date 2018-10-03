@@ -16,6 +16,7 @@ describe 'cinder::backend::scaleio' do
 
   let :params2 do
     {
+      :backend_availability_zone        => 'my_zone',
       :sio_server_certificate_path      => '/path/cert.pem',
       :sio_max_over_subscription_ratio  => '6.0',
       :sio_verify_server_certificate    => true,

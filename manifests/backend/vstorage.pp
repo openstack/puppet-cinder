@@ -14,6 +14,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*shares_config_path*]
 #   (optional) Shares config file path.
 #   Defaults to: /etc/cinder/vzstorage_shares
@@ -59,23 +65,25 @@
 define cinder::backend::vstorage (
   $cluster_name,
   $cluster_password,
-  $volume_backend_name   = $name,
-  $shares_config_path    = '/etc/cinder/vzstorage_shares',
-  $use_sparsed_volumes   = $::os_service_default,
-  $used_ratio            = $::os_service_default,
-  $mount_point_base      = $::os_service_default,
-  $default_volume_format = $::os_service_default,
-  $manage_volume_type    = false,
-  $mount_user            = 'cinder',
-  $mount_group           = 'root',
-  $mount_permissions     = '0770',
-  $manage_package        = true,
+  $volume_backend_name       = $name,
+  $backend_availability_zone = $::os_service_default,
+  $shares_config_path        = '/etc/cinder/vzstorage_shares',
+  $use_sparsed_volumes       = $::os_service_default,
+  $used_ratio                = $::os_service_default,
+  $mount_point_base          = $::os_service_default,
+  $default_volume_format     = $::os_service_default,
+  $manage_volume_type        = false,
+  $mount_user                = 'cinder',
+  $mount_group               = 'root',
+  $mount_permissions         = '0770',
+  $manage_package            = true,
 ) {
 
   include ::cinder::deps
 
   cinder_config {
     "${name}/volume_backend_name":             value => $volume_backend_name;
+    "${name}/backend_availability_zone":       value => $backend_availability_zone;
     "${name}/volume_driver":                   value => 'cinder.volume.drivers.vzstorage.VZStorageDriver';
     "${name}/vzstorage_shares_config":         value => $shares_config_path;
     "${name}/vzstorage_sparsed_volumes":       value => $use_sparsed_volumes;

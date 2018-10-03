@@ -21,6 +21,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*rbd_ceph_conf*]
 #   (optional) Path to the ceph configuration file to use
 #   Defaults to '/etc/ceph/ceph.conf'
@@ -74,6 +80,7 @@ define cinder::backend::rbd (
   $rbd_user,
   $backend_host                     = undef,
   $volume_backend_name              = $name,
+  $backend_availability_zone        = $::os_service_default,
   $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
   $rbd_flatten_volume_from_snapshot = $::os_service_default,
   $rbd_secret_uuid                  = $::os_service_default,
@@ -91,6 +98,7 @@ define cinder::backend::rbd (
 
   cinder_config {
     "${name}/volume_backend_name":              value => $volume_backend_name;
+    "${name}/backend_availability_zone":        value => $backend_availability_zone;
     "${name}/volume_driver":                    value => 'cinder.volume.drivers.rbd.RBDDriver';
     "${name}/rbd_ceph_conf":                    value => $rbd_ceph_conf;
     "${name}/rbd_user":                         value => $rbd_user;

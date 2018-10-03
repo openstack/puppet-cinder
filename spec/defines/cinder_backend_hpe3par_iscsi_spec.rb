@@ -5,13 +5,14 @@ describe 'cinder::backend::hpe3par_iscsi' do
 
   let :req_params do
     {
-      :hpe3par_api_url   => 'https://172.0.0.2:8080/api/v1',
-      :hpe3par_username  => '3paradm',
-      :hpe3par_password  => 'password',
-      :hpe3par_iscsi_ips => '172.0.0.3',
-      :san_ip            => '172.0.0.2',
-      :san_login         => '3paradm',
-      :san_password      => 'password',
+      :backend_availability_zone => 'my_zone',
+      :hpe3par_api_url           => 'https://172.0.0.2:8080/api/v1',
+      :hpe3par_username          => '3paradm',
+      :hpe3par_password          => 'password',
+      :hpe3par_iscsi_ips         => '172.0.0.3',
+      :san_ip                    => '172.0.0.2',
+      :san_login                 => '3paradm',
+      :san_password              => 'password',
     }
   end
 
@@ -22,6 +23,7 @@ describe 'cinder::backend::hpe3par_iscsi' do
   describe 'hpe3par_iscsi volume driver' do
     it 'configure hpe3par_iscsi volume driver' do
       is_expected.to contain_cinder_config('hpe3par_iscsi/volume_driver').with_value('cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver')
+      is_expected.to contain_cinder_config('hpe3par_iscsi/backend_availability_zone').with_value('my_zone')
       is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
       is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_username').with_value('3paradm')
       is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_password').with_value('password')

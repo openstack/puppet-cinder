@@ -31,6 +31,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
 #   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
@@ -44,28 +50,30 @@ define cinder::backend::nvmeof (
   $target_port,
   $target_helper,
   $target_protocol,
-  $target_prefix        = $::os_service_default,
-  $nvmet_port_id        = '1',
-  $nvmet_ns_id          = '10',
-  $volume_backend_name  = $name,
-  $volume_driver        = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
-  $volume_group         = $::os_service_default,
+  $target_prefix             = $::os_service_default,
+  $nvmet_port_id             = '1',
+  $nvmet_ns_id               = '10',
+  $volume_backend_name       = $name,
+  $backend_availability_zone = $::os_service_default,
+  $volume_driver             = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
+  $volume_group              = $::os_service_default,
 ) {
 
   include ::cinder::deps
   include ::cinder::params
 
   cinder_config {
-    "${name}/target_ip_address":    value => $target_ip_address;
-    "${name}/target_port":          value => $target_port;
-    "${name}/target_helper":        value => $target_helper;
-    "${name}/target_protocol":      value => $target_protocol;
-    "${name}/target_prefix":        value => $target_prefix;
-    "${name}/nvmet_port_id":        value => $nvmet_port_id;
-    "${name}/nvmet_ns_id":          value => $nvmet_ns_id;
-    "${name}/volume_backend_name":  value => $volume_backend_name;
-    "${name}/volume_driver":        value => $volume_driver;
-    "${name}/volume_group":         value => $volume_group;
+    "${name}/target_ip_address":         value => $target_ip_address;
+    "${name}/target_port":               value => $target_port;
+    "${name}/target_helper":             value => $target_helper;
+    "${name}/target_protocol":           value => $target_protocol;
+    "${name}/target_prefix":             value => $target_prefix;
+    "${name}/nvmet_port_id":             value => $nvmet_port_id;
+    "${name}/nvmet_ns_id":               value => $nvmet_ns_id;
+    "${name}/volume_backend_name":       value => $volume_backend_name;
+    "${name}/backend_availability_zone": value => $backend_availability_zone;
+    "${name}/volume_driver":             value => $volume_driver;
+    "${name}/volume_group":              value => $volume_group;
   }
 
   package { 'nvmetcli':

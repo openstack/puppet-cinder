@@ -24,6 +24,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*nexenta_lun_container*]
 #   (optional) Logical path of bucket for LUNs.
 #   Defaults to 'cinder'.
@@ -57,27 +63,29 @@ define cinder::backend::nexenta_edge (
   $nexenta_rest_password,
   $nexenta_rest_address,
   $nexenta_client_address,
-  $nexenta_rest_port      = '8080',
-  $volume_backend_name    = $name,
-  $nexenta_lun_container  = 'cinder',
-  $nexenta_iscsi_service  = 'cinder',
-  $nexenta_chunksize      = '32768',
-  $volume_driver          = 'cinder.volume.drivers.nexenta.nexentaedge.iscsi.NexentaEdgeISCSIDriver',
-  $manage_volume_type     = false,
-  $extra_options          = {},
+  $nexenta_rest_port         = '8080',
+  $volume_backend_name       = $name,
+  $backend_availability_zone = $::os_service_default,
+  $nexenta_lun_container     = 'cinder',
+  $nexenta_iscsi_service     = 'cinder',
+  $nexenta_chunksize         = '32768',
+  $volume_driver             = 'cinder.volume.drivers.nexenta.nexentaedge.iscsi.NexentaEdgeISCSIDriver',
+  $manage_volume_type        = false,
+  $extra_options             = {},
 ) {
 
   cinder_config {
-    "${name}/volume_backend_name":    value => $volume_backend_name;
-    "${name}/nexenta_rest_user":      value => $nexenta_rest_user;
-    "${name}/nexenta_rest_password":  value => $nexenta_rest_password, secret => true;
-    "${name}/nexenta_rest_address":   value => $nexenta_rest_address;
-    "${name}/nexenta_client_address": value => $nexenta_client_address;
-    "${name}/nexenta_rest_port":      value => $nexenta_rest_port;
-    "${name}/nexenta_lun_container":  value => $nexenta_lun_container;
-    "${name}/nexenta_iscsi_service":  value => $nexenta_iscsi_service;
-    "${name}/nexenta_chunksize":      value => $nexenta_chunksize;
-    "${name}/volume_driver":          value => $volume_driver;
+    "${name}/volume_backend_name":       value => $volume_backend_name;
+    "${name}/backend_availability_zone": value => $backend_availability_zone;
+    "${name}/nexenta_rest_user":         value => $nexenta_rest_user;
+    "${name}/nexenta_rest_password":     value => $nexenta_rest_password, secret => true;
+    "${name}/nexenta_rest_address":      value => $nexenta_rest_address;
+    "${name}/nexenta_client_address":    value => $nexenta_client_address;
+    "${name}/nexenta_rest_port":         value => $nexenta_rest_port;
+    "${name}/nexenta_lun_container":     value => $nexenta_lun_container;
+    "${name}/nexenta_iscsi_service":     value => $nexenta_iscsi_service;
+    "${name}/nexenta_chunksize":         value => $nexenta_chunksize;
+    "${name}/volume_driver":             value => $volume_driver;
   }
 
   if $manage_volume_type {

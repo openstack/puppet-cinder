@@ -64,6 +64,12 @@
 #   (optional) SSH port to use to connect to NAS system.
 #   Defaults to $::os_service_default
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -86,18 +92,19 @@
 #
 define cinder::backend::gpfs (
   $gpfs_mount_point_base,
-  $gpfs_images_dir        = $::os_service_default,
-  $gpfs_images_share_mode = $::os_service_default,
-  $gpfs_max_clone_depth   = $::os_service_default,
-  $gpfs_sparse_volumes    = $::os_service_default,
-  $gpfs_storage_pool      = $::os_service_default,
-  $nas_host               = $::os_service_default,
-  $nas_login              = $::os_service_default,
-  $nas_password           = $::os_service_default,
-  $nas_private_key        = $::os_service_default,
-  $nas_ssh_port           = $::os_service_default,
-  $manage_volume_type     = false,
-  $extra_options          = {},
+  $gpfs_images_dir           = $::os_service_default,
+  $gpfs_images_share_mode    = $::os_service_default,
+  $gpfs_max_clone_depth      = $::os_service_default,
+  $gpfs_sparse_volumes       = $::os_service_default,
+  $gpfs_storage_pool         = $::os_service_default,
+  $nas_host                  = $::os_service_default,
+  $nas_login                 = $::os_service_default,
+  $nas_password              = $::os_service_default,
+  $nas_private_key           = $::os_service_default,
+  $nas_ssh_port              = $::os_service_default,
+  $backend_availability_zone = $::os_service_default,
+  $manage_volume_type        = false,
+  $extra_options             = {},
 ) {
 
   include ::cinder::deps
@@ -110,19 +117,19 @@ define cinder::backend::gpfs (
   }
 
   cinder_config {
-    "${name}/volume_driver":
-      value => 'cinder.volume.drivers.ibm.gpfs.GPFSDriver';
-    "${name}/gpfs_max_clone_depth":   value => $gpfs_max_clone_depth;
-    "${name}/gpfs_mount_point_base":  value => $gpfs_mount_point_base;
-    "${name}/gpfs_sparse_volumes":    value => $gpfs_sparse_volumes;
-    "${name}/gpfs_storage_pool":      value => $gpfs_storage_pool;
-    "${name}/gpfs_images_share_mode": value => $gpfs_images_share_mode;
-    "${name}/gpfs_images_dir":        value => $gpfs_images_dir;
-    "${name}/nas_host":               value => $nas_host;
-    "${name}/nas_login":              value => $nas_login;
-    "${name}/nas_password":           value => $nas_password, secret => true;
-    "${name}/nas_private_key":        value => $nas_private_key;
-    "${name}/nas_ssh_port":           value => $nas_ssh_port;
+    "${name}/volume_driver":             value => 'cinder.volume.drivers.ibm.gpfs.GPFSDriver';
+    "${name}/gpfs_max_clone_depth":      value => $gpfs_max_clone_depth;
+    "${name}/gpfs_mount_point_base":     value => $gpfs_mount_point_base;
+    "${name}/gpfs_sparse_volumes":       value => $gpfs_sparse_volumes;
+    "${name}/gpfs_storage_pool":         value => $gpfs_storage_pool;
+    "${name}/gpfs_images_share_mode":    value => $gpfs_images_share_mode;
+    "${name}/gpfs_images_dir":           value => $gpfs_images_dir;
+    "${name}/nas_host":                  value => $nas_host;
+    "${name}/nas_login":                 value => $nas_login;
+    "${name}/nas_password":              value => $nas_password, secret => true;
+    "${name}/nas_private_key":           value => $nas_private_key;
+    "${name}/nas_ssh_port":              value => $nas_ssh_port;
+    "${name}/backend_availability_zone": value => $backend_availability_zone;
   }
 
   if $manage_volume_type {

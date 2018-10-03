@@ -10,6 +10,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*cinder_emc_config_file*]
 #   (required) File path of Dell EMC VMAX ISCSI specific configuration file.
 #
@@ -32,6 +38,7 @@
 define cinder::backend::dellemc_vmax_iscsi (
   $cinder_emc_config_file,
   $volume_backend_name           = $name,
+  $backend_availability_zone     = $::os_service_default,
   $extra_options                 = {},
   $volume_driver                 = 'cinder.volume.drivers.dell_emc.vmax.iscsi.VMAXISCSIDriver',
   $manage_volume_type            = false,
@@ -42,6 +49,7 @@ define cinder::backend::dellemc_vmax_iscsi (
 
   cinder_config {
     "${name}/volume_backend_name":             value => $volume_backend_name;
+    "${name}/backend_availability_zone":       value => $backend_availability_zone;
     "${name}/volume_driver":                   value => $volume_driver;
     "${name}/cinder_emc_config_file":          value => $cinder_emc_config_file;
   }

@@ -6,23 +6,26 @@ describe 'cinder::backend::vstorage' do
 
   let :params do
     {
-      :cluster_name          => 'stor1',
-      :cluster_password      => 'passw0rd',
-      :shares_config_path    => '/etc/cinder/vstorage_shares.conf',
-      :use_sparsed_volumes   => true,
-      :used_ratio            => '0.9',
-      :mount_point_base      => '/vstorage',
-      :default_volume_format => 'ploop',
-      :mount_user            => 'cinder',
-      :mount_group           => 'root',
-      :mount_permissions     => '0770',
-      :manage_package        => true,
+      :cluster_name              => 'stor1',
+      :cluster_password          => 'passw0rd',
+      :backend_availability_zone => 'my_zone',
+      :shares_config_path        => '/etc/cinder/vstorage_shares.conf',
+      :use_sparsed_volumes       => true,
+      :used_ratio                => '0.9',
+      :mount_point_base          => '/vstorage',
+      :default_volume_format     => 'ploop',
+      :mount_user                => 'cinder',
+      :mount_group               => 'root',
+      :mount_permissions         => '0770',
+      :manage_package            => true,
     }
   end
 
   it 'configures vstorage volume driver' do
     is_expected.to contain_cinder_config('vstorage/volume_backend_name').with(
       :value => 'vstorage')
+    is_expected.to contain_cinder_config('vstorage/backend_availability_zone').with_value(
+      'my_zone')
     is_expected.to contain_cinder_config('vstorage/volume_driver').with_value(
       'cinder.volume.drivers.vzstorage.VZStorageDriver')
     is_expected.to contain_cinder_config('vstorage/vzstorage_shares_config').with_value(

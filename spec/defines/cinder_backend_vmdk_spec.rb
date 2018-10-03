@@ -26,6 +26,7 @@ describe 'cinder::backend::vmdk' do
         :max_object_retrieval => 200,
         :task_poll_interval => 10,
         :image_transfer_timeout_secs => 3600,
+        :backend_availability_zone => 'my_zone',
         :wsdl_location => 'http://127.0.0.1:8080/vmware/SDK/wsdl/vim25/vimService.wsdl'
     }
   end
@@ -42,6 +43,7 @@ describe 'cinder::backend::vmdk' do
     is_expected.to contain_cinder_config('hippo/vmware_task_poll_interval').with_value(5)
     is_expected.to contain_cinder_config('hippo/vmware_image_transfer_timeout_secs').with_value(params[:image_transfer_timeout_secs])
     is_expected.to contain_cinder_config('hippo/vmware_wsdl_location').with_value('<SERVICE DEFAULT>')
+    is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
   end
 
   it 'installs suds python package' do
@@ -55,12 +57,14 @@ describe 'cinder::backend::vmdk' do
     end
 
     it 'should configure vmdk driver in cinder.conf' do
+      is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value(params[:backend_availability_zone])
       is_expected.to contain_cinder_config('hippo/vmware_volume_folder').with_value(params[:volume_folder])
       is_expected.to contain_cinder_config('hippo/vmware_api_retry_count').with_value(params[:api_retry_count])
       is_expected.to contain_cinder_config('hippo/vmware_max_object_retrieval').with_value(params[:max_object_retrieval])
       is_expected.to contain_cinder_config('hippo/vmware_task_poll_interval').with_value(params[:task_poll_interval])
       is_expected.to contain_cinder_config('hippo/vmware_image_transfer_timeout_secs').with_value(params[:image_transfer_timeout_secs])
       is_expected.to contain_cinder_config('hippo/vmware_wsdl_location').with_value(params[:wsdl_location])
+      is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value(params[:backend_availability_zone])
       is_expected.to contain_cinder_config('hippo/host').with_value("vmdk:#{params[:host_ip]}-#{params[:volume_folder]}")
     end
   end

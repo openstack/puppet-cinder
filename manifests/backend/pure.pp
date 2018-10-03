@@ -15,6 +15,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*pure_storage_protocol*]
 #   (optional) Must be either 'iSCSI' or 'FC'. This will determine
 #   which Volume Driver will be configured; PureISCSIDriver or PureFCDriver.
@@ -44,6 +50,7 @@ define cinder::backend::pure(
   $san_ip,
   $pure_api_token,
   $volume_backend_name          = $name,
+  $backend_availability_zone    = $::os_service_default,
   $pure_storage_protocol        = 'iSCSI',
   $use_chap_auth                = false,
   $use_multipath_for_image_xfer = true,
@@ -60,6 +67,7 @@ define cinder::backend::pure(
 
   cinder_config {
     "${name}/volume_backend_name":           value => $volume_backend_name;
+    "${name}/backend_availability_zone":     value => $backend_availability_zone;
     "${name}/volume_driver":                 value => $volume_driver;
     "${name}/san_ip":                        value => $san_ip;
     "${name}/pure_api_token":                value => $pure_api_token, secret => true;

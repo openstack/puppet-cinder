@@ -5,10 +5,11 @@ describe 'cinder::backend::hpelefthand_iscsi' do
 
   let :req_params do
     {
-      :hpelefthand_api_url     => 'https://10.206.219.18:8081/lhos',
-      :hpelefthand_username    => 'admin',
-      :hpelefthand_password    => 'password',
-      :hpelefthand_clustername => 'nfvsys_clust_001',
+      :backend_availability_zone => 'my_zone',
+      :hpelefthand_api_url       => 'https://10.206.219.18:8081/lhos',
+      :hpelefthand_username      => 'admin',
+      :hpelefthand_password      => 'password',
+      :hpelefthand_clustername   => 'nfvsys_clust_001',
     }
   end
 
@@ -19,6 +20,7 @@ describe 'cinder::backend::hpelefthand_iscsi' do
   describe 'hpelefthand_iscsi volume driver' do
     it 'configure hpelefthand_iscsi volume driver' do
       is_expected.to contain_cinder_config('hpelefthand_iscsi/volume_driver').with_value('cinder.volume.drivers.hpe.hpe_lefthand_iscsi.HPELeftHandISCSIDriver')
+      is_expected.to contain_cinder_config('hpelefthand_iscsi/backend_availability_zone').with_value('my_zone')
       is_expected.to contain_cinder_config('hpelefthand_iscsi/hpelefthand_api_url').with_value('https://10.206.219.18:8081/lhos')
       is_expected.to contain_cinder_config('hpelefthand_iscsi/hpelefthand_username').with_value('admin')
       is_expected.to contain_cinder_config('hpelefthand_iscsi/hpelefthand_password').with_value('password')

@@ -11,6 +11,7 @@ describe 'cinder::backend::glusterfs' do
 
     let :params do
       {
+        :backend_availability_zone  => 'my_zone',
         :glusterfs_shares           => ['10.10.10.10:/volumes', '10.10.10.11:/volumes'],
         :glusterfs_shares_config    => '/etc/cinder/other_shares.conf',
         :glusterfs_sparsed_volumes  => true,
@@ -21,6 +22,8 @@ describe 'cinder::backend::glusterfs' do
     it 'configures glusterfs volume driver' do
       is_expected.to contain_cinder_config('mygluster/volume_driver').with_value(
         'cinder.volume.drivers.glusterfs.GlusterfsDriver')
+      is_expected.to contain_cinder_config('mygluster/backend_availability_zone').with_value(
+        'my_zone')
       is_expected.to contain_cinder_config('mygluster/glusterfs_backup_mount_point').with_value(
         '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('mygluster/glusterfs_backup_share').with_value(

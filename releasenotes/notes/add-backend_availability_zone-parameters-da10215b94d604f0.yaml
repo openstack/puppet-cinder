@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add new "backend_availability_zone" parameter to every volume
+    backend. The parameters are optional, and when set they override the 
+    DEFAULT/storage_availability_zone for the corresponding backend.

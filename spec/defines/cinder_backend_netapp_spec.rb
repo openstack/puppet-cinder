@@ -11,6 +11,7 @@ describe 'cinder::backend::netapp' do
   let :params do
     {
       :volume_backend_name          => 'netapp-cdot-nfs',
+      :backend_availability_zone    => 'my_zone',
       :netapp_login                 => 'netapp',
       :netapp_password              => 'password',
       :netapp_server_hostname       => '127.0.0.2',
@@ -25,6 +26,7 @@ describe 'cinder::backend::netapp' do
 
   let :default_params do
     {
+      :backend_availability_zone    => '<SERVICE DEFAULT>',
       :netapp_server_port           => '80',
       :netapp_size_multiplier       => '1.2',
       :netapp_storage_family        => 'ontap_cluster',

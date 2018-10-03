@@ -13,6 +13,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*glusterfs_backup_mount_point*]
 #   (optional) Base dir containing mount point for gluster share.
 #   Defaults to $::os_service_default
@@ -56,6 +62,7 @@
 define cinder::backend::glusterfs (
   $glusterfs_shares,
   $volume_backend_name          = $name,
+  $backend_availability_zone    = $::os_service_default,
   $glusterfs_backup_mount_point = $::os_service_default,
   $glusterfs_backup_share       = $::os_service_default,
   $glusterfs_sparsed_volumes    = $::os_service_default,
@@ -76,14 +83,14 @@ define cinder::backend::glusterfs (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":  value => $volume_backend_name;
-    "${name}/volume_driver":        value =>
-      'cinder.volume.drivers.glusterfs.GlusterfsDriver';
+    "${name}/volume_backend_name":          value => $volume_backend_name;
+    "${name}/backend_availability_zone":    value => $backend_availability_zone;
+    "${name}/volume_driver":                value => 'cinder.volume.drivers.glusterfs.GlusterfsDriver';
     "${name}/glusterfs_backup_mount_point": value => $glusterfs_backup_mount_point;
-    "${name}/glusterfs_backup_share":     value => $glusterfs_backup_share;
-    "${name}/glusterfs_shares_config":    value => $glusterfs_shares_config;
-    "${name}/glusterfs_sparsed_volumes":  value => $glusterfs_sparsed_volumes;
-    "${name}/glusterfs_mount_point_base": value => $glusterfs_mount_point_base;
+    "${name}/glusterfs_backup_share":       value => $glusterfs_backup_share;
+    "${name}/glusterfs_shares_config":      value => $glusterfs_shares_config;
+    "${name}/glusterfs_sparsed_volumes":    value => $glusterfs_sparsed_volumes;
+    "${name}/glusterfs_mount_point_base":   value => $glusterfs_mount_point_base;
   }
 
   if $manage_volume_type {

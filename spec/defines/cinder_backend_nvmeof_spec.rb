@@ -37,6 +37,8 @@ describe 'cinder::backend::nvmeof' do
         :value => '10')
       is_expected.to contain_cinder_config('nvme-backend/volume_backend_name').with(
         :value => 'nvme-backend')
+      is_expected.to contain_cinder_config('nvme-backend/backend_availability_zone').with(
+        :value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('nvme-backend/volume_driver').with(
         :value => 'cinder.volume.drivers.lvm.LVMVolumeDriver')
     end
