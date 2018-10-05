@@ -40,7 +40,7 @@ describe 'cinder::backup::posix' do
     end
 
     it 'configures cinder.conf' do
-      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.posix')
+      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.posix.PosixBackupDriver')
       is_expected.to contain_cinder_config('DEFAULT/backup_file_size').with_value(p[:backup_file_size])
       is_expected.to contain_cinder_config('DEFAULT/backup_sha_block_size_bytes').with_value(p[:backup_sha_block_size_bytes])
       is_expected.to contain_cinder_config('DEFAULT/backup_posix_path').with_value(p[:backup_posix_path])

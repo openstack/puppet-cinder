@@ -6,7 +6,7 @@
 #
 # [*backup_driver*]
 #   (Optional) The backup driver for GCS back-end.
-#   Defaults to 'cinder.backup.drivers.google'.
+#   Defaults to 'cinder.backup.drivers.google.GoogleBackupDriver'.
 #
 # [*backup_gcs_bucket*]
 #   (optional) The GCS bucket to use.
@@ -87,7 +87,7 @@
 #
 #
 class cinder::backup::google (
-  $backup_driver                    = 'cinder.backup.drivers.google',
+  $backup_driver                    = 'cinder.backup.drivers.google.GoogleBackupDriver',
   $backup_gcs_bucket                = $::os_service_default,
   $backup_gcs_object_size           = $::os_service_default,
   $backup_gcs_block_size            = $::os_service_default,

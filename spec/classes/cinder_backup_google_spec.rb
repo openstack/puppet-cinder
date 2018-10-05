@@ -48,7 +48,7 @@ describe 'cinder::backup::google' do
     end
 
     it 'configures cinder.conf' do
-      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.google')
+      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.google.GoogleBackupDriver')
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_bucket').with_value(p[:backup_gcs_bucket])
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_object_size').with_value(p[:backup_gcs_object_size])
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_block_size').with_value(p[:backup_gcs_block_size])

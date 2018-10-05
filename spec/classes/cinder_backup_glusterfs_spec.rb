@@ -37,7 +37,7 @@ describe 'cinder::backup::glusterfs' do
     end
 
     it 'configures cinder.conf' do
-      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.glusterfs')
+      is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.glusterfs.GlusterfsBackupDriver')
       is_expected.to contain_cinder_config('DEFAULT/glusterfs_backup_mount_point').with_value(p[:glusterfs_backup_mount_point])
       is_expected.to contain_cinder_config('DEFAULT/glusterfs_backup_share').with_value(p[:glusterfs_backup_share])
     end

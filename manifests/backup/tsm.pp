@@ -6,7 +6,7 @@
 #
 # [*backup_driver*]
 #   (Optional) The backup driver for tsm backend.
-#   Defaults to 'cinder.backup.drivers.tsm'.
+#   Defaults to 'cinder.backup.drivers.tsm.TSMBackupDriver'.
 #
 # [*backup_tsm_volume_prefix*]
 #   (optional) Volume prefix for the backup id when backing up to TSM.
@@ -42,7 +42,7 @@
 #
 #
 class cinder::backup::tsm (
-  $backup_driver            = 'cinder.backup.drivers.tsm',
+  $backup_driver            = 'cinder.backup.drivers.tsm.TSMBackupDriver',
   $backup_tsm_volume_prefix = $::os_service_default,
   $backup_tsm_password      = $::os_service_default,
   $backup_tsm_compression   = $::os_service_default,
