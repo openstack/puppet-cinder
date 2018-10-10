@@ -8,6 +8,12 @@
 #   (optional) The name of the cinder::backend::veritas_hyperscale ressource
 #   Defaults to $name.
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend
 #   Defaults to: {}
@@ -30,15 +36,17 @@
 #
 
 define cinder::backend::veritas_hyperscale (
-  $volume_backend_name = $name,
-  $extra_options       = {},
-  $manage_volume_type  = false,
+  $volume_backend_name       = $name,
+  $backend_availability_zone = $::os_service_default,
+  $extra_options             = {},
+  $manage_volume_type        = false,
 ) {
 
   include ::cinder::deps
 
   cinder_config {
     "${name}/volume_backend_name":        value => $volume_backend_name;
+    "${name}/backend_availability_zone":  value => $backend_availability_zone;
     "${name}/volume_driver":              value => 'cinder.volume.drivers.veritas.vrtshyperscale.HyperScaleDriver';
     "${name}/image_volume_cache_enabled": value => true
   }

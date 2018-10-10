@@ -34,6 +34,8 @@ describe 'cinder::backend::iscsi' do
     it 'should configure iscsi driver' do
       is_expected.to contain_cinder_config('hippo/volume_backend_name').with(
         :value => 'hippo')
+      is_expected.to contain_cinder_config('hippo/backend_availability_zone').with(
+        :value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('hippo/volume_driver').with(
         :value => 'cinder.volume.drivers.lvm.LVMVolumeDriver')
       is_expected.to contain_cinder_config('hippo/iscsi_ip_address').with(

@@ -6,6 +6,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*nfs_servers*]
 #   (Required) Description
 #   Defaults to '[]'
@@ -89,6 +95,7 @@
 #
 define cinder::backend::nfs (
   $volume_backend_name         = $name,
+  $backend_availability_zone   = $::os_service_default,
   $nfs_servers                 = [],
   $nfs_mount_attempts          = $::os_service_default,
   $nfs_mount_options           = $::os_service_default,
@@ -116,6 +123,7 @@ define cinder::backend::nfs (
 
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
+    "${name}/backend_availability_zone":   value => $backend_availability_zone;
     "${name}/volume_driver":               value =>
       'cinder.volume.drivers.nfs.NfsDriver';
     "${name}/nfs_shares_config":           value => $nfs_shares_config;

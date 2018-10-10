@@ -10,6 +10,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
 #   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
@@ -44,14 +50,15 @@
 #
 define cinder::backend::iscsi (
   $iscsi_ip_address,
-  $volume_backend_name = $name,
-  $volume_driver       = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
-  $volume_group        = $::os_service_default,
-  $volumes_dir         = '/var/lib/cinder/volumes',
-  $iscsi_helper        = $::cinder::params::iscsi_helper,
-  $iscsi_protocol      = $::os_service_default,
-  $manage_volume_type  = false,
-  $extra_options       = {},
+  $volume_backend_name       = $name,
+  $backend_availability_zone = $::os_service_default,
+  $volume_driver             = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
+  $volume_group              = $::os_service_default,
+  $volumes_dir               = '/var/lib/cinder/volumes',
+  $iscsi_helper              = $::cinder::params::iscsi_helper,
+  $iscsi_protocol            = $::os_service_default,
+  $manage_volume_type        = false,
+  $extra_options             = {},
 ) {
 
   include ::cinder::deps
@@ -67,13 +74,14 @@ define cinder::backend::iscsi (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":  value => $volume_backend_name;
-    "${name}/volume_driver":        value => $volume_driver;
-    "${name}/iscsi_ip_address":     value => $iscsi_ip_address;
-    "${name}/iscsi_helper":         value => $iscsi_helper;
-    "${name}/volume_group":         value => $volume_group;
-    "${name}/volumes_dir":          value => $volumes_dir;
-    "${name}/iscsi_protocol":       value => $iscsi_protocol;
+    "${name}/volume_backend_name":        value => $volume_backend_name;
+    "${name}/backend_availability_zone": value => $backend_availability_zone;
+    "${name}/volume_driver":              value => $volume_driver;
+    "${name}/iscsi_ip_address":           value => $iscsi_ip_address;
+    "${name}/iscsi_helper":               value => $iscsi_helper;
+    "${name}/volume_group":               value => $volume_group;
+    "${name}/volumes_dir":                value => $volumes_dir;
+    "${name}/iscsi_protocol":             value => $iscsi_protocol;
   }
 
   if $manage_volume_type {

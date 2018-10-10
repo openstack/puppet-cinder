@@ -5,7 +5,8 @@ describe 'cinder::backend::veritas_hyperscale' do
   let (:title) { 'Veritas_HyperScale' }
 
   let :params do {
-      :manage_volume_type => true,
+      :backend_availability_zone => 'my_zone',
+      :manage_volume_type        => true,
     }
   end
 
@@ -15,6 +16,8 @@ describe 'cinder::backend::veritas_hyperscale' do
         'cinder.volume.drivers.veritas.vrtshyperscale.HyperScaleDriver')
       should contain_cinder_config("#{title}/volume_backend_name").with_value(
         "#{title}")
+      should contain_cinder_config("#{title}/backend_availability_zone").with_value(
+        'my_zone')
       should contain_cinder_config("#{title}/image_volume_cache_enabled").with_value(
         true)
     end

@@ -35,6 +35,7 @@ describe 'cinder::backend::emc_vnx' do
       is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('emc/naviseccli_path').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('emc/backend_availability_zone').with_value('<SERVICE DEFAULT>')
     end
   end
 
@@ -47,6 +48,7 @@ describe 'cinder::backend::emc_vnx' do
        :naviseccli_path               => '/opt/Navisphere/bin/naviseccli',
        :manage_volume_type            => true,
        :storage_protocol              => 'fc',
+       :backend_availability_zone     => 'my_zone',
       })
     end
 
@@ -56,6 +58,7 @@ describe 'cinder::backend::emc_vnx' do
       is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value(params[:storage_vnx_security_file_dir])
       is_expected.to contain_cinder_config('emc/naviseccli_path').with_value(params[:naviseccli_path])
       is_expected.to contain_cinder_config('emc/storage_protocol').with_value(params[:storage_protocol])
+      is_expected.to contain_cinder_config('emc/backend_availability_zone').with_value(params[:backend_availability_zone])
     end
 
     it 'should create type with properties' do

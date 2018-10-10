@@ -20,6 +20,12 @@
 #   (optional) The storage backend name.
 #   Defaults to the name of the backend
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*xtremio_array_busy_retry_count*]
 #   (optional) Number of retries in case array is busy.
 #   Defaults to 5
@@ -50,6 +56,7 @@ define cinder::backend::dellemc_xtremio_iscsi (
   $san_password,
   $xtremio_cluster_name,
   $volume_backend_name               = $name,
+  $backend_availability_zone         = $::os_service_default,
   $xtremio_array_busy_retry_count    = 5,
   $xtremio_array_busy_retry_interval = 5,
   $xtremio_volumes_per_glance_cache  = 100,
@@ -62,6 +69,7 @@ define cinder::backend::dellemc_xtremio_iscsi (
   $driver = 'dell_emc.xtremio.XtremIOISCSIDriver'
   cinder_config {
     "${name}/volume_backend_name":               value => $volume_backend_name;
+    "${name}/backend_availability_zone":         value => $backend_availability_zone;
     "${name}/volume_driver":                     value => "cinder.volume.drivers.${driver}";
     "${name}/san_ip":                            value => $san_ip;
     "${name}/san_login":                         value => $san_login;

@@ -17,9 +17,19 @@ describe 'cinder::backend::dellemc_xtremio_iscsi' do
 
   let :default_params do
     {
+      :backend_availability_zone         => '<SERVICE DEFAULT>',
       :xtremio_array_busy_retry_count    => 5,
       :xtremio_array_busy_retry_interval => 5,
       :xtremio_volumes_per_glance_cache  => 100,
+    }
+  end
+
+  let :custom_params do
+  {
+      :backend_availability_zone         => 'my_zone',
+      :xtremio_array_busy_retry_count    => 15,
+      :xtremio_array_busy_retry_interval => 25,
+      :xtremio_volumes_per_glance_cache  => 10,
     }
   end
 
@@ -43,7 +53,14 @@ describe 'cinder::backend::dellemc_xtremio_iscsi' do
   end
 
 
-  context 'with parameters' do
+  context 'with default parameters' do
+    it_configures 'dellemc_xtremio_iscsi volume driver'
+  end
+
+  context 'with custom parameters' do
+    before do
+      params.merge(custom_params)
+    end
     it_configures 'dellemc_xtremio_iscsi volume driver'
   end
 

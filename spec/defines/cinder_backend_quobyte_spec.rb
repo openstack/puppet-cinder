@@ -7,9 +7,10 @@ describe 'cinder::backend::quobyte' do
 
     let :params do
       {
-	:quobyte_volume_url      => 'quobyte://quobyte.cluster.example.com/volume-name',
-        :quobyte_qcow2_volumes   => false,
-        :quobyte_sparsed_volumes => true,
+        :quobyte_volume_url        => 'quobyte://quobyte.cluster.example.com/volume-name',
+        :quobyte_qcow2_volumes     => false,
+        :quobyte_sparsed_volumes   => true,
+        :backend_availability_zone => 'my_zone',
       }
     end
 
@@ -22,6 +23,8 @@ describe 'cinder::backend::quobyte' do
         false)
       is_expected.to contain_cinder_config('myquobyte/quobyte_sparsed_volumes').with_value(
         true)
+      is_expected.to contain_cinder_config('myquobyte/backend_availability_zone').with_value(
+        'my_zone')
     end
 
     context 'quobyte backend with cinder type' do

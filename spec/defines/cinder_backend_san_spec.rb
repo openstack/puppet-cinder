@@ -4,11 +4,14 @@ describe 'cinder::backend::san' do
   let (:title) { 'mysan' }
 
   let :params do
-    { :volume_driver   => 'cinder.volume.san.SolarisISCSIDriver',
-      :san_ip          => '127.0.0.1',
-      :san_login       => 'cluster_operator',
-      :san_password    => '007',
-      :san_clustername => 'storage_cluster' }
+    {
+      :backend_availability_zone => 'my_zone',
+      :volume_driver             => 'cinder.volume.san.SolarisISCSIDriver',
+      :san_ip                    => '127.0.0.1',
+      :san_login                 => 'cluster_operator',
+      :san_password              => '007',
+      :san_clustername           => 'storage_cluster',
+    }
   end
 
   let :default_params do

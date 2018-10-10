@@ -34,6 +34,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -48,18 +54,20 @@
 #
 define cinder::backend::quobyte (
   $quobyte_volume_url,
-  $quobyte_client_cfg       = undef,
-  $quobyte_qcow2_volumes    = undef,
-  $quobyte_sparsed_volumes  = undef,
-  $quobyte_mount_point_base = undef,
-  $volume_backend_name      = $name,
-  $manage_volume_type       = false,
+  $quobyte_client_cfg        = undef,
+  $quobyte_qcow2_volumes     = undef,
+  $quobyte_sparsed_volumes   = undef,
+  $quobyte_mount_point_base  = undef,
+  $volume_backend_name       = $name,
+  $backend_availability_zone = $::os_service_default,
+  $manage_volume_type        = false,
 ) {
 
   include ::cinder::deps
 
   cinder_config {
     "${name}/volume_backend_name":       value => $volume_backend_name;
+    "${name}/backend_availability_zone": value => $backend_availability_zone;
     "${name}/volume_driver":             value =>
       'cinder.volume.drivers.quobyte.QuobyteDriver';
     "${name}/quobyte_volume_url":        value => $quobyte_volume_url;

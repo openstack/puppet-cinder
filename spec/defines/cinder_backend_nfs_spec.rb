@@ -6,6 +6,7 @@ describe 'cinder::backend::nfs' do
 
   let :params do
     {
+      :backend_availability_zone   => 'my_zone',
       :nfs_servers                 => ['10.10.10.10:/shares', '10.10.10.10:/shares2'],
       :nfs_mount_attempts          => '4',
       :nfs_mount_options           => 'vers=3',
@@ -27,6 +28,8 @@ describe 'cinder::backend::nfs' do
     it 'configures nfs volume driver' do
       is_expected.to contain_cinder_config('hippo/volume_backend_name').with(
         :value => 'hippo')
+      is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value(
+        'my_zone')
       is_expected.to contain_cinder_config('hippo/volume_driver').with_value(
         'cinder.volume.drivers.nfs.NfsDriver')
       is_expected.to contain_cinder_config('hippo/nfs_shares_config').with_value(

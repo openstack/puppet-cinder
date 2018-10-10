@@ -20,6 +20,12 @@
 #   (optional) The storage backend name.
 #   Defaults to the $name of the backend
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*unity_io_ports*]
 #   (optional) A comma-separated list of iSCSI or FC ports to be used.
 #   Each port can be Unix-style glob expressions. The Unity Unisphere API port.
@@ -46,26 +52,28 @@ define cinder::backend::dellemc_unity (
   $san_login,
   $san_password,
   $storage_protocol,
-  $volume_backend_name      = $name,
-  $unity_io_ports           = $::os_service_default,
-  $unity_storage_pool_names = $::os_service_default,
-  $manage_volume_type       = false,
-  $extra_options            = {},
+  $volume_backend_name       = $name,
+  $backend_availability_zone = $::os_service_default,
+  $unity_io_ports            = $::os_service_default,
+  $unity_storage_pool_names  = $::os_service_default,
+  $manage_volume_type        = false,
+  $extra_options             = {},
 ) {
 
   include ::cinder::deps
 
   $driver = 'dell_emc.unity.Driver'
   cinder_config {
-    "${name}/volume_backend_name":      value => $volume_backend_name;
-    "${name}/volume_driver":            value => "cinder.volume.drivers.${driver}";
-    "${name}/san_ip":                   value => $san_ip;
-    "${name}/san_login":                value => $san_login;
-    "${name}/san_password":             value => $san_password, secret => true;
-    "${name}/storage_protocol":         value => $storage_protocol;
-    "${name}/unity_io_ports":           value => $unity_io_ports;
-    "${name}/unity_storage_pool_names": value => $unity_storage_pool_names;
-  }
+    "${name}/volume_backend_name":       value => $volume_backend_name;
+    "${name}/backend_availability_zone": value => $backend_availability_zone;
+    "${name}/volume_driver":             value => "cinder.volume.drivers.${driver}";
+    "${name}/san_ip":                    value => $san_ip;
+    "${name}/san_login":                 value => $san_login;
+    "${name}/san_password":              value => $san_password, secret => true;
+    "${name}/storage_protocol":          value => $storage_protocol;
+    "${name}/unity_io_ports":            value => $unity_io_ports;
+    "${name}/unity_storage_pool_names":  value => $unity_storage_pool_names;
+   }
 
   if $manage_volume_type {
     cinder_type { $volume_backend_name:

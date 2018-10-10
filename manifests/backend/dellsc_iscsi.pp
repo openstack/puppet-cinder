@@ -23,6 +23,12 @@
 #   (optional) The storage backend name.
 #   Defaults to the name of the backend
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*dell_sc_api_port*]
 #   (optional) The Enterprise Manager API port.
 #   Defaults to $::os_service_default
@@ -85,6 +91,7 @@ define cinder::backend::dellsc_iscsi (
   $iscsi_ip_address,
   $dell_sc_ssn,
   $volume_backend_name          = $name,
+  $backend_availability_zone    = $::os_service_default,
   $dell_sc_api_port             = $::os_service_default,
   $dell_sc_server_folder        = 'srv',
   $dell_sc_verify_cert          = $::os_service_default,
@@ -97,7 +104,7 @@ define cinder::backend::dellsc_iscsi (
   $secondary_sc_api_port        = $::os_service_default,
   $manage_volume_type           = false,
   $use_multipath_for_image_xfer = true,
-  $extra_options          = {},
+  $extra_options                = {},
 ) {
 
   include ::cinder::deps
@@ -115,6 +122,7 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
   $driver = 'dell_emc.sc.storagecenter_iscsi.SCISCSIDriver'
   cinder_config {
     "${name}/volume_backend_name":          value => $volume_backend_name;
+    "${name}/backend_availability_zone":    value => $backend_availability_zone;
     "${name}/volume_driver":                value => "cinder.volume.drivers.${driver}";
     "${name}/san_ip":                       value => $san_ip;
     "${name}/san_login":                    value => $san_login;

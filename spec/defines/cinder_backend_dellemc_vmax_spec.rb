@@ -25,13 +25,14 @@ describe 'cinder::backend::dellemc_vmax_iscsi' do
   describe 'dell emc vmax iscsi backend overriding some parameters' do
     before :each do
       params.merge!({
+       :backend_availability_zone     => 'my_zone',
        :manage_volume_type            => true,
       })
     end
 
     it 'configure dell emc vmax iscsi volume driver' do
-      is_expected.to contain_cinder_config('dellemc_vmax_iscsi/cinder_emc_config_file').with_value('/etc/cinder/cinder_emc_config_CONF_GROUP_ISCSI.xml'
-)
+      is_expected.to contain_cinder_config('dellemc_vmax_iscsi/cinder_emc_config_file').with_value('/etc/cinder/cinder_emc_config_CONF_GROUP_ISCSI.xml')
+      is_expected.to contain_cinder_config('dellemc_vmax_iscsi/backend_availability_zone').with_value('my_zone')
     end
 
     it 'should create type with properties' do

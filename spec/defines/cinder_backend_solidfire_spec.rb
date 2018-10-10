@@ -15,6 +15,7 @@ describe 'cinder::backend::solidfire' do
 
   let :other_params do
     {
+      :backend_availability_zone  => '<SERVICE DEFAULT>',
       :sf_emulate_512             => '<SERVICE DEFAULT>',
       :sf_allow_tenant_qos        => '<SERVICE DEFAULT>',
       :sf_account_prefix          => '<SERVICE DEFAULT>',

@@ -17,6 +17,12 @@
 #   Used to set the volume_backend_name in multiple backends.
 #   Defaults to $name as passed in the title.
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*api_retry_count*]
 #   (optional) The number of times we retry on failures,
 #   e.g., socket error, etc.
@@ -66,6 +72,7 @@ define cinder::backend::vmdk (
   $host_username,
   $host_password,
   $volume_backend_name         = $name,
+  $backend_availability_zone   = $::os_service_default,
   $volume_folder               = 'cinder-volumes',
   $api_retry_count             = $::os_service_default,
   $max_object_retrieval        = $::os_service_default,
@@ -90,6 +97,7 @@ module default of \"5\" and will be changed to the upstream OpenStack default in
 
   cinder_config {
     "${name}/volume_backend_name":                value => $volume_backend_name;
+    "${name}/backend_availability_zone":          value => $backend_availability_zone;
     "${name}/volume_driver":                      value => 'cinder.volume.drivers.vmware.vmdk.VMwareVcVmdkDriver';
     "${name}/vmware_host_ip":                     value => $host_ip;
     "${name}/vmware_host_username":               value => $host_username;

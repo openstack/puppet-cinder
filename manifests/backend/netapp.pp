@@ -9,6 +9,12 @@
 #   (optional) The name of the cinder::backend::netapp ressource
 #   Defaults to $name.
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*netapp_login*]
 #   (required) Administrative user account name used to access the storage
 #   system or proxy server.
@@ -200,6 +206,7 @@ define cinder::backend::netapp (
   $netapp_password,
   $netapp_server_hostname,
   $volume_backend_name              = $name,
+  $backend_availability_zone        = $::os_service_default,
   $netapp_server_port               = '80',
   $netapp_size_multiplier           = '1.2',
   $netapp_storage_family            = 'ontap_cluster',
@@ -240,6 +247,7 @@ define cinder::backend::netapp (
   cinder_config {
     "${name}/nfs_mount_options":                value => $nfs_mount_options;
     "${name}/volume_backend_name":              value => $volume_backend_name;
+    "${name}/backend_availability_zone":        value => $backend_availability_zone;
     "${name}/volume_driver":                    value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
     "${name}/netapp_login":                     value => $netapp_login;
     "${name}/netapp_password":                  value => $netapp_password, secret => true;

@@ -22,19 +22,21 @@ describe 'cinder::backend::bdd' do
         should contain_cinder_config('hippo/volume_group').with_value('<SERVICE DEFAULT>')
         should contain_cinder_config('hippo/iscsi_protocol').with_value('<SERVICE DEFAULT>')
         should contain_cinder_config('hippo/volume_clear').with_value('<SERVICE DEFAULT>')
+        should contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
       end
     end
 
     context 'with optional parameters' do
       before :each do
         params.merge!({
-          :iscsi_ip_address   => '10.20.0.2',
-          :available_devices  => '/dev/sdb,/dev/sdc',
-          :volumes_dir        => '/var/lib/cinder/bdd-volumes',
-          :volume_clear       => 'zero',
-          :volume_group       => 'cinder',
-          :iscsi_helper       => 'lioadm',
-          :manage_volume_type => true,
+          :iscsi_ip_address          => '10.20.0.2',
+          :available_devices         => '/dev/sdb,/dev/sdc',
+          :volumes_dir               => '/var/lib/cinder/bdd-volumes',
+          :volume_clear              => 'zero',
+          :volume_group              => 'cinder',
+          :iscsi_helper              => 'lioadm',
+          :manage_volume_type        => true,
+          :backend_availability_zone => 'my_zone',
         })
       end
 
@@ -45,6 +47,7 @@ describe 'cinder::backend::bdd' do
         should contain_cinder_config('hippo/iscsi_helper').with_value('lioadm')
         should contain_cinder_config('hippo/volume_group').with_value('cinder')
         should contain_cinder_config('hippo/volume_clear').with_value('zero')
+        should contain_cinder_config('hippo/backend_availability_zone').with_value('my_zone')
       end
       it 'should create type with properties' do
         should contain_cinder_type('hippo').with(:ensure => :present, :properties => ['volume_backend_name=hippo'])

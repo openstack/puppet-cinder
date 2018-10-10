@@ -17,8 +17,17 @@ describe 'cinder::backend::dellemc_unity' do
 
   let :default_params do
     {
+      :backend_availability_zone => '<SERVICE DEFAULT>',
       :unity_io_ports            => '<SERVICE DEFAULT>',
       :unity_storage_pool_names  => '<SERVICE DEFAULT>',
+    }
+  end
+
+  let :custom_params do
+    {
+      :backend_availability_zone => 'my_zone',
+      :unity_io_ports            => '1,42,66',
+      :unity_storage_pool_names  => 'pool_1,pool_2',
     }
   end
 
@@ -41,8 +50,14 @@ describe 'cinder::backend::dellemc_unity' do
     end
   end
 
+  context 'with default parameters' do
+    it_configures 'dellemc_unity volume driver'
+  end
 
-  context 'with parameters' do
+  context 'with custom parameters' do
+    before do
+      params.merge(custom_params)
+    end
     it_configures 'dellemc_unity volume driver'
   end
 

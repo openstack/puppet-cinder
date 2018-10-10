@@ -16,6 +16,12 @@
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use HPE LeftHand volume driver.
 #   Defaults to 'cinder.volume.drivers.hpe.hpe_lefthand_iscsi.HPELeftHandISCSIDriver'
@@ -47,6 +53,7 @@ define cinder::backend::hpelefthand_iscsi(
   $hpelefthand_password,
   $hpelefthand_clustername,
   $volume_backend_name            = $name,
+  $backend_availability_zone      = $::os_service_default,
   $volume_driver                  = 'cinder.volume.drivers.hpe.hpe_lefthand_iscsi.HPELeftHandISCSIDriver',
   $hpelefthand_iscsi_chap_enabled = false,
   $hpelefthand_debug              = false,
@@ -58,6 +65,7 @@ define cinder::backend::hpelefthand_iscsi(
 
   cinder_config {
     "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
     "${name}/volume_driver":                  value => $volume_driver;
     "${name}/hpelefthand_username":           value => $hpelefthand_username;
     "${name}/hpelefthand_password":           value => $hpelefthand_password, secret => true;
