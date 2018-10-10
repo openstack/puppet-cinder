@@ -11,7 +11,10 @@ describe 'cinder::backend::iscsi' do
   end
 
   let :facts do
-    OSDefaults.get_facts({:osfamily => 'Debian'})
+    OSDefaults.get_facts({
+      :osfamily => 'Debian',
+      :os       => { :name  => 'Debian', :family => 'Debian', :release => { :major => '8', :minor => '0' } },
+    })
   end
 
   let :params do
@@ -93,7 +96,10 @@ describe 'cinder::backend::iscsi' do
   describe 'with RedHat' do
 
     let :facts do
-      OSDefaults.get_facts({:osfamily => 'RedHat'})
+      OSDefaults.get_facts({
+        :osfamily => 'RedHat',
+        :os       => { :name  => 'CentOS', :family => 'RedHat', :release => { :major => '7', :minor => '0' } },
+      })
     end
 
     it { is_expected.to contain_file_line('cinder include').with(
