@@ -24,7 +24,7 @@ describe 'cinder::backend::dellsc_iscsi' do
       :dell_sc_verify_cert          => '<SERVICE DEFAULT>',
       :dell_sc_volume_folder        => 'vol',
       :iscsi_port                   => '<SERVICE DEFAULT>',
-      :excluded_domain_ip           => '<SERVICE DEFAULT>',
+      :excluded_domain_ips          => '<SERVICE DEFAULT>',
       :secondary_san_ip             => '<SERVICE DEFAULT>',
       :secondary_san_login          => '<SERVICE DEFAULT>',
       :secondary_san_password       => '<SERVICE DEFAULT>',
