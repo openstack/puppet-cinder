@@ -64,9 +64,8 @@ needed, we recommend you consult and understand the
 
 ```puppet
 class { 'cinder':
-  database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
-  rabbit_password         => 'secret_rpc_password_for_blocks',
-  rabbit_host             => 'openstack-controller.example.com',
+  database_connection   => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  default_transport_url => 'rabbit://cinder:secret_password@openstack-controller.example.com:5672',
 }
 
 class { 'cinder::api':
@@ -86,9 +85,8 @@ class { 'cinder::scheduler': }
 
 ```puppet
 class { 'cinder':
-  database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
-  rabbit_password         => 'secret_rpc_password_for_blocks',
-  rabbit_host             => 'openstack-controller.example.com',
+  database_connection   => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  default_transport_url => 'rabbit://cinder:secret_password@openstack-controller.example.com:5672',
 }
 
 class { 'cinder::volume': }
@@ -103,9 +101,8 @@ cinder::backend::iscsi {
 
 ```puppet
 class { 'cinder':
-  database_connection     => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
-  rabbit_password         => 'secret_rpc_password_for_blocks',
-  rabbit_host             => 'openstack-controller.example.com',
+  database_connection   => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
+  default_transport_url => 'rabbit://cinder:secret_password@openstack-controller.example.com:5672',
 }
 
 class { 'cinder::volume': }
