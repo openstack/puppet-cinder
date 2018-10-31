@@ -93,7 +93,7 @@ class { 'cinder::volume': }
 
 cinder::backend::iscsi {
   'iscsi_example':
-    iscsi_ip_address => '10.0.0.2',
+    target_ip_address => '10.0.0.2',
 }
 ```
 
@@ -108,20 +108,20 @@ class { 'cinder':
 class { 'cinder::volume': }
 
 cinder::backend::iscsi {'iscsi1':
-  iscsi_ip_address => '10.0.0.2',
+  target_ip_address => '10.0.0.2',
 }
 
 cinder::backend::iscsi {'iscsi2':
-  iscsi_ip_address => '10.0.0.3',
+  target_ip_address => '10.0.0.3',
 }
 
 cinder::backend::iscsi {'iscsi3':
-  iscsi_ip_address    => '10.0.0.4',
+  target_ip_address   => '10.0.0.4',
   volume_backend_name => 'iscsi',
 }
 
 cinder::backend::iscsi {'iscsi4':
-  iscsi_ip_address    => '10.0.0.5',
+  target_ip_address   => '10.0.0.5',
   volume_backend_name => 'iscsi',
 }
 

@@ -13,11 +13,15 @@
 # [*san_password*]
 #   (required) Enterprise Manager user password.
 #
-# [*iscsi_ip_address*]
-#   (required) The Storage Center iSCSI IP address.
-#
 # [*dell_sc_ssn*]
 #   (required) The Storage Center serial number to use.
+#
+# [*target_ip_address*]
+#   (optional) The IP address that the iSCSI daemon is listening on.
+#   If not set, the iscsi_ip_address must be specified. The target_ip_address
+#   will be required once the deprecated iscsi_ip_address parameter is
+#   removed in a future release.
+#   Defaults to undef.
 #
 # [*volume_backend_name*]
 #   (optional) The storage backend name.
@@ -45,7 +49,7 @@
 #   (optional) Name of the volume folder to use on the Storage Center.
 #   Defaults to 'vol'
 #
-# [*iscsi_port*]
+# [*target_port*]
 #   (optional) The ISCSI IP Port of the Storage Center.
 #   Defaults to $::os_service_default
 #
@@ -91,19 +95,27 @@
 #   (optional) Domain IP to be excluded from iSCSI returns of Storage Center.
 #   Defaults to undef.
 #
+# [*iscsi_ip_address*]
+#   (Optional) The IP address that the iSCSI daemon is listening on
+#   Defaults to undef.
+#
+# [*iscsi_port*]
+#   (Optional) iSCSI target user-land tool to use.
+#   Defaults to undef.
+#
 define cinder::backend::dellsc_iscsi (
   $san_ip,
   $san_login,
   $san_password,
-  $iscsi_ip_address,
   $dell_sc_ssn,
+  $target_ip_address            = undef,
   $volume_backend_name          = $name,
   $backend_availability_zone    = $::os_service_default,
   $dell_sc_api_port             = $::os_service_default,
   $dell_sc_server_folder        = 'srv',
   $dell_sc_verify_cert          = $::os_service_default,
   $dell_sc_volume_folder        = 'vol',
-  $iscsi_port                   = $::os_service_default,
+  $target_port                  = $::os_service_default,
   $excluded_domain_ips          = $::os_service_default,
   $secondary_san_ip             = $::os_service_default,
   $secondary_san_login          = $::os_service_default,
@@ -114,6 +126,8 @@ define cinder::backend::dellsc_iscsi (
   $extra_options                = {},
   # DEPRECATED PARAMETERS
   $excluded_domain_ip           = undef,
+  $iscsi_ip_address             = undef,
+  $iscsi_port                   = undef,
 ) {
 
   include ::cinder::deps
@@ -128,6 +142,22 @@ default of \"srv\" and will be changed to the upstream OpenStack default in N-re
 default of \"vol\" and will be changed to the upstream OpenStack default in N-release.")
   }
 
+  if $target_ip_address or $iscsi_ip_address {
+    if $iscsi_ip_address {
+      warning('The iscsi_ip_address parameter is deprecated, use target_ip_address instead.')
+    }
+    $target_ip_address_real = pick($target_ip_address, $iscsi_ip_address)
+  } else {
+    fail('A target_ip_address or iscsi_ip_address must be specified.')
+  }
+
+  if $iscsi_port {
+    warning('The iscsi_port parameter is deprecated, use target_port instead.')
+    $target_port_real = $iscsi_port
+  } else {
+    $target_port_real = $target_port
+  }
+
   $driver = 'dell_emc.sc.storagecenter_iscsi.SCISCSIDriver'
   cinder_config {
     "${name}/volume_backend_name":          value => $volume_backend_name;
@@ -136,13 +166,13 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
     "${name}/san_ip":                       value => $san_ip;
     "${name}/san_login":                    value => $san_login;
     "${name}/san_password":                 value => $san_password, secret => true;
-    "${name}/iscsi_ip_address":             value => $iscsi_ip_address;
+    "${name}/target_ip_address":            value => $target_ip_address_real;
     "${name}/dell_sc_ssn":                  value => $dell_sc_ssn;
     "${name}/dell_sc_api_port":             value => $dell_sc_api_port;
     "${name}/dell_sc_server_folder":        value => $dell_sc_server_folder;
     "${name}/dell_sc_verify_cert":          value => $dell_sc_verify_cert;
     "${name}/dell_sc_volume_folder":        value => $dell_sc_volume_folder;
-    "${name}/iscsi_port":                   value => $iscsi_port;
+    "${name}/target_port":                  value => $target_port_real;
     "${name}/excluded_domain_ips":          value => $excluded_domain_ips;
     "${name}/secondary_san_ip":             value => $secondary_san_ip;
     "${name}/secondary_san_login":          value => $secondary_san_login;

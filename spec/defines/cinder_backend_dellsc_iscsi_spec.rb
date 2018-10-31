@@ -11,7 +11,7 @@ describe 'cinder::backend::dellsc_iscsi' do
       :san_ip                => '172.23.8.101',
       :san_login             => 'Admin',
       :san_password          => '12345',
-      :iscsi_ip_address      => '192.168.0.20',
+      :target_ip_address     => '192.168.0.20',
       :dell_sc_ssn           => '64720',
     }
   end
@@ -23,7 +23,7 @@ describe 'cinder::backend::dellsc_iscsi' do
       :dell_sc_server_folder        => 'srv',
       :dell_sc_verify_cert          => '<SERVICE DEFAULT>',
       :dell_sc_volume_folder        => 'vol',
-      :iscsi_port                   => '<SERVICE DEFAULT>',
+      :target_port                  => '<SERVICE DEFAULT>',
       :excluded_domain_ips          => '<SERVICE DEFAULT>',
       :secondary_san_ip             => '<SERVICE DEFAULT>',
       :secondary_san_login          => '<SERVICE DEFAULT>',
@@ -40,7 +40,7 @@ describe 'cinder::backend::dellsc_iscsi' do
       :dell_sc_server_folder     => 'other_srv',
       :dell_sc_verify_cert       => true,
       :dell_sc_volume_folder     => 'other_vol',
-      :iscsi_port                => 222,
+      :target_port               => 222,
       :excluded_domain_ip        => '127.0.0.2',
       :secondary_san_ip          => '127.0.0.3',
       :secondary_san_login       => 'Foo',
@@ -99,6 +99,27 @@ describe 'cinder::backend::dellsc_iscsi' do
     end
     it 'should create type with properties' do
       should contain_cinder_type('dellsc_iscsi').with(:ensure => :present, :properties => ['volume_backend_name=dellsc_iscsi'])
+    end
+  end
+
+  context 'with deprecated iscsi_ip_address' do
+    before do
+      params.merge!({
+        :target_ip_address => :undef,
+        :iscsi_ip_address  => '127.0.0.42',
+      })
+    end
+    it 'should configure dellsc_iscsi backend using that address' do
+      should contain_cinder_config('dellsc_iscsi/target_ip_address').with_value('127.0.0.42')
+    end
+  end
+
+  context 'with no target_ip_address or iscsi_ip_address' do
+    before do
+      params.delete(:target_ip_address)
+    end
+    it 'is expected to raise error' do
+      is_expected.to raise_error(Puppet::Error, /A target_ip_address or iscsi_ip_address must be specified./)
     end
   end
 

@@ -1,0 +1,20 @@
+---
+upgrade:
+  - |
+    The iscsi_ip_address parameter is no longer supported, and has been
+    replaced by a corresponding target_ip_address parameter. This is due
+    to cinder's removal of support for the iscsi_ip_address option during
+    the Stein cycle.
+deprecations:
+  - |
+    The following parameters are deprecated because support for them was
+    removed from cinder during the Stein cycle.
+    * iscsi_ip_address
+    * iscsi_port
+    * iscsi_helper
+    * iscsi_protocol
+    They are replaced by the following parameters.
+    * target_ip_address
+    * target_port
+    * target_helper
+    * target_protocol

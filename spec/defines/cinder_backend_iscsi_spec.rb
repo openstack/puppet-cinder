@@ -5,8 +5,8 @@ describe 'cinder::backend::iscsi' do
   let(:title) {'hippo'}
 
   let :req_params do {
-    :iscsi_ip_address => '127.0.0.2',
-    :iscsi_helper => 'tgtadm',
+    :target_ip_address => '127.0.0.2',
+    :target_helper     => 'tgtadm',
   }
   end
 
@@ -22,7 +22,7 @@ describe 'cinder::backend::iscsi' do
   end
 
   let :iser_params do
-    {:iscsi_protocol => 'iser'}
+    {:target_protocol => 'iser'}
   end
 
   let :volumes_dir_params do
@@ -38,15 +38,15 @@ describe 'cinder::backend::iscsi' do
         :value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('hippo/volume_driver').with(
         :value => 'cinder.volume.drivers.lvm.LVMVolumeDriver')
-      is_expected.to contain_cinder_config('hippo/iscsi_ip_address').with(
+      is_expected.to contain_cinder_config('hippo/target_ip_address').with(
         :value => '127.0.0.2')
-      is_expected.to contain_cinder_config('hippo/iscsi_helper').with(
+      is_expected.to contain_cinder_config('hippo/target_helper').with(
         :value => 'tgtadm')
       is_expected.to contain_cinder_config('hippo/volume_group').with(
         :value => '<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('hippo/volumes_dir').with(
         :value => '/var/lib/cinder/volumes')
-      is_expected.to contain_cinder_config('hippo/iscsi_protocol').with(
+      is_expected.to contain_cinder_config('hippo/target_protocol').with(
         :value => '<SERVICE DEFAULT>')
     end
   end
@@ -57,7 +57,7 @@ describe 'cinder::backend::iscsi' do
     end
 
     it 'should configure iscsi driver with iser protocol' do
-      is_expected.to contain_cinder_config('hippo/iscsi_protocol').with(
+      is_expected.to contain_cinder_config('hippo/target_protocol').with(
         :value => 'iser')
     end
   end
@@ -92,6 +92,27 @@ describe 'cinder::backend::iscsi' do
       is_expected.to contain_cinder_config('hippo/param1').with({
         :value => 'value1',
       })
+    end
+  end
+
+  describe 'with deprecated iscsi_ip_address' do
+    before :each do
+      params.merge!({
+        :target_ip_address => :undef,
+        :iscsi_ip_address  => '127.0.0.42',
+      })
+    end
+    it 'should configure iscsi backend using that address' do
+      should contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.42')
+    end
+  end
+
+  describe 'with no target_ip_address or iscsi_ip_address' do
+    before :each do
+      params.delete(:target_ip_address)
+    end
+    it 'is expected to raise error' do
+      is_expected.to raise_error(Puppet::Error, /A target_ip_address or iscsi_ip_address must be specified./)
     end
   end
 

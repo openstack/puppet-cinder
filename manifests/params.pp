@@ -31,7 +31,7 @@ class cinder::params {
     $tgt_service_name          = 'tgt'
     $ceph_init_override        = '/etc/init/cinder-volume.override'
     $ceph_common_package_name  = 'ceph-common'
-    $iscsi_helper              = 'tgtadm'
+    $target_helper             = 'tgtadm'
     $lio_package_name          = 'targetcli'
     $lock_path                 = '/var/lock/cinder'
     $cinder_wsgi_script_path   = '/usr/lib/cgi-bin/cinder'
@@ -61,13 +61,13 @@ class cinder::params {
     case $::operatingsystem {
       'RedHat', 'CentOS', 'Scientific', 'OracleLinux': {
         if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
-          $iscsi_helper = 'lioadm'
+          $target_helper = 'lioadm'
         } else {
-          $iscsi_helper = 'tgtadm'
+          $target_helper = 'tgtadm'
         }
       }
       default: {
-        $iscsi_helper = 'lioadm'
+        $target_helper = 'lioadm'
       }
     }
 
