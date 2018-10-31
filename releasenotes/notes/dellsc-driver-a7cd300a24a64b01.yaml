@@ -1,0 +1,4 @@
+---
+features:
+  - Add the ability to configure the multipath setting for
+    the Dell EMC SC ISCSI driver.
