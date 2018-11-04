@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe 'cinder::wsgi::apache' do
-
-  shared_examples_for 'apache serving cinder with mod_wsgi' do
+  shared_examples 'apache serving cinder with mod_wsgi' do
     context 'with default parameters' do
       it { is_expected.to contain_class('cinder::params') }
       it { is_expected.to contain_class('apache') }

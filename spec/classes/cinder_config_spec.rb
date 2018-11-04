@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'cinder::config' do
-
   let(:config_hash) do {
     'DEFAULT/foo' => { 'value'  => 'fooValue' },
     'DEFAULT/bar' => { 'value'  => 'barValue' },
@@ -9,7 +8,7 @@ describe 'cinder::config' do
   }
   end
 
-  shared_examples_for 'cinder_config' do
+  shared_examples 'cinder_config' do
     let :params do
       { :cinder_config => config_hash }
     end
@@ -23,7 +22,7 @@ describe 'cinder::config' do
     end
   end
 
-  shared_examples_for 'cinder_api_paste_ini' do
+  shared_examples 'cinder_api_paste_ini' do
     let :params do
       { :api_paste_ini_config => config_hash }
     end
@@ -43,8 +42,8 @@ describe 'cinder::config' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      it_configures 'cinder_config'
-      it_configures 'cinder_api_paste_ini'
+      it_behaves_like 'cinder_config'
+      it_behaves_like 'cinder_api_paste_ini'
     end
   end
 end

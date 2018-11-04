@@ -21,9 +21,9 @@
 require 'spec_helper'
 
 describe 'cinder::backup::swift' do
-
   let :default_params do
-    { :backup_swift_url             => '<SERVICE DEFAULT>',
+    {
+      :backup_swift_url             => '<SERVICE DEFAULT>',
       :backup_swift_auth_url        => '<SERVICE DEFAULT>',
       :backup_swift_container       => 'volumebackups',
       :backup_swift_object_size     => '<SERVICE DEFAULT>',
@@ -32,14 +32,15 @@ describe 'cinder::backup::swift' do
       :backup_swift_user_domain     => '<SERVICE DEFAULT>',
       :backup_swift_project_domain  => '<SERVICE DEFAULT>',
       :backup_swift_project         => '<SERVICE DEFAULT>',
-      :backup_compression_algorithm => '<SERVICE DEFAULT>' }
+      :backup_compression_algorithm => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder backup with swift' do
+  shared_examples 'cinder backup with swift' do
     let :p do
       default_params.merge(params)
     end
@@ -88,8 +89,7 @@ describe 'cinder::backup::swift' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder backup with swift'
+      it_behaves_like 'cinder backup with swift'
     end
   end
-
 end

@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe 'cinder::db::sync' do
-
-  shared_examples_for 'cinder-dbsync' do
-
+  shared_examples 'cinder-dbsync' do
     it 'runs cinder-manage db_sync' do
       is_expected.to contain_exec('cinder-manage db_sync').with(
         :command     => 'cinder-manage  db sync',
@@ -21,7 +19,7 @@ describe 'cinder::db::sync' do
       )
     end
 
-    describe "overriding extra_params" do
+    context "overriding extra_params" do
       let :params do
         {
           :extra_params => '--config-file /etc/cinder/cinder.conf',
@@ -45,11 +43,10 @@ describe 'cinder::db::sync' do
         )
       }
     end
-
   end
 
   on_supported_os({
-    :supported_os   => OSDefaults.get_supported_os
+    :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
@@ -59,8 +56,7 @@ describe 'cinder::db::sync' do
         }))
       end
 
-      it_configures 'cinder-dbsync'
+      it_behaves_like 'cinder-dbsync'
     end
   end
-
 end

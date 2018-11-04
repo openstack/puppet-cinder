@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe 'cinder::policy' do
-
-  shared_examples_for 'cinder policies' do
+  shared_examples 'cinder policies' do
     let :params do
       {
         :policy_path => '/etc/cinder/policy.json',
@@ -36,7 +35,7 @@ describe 'cinder::policy' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      it_configures 'cinder policies'
+      it_behaves_like 'cinder policies'
     end
   end
 end

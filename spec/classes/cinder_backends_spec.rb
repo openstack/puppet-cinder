@@ -17,11 +17,9 @@
 #
 # Unit tests for cinder::backends class
 #
-
 require 'spec_helper'
 
 describe 'cinder::backends' do
-
   let :default_params do
     {}
   end
@@ -30,7 +28,7 @@ describe 'cinder::backends' do
     {}
   end
 
-  shared_examples_for 'cinder backends' do
+  shared_examples 'cinder backends' do
 
     let :p do
       default_params.merge(params)
@@ -80,8 +78,7 @@ describe 'cinder::backends' do
         facts.merge!(OSDefaults.get_facts)
       end
 
-      it_configures 'cinder backends'
+      it_behaves_like 'cinder backends'
     end
   end
-
 end

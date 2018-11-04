@@ -1,48 +1,66 @@
 require 'spec_helper'
 
 describe 'cinder::volume' do
-
   let :pre_condition do
-    'class { "cinder": database_connection => "mysql://a:b@c/d" }'
+    "class { 'cinder':
+       database_connection => 'mysql://a:b@c/d'
+     }"
   end
 
-  let :facts do
-    OSDefaults.get_facts({
-      :osfamily => 'Debian',
-      :os       => { :name  => 'Debian', :family => 'Debian', :release => { :major => '8', :minor => '0' } },
-    })
-  end
+  shared_examples 'cinder::volume' do
+    it { should contain_service('cinder-volume').with(
+      :hasstatus => true,
+      :tag       => 'cinder-service',
+    )}
 
-  it { is_expected.to contain_package('cinder-volume').with_ensure('present') }
-  it { is_expected.to contain_service('cinder-volume').with(
-      'hasstatus' => true,
-      'tag'       => 'cinder-service',
-  )}
-  it { is_expected.to contain_cinder_config('DEFAULT/volume_clear').with_value('<SERVICE DEFAULT>') }
-  it { is_expected.to contain_cinder_config('DEFAULT/volume_clear_size').with_value('<SERVICE DEFAULT>') }
-  it { is_expected.to contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('<SERVICE DEFAULT>') }
+    it { should contain_cinder_config('DEFAULT/volume_clear').with_value('<SERVICE DEFAULT>') }
+    it { should contain_cinder_config('DEFAULT/volume_clear_size').with_value('<SERVICE DEFAULT>') }
+    it { should contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('<SERVICE DEFAULT>') }
 
-  describe 'with manage_service false' do
-    let :params do
-      { 'manage_service' => false }
+    context 'with manage_service false' do
+      let :params do
+        {
+          :manage_service => false
+        }
+      end
+
+      it { should contain_service('cinder-volume').without_ensure }
     end
-    it 'should not change the state of the service' do
-      is_expected.to contain_service('cinder-volume').without_ensure
-    end
-  end
 
-  describe 'with volume_clear parameters' do
-    let :params do
-      {
-        'volume_clear'        => 'none',
-        'volume_clear_size'   => '10',
-        'volume_clear_ionice' => '-c3',
+    context 'with volume_clear parameters' do
+      let :params do
+        {
+          :volume_clear        => 'none',
+          :volume_clear_size   => '10',
+          :volume_clear_ionice => '-c3',
+        }
+      end
+
+      it {
+        should contain_cinder_config('DEFAULT/volume_clear').with_value('none')
+        should contain_cinder_config('DEFAULT/volume_clear_size').with_value('10')
+        should contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('-c3')
       }
     end
-    it 'should set volume_clear parameters' do
-      is_expected.to contain_cinder_config('DEFAULT/volume_clear').with_value('none')
-      is_expected.to contain_cinder_config('DEFAULT/volume_clear_size').with_value('10')
-      is_expected.to contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('-c3')
+  end
+
+  shared_examples 'cinder::volume on Debian' do
+    it { should contain_package('cinder-volume').with_ensure('present') }
+  end
+
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      it_behaves_like 'cinder::volume'
+
+      if facts[:osfamily] == 'Debian'
+        it_behaves_like 'cinder::volume on Debian'
+      end
     end
   end
 end

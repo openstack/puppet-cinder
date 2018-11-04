@@ -17,21 +17,21 @@
 #
 # Unit tests for cinder::backup:glusterfs class
 #
-
 require 'spec_helper'
 
 describe 'cinder::backup::glusterfs' do
-
   let :default_params do
-    { :glusterfs_backup_mount_point => '<SERVICE DEFAULT>',
-      :glusterfs_backup_share       => '<SERVICE DEFAULT>' }
+    {
+      :glusterfs_backup_mount_point => '<SERVICE DEFAULT>',
+      :glusterfs_backup_share       => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder backup with glusterfs' do
+  shared_examples 'cinder backup with glusterfs' do
     let :p do
       default_params.merge(params)
     end
@@ -62,8 +62,7 @@ describe 'cinder::backup::glusterfs' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder backup with glusterfs'
+      it_behaves_like 'cinder backup with glusterfs'
     end
   end
-
 end

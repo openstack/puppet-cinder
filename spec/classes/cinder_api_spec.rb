@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe 'cinder::api' do
-
-  shared_examples_for 'cinder api' do
+  shared_examples 'cinder api' do
     let :pre_condition do
       "class { '::cinder::keystone::authtoken':
          password => 'foo',
@@ -13,7 +12,7 @@ describe 'cinder::api' do
       {}
     end
 
-    describe 'with only required params' do
+    context 'with only required params' do
       let :params do
         req_params
       end
@@ -62,7 +61,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with deprecated parameters' do
+    context 'with deprecated parameters' do
       let :params do
         req_params.merge({
           'nova_catalog_info'           => 'compute:nova:publicURL',
@@ -82,7 +81,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with a custom region for nova' do
+    context 'with a custom region for nova' do
       let :params do
         req_params.merge({'os_region_name' => 'MyRegion'})
       end
@@ -93,7 +92,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with a customized port' do
+    context 'with a customized port' do
       let :params do
         req_params.merge({'osapi_volume_listen_port' => 9999})
       end
@@ -104,7 +103,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with a default volume type' do
+    context 'with a default volume type' do
       let :params do
         req_params.merge({'default_volume_type' => 'foo'})
       end
@@ -115,7 +114,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with only required params' do
+    context 'with only required params' do
       let :params do
         req_params.merge({'bind_host' => '192.168.1.3'})
       end
@@ -126,7 +125,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with sync_db set to false' do
+    context 'with sync_db set to false' do
       let :params do
         {
           :enabled => true,
@@ -136,7 +135,7 @@ describe 'cinder::api' do
       it { is_expected.not_to contain_class('cinder::db::sync') }
     end
 
-    describe 'with enabled false' do
+    context 'with enabled false' do
       let :params do
         req_params.merge({'enabled' => false})
       end
@@ -148,7 +147,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with manage_service false' do
+    context 'with manage_service false' do
       let :params do
         req_params.merge({'manage_service' => false})
       end
@@ -160,7 +159,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with ratelimits' do
+    context 'with ratelimits' do
       let :params do
         req_params.merge({ :ratelimits => '(GET, "*", .*, 100, MINUTE);(POST, "*", .*, 200, MINUTE)' })
       end
@@ -170,7 +169,7 @@ describe 'cinder::api' do
       )}
     end
 
-    describe 'with encryption_auth_url' do
+    context 'with encryption_auth_url' do
       let :params do
         req_params.merge({ :keymgr_encryption_auth_url => 'http://localhost:5000/v3' })
       end
@@ -180,7 +179,7 @@ describe 'cinder::api' do
       )}
     end
 
-    describe 'while validating the service with default command' do
+    context 'while validating the service with default command' do
       let :params do
         req_params.merge({
           :validate => true,
@@ -192,7 +191,7 @@ describe 'cinder::api' do
       )}
     end
 
-    describe 'with a custom auth_strategy' do
+    context 'with a custom auth_strategy' do
       let :params do
         req_params.merge({'auth_strategy' => 'noauth'})
       end
@@ -203,7 +202,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with a custom osapi_max_limit' do
+    context 'with a custom osapi_max_limit' do
       let :params do
         req_params.merge({'osapi_max_limit' => '10000'})
       end
@@ -213,7 +212,7 @@ describe 'cinder::api' do
         )
       end
     end
-    describe 'when running cinder-api in wsgi' do
+    context 'when running cinder-api in wsgi' do
       let :params do
         req_params.merge!({ :service_name => 'httpd' })
       end
@@ -235,7 +234,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'when service_name is not valid' do
+    context 'when service_name is not valid' do
       let :params do
         req_params.merge!({ :service_name => 'foobar' })
       end
@@ -251,7 +250,7 @@ describe 'cinder::api' do
       it_raises 'a Puppet::Error', /Invalid service_name/
     end
 
-    describe 'with SSL socket options set' do
+    context 'with SSL socket options set' do
       let :params do
         req_params.merge!({
           :use_ssl   => true,
@@ -266,7 +265,7 @@ describe 'cinder::api' do
       it { is_expected.to contain_cinder_config('ssl/key_file').with_value('/path/to/key') }
     end
 
-    describe 'with SSL socket options set wrongly configured' do
+    context 'with SSL socket options set wrongly configured' do
       let :params do
         req_params.merge!({
           :use_ssl  => true,
@@ -278,7 +277,7 @@ describe 'cinder::api' do
       it_raises 'a Puppet::Error', /The cert_file parameter is required when use_ssl is set to true/
     end
 
-    describe 'with barbican parameters' do
+    context 'with barbican parameters' do
       let :params do
         req_params.merge!({
           :keymgr_backend             => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
@@ -293,7 +292,7 @@ describe 'cinder::api' do
       end
     end
 
-    describe 'with barbican deprecated parameters' do
+    context 'with barbican deprecated parameters' do
       let :params do
         req_params.merge!({
           :keymgr_api_class           => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
@@ -318,7 +317,7 @@ describe 'cinder::api' do
         }))
       end
 
-      it_configures 'cinder api'
+      it_behaves_like 'cinder api'
     end
   end
 end

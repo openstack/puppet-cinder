@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe 'cinder::db::postgresql' do
-
-  shared_examples_for 'cinder::db::postgresql' do
+  shared_examples 'cinder::db::postgresql' do
     let :req_params do
       { :password => 'pw' }
     end
@@ -35,7 +34,7 @@ describe 'cinder::db::postgresql' do
         }))
       end
 
-      it_configures 'cinder::db::postgresql'
+      it_behaves_like 'cinder::db::postgresql'
     end
   end
 

@@ -1,16 +1,17 @@
 require 'spec_helper'
 
 describe 'cinder::client' do
-
   let :params do
     {}
   end
 
   let :default_params do
-    { :package_ensure   => 'present' }
+    {
+      :package_ensure => 'present'
+    }
   end
 
-  shared_examples_for 'cinder client' do
+  shared_examples 'cinder client' do
     let :p do
       default_params.merge(params)
     end
@@ -55,7 +56,7 @@ describe 'cinder::client' do
         end
       end
 
-      it_configures 'cinder client'
+      it_behaves_like 'cinder client'
     end
   end
 end

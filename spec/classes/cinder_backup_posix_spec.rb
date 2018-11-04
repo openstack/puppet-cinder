@@ -21,20 +21,21 @@
 require 'spec_helper'
 
 describe 'cinder::backup::posix' do
-
   let :default_params do
-    { :backup_file_size             => '<SERVICE DEFAULT>',
+    {
+      :backup_file_size             => '<SERVICE DEFAULT>',
       :backup_sha_block_size_bytes  => '<SERVICE DEFAULT>',
       :backup_enable_progress_timer => '<SERVICE DEFAULT>',
       :backup_posix_path            => '<SERVICE DEFAULT>',
-      :backup_container             => '<SERVICE DEFAULT>' }
+      :backup_container             => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder backup with posix' do
+  shared_examples 'cinder backup with posix' do
     let :p do
       default_params.merge(params)
     end
@@ -71,7 +72,7 @@ describe 'cinder::backup::posix' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder backup with posix'
+      it_behaves_like 'cinder backup with posix'
     end
   end
 
