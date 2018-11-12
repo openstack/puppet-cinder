@@ -160,7 +160,7 @@ This is a backwards-incompatible major release for OpenStack Juno.
 - Add database tuning parameters
 - Made keystone user creation optional when creating a service
 - Add ability to hide secrets from logs
-- Add parameters for netapp and and cinder-api workers
+- Add parameters for netapp and cinder-api workers
 - Add support for the EMC VNX direct driver
 - Add support for availability zones
 
