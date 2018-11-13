@@ -1,15 +1,14 @@
 require 'spec_helper'
 
 describe 'cinder::keystone::authtoken' do
-
   let :params do
-    { :password => 'cinder_password', }
+    {
+      :password => 'cinder_password',
+    }
   end
 
   shared_examples 'cinder authtoken' do
-
     context 'with default parameters' do
-
       it 'configure keystone_authtoken' do
         is_expected.to contain_cinder_config('keystone_authtoken/username').with_value('cinder')
         is_expected.to contain_cinder_config('keystone_authtoken/password').with_value('cinder_password')
@@ -137,8 +136,7 @@ describe 'cinder::keystone::authtoken' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      it_configures 'cinder authtoken'
+      it_behaves_like 'cinder authtoken'
     end
   end
-
 end

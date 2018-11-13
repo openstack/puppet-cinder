@@ -1,16 +1,17 @@
 require 'spec_helper'
 
 describe 'cinder::scheduler::filter' do
-
   let :default_params do
-    { :scheduler_default_filters => '<SERVICE DEFAULT>' }
+    {
+      :scheduler_default_filters => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder scheduler filter' do
+  shared_examples 'cinder scheduler filter' do
 
     let :p do
       default_params.merge(params)
@@ -54,8 +55,7 @@ describe 'cinder::scheduler::filter' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder scheduler filter'
+      it_behaves_like 'cinder scheduler filter'
     end
   end
-
 end

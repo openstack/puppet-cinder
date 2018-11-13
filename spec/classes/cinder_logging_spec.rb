@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'cinder::logging' do
-
   let :params do
     {
     }
@@ -33,7 +32,7 @@ describe 'cinder::logging' do
     }
   end
 
-  shared_examples_for 'cinder-logging' do
+  shared_examples 'cinder-logging' do
 
     context 'with basic logging options and default settings' do
       it_behaves_like  'basic default logging settings'
@@ -82,7 +81,7 @@ describe 'cinder::logging' do
     end
   end
 
-  shared_examples_for 'logging params set' do
+  shared_examples 'logging params set' do
     it 'enables logging params' do
       is_expected.to contain_oslo__log('cinder_config').with(
         :logging_context_format_string =>
@@ -104,7 +103,7 @@ describe 'cinder::logging' do
     end
   end
 
-  shared_examples_for 'logging params unset' do
+  shared_examples 'logging params unset' do
    [ :logging_context_format_string, :logging_default_format_string,
      :logging_debug_format_suffix, :logging_exception_prefix,
      :log_config_append, :publish_errors,
@@ -126,5 +125,4 @@ describe 'cinder::logging' do
       it_behaves_like 'cinder-logging'
     end
   end
-
 end

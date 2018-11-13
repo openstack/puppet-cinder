@@ -17,22 +17,22 @@
 #
 # Unit tests for cinder::backup:tsm class
 #
-
 require 'spec_helper'
 
 describe 'cinder::backup::tsm' do
-
   let :default_params do
-    { :backup_tsm_volume_prefix => '<SERVICE DEFAULT>',
+    {
+      :backup_tsm_volume_prefix => '<SERVICE DEFAULT>',
       :backup_tsm_password      => '<SERVICE DEFAULT>',
-      :backup_tsm_compression   => '<SERVICE DEFAULT>' }
+      :backup_tsm_compression   => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder backup with tsm' do
+  shared_examples 'cinder backup with tsm' do
     let :p do
       default_params.merge(params)
     end
@@ -66,8 +66,7 @@ describe 'cinder::backup::tsm' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder backup with tsm'
+      it_behaves_like 'cinder backup with tsm'
     end
   end
-
 end

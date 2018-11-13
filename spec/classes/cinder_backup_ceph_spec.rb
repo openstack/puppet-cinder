@@ -17,11 +17,9 @@
 #
 # Unit tests for cinder::ceph class
 #
-
 require 'spec_helper'
 
 describe 'cinder::backup::ceph' do
-
   let :default_params do
     { :backup_ceph_conf         => '/etc/ceph/ceph.conf',
       :backup_ceph_user         => 'cinder',
@@ -35,7 +33,7 @@ describe 'cinder::backup::ceph' do
     {}
   end
 
-  shared_examples_for 'cinder backup with ceph' do
+  shared_examples 'cinder backup with ceph' do
     let :p do
       default_params.merge(params)
     end
@@ -78,7 +76,7 @@ describe 'cinder::backup::ceph' do
         facts.merge(OSDefaults.get_facts({}))
       end
 
-      it_configures 'cinder backup with ceph'
+      it_behaves_like 'cinder backup with ceph'
     end
   end
 end

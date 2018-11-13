@@ -2,17 +2,19 @@ require 'spec_helper'
 
 describe 'cinder::quota' do
   let :default_params do
-    { :quota_volumes   => '<SERVICE DEFAULT>',
+    {
+      :quota_volumes   => '<SERVICE DEFAULT>',
       :quota_snapshots => '<SERVICE DEFAULT>',
       :quota_gigabytes => '<SERVICE DEFAULT>',
-      :quota_driver    => '<SERVICE DEFAULT>' }
+      :quota_driver    => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder quota' do
+  shared_examples 'cinder quota' do
 
     let :p do
       default_params.merge(params)
@@ -49,8 +51,7 @@ describe 'cinder::quota' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder quota'
+      it_behaves_like 'cinder quota'
     end
   end
-
 end

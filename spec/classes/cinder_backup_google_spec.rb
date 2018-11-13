@@ -17,13 +17,12 @@
 #
 # Unit tests for cinder::backup::google class
 #
-
 require 'spec_helper'
 
 describe 'cinder::backup::google' do
-
   let :default_params do
-    { :backup_gcs_bucket                => '<SERVICE DEFAULT>',
+    {
+      :backup_gcs_bucket                => '<SERVICE DEFAULT>',
       :backup_gcs_object_size           => '<SERVICE DEFAULT>',
       :backup_gcs_block_size            => '<SERVICE DEFAULT>',
       :backup_gcs_reader_chunk_size     => '<SERVICE DEFAULT>',
@@ -35,14 +34,15 @@ describe 'cinder::backup::google' do
       :backup_gcs_credential_file       => '<SERVICE DEFAULT>',
       :backup_gcs_project_id            => '<SERVICE DEFAULT>',
       :backup_gcs_user_agent            => '<SERVICE DEFAULT>',
-      :backup_gcs_enable_progress_timer => '<SERVICE DEFAULT>' }
+      :backup_gcs_enable_progress_timer => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder backup with google cloud storage' do
+  shared_examples 'cinder backup with google cloud storage' do
     let :p do
       default_params.merge(params)
     end
@@ -106,8 +106,7 @@ describe 'cinder::backup::google' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder backup with google cloud storage'
+      it_behaves_like 'cinder backup with google cloud storage'
     end
   end
-
 end

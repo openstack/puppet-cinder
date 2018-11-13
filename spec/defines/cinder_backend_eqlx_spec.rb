@@ -24,60 +24,80 @@ describe 'cinder::backend::eqlx' do
     }
   end
 
-  shared_examples_for 'eqlx volume driver' do
-    it 'configure eqlx volume driver' do
-      is_expected.to contain_cinder__backend__eqlx(config_group_name)
-      is_expected.to contain_cinder_config(
-        "#{config_group_name}/volume_driver").with_value(
-        'cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver')
+  shared_examples 'eqlx volume driver' do
+    it { should contain_cinder__backend__eqlx(config_group_name) }
+
+    it { should contain_cinder_config("#{config_group_name}/volume_driver").with(
+      :value => 'cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver'
+    )}
+
+    it {
       params.each_pair do |config,value|
-        is_expected.to contain_cinder_config(
-          "#{config_group_name}/#{config}").with_value(value)
+        should contain_cinder_config("#{config_group_name}/#{config}").with_value(value)
+      end
+    }
+  end
+
+  shared_examples 'cinder::backend::eqlx' do
+    context 'eqlx backend with additional configuration' do
+      before :each do
+        params.merge!( :extra_options => {'eqlx-1/param1' => {'value' => 'value1'}} )
+      end
+
+      it { should contain_cinder_config('eqlx-1/param1').with_value('value1') }
+    end
+
+    context 'eqlx backend with cinder type' do
+      before :each do
+        params.merge!({:manage_volume_type => true})
+      end
+
+      it { should contain_cinder_type('eqlx-1').with(
+        :ensure     => 'present',
+        :properties => ['volume_backend_name=eqlx-1']
+      )}
+    end
+
+    context 'eqlx backend with chap' do
+      before :each do
+        params.merge!({
+          :use_chap_auth => true,
+          :chap_username => 'myuser',
+          :chap_password => 'mypass'
+        })
+      end
+
+      it_behaves_like 'eqlx volume driver'
+    end
+
+    context 'eqlx with invalid values' do
+      context 'with invalid chap_username' do
+        before do
+          params.merge!( :chap_username => '<SERVICE DEFAULT>' )
+        end
+
+        it { should raise_error(Puppet::Error, /chap_username need to be set./) }
+      end
+
+      context 'with invalid chap_password' do
+        before do
+          params.merge!( :chap_password => '<SERVICE DEFAULT>' )
+        end
+
+        it { should raise_error(Puppet::Error, /chap_password need to be set./) }
       end
     end
   end
 
-  describe 'eqlx backend with additional configuration' do
-    before :each do
-      params.merge!({:extra_options => {'eqlx-1/param1' => {'value' => 'value1'}}})
-    end
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
 
-    it 'configure eqlx backend with additional configuration' do
-      is_expected.to contain_cinder_config('eqlx-1/param1').with({
-        :value => 'value1',
-      })
+      it_behaves_like 'cinder::backend::eqlx'
     end
   end
-
-  describe 'eqlx backend with cinder type' do
-    before :each do
-      params.merge!({:manage_volume_type => true})
-    end
-    it 'should create type with properties' do
-      should contain_cinder_type('eqlx-1').with(:ensure => :present, :properties => ['volume_backend_name=eqlx-1'])
-    end
-  end
-
-  context 'eqlx backend with chap' do
-    before :each do
-      params.merge!({
-        :use_chap_auth => true,
-        :chap_username => 'myuser',
-        :chap_password => 'mypass'
-      })
-    end
-    it_configures 'eqlx volume driver'
-  end
-
-  describe 'eqlx with invalid values' do
-    it 'should fail with chap_username with default value' do
-      params[:chap_username] = '<SERVICE DEFAULT>'
-      is_expected.to raise_error(Puppet::Error, /chap_username need to be set./)
-    end
-    it 'should fail with chap_password with default value' do
-      params[:chap_password] = '<SERVICE DEFAULT>'
-      is_expected.to raise_error(Puppet::Error, /chap_password need to be set./)
-    end
-  end
-
 end

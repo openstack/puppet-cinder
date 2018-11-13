@@ -2,24 +2,40 @@
 require 'spec_helper'
 
 describe 'cinder::qos' do
-
   let(:title) {'tomato'}
 
-  context 'default creation' do
-    it 'should create basic qos' do
-      should contain_cinder_qos('tomato').with(:ensure => :present)
+  shared_examples 'cinder::qos' do
+    context 'with default parameters' do
+      it { should contain_cinder_qos('tomato').with_ensure('present') }
+    end
+
+    context 'with specified parameters' do
+      let :params do
+        {
+          :properties   => ['var1=value1', 'var2=value2'],
+          :associations => ['vol_type1', 'vol_type2'],
+          :consumer     => 'front-end',
+        }
+      end
+
+      it { should contain_cinder_qos('tomato').with(
+        :ensure       => 'present',
+        :properties   => ['var1=value1', 'var2=value2'],
+        :associations => ['vol_type1', 'vol_type2'],
+        :consumer     => 'front-end'
+      )}
     end
   end
 
-  context 'creation with properties' do
-    let :params do {
-      :properties      => ['var1=value1','var2=value2'],
-      :associations    => ['vol_type1','vol_type2'],
-      :consumer        => 'front-end',
-    }
-    end
-    it 'should create qos with properties' do
-      should contain_cinder_qos('tomato').with(:ensure => :present, :properties => ['var1=value1','var2=value2'], :associations => ['vol_type1','vol_type2'], :consumer => 'front-end')
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      it_behaves_like 'cinder::qos'
     end
   end
 end

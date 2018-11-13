@@ -21,20 +21,21 @@
 require 'spec_helper'
 
 describe 'cinder::backup' do
-
   let :default_params do
-    { :enable               => true,
+    {
+      :enable               => true,
       :manage_service       => true,
       :backup_manager       => '<SERVICE DEFAULT>',
       :backup_api_class     => '<SERVICE DEFAULT>',
-      :backup_name_template => '<SERVICE DEFAULT>' }
+      :backup_name_template => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder backup' do
+  shared_examples 'cinder backup' do
     let :p do
       default_params.merge(params)
     end
@@ -109,7 +110,7 @@ describe 'cinder::backup' do
         end
       end
 
-      it_configures 'cinder backup'
+      it_behaves_like 'cinder backup'
     end
   end
 end

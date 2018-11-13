@@ -65,5 +65,4 @@ describe 'cinder::nova' do
       it_behaves_like 'cinder::nova'
     end
   end
-
 end

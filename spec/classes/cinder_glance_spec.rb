@@ -17,24 +17,24 @@
 #
 # Unit tests for cinder::glance class
 #
-
 require 'spec_helper'
 
 describe 'cinder::glance' do
-
   let :default_params do
-    { :glance_api_version         => '2',
+    {
+      :glance_api_version         => '2',
       :glance_num_retries         => '<SERVICE DEFAULT>',
       :glance_api_insecure        => '<SERVICE DEFAULT>',
       :glance_api_ssl_compression => '<SERVICE DEFAULT>',
-      :glance_request_timeout     => '<SERVICE DEFAULT>' }
+      :glance_request_timeout     => '<SERVICE DEFAULT>'
+    }
   end
 
   let :params do
     {}
   end
 
-  shared_examples_for 'cinder with glance' do
+  shared_examples 'cinder with glance' do
     let :p do
       default_params.merge(params)
     end
@@ -75,8 +75,7 @@ describe 'cinder::glance' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder with glance'
+      it_behaves_like 'cinder with glance'
     end
   end
-
 end

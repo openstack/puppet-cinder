@@ -1,19 +1,23 @@
 require 'spec_helper'
+
 describe 'cinder::ceilometer' do
-
-  describe 'with default parameters' do
-
-    let :facts do
-      OSDefaults.get_facts({})
+  shared_examples 'cinder::ceilometer' do
+    context 'with default parameters' do
+      it { should contain_cinder_config('oslo_messaging_notifications/transport_url').with_value('<SERVICE DEFAULT>') }
+      it { should contain_cinder_config('oslo_messaging_notifications/driver').with_value('messagingv2') }
+      it { should contain_cinder_config('oslo_messaging_notifications/topics').with_value('<SERVICE DEFAULT>') }
     end
+  end
 
-    it 'contains default values' do
-      is_expected.to contain_cinder_config('oslo_messaging_notifications/transport_url').with(
-        :value => '<SERVICE DEFAULT>')
-      is_expected.to contain_cinder_config('oslo_messaging_notifications/driver').with(
-        :value => 'messagingv2')
-      is_expected.to contain_cinder_config('oslo_messaging_notifications/topics').with(
-        :value => '<SERVICE DEFAULT>')
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      it_behaves_like 'cinder::ceilometer'
     end
   end
 end

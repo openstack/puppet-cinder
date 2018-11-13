@@ -1,87 +1,80 @@
 require 'spec_helper'
 
 describe 'cinder::scheduler' do
+  shared_examples 'cinder::scheduler on Debian' do
+    context 'with default parameters' do
+      it { should contain_class('cinder::params') }
+      it { should contain_cinder_config('DEFAULT/scheduler_driver').with_value('<SERVICE DEFAULT>') }
 
-  describe 'on debian platforms' do
-
-    let :facts do
-      OSDefaults.get_facts({
-	:osfamily => 'Debian',
-	:os       => { :name  => 'Debian', :family => 'Debian', :release => { :major => '8', :minor => '0' } },
-      })
-    end
-
-    describe 'with default parameters' do
-
-      it { is_expected.to contain_class('cinder::params') }
-      it { is_expected.to contain_cinder_config('DEFAULT/scheduler_driver').with_value('<SERVICE DEFAULT>') }
-
-      it { is_expected.to contain_package('cinder-scheduler').with(
+      it { should contain_package('cinder-scheduler').with(
         :name   => 'cinder-scheduler',
         :ensure => 'present',
         :tag    => ['openstack', 'cinder-package'],
-      ) }
+      )}
 
-      it { is_expected.to contain_service('cinder-scheduler').with(
+      it { should contain_service('cinder-scheduler').with(
         :name      => 'cinder-scheduler',
         :enable    => true,
         :ensure    => 'running',
         :hasstatus => true,
         :tag       => 'cinder-service',
-      ) }
+      )}
     end
 
-    describe 'with parameters' do
-
+    context 'with parameters' do
       let :params do
-        { :scheduler_driver => 'cinder.scheduler.filter_scheduler.FilterScheduler',
+        {
+          :scheduler_driver => 'cinder.scheduler.filter_scheduler.FilterScheduler',
           :package_ensure   => 'present'
         }
       end
 
-      it { is_expected.to contain_cinder_config('DEFAULT/scheduler_driver').with_value('cinder.scheduler.filter_scheduler.FilterScheduler') }
-      it { is_expected.to contain_package('cinder-scheduler').with_ensure('present') }
+      it { should contain_cinder_config('DEFAULT/scheduler_driver').with_value('cinder.scheduler.filter_scheduler.FilterScheduler') }
+      it { should contain_package('cinder-scheduler').with_ensure('present') }
     end
 
-    describe 'with manage_service false' do
+    context 'with manage_service false' do
       let :params do
-        { 'manage_service' => false
+        {
+          :manage_service => false
         }
       end
-      it 'should not change the state of the service' do
-        is_expected.to contain_service('cinder-scheduler').without_ensure
-      end
+
+      it { should contain_service('cinder-scheduler').without_ensure }
     end
   end
 
+  shared_examples 'cinder::scheduler on RedHat' do
+    context 'with default parameters' do
+      it { should contain_class('cinder::params') }
 
-  describe 'on rhel platforms' do
-
-    let :facts do
-      OSDefaults.get_facts({
-        :osfamily => 'RedHat',
-        :os       => { :name  => 'CentOS', :family => 'RedHat', :release => { :major => '7', :minor => '0' } },
-      })
+      it { should contain_service('cinder-scheduler').with(
+        :name   => 'openstack-cinder-scheduler',
+        :enable => true,
+        :ensure => 'running',
+      )}
     end
 
-    describe 'with default parameters' do
-
-      it { is_expected.to contain_class('cinder::params') }
-
-      it { is_expected.to contain_service('cinder-scheduler').with(
-        :name    => 'openstack-cinder-scheduler',
-        :enable  => true,
-        :ensure  => 'running',
-      ) }
-    end
-
-    describe 'with parameters' do
-
+    context 'with parameters' do
       let :params do
-        { :scheduler_driver => 'cinder.scheduler.filter_scheduler.FilterScheduler' }
+        {
+          :scheduler_driver => 'cinder.scheduler.filter_scheduler.FilterScheduler'
+        }
       end
 
-      it { is_expected.to contain_cinder_config('DEFAULT/scheduler_driver').with_value('cinder.scheduler.filter_scheduler.FilterScheduler') }
+      it { should contain_cinder_config('DEFAULT/scheduler_driver').with_value('cinder.scheduler.filter_scheduler.FilterScheduler') }
+    end
+  end
+
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
+
+      it_behaves_like "cinder::scheduler on #{facts[:osfamily]}"
     end
   end
 end

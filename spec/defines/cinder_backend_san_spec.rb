@@ -15,51 +15,63 @@ describe 'cinder::backend::san' do
   end
 
   let :default_params do
-    { :san_thin_provision => true,
+    {
+      :san_thin_provision => true,
       :san_login          => 'admin',
       :san_ssh_port       => 22,
       :san_is_local       => false,
       :ssh_conn_timeout   => 30,
       :ssh_min_pool_conn  => 1,
-      :ssh_max_pool_conn  => 5 }
+      :ssh_max_pool_conn  => 5
+    }
   end
 
-  shared_examples_for 'a san volume driver' do
+  shared_examples 'a san volume driver' do
     let :params_hash do
       default_params.merge(params)
     end
 
-    it 'configures cinder volume driver' do
+    it {
       params_hash.each_pair do |config,value|
-        is_expected.to contain_cinder_config("mysan/#{config}").with_value( value )
+        should contain_cinder_config("mysan/#{config}").with_value(value)
       end
+    }
+  end
+
+  shared_examples 'cinder::backend::san' do
+    context 'with parameters' do
+      it_behaves_like 'a san volume driver'
+    end
+
+    context 'san backend with additional configuration' do
+      before do
+        params.merge!( :extra_options => {'mysan/param1' => { 'value' => 'value1' }} )
+      end
+
+      it { should contain_cinder_config('mysan/param1').with_value('value1') }
+    end
+
+    context 'san backend with cinder type' do
+      before do
+        params.merge!( :manage_volume_type => true )
+      end
+
+      it { should contain_cinder_type('mysan').with(
+        :ensure     => 'present',
+        :properties => ['volume_backend_name=mysan']
+      )}
     end
   end
 
+  on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge!(OSDefaults.get_facts())
+      end
 
-  context 'with parameters' do
-    it_configures 'a san volume driver'
-  end
-
-  context 'san backend with additional configuration' do
-    before do
-      params.merge!({:extra_options => {'mysan/param1' => { 'value' => 'value1' }}})
-    end
-
-    it 'configure san backend with additional configuration' do
-      is_expected.to contain_cinder_config('mysan/param1').with({
-        :value => 'value1'
-      })
+      it_behaves_like 'cinder::backend::san'
     end
   end
-
-  context 'san backend with cinder type' do
-    before do
-      params.merge!({:manage_volume_type => true})
-    end
-    it 'should create type with properties' do
-      should contain_cinder_type('mysan').with(:ensure => :present, :properties => ['volume_backend_name=mysan'])
-    end
-  end
-
 end

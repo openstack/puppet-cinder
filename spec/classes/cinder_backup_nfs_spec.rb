@@ -19,11 +19,9 @@
 # under the License.
 #
 #
-
 require 'spec_helper'
 
 describe 'cinder::backup::nfs' do
-
   let :params do
     {
       :backup_share => '10.0.0.1:/nfs_backup',
@@ -43,7 +41,7 @@ describe 'cinder::backup::nfs' do
     }
   end
 
-  shared_examples_for 'cinder backup with nfs' do
+  shared_examples 'cinder backup with nfs' do
     let :all_params do
       default_params.merge(params)
     end
@@ -75,7 +73,7 @@ describe 'cinder::backup::nfs' do
         facts.merge(OSDefaults.get_facts({:os_workers => 8}))
       end
 
-      it_configures 'cinder backup with nfs'
+      it_behaves_like 'cinder backup with nfs'
     end
   end
 end
