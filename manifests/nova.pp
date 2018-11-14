@@ -55,19 +55,49 @@
 #   specific options.
 #   Defaults to $::os_service_default
 #
+# [*auth_url*]
+#   (Optional) Identity service url.
+#   Defaults to $::os_service_default
+#
+# [*username*]
+#   (Optional) Nova admin username.
+#   Defaults to 'nova'
+#
+# [*user_domain_name*]
+#   (Optional) Nova admin user domain name.
+#   Defaults to 'Default'
+#
+# [*password*]
+#   (Optional) Nova admin password.
+#   Defaults to undef
+#
+# [*project_name*]
+#   (Optional) Nova admin project name.
+#   Defaults to 'service'
+#
+# [*project_domain_name*]
+#   (Optional) Nova admin project domain name.
+#   Defaults to 'Default'
+#
 class cinder::nova (
-  $region_name    = $::os_service_default,
-  $interface      = $::os_service_default,
-  $token_auth_url = $::os_service_default,
-  $cafile         = $::os_service_default,
-  $certfile       = $::os_service_default,
-  $keyfile        = $::os_service_default,
-  $insecure       = $::os_service_default,
-  $timeout        = $::os_service_default,
-  $collect_timing = $::os_service_default,
-  $split_loggers  = $::os_service_default,
-  $auth_type      = $::os_service_default,
-  $auth_section   = $::os_service_default,
+  $region_name         = $::os_service_default,
+  $interface           = $::os_service_default,
+  $token_auth_url      = $::os_service_default,
+  $cafile              = $::os_service_default,
+  $certfile            = $::os_service_default,
+  $keyfile             = $::os_service_default,
+  $insecure            = $::os_service_default,
+  $timeout             = $::os_service_default,
+  $collect_timing      = $::os_service_default,
+  $split_loggers       = $::os_service_default,
+  $auth_type           = $::os_service_default,
+  $auth_section        = $::os_service_default,
+  $auth_url            = $::os_service_default,
+  $username            = 'nova',
+  $user_domain_name    = 'Default',
+  $password            = undef,
+  $project_name        = 'service',
+  $project_domain_name = 'Default',
 ) {
 
   include ::cinder::deps
@@ -85,5 +115,16 @@ class cinder::nova (
     'nova/split_loggers':  value => $split_loggers;
     'nova/auth_type':      value => $auth_type;
     'nova/auth_section':   value => $auth_section;
+  }
+
+  if $auth_type == 'password' {
+    cinder_config {
+      'nova/auth_url':            value => $auth_url;
+      'nova/username':            value => $username;
+      'nova/user_domain_name':    value => $user_domain_name;
+      'nova/password':            value => $password, secret => true;
+      'nova/project_name':        value => $project_name;
+      'nova/project_domain_name': value => $project_domain_name;
+    }
   }
 }
