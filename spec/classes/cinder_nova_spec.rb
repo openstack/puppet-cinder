@@ -16,6 +16,14 @@ describe 'cinder::nova' do
         should contain_cinder_config('nova/split_loggers').with_value('<SERVICE DEFAULT>')
         should contain_cinder_config('nova/auth_type').with_value('<SERVICE DEFAULT>')
         should contain_cinder_config('nova/auth_section').with_value('<SERVICE DEFAULT>')
+
+        # These should be added only when auth_type is 'password'
+        should_not contain_cinder_config('nova/auth_url')
+        should_not contain_cinder_config('nova/username')
+        should_not contain_cinder_config('nova/user_domain_name')
+        should_not contain_cinder_config('nova/password')
+        should_not contain_cinder_config('nova/project_name')
+        should_not contain_cinder_config('nova/project_domain_name')
       }
     end
 
@@ -33,7 +41,9 @@ describe 'cinder::nova' do
           :collect_timing => true,
           :split_loggers  => true,
           :auth_type      => 'password',
-          :auth_section   => 'my_section'
+          :auth_section   => 'my_section',
+          :auth_url       => 'http://127.0.0.2:5000',
+          :password       => 'foo',
         }
       end
 
@@ -50,6 +60,12 @@ describe 'cinder::nova' do
         should contain_cinder_config('nova/split_loggers').with_value(true)
         should contain_cinder_config('nova/auth_type').with_value('password')
         should contain_cinder_config('nova/auth_section').with_value('my_section')
+        should contain_cinder_config('nova/auth_url').with_value('http://127.0.0.2:5000')
+        should contain_cinder_config('nova/username').with_value('nova')
+        should contain_cinder_config('nova/user_domain_name').with_value('Default')
+        should contain_cinder_config('nova/password').with_value('foo')
+        should contain_cinder_config('nova/project_name').with_value('service')
+        should contain_cinder_config('nova/project_domain_name').with_value('Default')
       }
     end
   end
