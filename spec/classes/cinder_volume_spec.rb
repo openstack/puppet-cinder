@@ -13,6 +13,7 @@ describe 'cinder::volume' do
       :tag       => 'cinder-service',
     )}
 
+    it { should contain_cinder_config('DEFAULT/cluster').with_value('<SERVICE DEFAULT>') }
     it { should contain_cinder_config('DEFAULT/volume_clear').with_value('<SERVICE DEFAULT>') }
     it { should contain_cinder_config('DEFAULT/volume_clear_size').with_value('<SERVICE DEFAULT>') }
     it { should contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('<SERVICE DEFAULT>') }
@@ -40,6 +41,18 @@ describe 'cinder::volume' do
         should contain_cinder_config('DEFAULT/volume_clear').with_value('none')
         should contain_cinder_config('DEFAULT/volume_clear_size').with_value('10')
         should contain_cinder_config('DEFAULT/volume_clear_ionice').with_value('-c3')
+      }
+    end
+
+    context 'with cluster parameter' do
+      let :params do
+        {
+          :cluster => 'my_cluster',
+        }
+      end
+
+      it {
+        should contain_cinder_config('DEFAULT/cluster').with_value('my_cluster')
       }
     end
   end

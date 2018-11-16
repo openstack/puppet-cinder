@@ -14,6 +14,10 @@
 #   (Optional) Whether to start/stop the service (boolean value)
 #   Defaults to true.
 #
+# [*cluster*]
+#   (Optional) Cluster name when running in active/active mode.
+#   Defaults to $::os_service_default.
+#
 # [*volume_clear*]
 #   (Optional) Method used to wipe old volumes.
 #   Defaults to $::os_service_default.
@@ -33,6 +37,7 @@ class cinder::volume (
   $package_ensure      = 'present',
   $enabled             = true,
   $manage_service      = true,
+  $cluster             = $::os_service_default,
   $volume_clear        = $::os_service_default,
   $volume_clear_size   = $::os_service_default,
   $volume_clear_ionice = $::os_service_default,
@@ -69,6 +74,7 @@ class cinder::volume (
   }
 
   cinder_config {
+    'DEFAULT/cluster':             value => $cluster;
     'DEFAULT/volume_clear':        value => $volume_clear;
     'DEFAULT/volume_clear_size':   value => $volume_clear_size;
     'DEFAULT/volume_clear_ionice': value => $volume_clear_ionice;

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add support for configuring the settings necessary for running the
+    cinder-volume service in active-active mode. This includes configuring the
+    cluster name, and the backend URL used for distributed coordination.
