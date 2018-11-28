@@ -167,10 +167,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*auth_uri*]
-#   (Optional) Complete public Identity API endpoint.
-#   Defaults to undef
-#
 # [*check_revocations_for_cached*]
 #  (Optional) If true, the revocation list will be checked for cached tokens.
 #  This requires that PKI tokens are configured on the identity server.
@@ -223,7 +219,6 @@ class cinder::keystone::authtoken(
   $region_name                    = $::os_service_default,
   $token_cache_time               = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $auth_uri                       = undef,
   $check_revocations_for_cached   = undef,
   $hash_algorithms                = undef,
 ) {
@@ -233,11 +228,6 @@ class cinder::keystone::authtoken(
   if is_service_default($password) {
     fail('Please set password for cinder service user')
   }
-
-  if $auth_uri {
-    warning('The auth_uri parameter is deprecated. Please use www_authenticate_uri instead.')
-  }
-  $www_authenticate_uri_real = pick($auth_uri, $www_authenticate_uri)
 
   if $check_revocations_for_cached {
     warning('check_revocations_for_cached parameter is deprecated, has no effect and will be removed in the future.')
@@ -252,7 +242,7 @@ class cinder::keystone::authtoken(
     password                       => $password,
     project_name                   => $project_name,
     auth_url                       => $auth_url,
-    www_authenticate_uri           => $www_authenticate_uri_real,
+    www_authenticate_uri           => $www_authenticate_uri,
     auth_version                   => $auth_version,
     auth_type                      => $auth_type,
     auth_section                   => $auth_section,
