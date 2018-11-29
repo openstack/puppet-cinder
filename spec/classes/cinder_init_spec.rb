@@ -14,7 +14,6 @@ describe 'cinder' do
         req_params
       end
 
-      it { should contain_class('cinder::logging') }
       it { should contain_class('cinder::params') }
       it { should contain_class('mysql::bindings::python') }
 
