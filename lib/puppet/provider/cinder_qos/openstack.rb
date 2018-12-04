@@ -64,11 +64,15 @@ Puppet::Type.type(:cinder_qos).provide(
   def self.instances
     list = request('volume qos', 'list')
     list.collect do |qos|
+      properties = qos[:properties]
+      unless qos[:specs].nil?
+           properties = qos[:specs]
+      end
       new({
         :name           => qos[:name],
         :ensure         => :present,
         :id             => qos[:id],
-        :properties     => string2array(qos[:specs]),
+        :properties     => string2array(properties),
         :consumer       => qos[:consumer],
         :associations   => string2array(qos[:associations])
       })
