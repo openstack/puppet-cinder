@@ -74,24 +74,29 @@
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
 #
+# [*use_multipath_for_image_xfer*]
+#   (Optional) Enables multipath configuration.
+#   Defaults to to $::os_service_default
+#
 define cinder::backend::dellsc_iscsi (
   $san_ip,
   $san_login,
   $san_password,
   $iscsi_ip_address,
   $dell_sc_ssn,
-  $volume_backend_name    = $name,
-  $dell_sc_api_port       = $::os_service_default,
-  $dell_sc_server_folder  = 'srv',
-  $dell_sc_verify_cert    = $::os_service_default,
-  $dell_sc_volume_folder  = 'vol',
-  $iscsi_port             = $::os_service_default,
-  $excluded_domain_ip     = $::os_service_default,
-  $secondary_san_ip       = $::os_service_default,
-  $secondary_san_login    = $::os_service_default,
-  $secondary_san_password = $::os_service_default,
-  $secondary_sc_api_port  = $::os_service_default,
-  $manage_volume_type     = false,
+  $volume_backend_name          = $name,
+  $dell_sc_api_port             = $::os_service_default,
+  $dell_sc_server_folder        = 'srv',
+  $dell_sc_verify_cert          = $::os_service_default,
+  $dell_sc_volume_folder        = 'vol',
+  $iscsi_port                   = $::os_service_default,
+  $excluded_domain_ip           = $::os_service_default,
+  $secondary_san_ip             = $::os_service_default,
+  $secondary_san_login          = $::os_service_default,
+  $secondary_san_password       = $::os_service_default,
+  $secondary_sc_api_port        = $::os_service_default,
+  $manage_volume_type           = false,
+  $use_multipath_for_image_xfer = $::os_service_default,
   $extra_options          = {},
 ) {
 
@@ -109,23 +114,24 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
 
   $driver = 'dell.dell_storagecenter_iscsi.DellStorageCenterISCSIDriver'
   cinder_config {
-    "${name}/volume_backend_name":    value => $volume_backend_name;
-    "${name}/volume_driver":          value => "cinder.volume.drivers.${driver}";
-    "${name}/san_ip":                 value => $san_ip;
-    "${name}/san_login":              value => $san_login;
-    "${name}/san_password":           value => $san_password, secret => true;
-    "${name}/iscsi_ip_address":       value => $iscsi_ip_address;
-    "${name}/dell_sc_ssn":            value => $dell_sc_ssn;
-    "${name}/dell_sc_api_port":       value => $dell_sc_api_port;
-    "${name}/dell_sc_server_folder":  value => $dell_sc_server_folder;
-    "${name}/dell_sc_verify_cert":    value => $dell_sc_verify_cert;
-    "${name}/dell_sc_volume_folder":  value => $dell_sc_volume_folder;
-    "${name}/iscsi_port":             value => $iscsi_port;
-    "${name}/excluded_domain_ip":     value => $excluded_domain_ip;
-    "${name}/secondary_san_ip":       value => $secondary_san_ip;
-    "${name}/secondary_san_login":    value => $secondary_san_login;
-    "${name}/secondary_san_password": value => $secondary_san_password, secret => true;
-    "${name}/secondary_sc_api_port":  value => $secondary_sc_api_port;
+    "${name}/volume_backend_name":          value => $volume_backend_name;
+    "${name}/volume_driver":                value => "cinder.volume.drivers.${driver}";
+    "${name}/san_ip":                       value => $san_ip;
+    "${name}/san_login":                    value => $san_login;
+    "${name}/san_password":                 value => $san_password, secret => true;
+    "${name}/iscsi_ip_address":             value => $iscsi_ip_address;
+    "${name}/dell_sc_ssn":                  value => $dell_sc_ssn;
+    "${name}/dell_sc_api_port":             value => $dell_sc_api_port;
+    "${name}/dell_sc_server_folder":        value => $dell_sc_server_folder;
+    "${name}/dell_sc_verify_cert":          value => $dell_sc_verify_cert;
+    "${name}/dell_sc_volume_folder":        value => $dell_sc_volume_folder;
+    "${name}/iscsi_port":                   value => $iscsi_port;
+    "${name}/excluded_domain_ip":           value => $excluded_domain_ip;
+    "${name}/secondary_san_ip":             value => $secondary_san_ip;
+    "${name}/secondary_san_login":          value => $secondary_san_login;
+    "${name}/secondary_san_password":       value => $secondary_san_password, secret => true;
+    "${name}/secondary_sc_api_port":        value => $secondary_sc_api_port;
+    "${name}/use_multipath_for_image_xfer": value => $use_multipath_for_image_xfer;
   }
 
   if $manage_volume_type {
