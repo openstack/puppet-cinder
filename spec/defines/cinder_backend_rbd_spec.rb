@@ -42,6 +42,7 @@ describe 'cinder::backend::rbd' do
         should contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value(req_params[:rados_connection_interval])
         should contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value(req_params[:rados_connection_retries])
         should contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value(req_params[:rbd_store_chunk_size])
+        should contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
       }
 
       context 'with another RBD backend' do
@@ -60,6 +61,7 @@ describe 'cinder::backend::rbd' do
         it { should contain_cinder_config("ceph2/rbd_cluster_name").with_value('ceph2') }
         it { should contain_cinder_config("ceph2/rbd_pool").with_value('volumes2') }
         it { should contain_cinder_config("ceph2/rbd_user").with_value('test2') }
+        it { should contain_cinder_config("ceph2/report_discard_supported").with_value(true) }
       end
 
       context 'rbd backend with additional configuration' do

@@ -119,6 +119,7 @@ define cinder::backend::rbd (
     "${name}/rados_connection_retries":         value => $rados_connection_retries;
     "${name}/rbd_store_chunk_size":             value => $rbd_store_chunk_size;
     "${name}/rbd_cluster_name":                 value => $rbd_cluster_name_real;
+    "${name}/report_discard_supported":         value => true;
   }
 
   if $manage_volume_type {
