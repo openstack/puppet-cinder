@@ -5,7 +5,7 @@
 # === Parameters
 #
 # [*policies*]
-#   (optional) Set of policies to configure for cinder
+#   (Optional) Set of policies to configure for cinder
 #   Example :
 #     {
 #       'cinder-context_is_admin' => {
@@ -20,7 +20,7 @@
 #   Defaults to empty hash.
 #
 # [*policy_path*]
-#   (optional) Path to the cinder policy.json file
+#   (Optional) Path to the cinder policy.json file
 #   Defaults to /etc/cinder/policy.json
 #
 class cinder::policy (

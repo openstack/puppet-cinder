@@ -4,7 +4,7 @@
 # == Parameters
 #
 # [*extra_params*]
-#   (optional) String of extra command line parameters to append
+#   (Optional) String of extra command line parameters to append
 #   to the cinder-manage db sync command. These will be inserted
 #   in the command line between 'cinder-manage' and 'db sync'.
 #   Defaults to undef

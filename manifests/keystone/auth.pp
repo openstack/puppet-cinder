@@ -5,143 +5,173 @@
 # === Parameters
 #
 # [*password*]
-#   Password for Cinder user. Required.
+#   (Required) Password for Cinder user.
 #
 # [*email*]
-#   Email for Cinder user. Optional. Defaults to 'cinder@localhost'.
+#   (Optional) Email for Cinder user.
+#   Defaults to 'cinder@localhost'.
 #
 # [*password_user_v2*]
-#   Password for Cinder v2 user. Optional. Defaults to undef.
+#   (Optional) Password for Cinder v2 user.
+#   Defaults to undef.
 #
 # [*email_user_v2*]
-#   Email for Cinder v2 user. Optional. Defaults to 'cinderv2@localhost'.
+#   (Optional) Email for Cinder v2 user.
+#   Defaults to 'cinderv2@localhost'.
 #
 # [*password_user_v3*]
-#   Password for Cinder v3 user. Optional. Defaults to undef.
+#   (Optional) Password for Cinder v3 user.
+#   Defaults to undef.
 #
 # [*email_user_v3*]
-#   Email for Cinder v3 user. Optional. Defaults to 'cinderv3@localhost'.
+#   (Optional) Email for Cinder v3 user.
+#   Defaults to 'cinderv3@localhost'.
 #
 # [*auth_name*]
-#   Username for Cinder service. Optional. Defaults to 'cinder'.
+#   (Optional) Username for Cinder service.
+#   Defaults to 'cinder'.
 #
 # [*auth_name_v2*]
-#   Username for Cinder v2 service. Optional. Defaults to 'cinderv2'.
+#   (Optional) Username for Cinder v2 service.
+#   Defaults to 'cinderv2'.
 #
 # [*auth_name_v3*]
-#   Username for Cinder v3 service. Optional. Defaults to 'cinderv3'.
+#   (Optional) Username for Cinder v3 service.
+#   Defaults to 'cinderv3'.
 #
 # [*configure_endpoint*]
-#   Should Cinder endpoint be configured? Optional. Defaults to 'true'.
+#   (Optional) Should Cinder endpoint be configured?
 #   API v1 endpoint should be enabled in Icehouse for compatibility with Nova.
+#   Defaults to true
 #
 # [*configure_endpoint_v2*]
-#   Should Cinder v2 endpoint be configured? Optional. Defaults to 'true'.
+#   (Optional) Should Cinder v2 endpoint be configured?
+#   Defaults to true
 #
 # [*configure_endpoint_v3*]
-#   Should Cinder v3 endpoint be configured? Optional. Defaults to 'true'.
+#   (Optional) Should Cinder v3 endpoint be configured?
+#   Defaults to true
 #
 # [*configure_user*]
-#   Should the service user be configured? Optional. Defaults to 'true'.
+#   (Optional) Should the service user be configured?
+#   Defaults to true
 #
 # [*configure_user_v2*]
-#   Should the service user be configured for cinder v2? Optional. Defaults to 'false'.
+#   (Optional) Should the service user be configured for cinder v2?
+#   Defaults to false
 #
 # [*configure_user_v3*]
-#   Should the service user be configured for cinder v3? Optional. Defaults to 'false'.
+#   (Optional) Should the service user be configured for cinder v3?
+#   Defaults to false
 #
 # [*configure_user_role*]
-#   Should the admin role be configured for the service user?
-#   Optional. Defaults to 'true'.
+#   (Optional) Should the admin role be configured for the service user?
+#   Defaults to true
 #
 # [*configure_user_role_v2*]
-#   Should the admin role be configured for the service user for cinder v2?
-#   Optional. Defaults to 'false'.
+#   (Optional) Should the admin role be configured for the service user for cinder v2?
+#   Defaults to false
 #
 # [*configure_user_role_v3*]
-#   Should the admin role be configured for the service user for cinder v3?
-#   Optional. Defaults to 'false'.
+#   (Optional) Should the admin role be configured for the service user for cinder v3?
+#   Defaults to false
 #
 # [*service_name*]
-#   (optional) Name of the service.
+#   (Optional) Name of the service.
 #   Defaults to 'cinder'.
 #
 # [*service_name_v2*]
-#   (optional) Name of the v2 service.
+#   (Optional) Name of the v2 service.
 #   Defaults to 'cinderv2'.
 #
 # [*service_name_v3*]
-#   (optional) Name of the v3 service.
+#   (Optional) Name of the v3 service.
 #   Defaults to 'cinderv3'.
 #
 # [*service_type*]
-#    Type of service. Optional. Defaults to 'volume'.
+#   (Optional) Type of service.
+#   Defaults to 'volume'.
 #
 # [*service_type_v2*]
-#    Type of API v2 service. Optional. Defaults to 'volumev2'.
+#   (Optional) Type of API v2 service.
+#   Defaults to 'volumev2'.
 #
 # [*service_type_v3*]
-#    Type of API v3 service. Optional. Defaults to 'volumev3'.
+#   (Optional) Type of API v3 service.
+#   Defaults to 'volumev3'.
 #
 # [*service_description*]
-#    (optional) Description for keystone service.
-#    Defaults to 'Cinder Service'.
+#   (Optional) Description for keystone service.
+#   Defaults to 'Cinder Service'.
 #
 # [*service_description_v2*]
-#    (optional) Description for keystone v2 service.
-#    Defaults to 'Cinder Service v2'.
+#   (Optional) Description for keystone v2 service.
+#   Defaults to 'Cinder Service v2'.
 #
 # [*service_description_v3*]
-#    (optional) Description for keystone v3 service.
-#    Defaults to 'Cinder Service v3'.
+#   (Optional) Description for keystone v3 service.
+#   Defaults to 'Cinder Service v3'.
 #
 # [*region*]
-#    Region for endpoint. Optional. Defaults to 'RegionOne'.
+#   (Optional) Region for endpoint.
+#   Defaults to 'RegionOne'.
 #
 # [*tenant*]
-#    Tenant for Cinder user. Optional. Defaults to 'services'.
+#   (Optional) Tenant for Cinder user.
+#   Defaults to 'services'.
 #
 # [*tenant_user_v2*]
-#    Tenant for Cinder v2 user. Optional. Defaults to 'services'.
+#   (Optional) Tenant for Cinder v2 user.
+#   Defaults to 'services'.
 #
 # [*tenant_user_v3*]
-#    Tenant for Cinder v3 user. Optional. Defaults to 'services'.
+#   (Optional) Tenant for Cinder v3 user.
+#   Defaults to 'services'.
 #
 # [*public_url*]
-#   (optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s')
+#   (Optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s')
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s'
 #
 # [*internal_url*]
-#   (optional) The endpoint's internal url. (Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s')
+#   (Optional) The endpoint's internal url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s'
 #
 # [*admin_url*]
-#   (optional) The endpoint's admin url. (Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s')
+#   (Optional) The endpoint's admin url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s'
 #
 # [*public_url_v2*]
-#   (optional) The v2 endpoint's public url. (Defaults to 'http://127.0.0.1:8776/v2/%(tenant_id)s')
+#   (Optional) The v2 endpoint's public url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v2/%(tenant_id)s'
 #
 # [*internal_url_v2*]
-#   (optional) The v2 endpoint's internal url. (Defaults to 'http://127.0.0.1:8776/v2/%(tenant_id)s')
+#   (Optional) The v2 endpoint's internal url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v2/%(tenant_id)s'
 #
 # [*admin_url_v2*]
-#   (optional) The v2 endpoint's admin url. (Defaults to 'http://127.0.0.1:8776/v2/%(tenant_id)s')
+#   (Optional) The v2 endpoint's admin url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v2/%(tenant_id)s'
 #
 # [*public_url_v3*]
-#   (optional) The v3 endpoint's public url. (Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s')
+#   (0ptional) The v3 endpoint's public url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s'
 #
 # [*internal_url_v3*]
-#   (optional) The v3 endpoint's internal url. (Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s')
+#   (Optional) The v3 endpoint's internal url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s'
 #
 # [*admin_url_v3*]
-#   (optional) The v3 endpoint's admin url. (Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s')
+#   (Optional) The v3 endpoint's admin url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s'
 #
 # === Examples
 #
