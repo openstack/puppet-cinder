@@ -207,7 +207,7 @@ class cinder::api (
     'os_privileged_user_auth_url',
   ]
   $deprecated_param_names.each |$param_name| {
-    $param = getvar("${param_name}")
+    $param = getvar($param_name)
     if $param != undef{
       warning("The ${param_name} parameter is deprecated, has no effect and will be removed in the future release.")
     }

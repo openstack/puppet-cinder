@@ -73,7 +73,7 @@ define cinder::backend::dellemc_unity (
     "${name}/storage_protocol":          value => $storage_protocol;
     "${name}/unity_io_ports":            value => $unity_io_ports;
     "${name}/unity_storage_pool_names":  value => $unity_storage_pool_names;
-   }
+  }
 
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
