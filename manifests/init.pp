@@ -8,10 +8,6 @@
 #    (Optional) Ensure state for package.
 #    Defaults to 'present'
 #
-# [*debug*]
-#   (Optional) Should the daemons log debug messages
-#   Defaults to undef.
-#
 # [*default_transport_url*]
 #    (optional) A URL representing the messaging driver to use and its full
 #    configuration. Transport URLs take the form:
@@ -162,10 +158,6 @@
 #   (Optional) Password for message broker authentication
 #   Defaults to $::os_service_default.
 #
-# [*use_syslog*]
-#   (Optional) Use syslog for logging.
-#   Defaults to undef
-#
 # [*database_connection*]
 #    Url used to connect to database.
 #    (Optional) Defaults to undef.
@@ -194,20 +186,6 @@
 # [*database_max_overflow*]
 #   If set, use this value for max_overflow with sqlalchemy.
 #   (Optional) Defaults to undef.
-#
-# [*use_stderr*]
-#   (optional) Use stderr for logging
-#   Defaults to undef.
-#
-# [*log_facility*]
-#   (Optional) Syslog facility to receive log lines.
-#   Defaults to undef.
-#
-# [*log_dir*]
-#   (optional) Directory where logs should be stored.
-#   If set to boolean false or the $::os_service_default, it will not log to
-#   any directory.
-#   Defaults to '/var/log/cinder'.
 #
 # [*storage_availability_zone*]
 #   (optional) Availability zone of the node.
@@ -304,11 +282,6 @@ class cinder (
   $amqp_password                      = $::os_service_default,
   $package_ensure                     = 'present',
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
-  $use_syslog                         = undef,
-  $use_stderr                         = undef,
-  $log_facility                       = undef,
-  $log_dir                            = '/var/log/cinder',
-  $debug                              = undef,
   $storage_availability_zone          = 'nova',
   $default_availability_zone          = false,
   $allow_availability_zone_fallback   = $::os_service_default,
@@ -323,7 +296,6 @@ class cinder (
 
   include ::cinder::deps
   include ::cinder::db
-  include ::cinder::logging
 
   package { 'cinder':
     ensure => $package_ensure,
