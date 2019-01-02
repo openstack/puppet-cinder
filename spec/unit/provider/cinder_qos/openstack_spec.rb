@@ -79,6 +79,23 @@ properties="key1=\'value1\', key2=\'value2\'"
         end
       end
 
+      #Test with python-openstackclient => 3.8.0 output (column header change from 'Specs' to 'Properties')
+      describe '#instances' do
+        it 'finds qos' do
+          provider_class.expects(:openstack)
+            .with('volume qos', 'list', '--quiet', '--format', 'csv', [])
+            .returns('"ID","Name","Consumer","Associations","Properties"
+"28b632e8-6694-4bba-bf68-67b19f619019","qos-1","front-end","my_type1","read_iops=\'value1\'"
+')
+          instances = provider_class.instances
+          expect(instances.count).to eq(1)
+          expect(instances[0].name).to eq('qos-1')
+          expect(instances[0].associations).to eq(['my_type1'])
+          expect(instances[0].consumer).to eq('front-end')
+          expect(instances[0].properties).to eq(['read_iops=value1'])
+        end
+      end
+
       describe '#string2array' do
         it 'should return an array with key-value' do
           s = "key='value', key2='value2'"
