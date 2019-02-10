@@ -124,7 +124,7 @@ describe 'cinder::backend::netapp' do
         })
       end
 
-      it { should raise_error(Puppet::Error, /"not an array" is not an Array.  It looks to be a String/) }
+      it { should raise_error(Puppet::Error) }
     end
 
     context 'with name search pattern' do

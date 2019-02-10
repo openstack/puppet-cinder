@@ -31,8 +31,8 @@ class cinder::scheduler (
   include ::cinder::deps
   include ::cinder::params
 
-  validate_bool($manage_service)
-  validate_bool($enabled)
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   cinder_config { 'DEFAULT/scheduler_driver': value => $scheduler_driver; }
 

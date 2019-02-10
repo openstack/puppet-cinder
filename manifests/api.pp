@@ -195,8 +195,8 @@ class cinder::api (
   include ::cinder::params
   include ::cinder::policy
 
-  validate_bool($manage_service)
-  validate_bool($enabled)
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   $deprecated_param_names = [
     'nova_catalog_info',

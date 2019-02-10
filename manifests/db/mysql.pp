@@ -44,7 +44,7 @@ class cinder::db::mysql (
 
   include ::cinder::deps
 
-  validate_string($password)
+  validate_legacy(String, 'validate_string', $password)
 
   ::openstacklib::db::mysql { 'cinder':
     user          => $user,

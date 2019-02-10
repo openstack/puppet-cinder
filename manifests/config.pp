@@ -35,8 +35,8 @@ class cinder::config (
 
   include ::cinder::deps
 
-  validate_hash($cinder_config)
-  validate_hash($api_paste_ini_config)
+  validate_legacy(Hash, 'validate_hash', $cinder_config)
+  validate_legacy(Hash, 'validate_hash', $api_paste_ini_config)
 
   create_resources('cinder_config', $cinder_config)
   create_resources('cinder_api_paste_ini', $api_paste_ini_config)

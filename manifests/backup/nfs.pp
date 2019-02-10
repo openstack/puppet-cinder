@@ -81,7 +81,8 @@ class cinder::backup::nfs (
 ) {
 
   include ::cinder::deps
-  validate_string($backup_share)
+
+  validate_legacy(String, 'validate_string', $backup_share)
 
   cinder_config {
     'DEFAULT/backup_mount_options':         value => $backup_mount_options;
