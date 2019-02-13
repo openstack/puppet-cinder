@@ -46,7 +46,7 @@ Setup
 
 **What the cinder module affects**
 
-* [Cinder](https://wiki.openstack.org/wiki/Cinder), the block storage service
+* [Cinder](https://docs.openstack.org/cinder/latest/), the block storage service
   for OpenStack.
 
 ### Installing cinder
