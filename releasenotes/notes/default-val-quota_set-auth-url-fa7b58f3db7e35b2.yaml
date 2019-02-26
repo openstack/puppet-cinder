@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The default value for cinder::quota_set::os_auth_url is now changed from
+    http://127.0.0.1:5000/v2.0/ to http://127.0.0.1:5000/v3/
