@@ -1,7 +1,7 @@
 #
-# == Define: cinder::backend::dellemc_vmax_iscsi
+# == Define: cinder::backend::dellemc_powermax_iscsi
 #
-# Setup Cinder to use the Dell EMC VMAX ISCSI Driver
+# Setup Cinder to use the Dell EMC PowerMax ISCSI Driver
 # Compatible for multiple backends
 #
 # == Parameters
@@ -17,11 +17,11 @@
 #   Defaults to $::os_service_default.
 #
 # [*cinder_emc_config_file*]
-#   (required) File path of Dell EMC VMAX ISCSI specific configuration file.
+#   (required) File path of Dell EMC PowerMax ISCSI specific configuration file.
 #
 # [*volume_driver*]
-#   (optional) The Dell EMC VMAX ISCSI Driver
-#   Defaults to cinder.volume.drivers.dell_emc.vmax.iscsi.VMAXISCSIDriver
+#   (optional) The Dell EMC PowerMax ISCSI Driver
+#   Defaults to cinder.volume.drivers.dell_emc.powermax.iscsi.PowerMaxISCSIDriver
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -33,14 +33,14 @@
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
 #   Example :
-#     { 'dellemc_vmax_iscsi_backend/param1' => { 'value' => value1 } }#
+#     { 'dellemc_powermax_iscsi_backend/param1' => { 'value' => value1 } }#
 #
-define cinder::backend::dellemc_vmax_iscsi (
+define cinder::backend::dellemc_powermax_iscsi (
   $cinder_emc_config_file,
   $volume_backend_name           = $name,
   $backend_availability_zone     = $::os_service_default,
   $extra_options                 = {},
-  $volume_driver                 = 'cinder.volume.drivers.dell_emc.vmax.iscsi.VMAXISCSIDriver',
+  $volume_driver                 = 'cinder.volume.drivers.dell_emc.powermax.iscsi.PowerMaxISCSIDriver',
   $manage_volume_type            = false,
 ) {
 
