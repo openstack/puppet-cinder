@@ -17,7 +17,7 @@ describe 'cinder::db::mysql' do
         req_params
       end
 
-      it { should contain_openstacklib__db__mysql('cinder').with(
+      it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
         :user          => 'cinder',
         :password_hash => '*D821809F681A40A6E379B50D0463EFAE20BDD122',
         :host          => '127.0.0.1',
@@ -34,7 +34,7 @@ describe 'cinder::db::mysql' do
         }
       end
 
-      it { should contain_openstacklib__db__mysql('cinder').with(
+      it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
         :user          => 'cinder',
         :password_hash => '*1C8A189441ED992638DD234B6711CD5064DA8C6E',
         :host          => '127.0.0.1',
@@ -52,7 +52,7 @@ describe 'cinder::db::mysql' do
         }
       end
 
-      it { should contain_openstacklib__db__mysql('cinder').with(
+      it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
         :user          => 'cinder',
         :password_hash => '*0E9E710049E74D36D29D615DFC55F3FFD45413BC',
         :host          => '127.0.0.1',
@@ -70,7 +70,7 @@ describe 'cinder::db::mysql' do
         }
       end
 
-      it { should contain_openstacklib__db__mysql('cinder').with(
+      it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
         :user          => 'cinder',
         :password_hash => '*0E9E710049E74D36D29D615DFC55F3FFD45413BC',
         :host          => '127.0.0.1',

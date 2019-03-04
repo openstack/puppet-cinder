@@ -3,9 +3,9 @@ require 'spec_helper'
 describe 'cinder::ceilometer' do
   shared_examples 'cinder::ceilometer' do
     context 'with default parameters' do
-      it { should contain_cinder_config('oslo_messaging_notifications/transport_url').with_value('<SERVICE DEFAULT>') }
-      it { should contain_cinder_config('oslo_messaging_notifications/driver').with_value('messagingv2') }
-      it { should contain_cinder_config('oslo_messaging_notifications/topics').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_cinder_config('oslo_messaging_notifications/transport_url').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_cinder_config('oslo_messaging_notifications/driver').with_value('messagingv2') }
+      it { is_expected.to contain_cinder_config('oslo_messaging_notifications/topics').with_value('<SERVICE DEFAULT>') }
     end
   end
 

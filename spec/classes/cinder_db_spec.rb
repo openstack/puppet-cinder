@@ -3,9 +3,9 @@ require 'spec_helper'
 describe 'cinder::db' do
   shared_examples 'cinder::db' do
     context 'with default parameters' do
-      it { should contain_class('cinder::deps') }
+      it { is_expected.to contain_class('cinder::deps') }
 
-      it { should contain_oslo__db('cinder_config').with(
+      it { is_expected.to contain_oslo__db('cinder_config').with(
         :db_max_retries => '<SERVICE DEFAULT>',
         :connection     => 'sqlite:////var/lib/cinder/cinder.sqlite',
         :idle_timeout   => '<SERVICE DEFAULT>',
@@ -33,9 +33,9 @@ describe 'cinder::db' do
         }
       end
 
-      it { should contain_class('cinder::deps') }
+      it { is_expected.to contain_class('cinder::deps') }
 
-      it { should contain_oslo__db('cinder_config').with(
+      it { is_expected.to contain_oslo__db('cinder_config').with(
         :db_max_retries => '-1',
         :connection     => 'mysql+pymysql://cinder:cinder@localhost/cinder',
         :idle_timeout   => '3601',

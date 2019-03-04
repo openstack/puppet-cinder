@@ -26,7 +26,7 @@ describe 'cinder::client' do
       )
     end
 
-    it { should contain_class('openstacklib::openstackclient') }
+    it { is_expected.to contain_class('openstacklib::openstackclient') }
   end
 
   on_supported_os({

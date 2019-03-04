@@ -16,7 +16,7 @@ describe 'cinder::cron::db_purge' do
 
   shared_examples 'cinder::cron::db_purge' do
     context 'with required parameters' do
-      it { should contain_cron('cinder-manage db purge').with(
+      it { is_expected.to contain_cron('cinder-manage db purge').with(
         :command     => "cinder-manage db purge #{params[:age]} >>#{params[:destination]} 2>&1",
         :environment => 'PATH=/bin:/usr/bin:/usr/sbin SHELL=/bin/sh',
         :user        => params[:user],
