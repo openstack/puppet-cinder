@@ -76,4 +76,24 @@ describe 'cinder::backend::pure' do
     end
   end
 
+  describe 'pure volume driver with image_volume_cache_enabled disabled' do
+    let :params do
+      req_params.merge({'image_volume_cache_enabled' => false})
+    end
+
+    it 'confiugre pure backend without image_volume_cache_enabled' do
+      is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('false')
+    end
+  end
+
+  describe 'pure volume driver with image_volume_cache_enabled enabled' do
+    let :params do
+      req_params.merge({'image_volume_cache_enabled' => true})
+    end
+
+    it 'confiugre pure backend with image_volume_cache_enabled' do
+      is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
+    end
+  end
+
 end
