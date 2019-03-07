@@ -26,19 +26,24 @@
 #   which Volume Driver will be configured; PureISCSIDriver or PureFCDriver.
 #   Defaults to 'iSCSI'
 #
-# [*use_multipath_for_image_xfer*]
-#   (optional) .
-#   Defaults to True
-#
 # [*use_chap_auth*]
-#   (optional) Only affects the PureISCSIDriver.
+#   (optional) Use authentication for iSCSI. Only affects the PureISCSIDriver.
 #   Defaults to False
+#
+# [*use_multipath_for_image_xfer*]
+#   (optional) Use multipath when attaching the volume for image transfer.
+#   Defaults to True
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
+#
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for the PureStorage
+#   backend.
+#   Defaults to True
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
@@ -55,6 +60,7 @@ define cinder::backend::pure(
   $use_chap_auth                = false,
   $use_multipath_for_image_xfer = true,
   $manage_volume_type           = false,
+  $image_volume_cache_enabled   = true,
   $extra_options                = {},
 ) {
 
@@ -72,7 +78,8 @@ define cinder::backend::pure(
     "${name}/san_ip":                        value => $san_ip;
     "${name}/pure_api_token":                value => $pure_api_token, secret => true;
     "${name}/use_chap_auth":                 value => $use_chap_auth;
-    "${name}/use_multipath_for_image_xfer":  value => $use_multipath_for_image_xfer ;
+    "${name}/use_multipath_for_image_xfer":  value => $use_multipath_for_image_xfer;
+    "${name}/image_volume_cache_enabled":    value => $image_volume_cache_enabled;
   }
 
   if $manage_volume_type {

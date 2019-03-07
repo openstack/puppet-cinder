@@ -22,6 +22,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
         is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
       }
     end
 
@@ -79,6 +80,16 @@ describe 'cinder::backend::pure' do
       )}
     end
   end
+
+    context 'pure volume driver with image_volume_cache_enabled disabled' do
+      let :params do
+        req_params.merge({'image_volume_cache_enabled' => false})
+      end
+
+      it {
+        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('false')
+      }
+    end
 
   on_supported_os({
     :supported_os => OSDefaults.get_supported_os
