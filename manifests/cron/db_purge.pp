@@ -51,6 +51,12 @@
 #    (optional) Path to file to which rows should be archived
 #    Defaults to '/var/log/cinder/cinder-rowsflush.log'.
 #
+#  [*maxdelay*]
+#    (optional) In Seconds. Should be a positive integer.
+#    Induces a random delay before running the cronjob to avoid running
+#    all cron jobs at the same time on all hosts this job is configured.
+#    Defaults to 0.
+#
 class cinder::cron::db_purge (
   $minute      = 1,
   $hour        = 0,
@@ -59,13 +65,20 @@ class cinder::cron::db_purge (
   $weekday     = '*',
   $user        = 'cinder',
   $age         = 30,
-  $destination = '/var/log/cinder/cinder-rowsflush.log'
+  $destination = '/var/log/cinder/cinder-rowsflush.log',
+  $maxdelay    = 0
 ) {
 
   include ::cinder::deps
 
+  if $maxdelay == 0 {
+    $sleep = ''
+  } else {
+    $sleep = "sleep `expr \${RANDOM} \\% ${maxdelay}`; "
+  }
+
   cron { 'cinder-manage db purge':
-    command     => "cinder-manage db purge ${age} >>${destination} 2>&1",
+    command     => "${sleep}cinder-manage db purge ${age} >>${destination} 2>&1",
     environment => 'PATH=/bin:/usr/bin:/usr/sbin SHELL=/bin/sh',
     user        => $user,
     minute      => $minute,
