@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add new parameter cinder::backend::pure::image_volume_cache_enabled
+    Allows setting of the image_volume_cache_enabled option on the managed
+    Cinder backend for PureStorage. The option defaults to True if unset.
