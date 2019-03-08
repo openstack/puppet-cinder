@@ -3,27 +3,27 @@ require 'spec_helper'
 describe 'cinder::vmware' do
   shared_examples 'cinder::vmware' do
     context 'with defaults' do
-      it { should contain_cinder_type('vmware-thin').with(
+      it { is_expected.to contain_cinder_type('vmware-thin').with(
         :ensure     => :present,
         :properties => ['vmware:vmdk_type=thin']
       )}
 
-      it { should contain_cinder_type('vmware-thick').with(
+      it { is_expected.to contain_cinder_type('vmware-thick').with(
         :ensure     => :present,
         :properties => ['vmware:vmdk_type=thick']
       )}
 
-      it { should contain_cinder_type('vmware-eagerZeroedThick').with(
+      it { is_expected.to contain_cinder_type('vmware-eagerZeroedThick').with(
         :ensure     => :present,
         :properties => ['vmware:vmdk_type=eagerZeroedThick']
       )}
 
-      it { should contain_cinder_type('vmware-full').with(
+      it { is_expected.to contain_cinder_type('vmware-full').with(
         :ensure     => :present,
         :properties => ['vmware:clone_type=full']
       )}
 
-      it { should contain_cinder_type('vmware-linked').with(
+      it { is_expected.to contain_cinder_type('vmware-linked').with(
         :ensure     => :present,
         :properties => ['vmware:clone_type=linked']
       )}

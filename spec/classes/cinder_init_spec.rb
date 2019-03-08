@@ -14,33 +14,33 @@ describe 'cinder' do
         req_params
       end
 
-      it { should contain_class('cinder::params') }
-      it { should contain_class('mysql::bindings::python') }
+      it { is_expected.to contain_class('cinder::params') }
+      it { is_expected.to contain_class('mysql::bindings::python') }
 
-      it { should contain_resources('cinder_config').with_purge(false) }
+      it { is_expected.to contain_resources('cinder_config').with_purge(false) }
 
       it {
-        should contain_cinder_config('DEFAULT/transport_url').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('DEFAULT/rpc_response_timeout').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('DEFAULT/control_exchange').with(:value => 'openstack')
-        should contain_cinder_config('DEFAULT/report_interval').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('DEFAULT/service_down_time').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_rabbit/kombu_reconnect_delay').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_rabbit/kombu_failover_strategy').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_rabbit/kombu_compression').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('DEFAULT/storage_availability_zone').with(:value => 'nova')
-        should contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
-        should contain_cinder_config('DEFAULT/allow_availability_zone_fallback').with(:value => '<SERVICE DEFAULT>')
-        should contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
-        should contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
+        is_expected.to contain_cinder_config('DEFAULT/transport_url').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/rpc_response_timeout').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/control_exchange').with(:value => 'openstack')
+        is_expected.to contain_cinder_config('DEFAULT/report_interval').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/service_down_time').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_reconnect_delay').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_failover_strategy').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_compression').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/storage_availability_zone').with(:value => 'nova')
+        is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
+        is_expected.to contain_cinder_config('DEFAULT/allow_availability_zone_fallback').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
+        is_expected.to contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
 
         # backend_host should not be written to DEFAULT section
-        should_not contain_cinder_config('DEFAULT/backend_host')
+        is_expected.not_to contain_cinder_config('DEFAULT/backend_host')
       }
     end
 
@@ -49,7 +49,7 @@ describe 'cinder' do
         req_params.merge( :rabbit_ha_queues => true )
       end
 
-      it { should contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with_value(true) }
+      it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with_value(true) }
     end
 
     context 'with rabbitmq heartbeats' do
@@ -58,8 +58,8 @@ describe 'cinder' do
                           :rabbit_heartbeat_rate              => '10' )
       end
 
-      it { should contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('60') }
-      it { should contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('10') }
+      it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('60') }
+      it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('10') }
     end
 
     context 'with SSL enabled with kombu' do
@@ -73,7 +73,7 @@ describe 'cinder' do
         })
       end
 
-      it { should contain_oslo__messaging__rabbit('cinder_config').with(
+      it { is_expected.to contain_oslo__messaging__rabbit('cinder_config').with(
         :rabbit_use_ssl     => true,
         :kombu_ssl_ca_certs => '/path/to/ssl/ca/certs',
         :kombu_ssl_certfile => '/path/to/ssl/cert/file',
@@ -89,7 +89,7 @@ describe 'cinder' do
         })
       end
 
-      it { should contain_oslo__messaging__rabbit('cinder_config').with(
+      it { is_expected.to contain_oslo__messaging__rabbit('cinder_config').with(
         :rabbit_use_ssl => true,
       )}
     end
@@ -105,7 +105,7 @@ describe 'cinder' do
         })
       end
 
-      it { should contain_oslo__messaging__rabbit('cinder_config').with(
+      it { is_expected.to contain_oslo__messaging__rabbit('cinder_config').with(
         :rabbit_use_ssl     => false,
         :kombu_ssl_ca_certs => '<SERVICE DEFAULT>',
         :kombu_ssl_certfile => '<SERVICE DEFAULT>',
@@ -119,7 +119,7 @@ describe 'cinder' do
         req_params.merge!( :lock_path => '/var/run/cinder.locks' )
       end
 
-      it { should contain_cinder_config('oslo_concurrency/lock_path').with_value('/var/run/cinder.locks') }
+      it { is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with_value('/var/run/cinder.locks') }
     end
 
     context 'with amqp_durable_queues disabled' do
@@ -127,7 +127,7 @@ describe 'cinder' do
         req_params
       end
 
-      it { should contain_cinder_config('oslo_messaging_rabbit/amqp_durable_queues').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/amqp_durable_queues').with_value('<SERVICE DEFAULT>') }
     end
 
     context 'with amqp_durable_queues enabled' do
@@ -137,27 +137,27 @@ describe 'cinder' do
         })
       end
 
-      it { should contain_cinder_config('oslo_messaging_rabbit/amqp_durable_queues').with_value(true) }
+      it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/amqp_durable_queues').with_value(true) }
     end
 
     context 'with amqp defaults' do
       it {
-        should contain_cinder_config('oslo_messaging_amqp/server_request_prefix').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/broadcast_prefix').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/group_request_prefix').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/container_name').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/idle_timeout').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/trace').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/ssl_ca_file').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/ssl_cert_file').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/ssl_key_file').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/ssl_key_password').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/allow_insecure_clients').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/sasl_mechanisms').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/sasl_config_dir').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/sasl_config_name').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/username').with_value('<SERVICE DEFAULT>')
-       should contain_cinder_config('oslo_messaging_amqp/password').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/server_request_prefix').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/broadcast_prefix').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/group_request_prefix').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/container_name').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/idle_timeout').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/trace').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_ca_file').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_cert_file').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_key_file').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_key_password').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/allow_insecure_clients').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_mechanisms').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_config_dir').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_config_name').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/username').with_value('<SERVICE DEFAULT>')
+       is_expected.to contain_cinder_config('oslo_messaging_amqp/password').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -175,21 +175,21 @@ describe 'cinder' do
       end
 
       it {
-        should contain_cinder_config('oslo_messaging_amqp/server_request_prefix').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/broadcast_prefix').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/group_request_prefix').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/container_name').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/idle_timeout').with_value('60')
-        should contain_cinder_config('oslo_messaging_amqp/trace').with_value('true')
-        should contain_cinder_config('oslo_messaging_amqp/ssl_ca_file').with_value('/path/to/ca.cert')
-        should contain_cinder_config('oslo_messaging_amqp/ssl_cert_file').with_value('/path/to/certfile')
-        should contain_cinder_config('oslo_messaging_amqp/ssl_key_file').with_value('/path/to/key')
-        should contain_cinder_config('oslo_messaging_amqp/allow_insecure_clients').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/sasl_mechanisms').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/sasl_config_dir').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/sasl_config_name').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('oslo_messaging_amqp/username').with_value('amqp_user')
-        should contain_cinder_config('oslo_messaging_amqp/password').with_value('password')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/server_request_prefix').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/broadcast_prefix').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/group_request_prefix').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/container_name').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/idle_timeout').with_value('60')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/trace').with_value('true')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_ca_file').with_value('/path/to/ca.cert')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_cert_file').with_value('/path/to/certfile')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/ssl_key_file').with_value('/path/to/key')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/allow_insecure_clients').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_mechanisms').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_config_dir').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/sasl_config_name').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/username').with_value('amqp_user')
+        is_expected.to contain_cinder_config('oslo_messaging_amqp/password').with_value('password')
       }
     end
 
@@ -200,9 +200,9 @@ describe 'cinder' do
         }
       end
 
-      it { should_not contain_class('mysql::python') }
-      it { should_not contain_class('mysql::bindings') }
-      it { should_not contain_class('mysql::bindings::python') }
+      it { is_expected.not_to contain_class('mysql::python') }
+      it { is_expected.not_to contain_class('mysql::bindings') }
+      it { is_expected.not_to contain_class('mysql::bindings::python') }
     end
 
     context 'with APIs set for Mitaka (proposed)' do
@@ -212,7 +212,7 @@ describe 'cinder' do
         }
       end
 
-      it { should contain_cinder_config('DEFAULT/enable_v3_api').with_value(true) }
+      it { is_expected.to contain_cinder_config('DEFAULT/enable_v3_api').with_value(true) }
     end
 
     context 'with image_conversion_dir' do
@@ -222,7 +222,7 @@ describe 'cinder' do
         })
       end
 
-      it { should contain_cinder_config('DEFAULT/image_conversion_dir').with_value('/tmp/foo') }
+      it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_dir').with_value('/tmp/foo') }
     end
 
     context 'with host and enable_new_services' do
@@ -233,8 +233,8 @@ describe 'cinder' do
         })
       end
 
-      it { should contain_cinder_config('DEFAULT/host').with_value('mystring') }
-      it { should contain_cinder_config('DEFAULT/enable_new_services').with_value(true) }
+      it { is_expected.to contain_cinder_config('DEFAULT/host').with_value('mystring') }
+      it { is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value(true) }
     end
 
     context 'with transport_url' do
@@ -244,7 +244,7 @@ describe 'cinder' do
         })
       end
 
-      it { should contain_cinder_config('DEFAULT/transport_url').with_value('rabbit://rabbit_user:password@localhost:5673') }
+      it { is_expected.to contain_cinder_config('DEFAULT/transport_url').with_value('rabbit://rabbit_user:password@localhost:5673') }
     end
   end
 
