@@ -19,24 +19,24 @@ describe 'cinder::backend::nvmeof' do
   shared_examples 'cinder::backend::nvmeof' do
     context 'with default params' do
       it {
-        should contain_cinder_config('nvme-backend/target_ip_address').with_value('127.0.0.2')
-        should contain_cinder_config('nvme-backend/target_port').with_value('4420')
-        should contain_cinder_config('nvme-backend/target_helper').with_value('nvmet')
-        should contain_cinder_config('nvme-backend/target_protocol').with_value('nvmet_rdma')
-        should contain_cinder_config('nvme-backend/nvmet_port_id').with_value('1')
-        should contain_cinder_config('nvme-backend/nvmet_ns_id').with_value('10')
-        should contain_cinder_config('nvme-backend/volume_backend_name').with_value('nvme-backend')
-        should contain_cinder_config('nvme-backend/backend_availability_zone').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('nvme-backend/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
+        is_expected.to contain_cinder_config('nvme-backend/target_ip_address').with_value('127.0.0.2')
+        is_expected.to contain_cinder_config('nvme-backend/target_port').with_value('4420')
+        is_expected.to contain_cinder_config('nvme-backend/target_helper').with_value('nvmet')
+        is_expected.to contain_cinder_config('nvme-backend/target_protocol').with_value('nvmet_rdma')
+        is_expected.to contain_cinder_config('nvme-backend/nvmet_port_id').with_value('1')
+        is_expected.to contain_cinder_config('nvme-backend/nvmet_ns_id').with_value('10')
+        is_expected.to contain_cinder_config('nvme-backend/volume_backend_name').with_value('nvme-backend')
+        is_expected.to contain_cinder_config('nvme-backend/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nvme-backend/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
       }
 
-      it { should contain_package('nvmetcli').with(
+      it { is_expected.to contain_package('nvmetcli').with(
         :name   => 'nvmetcli',
         :ensure => 'present',
         :tag    => 'cinder-support-package',
       )}
 
-      it { should contain_package('nvme-cli').with(
+      it { is_expected.to contain_package('nvme-cli').with(
         :name   => 'nvme-cli',
         :ensure => 'present',
         :tag    => 'cinder-support-package',

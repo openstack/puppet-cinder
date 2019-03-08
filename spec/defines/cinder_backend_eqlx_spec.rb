@@ -25,15 +25,15 @@ describe 'cinder::backend::eqlx' do
   end
 
   shared_examples 'eqlx volume driver' do
-    it { should contain_cinder__backend__eqlx(config_group_name) }
+    it { is_expected.to contain_cinder__backend__eqlx(config_group_name) }
 
-    it { should contain_cinder_config("#{config_group_name}/volume_driver").with(
+    it { is_expected.to contain_cinder_config("#{config_group_name}/volume_driver").with(
       :value => 'cinder.volume.drivers.dell_emc.ps.PSSeriesISCSIDriver'
     )}
 
     it {
       params.each_pair do |config,value|
-        should contain_cinder_config("#{config_group_name}/#{config}").with_value(value)
+        is_expected.to contain_cinder_config("#{config_group_name}/#{config}").with_value(value)
       end
     }
   end
@@ -44,7 +44,7 @@ describe 'cinder::backend::eqlx' do
         params.merge!( :extra_options => {'eqlx-1/param1' => {'value' => 'value1'}} )
       end
 
-      it { should contain_cinder_config('eqlx-1/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('eqlx-1/param1').with_value('value1') }
     end
 
     context 'eqlx backend with cinder type' do
@@ -52,7 +52,7 @@ describe 'cinder::backend::eqlx' do
         params.merge!({:manage_volume_type => true})
       end
 
-      it { should contain_cinder_type('eqlx-1').with(
+      it { is_expected.to contain_cinder_type('eqlx-1').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=eqlx-1']
       )}
@@ -76,7 +76,7 @@ describe 'cinder::backend::eqlx' do
           params.merge!( :chap_username => '<SERVICE DEFAULT>' )
         end
 
-        it { should raise_error(Puppet::Error, /chap_username need to be set./) }
+        it { is_expected.to raise_error(Puppet::Error, /chap_username need to be set./) }
       end
 
       context 'with invalid chap_password' do
@@ -84,7 +84,7 @@ describe 'cinder::backend::eqlx' do
           params.merge!( :chap_password => '<SERVICE DEFAULT>' )
         end
 
-        it { should raise_error(Puppet::Error, /chap_password need to be set./) }
+        it { is_expected.to raise_error(Puppet::Error, /chap_password need to be set./) }
       end
     end
   end

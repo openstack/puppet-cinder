@@ -19,17 +19,17 @@ describe 'cinder::backend::emc_vnx' do
   shared_examples 'cinder::backend::emc_vnx' do
     context 'emc vnx volume driver' do
       it {
-        should contain_cinder_config('emc/volume_driver').with_value('cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver')
-        should contain_cinder_config('emc/storage_protocol').with_value('iscsi')
-        should contain_cinder_config('emc/san_ip').with_value('127.0.0.2')
-        should contain_cinder_config('emc/san_login').with_value('emc')
-        should contain_cinder_config('emc/san_password').with_value('password').with_secret(true)
-        should contain_cinder_config('emc/storage_vnx_pool_names').with_value('emc-storage-pool')
-        should contain_cinder_config('emc/initiator_auto_registration').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('emc/storage_vnx_authentication_type').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('emc/storage_vnx_security_file_dir').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('emc/naviseccli_path').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('emc/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/volume_driver').with_value('cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver')
+        is_expected.to contain_cinder_config('emc/storage_protocol').with_value('iscsi')
+        is_expected.to contain_cinder_config('emc/san_ip').with_value('127.0.0.2')
+        is_expected.to contain_cinder_config('emc/san_login').with_value('emc')
+        is_expected.to contain_cinder_config('emc/san_password').with_value('password').with_secret(true)
+        is_expected.to contain_cinder_config('emc/storage_vnx_pool_names').with_value('emc-storage-pool')
+        is_expected.to contain_cinder_config('emc/initiator_auto_registration').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/naviseccli_path').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/backend_availability_zone').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -47,15 +47,15 @@ describe 'cinder::backend::emc_vnx' do
       end
 
       it {
-        should contain_cinder_config('emc/initiator_auto_registration').with_value(params[:initiator_auto_registration])
-        should contain_cinder_config('emc/storage_vnx_authentication_type').with_value(params[:storage_vnx_auth_type])
-        should contain_cinder_config('emc/storage_vnx_security_file_dir').with_value(params[:storage_vnx_security_file_dir])
-        should contain_cinder_config('emc/naviseccli_path').with_value(params[:naviseccli_path])
-        should contain_cinder_config('emc/storage_protocol').with_value(params[:storage_protocol])
-        should contain_cinder_config('emc/backend_availability_zone').with_value(params[:backend_availability_zone])
+        is_expected.to contain_cinder_config('emc/initiator_auto_registration').with_value(params[:initiator_auto_registration])
+        is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value(params[:storage_vnx_auth_type])
+        is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value(params[:storage_vnx_security_file_dir])
+        is_expected.to contain_cinder_config('emc/naviseccli_path').with_value(params[:naviseccli_path])
+        is_expected.to contain_cinder_config('emc/storage_protocol').with_value(params[:storage_protocol])
+        is_expected.to contain_cinder_config('emc/backend_availability_zone').with_value(params[:backend_availability_zone])
       }
 
-      it { should contain_cinder_type('emc').with(
+      it { is_expected.to contain_cinder_type('emc').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=emc']
       )}
@@ -66,7 +66,7 @@ describe 'cinder::backend::emc_vnx' do
         params.merge!( :extra_options => {'emc/param1' => {'value' => 'value1'}} )
       end
 
-      it { should contain_cinder_config('emc/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('emc/param1').with_value('value1') }
     end
   end
 

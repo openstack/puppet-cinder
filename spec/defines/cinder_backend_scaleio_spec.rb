@@ -36,24 +36,24 @@ describe 'cinder::backend::scaleio' do
 
   shared_examples 'cinder::backend::scaleio' do
     context 'scaleio volume driver' do
-      it { should contain_cinder_config("#{title}/volume_driver").with(
+      it { is_expected.to contain_cinder_config("#{title}/volume_driver").with(
         :value => 'cinder.volume.drivers.dell_emc.scaleio.driver.ScaleIODriver'
       )}
 
       it {
-        should contain_cinder_config("#{title}/san_login").with_value('admin')
-        should contain_cinder_config("#{title}/san_ip").with_value('scaleio.example.com')
-        should contain_cinder_config("#{title}/san_thin_provision").with_value('false')
-        should contain_cinder_config("#{title}/sio_rest_server_port").with_value('443')
+        is_expected.to contain_cinder_config("#{title}/san_login").with_value('admin')
+        is_expected.to contain_cinder_config("#{title}/san_ip").with_value('scaleio.example.com')
+        is_expected.to contain_cinder_config("#{title}/san_thin_provision").with_value('false')
+        is_expected.to contain_cinder_config("#{title}/sio_rest_server_port").with_value('443')
       }
 
       it {
         params2.each_pair do |config,value|
-          should contain_cinder_config("#{title}/#{config}").with_value(value)
+          is_expected.to contain_cinder_config("#{title}/#{config}").with_value(value)
         end
       }
 
-      it { should contain_cinder_config("#{title}/san_password").with_secret(true) }
+      it { is_expected.to contain_cinder_config("#{title}/san_password").with_secret(true) }
     end
 
     context 'scaleio backend with additional configuration' do
@@ -61,7 +61,7 @@ describe 'cinder::backend::scaleio' do
         params.merge!( :extra_options => {"#{title}/param1" => {'value' => 'value1'}} )
       end
 
-      it { should contain_cinder_config("#{title}/param1").with_value('value1') }
+      it { is_expected.to contain_cinder_config("#{title}/param1").with_value('value1') }
     end
 
     context 'scaleio backend with cinder type' do
@@ -69,7 +69,7 @@ describe 'cinder::backend::scaleio' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type("#{title}").with(
+      it { is_expected.to contain_cinder_type("#{title}").with(
         :ensure     => 'present',
         :properties => ["volume_backend_name=#{title}"]
       )}

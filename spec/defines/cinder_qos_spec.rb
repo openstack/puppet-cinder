@@ -6,7 +6,7 @@ describe 'cinder::qos' do
 
   shared_examples 'cinder::qos' do
     context 'with default parameters' do
-      it { should contain_cinder_qos('tomato').with_ensure('present') }
+      it { is_expected.to contain_cinder_qos('tomato').with_ensure('present') }
     end
 
     context 'with specified parameters' do
@@ -18,7 +18,7 @@ describe 'cinder::qos' do
         }
       end
 
-      it { should contain_cinder_qos('tomato').with(
+      it { is_expected.to contain_cinder_qos('tomato').with(
         :ensure       => 'present',
         :properties   => ['var1=value1', 'var2=value2'],
         :associations => ['vol_type1', 'vol_type2'],

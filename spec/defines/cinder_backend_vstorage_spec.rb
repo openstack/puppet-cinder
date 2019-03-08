@@ -22,25 +22,25 @@ describe 'cinder::backend::vstorage' do
 
   shared_examples 'cinder::backend::vstorage' do
     it {
-      should contain_cinder_config('vstorage/volume_backend_name').with_value('vstorage')
-      should contain_cinder_config('vstorage/backend_availability_zone').with_value('my_zone')
-      should contain_cinder_config('vstorage/vzstorage_sparsed_volumes').with_value(true)
-      should contain_cinder_config('vstorage/vzstorage_used_ratio').with_value('0.9')
-      should contain_cinder_config('vstorage/vzstorage_mount_point_base').with_value('/vstorage')
-      should contain_cinder_config('vstorage/vzstorage_default_volume_format').with_value('ploop')
+      is_expected.to contain_cinder_config('vstorage/volume_backend_name').with_value('vstorage')
+      is_expected.to contain_cinder_config('vstorage/backend_availability_zone').with_value('my_zone')
+      is_expected.to contain_cinder_config('vstorage/vzstorage_sparsed_volumes').with_value(true)
+      is_expected.to contain_cinder_config('vstorage/vzstorage_used_ratio').with_value('0.9')
+      is_expected.to contain_cinder_config('vstorage/vzstorage_mount_point_base').with_value('/vstorage')
+      is_expected.to contain_cinder_config('vstorage/vzstorage_default_volume_format').with_value('ploop')
     }
 
-    it { should contain_cinder_config('vstorage/vzstorage_shares_config').with(
+    it { is_expected.to contain_cinder_config('vstorage/vzstorage_shares_config').with(
       :value => '/etc/cinder/vstorage_shares.conf'
     )}
 
-    it { should contain_cinder_config('vstorage/volume_driver').with(
+    it { is_expected.to contain_cinder_config('vstorage/volume_driver').with(
       :value => 'cinder.volume.drivers.vzstorage.VZStorageDriver'
     )}
 
-    it { should contain_package('vstorage-client').with_ensure('present') }
+    it { is_expected.to contain_package('vstorage-client').with_ensure('present') }
 
-    it { should contain_file('/etc/cinder/vstorage_shares.conf').with(
+    it { is_expected.to contain_file('/etc/cinder/vstorage_shares.conf').with(
       :content => "stor1:passw0rd [\"-u\", \"cinder\", \"-g\", \"root\", \"-m\", \"0770\"]"
     )}
 
@@ -49,12 +49,12 @@ describe 'cinder::backend::vstorage' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('vstorage').with(
+      it { is_expected.to contain_cinder_type('vstorage').with(
         :ensure => 'present',
         :properties => ['vz:volume_format=qcow2']
       )}
 
-      it { should contain_cinder_type('vstorage-ploop').with(
+      it { is_expected.to contain_cinder_type('vstorage-ploop').with(
         :ensure => 'present',
         :properties => ['vz:volume_format=ploop']
       )}

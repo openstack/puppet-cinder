@@ -13,18 +13,18 @@ describe 'cinder::backend::quobyte' do
       }
     end
 
-    it { should contain_cinder_config('myquobyte/volume_driver').with(
+    it { is_expected.to contain_cinder_config('myquobyte/volume_driver').with(
       :value => 'cinder.volume.drivers.quobyte.QuobyteDriver'
     )}
 
-    it { should contain_cinder_config('myquobyte/quobyte_volume_url').with(
+    it { is_expected.to contain_cinder_config('myquobyte/quobyte_volume_url').with(
       :value => 'quobyte://quobyte.cluster.example.com/volume-name'
     )}
 
     it {
-      should contain_cinder_config('myquobyte/quobyte_qcow2_volumes').with_value(false)
-      should contain_cinder_config('myquobyte/quobyte_sparsed_volumes').with_value(true)
-      should contain_cinder_config('myquobyte/backend_availability_zone').with_value('my_zone')
+      is_expected.to contain_cinder_config('myquobyte/quobyte_qcow2_volumes').with_value(false)
+      is_expected.to contain_cinder_config('myquobyte/quobyte_sparsed_volumes').with_value(true)
+      is_expected.to contain_cinder_config('myquobyte/backend_availability_zone').with_value('my_zone')
     }
 
     context 'quobyte backend with cinder type' do
@@ -32,7 +32,7 @@ describe 'cinder::backend::quobyte' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('myquobyte').with(
+      it { is_expected.to contain_cinder_type('myquobyte').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=myquobyte']
       )}

@@ -17,9 +17,9 @@ describe 'cinder::backend::dellemc_vmax_iscsi' do
   shared_examples 'cinder::backend::dellemc_vmax_iscsi' do
     context 'dell emc vmax iscsi volume driver' do
       it {
-        should contain_package('pywbem').with(:ensure => :present)
-        should contain_cinder_config('dellemc_vmax_iscsi/volume_driver').with_value('cinder.volume.drivers.dell_emc.vmax.iscsi.VMAXISCSIDriver')
-        should contain_cinder_config('dellemc_vmax_iscsi/cinder_emc_config_file').with_value('/etc/cinder/cinder_emc_config_CONF_GROUP_ISCSI.xml')
+        is_expected.to contain_package('pywbem').with(:ensure => :present)
+        is_expected.to contain_cinder_config('dellemc_vmax_iscsi/volume_driver').with_value('cinder.volume.drivers.dell_emc.vmax.iscsi.VMAXISCSIDriver')
+        is_expected.to contain_cinder_config('dellemc_vmax_iscsi/cinder_emc_config_file').with_value('/etc/cinder/cinder_emc_config_CONF_GROUP_ISCSI.xml')
       }
     end
 
@@ -32,11 +32,11 @@ describe 'cinder::backend::dellemc_vmax_iscsi' do
       end
 
       it {
-        should contain_cinder_config('dellemc_vmax_iscsi/cinder_emc_config_file').with_value('/etc/cinder/cinder_emc_config_CONF_GROUP_ISCSI.xml')
-        should contain_cinder_config('dellemc_vmax_iscsi/backend_availability_zone').with_value('my_zone')
+        is_expected.to contain_cinder_config('dellemc_vmax_iscsi/cinder_emc_config_file').with_value('/etc/cinder/cinder_emc_config_CONF_GROUP_ISCSI.xml')
+        is_expected.to contain_cinder_config('dellemc_vmax_iscsi/backend_availability_zone').with_value('my_zone')
       }
 
-      it { should contain_cinder_type('dellemc_vmax_iscsi').with(
+      it { is_expected.to contain_cinder_type('dellemc_vmax_iscsi').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=dellemc_vmax_iscsi']
       )}
@@ -47,7 +47,7 @@ describe 'cinder::backend::dellemc_vmax_iscsi' do
         params.merge!( :extra_options => {'dellemc_vmax_iscsi/param1' => {'value' => 'value1'}} )
       end
 
-      it { should contain_cinder_config('dellemc_vmax_iscsi/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('dellemc_vmax_iscsi/param1').with_value('value1') }
     end
   end
 

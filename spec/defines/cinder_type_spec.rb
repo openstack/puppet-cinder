@@ -7,7 +7,7 @@ describe 'cinder::type' do
 
   shared_examples 'cinder::type' do
     context 'default creation' do
-      it { should contain_cinder_type('hippo').with_ensure('present') }
+      it { is_expected.to contain_cinder_type('hippo').with_ensure('present') }
     end
 
     context 'creation with properties' do
@@ -18,7 +18,7 @@ describe 'cinder::type' do
         }
       end
 
-      it { should contain_cinder_type('hippo').with(
+      it { is_expected.to contain_cinder_type('hippo').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=name1,name2']
       )}
