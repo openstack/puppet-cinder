@@ -11,14 +11,14 @@ describe 'cinder::backend::veritas_hyperscale' do
   end
 
   shared_examples 'cinder::backend::veritas_hyperscale' do
-    it { should contain_cinder_config("#{title}/volume_driver").with(
+    it { is_expected.to contain_cinder_config("#{title}/volume_driver").with(
       :value => 'cinder.volume.drivers.veritas.vrtshyperscale.HyperScaleDriver'
     )}
 
     it {
-      should contain_cinder_config("#{title}/volume_backend_name").with_value(title)
-      should contain_cinder_config("#{title}/backend_availability_zone").with_value('my_zone')
-      should contain_cinder_config("#{title}/image_volume_cache_enabled").with_value(true)
+      is_expected.to contain_cinder_config("#{title}/volume_backend_name").with_value(title)
+      is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('my_zone')
+      is_expected.to contain_cinder_config("#{title}/image_volume_cache_enabled").with_value(true)
     }
 
     context 'veritas_hyperscale backend with additional configuration' do
@@ -26,7 +26,7 @@ describe 'cinder::backend::veritas_hyperscale' do
         params.merge!( :extra_options => {"#{title}/param1" => {'value' => 'value1'}} )
       end
 
-      it { should contain_cinder_config("#{title}/param1").with_value('value1') }
+      it { is_expected.to contain_cinder_config("#{title}/param1").with_value('value1') }
     end
 
     context 'veritas_hyperScale backend with cinder type' do
@@ -34,7 +34,7 @@ describe 'cinder::backend::veritas_hyperscale' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type(title).with(
+      it { is_expected.to contain_cinder_type(title).with(
         :ensure     => 'present',
         :properties => ["volume_backend_name=#{title}"]
       )}

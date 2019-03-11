@@ -20,7 +20,7 @@ describe 'cinder::quota_set' do
 
   shared_examples 'cinder::quota_set' do
     context 'with specified parameters' do
-      it { should contain_exec('openstack quota set --class default').with(
+      it { is_expected.to contain_exec('openstack quota set --class default').with(
         :command     => "openstack quota set --class default --volumes 10 --snapshots 10 --gigabytes 1000 --volume-type 'hippo'",
         :environment => [
           'OS_TENANT_NAME=admin',
@@ -38,7 +38,7 @@ describe 'cinder::quota_set' do
         params.merge!( :os_region_name => 'test' )
       end
 
-      it { should contain_exec('openstack quota set --class default').with(
+      it { is_expected.to contain_exec('openstack quota set --class default').with(
         :command     => "openstack quota set --class default --volumes 10 --snapshots 10 --gigabytes 1000 --volume-type 'hippo'",
         :environment => [
           'OS_TENANT_NAME=admin',

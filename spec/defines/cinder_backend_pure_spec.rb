@@ -17,11 +17,11 @@ describe 'cinder::backend::pure' do
       end
 
       it {
-        should contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureISCSIDriver')
-        should contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
-        should contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
-        should contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
-        should contain_cinder_config('pure/use_chap_auth').with_value('false')
+        is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureISCSIDriver')
+        is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
+        is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
+        is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
+        is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
       }
     end
 
@@ -35,12 +35,12 @@ describe 'cinder::backend::pure' do
       end
 
       it {
-        should contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureISCSIDriver')
-        should contain_cinder_config('pure/backend_availability_zone').with_value('my_zone')
-        should contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
-        should contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
-        should contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
-        should contain_cinder_config('pure/use_chap_auth').with_value('true')
+        is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureISCSIDriver')
+        is_expected.to contain_cinder_config('pure/backend_availability_zone').with_value('my_zone')
+        is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
+        is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
+        is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
+        is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('true')
       }
     end
 
@@ -50,11 +50,11 @@ describe 'cinder::backend::pure' do
       end
 
       it {
-        should contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureFCDriver')
-        should contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
-        should contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
-        should contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
-        should contain_cinder_config('pure/use_chap_auth').with_value('false')
+        is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureFCDriver')
+        is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
+        is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
+        is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
+        is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
       }
     end
 
@@ -63,7 +63,7 @@ describe 'cinder::backend::pure' do
         req_params.merge({:extra_options => {'pure_backend/param1' => {'value' => 'value1'}}})
       end
 
-      it { should contain_cinder__backend__pure('pure').with(
+      it { is_expected.to contain_cinder__backend__pure('pure').with(
         :extra_options => {'pure_backend/param1' => {'value' => 'value1'}}
       )}
     end
@@ -73,7 +73,7 @@ describe 'cinder::backend::pure' do
         req_params.merge!({:manage_volume_type => true})
       end
 
-      it { should contain_cinder_type('pure').with(
+      it { is_expected.to contain_cinder_type('pure').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=pure']
       )}

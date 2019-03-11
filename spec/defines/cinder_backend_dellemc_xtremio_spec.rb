@@ -38,13 +38,13 @@ describe 'cinder::backend::dellemc_xtremio_iscsi' do
     end
 
     it {
-      should contain_cinder__backend__dellemc_xtremio_iscsi(config_group_name)
-      should contain_cinder_config("#{title}/volume_driver").with_value('cinder.volume.drivers.dell_emc.xtremio.XtremIOISCSIDriver')
+      is_expected.to contain_cinder__backend__dellemc_xtremio_iscsi(config_group_name)
+      is_expected.to contain_cinder_config("#{title}/volume_driver").with_value('cinder.volume.drivers.dell_emc.xtremio.XtremIOISCSIDriver')
     }
 
     it {
       params_hash.each_pair do |config,value|
-        should contain_cinder_config("#{config_group_name}/#{config}").with_value( value )
+        is_expected.to contain_cinder_config("#{config_group_name}/#{config}").with_value( value )
       end
     }
   end
@@ -67,7 +67,7 @@ describe 'cinder::backend::dellemc_xtremio_iscsi' do
         params.merge!( :extra_options => {'dellemc_xtremio_iscsi/param1' => { 'value' => 'value1' }} )
       end
 
-      it { should contain_cinder_config('dellemc_xtremio_iscsi/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('dellemc_xtremio_iscsi/param1').with_value('value1') }
     end
 
     context 'dellemc_xtremio_iscsi backend with cinder type' do
@@ -75,7 +75,7 @@ describe 'cinder::backend::dellemc_xtremio_iscsi' do
         params.merge!({:manage_volume_type => true})
       end
 
-      it { should contain_cinder_type('dellemc_xtremio_iscsi').with(
+      it { is_expected.to contain_cinder_type('dellemc_xtremio_iscsi').with(
         :ensure => 'present',
         :properties => ['volume_backend_name=dellemc_xtremio_iscsi']
       )}

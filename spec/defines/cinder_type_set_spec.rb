@@ -18,7 +18,7 @@ describe 'cinder::type_set' do
 
   shared_examples 'cinder::type_set' do
     context 'by default' do
-      it { should contain_cinder_type('sith').with(
+      it { is_expected.to contain_cinder_type('sith').with(
         :ensure     => 'present',
         :properties => ['monchichi=hippo']
       )}
@@ -29,7 +29,7 @@ describe 'cinder::type_set' do
         params.merge!( :value => 'hippi' )
       end
 
-      it { should contain_cinder_type('sith').with(
+      it { is_expected.to contain_cinder_type('sith').with(
         :ensure     => 'present',
         :properties => ['monchichi=hippi']
       )}

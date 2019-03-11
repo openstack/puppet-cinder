@@ -23,15 +23,15 @@ describe 'cinder::backend::hpe3par_iscsi' do
   shared_examples 'cinder::backend::hpe3par_iscsi' do
     context 'hpe3par_iscsi volume driver' do
       it {
-        should contain_cinder_config('hpe3par_iscsi/volume_driver').with_value('cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver')
-        should contain_cinder_config('hpe3par_iscsi/backend_availability_zone').with_value('my_zone')
-        should contain_cinder_config('hpe3par_iscsi/hpe3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
-        should contain_cinder_config('hpe3par_iscsi/hpe3par_username').with_value('3paradm')
-        should contain_cinder_config('hpe3par_iscsi/hpe3par_password').with_value('password')
-        should contain_cinder_config('hpe3par_iscsi/hpe3par_iscsi_ips').with_value('172.0.0.3')
-        should contain_cinder_config('hpe3par_iscsi/san_ip').with_value('172.0.0.2')
-        should contain_cinder_config('hpe3par_iscsi/san_login').with_value('3paradm')
-        should contain_cinder_config('hpe3par_iscsi/san_password').with_value('password')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/volume_driver').with_value('cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/backend_availability_zone').with_value('my_zone')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_username').with_value('3paradm')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_password').with_value('password')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_iscsi_ips').with_value('172.0.0.3')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/san_ip').with_value('172.0.0.2')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/san_login').with_value('3paradm')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/san_password').with_value('password')
       }
     end
 
@@ -40,7 +40,7 @@ describe 'cinder::backend::hpe3par_iscsi' do
         params.merge!( :extra_options => {'hpe3par_iscsi/param1' => {'value' => 'value1'}} )
       end
 
-      it { should contain_cinder_config('hpe3par_iscsi/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('hpe3par_iscsi/param1').with_value('value1') }
     end
 
     context 'hpe3par_iscsi backend with cinder type' do
@@ -48,7 +48,7 @@ describe 'cinder::backend::hpe3par_iscsi' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('hpe3par_iscsi').with(
+      it { is_expected.to contain_cinder_type('hpe3par_iscsi').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=hpe3par_iscsi']
       )}

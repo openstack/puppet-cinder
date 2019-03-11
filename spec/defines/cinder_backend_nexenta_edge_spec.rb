@@ -31,7 +31,7 @@ describe 'cinder::backend::nexenta_edge' do
 
       it {
         params_hash.each_pair do |config, value|
-          should contain_cinder_config("nexenta_edge/#{config}").with_value(value)
+          is_expected.to contain_cinder_config("nexenta_edge/#{config}").with_value(value)
         end
       }
     end
@@ -41,7 +41,7 @@ describe 'cinder::backend::nexenta_edge' do
         params.merge!( :extra_options => {'nexenta_edge/param1' => { 'value' => 'value1' }} )
       end
 
-      it { should contain_cinder_config('nexenta_edge/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('nexenta_edge/param1').with_value('value1') }
     end
 
     context 'nexenta edge backend with cinder type' do
@@ -49,7 +49,7 @@ describe 'cinder::backend::nexenta_edge' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('nexenta_edge').with(
+      it { is_expected.to contain_cinder_type('nexenta_edge').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=nexenta_edge']
       )}

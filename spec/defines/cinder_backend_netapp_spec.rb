@@ -43,17 +43,17 @@ describe 'cinder::backend::netapp' do
       default_params.merge(params)
     end
 
-    it { should contain_cinder_config('netapp/volume_driver').with_value('cinder.volume.drivers.netapp.common.NetAppDriver') }
+    it { is_expected.to contain_cinder_config('netapp/volume_driver').with_value('cinder.volume.drivers.netapp.common.NetAppDriver') }
 
     it {
       params_hash.each_pair do |config,value|
-        should contain_cinder_config("netapp/#{config}").with_value( value )
+        is_expected.to contain_cinder_config("netapp/#{config}").with_value( value )
       end
     }
 
     it {
-      should contain_cinder_config('netapp/netapp_password').with_secret( true )
-      should contain_cinder_config('netapp/netapp_sa_password').with_secret( true )
+      is_expected.to contain_cinder_config('netapp/netapp_password').with_secret( true )
+      is_expected.to contain_cinder_config('netapp/netapp_sa_password').with_secret( true )
     }
   end
 
@@ -75,7 +75,7 @@ describe 'cinder::backend::netapp' do
         params.merge!( :netapp_storage_family => 'eseries' )
       end
 
-      it { should contain_cinder_config('netapp/use_multipath_for_image_xfer').with_value('true') }
+      it { is_expected.to contain_cinder_config('netapp/use_multipath_for_image_xfer').with_value('true') }
     end
 
     context 'with nfs_mount_options' do
@@ -83,7 +83,7 @@ describe 'cinder::backend::netapp' do
         params.merge!( :nfs_mount_options => 'rw,proto=tcp,sec=sys' )
       end
 
-      it { should contain_cinder_config('netapp/nfs_mount_options').with_value('rw,proto=tcp,sec=sys') }
+      it { is_expected.to contain_cinder_config('netapp/nfs_mount_options').with_value('rw,proto=tcp,sec=sys') }
     end
 
     context 'netapp backend with cinder type' do
@@ -91,7 +91,7 @@ describe 'cinder::backend::netapp' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('netapp').with(
+      it { is_expected.to contain_cinder_type('netapp').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=netapp']
       )}
@@ -102,7 +102,7 @@ describe 'cinder::backend::netapp' do
         params.merge!( :extra_options => {'netapp/param1' => { 'value' => 'value1' }} )
       end
 
-      it { should contain_cinder_config('netapp/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('netapp/param1').with_value('value1') }
     end
 
     context 'with NFS shares provided' do
@@ -111,7 +111,7 @@ describe 'cinder::backend::netapp' do
                        :nfs_shares_config => '/etc/cinder/shares.conf' )
       end
 
-      it { should contain_file('/etc/cinder/shares.conf').with(
+      it { is_expected.to contain_file('/etc/cinder/shares.conf').with(
         :content => "10.0.0.1:/test1\n10.0.0.2:/test2",
       )}
     end
@@ -124,7 +124,7 @@ describe 'cinder::backend::netapp' do
         })
       end
 
-      it { should raise_error(Puppet::Error) }
+      it { is_expected.to raise_error(Puppet::Error) }
     end
 
     context 'with name search pattern' do
@@ -132,7 +132,7 @@ describe 'cinder::backend::netapp' do
         params.merge!( :netapp_pool_name_search_pattern => '(something)' )
       end
 
-      it { should contain_cinder_config('netapp/netapp_pool_name_search_pattern').with_value('(something)') }
+      it { is_expected.to contain_cinder_config('netapp/netapp_pool_name_search_pattern').with_value('(something)') }
     end
   end
 

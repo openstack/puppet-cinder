@@ -35,14 +35,14 @@ describe 'cinder::backend::dellemc_unity' do
       default_params.merge(params)
     end
 
-    it { should contain_cinder__backend__dellemc_unity(config_group_name) }
-    it { should contain_cinder_config("#{title}/volume_driver").with(
+    it { is_expected.to contain_cinder__backend__dellemc_unity(config_group_name) }
+    it { is_expected.to contain_cinder_config("#{title}/volume_driver").with(
       :value => 'cinder.volume.drivers.dell_emc.unity.Driver'
     )}
 
     it {
       params_hash.each_pair do |config,value|
-        should contain_cinder_config("#{config_group_name}/#{config}").with_value(value)
+        is_expected.to contain_cinder_config("#{config_group_name}/#{config}").with_value(value)
       end
     }
   end
@@ -65,7 +65,7 @@ describe 'cinder::backend::dellemc_unity' do
         params.merge!( :extra_options => {'dellemc_unity/param1' => { 'value' => 'value1' }} )
       end
 
-      it { should contain_cinder_config('dellemc_unity/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('dellemc_unity/param1').with_value('value1') }
     end
 
     context 'dellemc_unity backend with cinder type' do
@@ -73,7 +73,7 @@ describe 'cinder::backend::dellemc_unity' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('dellemc_unity').with(
+      it { is_expected.to contain_cinder_type('dellemc_unity').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=dellemc_unity']
       )}

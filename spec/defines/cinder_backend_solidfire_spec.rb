@@ -35,19 +35,19 @@ describe 'cinder::backend::solidfire' do
         req_params
       end
 
-      it { should contain_cinder__backend__solidfire(config_group_name) }
-      it { should contain_cinder_config("#{config_group_name}/volume_driver").with(
+      it { is_expected.to contain_cinder__backend__solidfire(config_group_name) }
+      it { is_expected.to contain_cinder_config("#{config_group_name}/volume_driver").with(
         :value => 'cinder.volume.drivers.solidfire.SolidFireDriver'
       )}
 
       it {
         params.each_pair do |config,value|
-          should contain_cinder_config(
+          is_expected.to contain_cinder_config(
             "#{config_group_name}/#{config}").with_value(value)
         end
       }
 
-      it { should contain_cinder_config('solidfire/san_password').with_secret(true) }
+      it { is_expected.to contain_cinder_config('solidfire/san_password').with_secret(true) }
     end
 
     context 'SolidFire backend driver with all params' do
@@ -55,19 +55,19 @@ describe 'cinder::backend::solidfire' do
         req_params.merge(other_params)
       end
 
-      it { should contain_cinder__backend__solidfire(config_group_name) }
-      it { should contain_cinder_config("#{config_group_name}/volume_driver").with(
+      it { is_expected.to contain_cinder__backend__solidfire(config_group_name) }
+      it { is_expected.to contain_cinder_config("#{config_group_name}/volume_driver").with(
         :value => 'cinder.volume.drivers.solidfire.SolidFireDriver'
       )}
 
       it {
         params.each_pair do |config,value|
-          should contain_cinder_config(
+          is_expected.to contain_cinder_config(
             "#{config_group_name}/#{config}").with_value(value)
         end
       }
 
-      it { should contain_cinder_config('solidfire/san_password').with_secret(true) }
+      it { is_expected.to contain_cinder_config('solidfire/san_password').with_secret(true) }
     end
 
     context 'solidfire backend with additional configuration' do
@@ -79,7 +79,7 @@ describe 'cinder::backend::solidfire' do
         params.merge!( :extra_options => {'solidfire/param1' => {'value' => 'value1'}} )
       end
 
-      it { should contain_cinder_config('solidfire/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('solidfire/param1').with_value('value1') }
     end
 
     context 'solidfire backend with cinder type' do
@@ -91,7 +91,7 @@ describe 'cinder::backend::solidfire' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('solidfire').with(
+      it { is_expected.to contain_cinder_type('solidfire').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=solidfire']
       )}

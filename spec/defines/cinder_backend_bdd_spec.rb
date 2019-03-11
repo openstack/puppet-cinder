@@ -13,16 +13,16 @@ describe 'cinder::backend::bdd' do
   shared_examples 'cinder block device' do
     context 'with default parameters' do
       it {
-        should contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
-        should contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.block_device.BlockDeviceDriver')
-        should contain_cinder_config('hippo/available_devices').with_value('/dev/sda')
-        should contain_cinder_config('hippo/target_helper').with_value('tgtadm')
-        should contain_cinder_config('hippo/volumes_dir').with_value('/var/lib/cinder/volumes')
-        should contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.2')
-        should contain_cinder_config('hippo/volume_group').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('hippo/target_protocol').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('hippo/volume_clear').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
+        is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.block_device.BlockDeviceDriver')
+        is_expected.to contain_cinder_config('hippo/available_devices').with_value('/dev/sda')
+        is_expected.to contain_cinder_config('hippo/target_helper').with_value('tgtadm')
+        is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/var/lib/cinder/volumes')
+        is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.2')
+        is_expected.to contain_cinder_config('hippo/volume_group').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/target_protocol').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/volume_clear').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -41,16 +41,16 @@ describe 'cinder::backend::bdd' do
       end
 
       it {
-        should contain_cinder_config('hippo/available_devices').with_value('/dev/sdb,/dev/sdc')
-        should contain_cinder_config('hippo/volumes_dir').with_value('/var/lib/cinder/bdd-volumes')
-        should contain_cinder_config('hippo/target_ip_address').with_value('10.20.0.2')
-        should contain_cinder_config('hippo/target_helper').with_value('lioadm')
-        should contain_cinder_config('hippo/volume_group').with_value('cinder')
-        should contain_cinder_config('hippo/volume_clear').with_value('zero')
-        should contain_cinder_config('hippo/backend_availability_zone').with_value('my_zone')
+        is_expected.to contain_cinder_config('hippo/available_devices').with_value('/dev/sdb,/dev/sdc')
+        is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/var/lib/cinder/bdd-volumes')
+        is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('10.20.0.2')
+        is_expected.to contain_cinder_config('hippo/target_helper').with_value('lioadm')
+        is_expected.to contain_cinder_config('hippo/volume_group').with_value('cinder')
+        is_expected.to contain_cinder_config('hippo/volume_clear').with_value('zero')
+        is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('my_zone')
       }
 
-      it { should contain_cinder_type('hippo').with(
+      it { is_expected.to contain_cinder_type('hippo').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=hippo']
       )}
@@ -61,7 +61,7 @@ describe 'cinder::backend::bdd' do
         params.merge!( :extra_options => {'hippo/param1' => { 'value' => 'value1' }} )
       end
 
-      it { should contain_cinder_config('hippo/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('hippo/param1').with_value('value1') }
     end
 
     context 'with deprecated iscsi_ip_address' do
@@ -72,7 +72,7 @@ describe 'cinder::backend::bdd' do
         })
       end
 
-      it { should contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.42') }
+      it { is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.42') }
     end
 
     context 'with no target_ip_address or iscsi_ip_address' do
@@ -80,15 +80,15 @@ describe 'cinder::backend::bdd' do
         params.delete(:target_ip_address)
       end
 
-      it { should raise_error(Puppet::Error, /A target_ip_address or iscsi_ip_address must be specified./) }
+      it { is_expected.to raise_error(Puppet::Error, /A target_ip_address or iscsi_ip_address must be specified./) }
     end
   end
 
   shared_examples 'check needed daemons' do
     context 'tgtadm helper' do
       it {
-        should contain_package('tgt').with_ensure('present')
-        should contain_service('tgtd').with_ensure('running')
+        is_expected.to contain_package('tgt').with_ensure('present')
+        is_expected.to contain_service('tgtd').with_ensure('running')
       }
     end
 
@@ -98,8 +98,8 @@ describe 'cinder::backend::bdd' do
      end
 
      it {
-       should contain_package('targetcli').with_ensure('present')
-       should contain_service('target').with_ensure('running')
+       is_expected.to contain_package('targetcli').with_ensure('present')
+       is_expected.to contain_service('target').with_ensure('running')
      }
     end
 
@@ -108,7 +108,7 @@ describe 'cinder::backend::bdd' do
         params.merge!( :target_helper => 'fake' )
       end
 
-      it { should raise_error(Puppet::Error, /Unsupported target helper: fake/) }
+      it { is_expected.to raise_error(Puppet::Error, /Unsupported target helper: fake/) }
     end
   end
 

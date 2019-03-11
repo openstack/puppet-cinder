@@ -33,7 +33,7 @@ describe 'cinder::backend::san' do
 
     it {
       params_hash.each_pair do |config,value|
-        should contain_cinder_config("mysan/#{config}").with_value(value)
+        is_expected.to contain_cinder_config("mysan/#{config}").with_value(value)
       end
     }
   end
@@ -48,7 +48,7 @@ describe 'cinder::backend::san' do
         params.merge!( :extra_options => {'mysan/param1' => { 'value' => 'value1' }} )
       end
 
-      it { should contain_cinder_config('mysan/param1').with_value('value1') }
+      it { is_expected.to contain_cinder_config('mysan/param1').with_value('value1') }
     end
 
     context 'san backend with cinder type' do
@@ -56,7 +56,7 @@ describe 'cinder::backend::san' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('mysan').with(
+      it { is_expected.to contain_cinder_type('mysan').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=mysan']
       )}

@@ -29,14 +29,14 @@ describe 'cinder::backend::iscsi' do
   shared_examples 'cinder::backend::iscsi' do
     context 'with default params' do
       it {
-        should contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
-        should contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
-        should contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.2')
-        should contain_cinder_config('hippo/target_helper').with_value('tgtadm')
-        should contain_cinder_config('hippo/volume_group').with_value('<SERVICE DEFAULT>')
-        should contain_cinder_config('hippo/volumes_dir').with_value('/var/lib/cinder/volumes')
-        should contain_cinder_config('hippo/target_protocol').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
+        is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
+        is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.2')
+        is_expected.to contain_cinder_config('hippo/target_helper').with_value('tgtadm')
+        is_expected.to contain_cinder_config('hippo/volume_group').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/var/lib/cinder/volumes')
+        is_expected.to contain_cinder_config('hippo/target_protocol').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -45,7 +45,7 @@ describe 'cinder::backend::iscsi' do
         params.merge!(iser_params)
       end
 
-      it { should contain_cinder_config('hippo/target_protocol').with_value('iser') }
+      it { is_expected.to contain_cinder_config('hippo/target_protocol').with_value('iser') }
     end
 
     context 'with non-default volumes_dir' do
@@ -53,7 +53,7 @@ describe 'cinder::backend::iscsi' do
         params.merge!(volumes_dir_params)
       end
 
-      it { should contain_cinder_config('hippo/volumes_dir').with_value('/etc/cinder/volumes') }
+      it { is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/etc/cinder/volumes') }
     end
 
     context 'iscsi backend with cinder type' do
@@ -61,7 +61,7 @@ describe 'cinder::backend::iscsi' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { should contain_cinder_type('hippo').with(
+      it { is_expected.to contain_cinder_type('hippo').with(
         :ensure     => 'present',
         :properties => ['volume_backend_name=hippo']
       )}
@@ -72,7 +72,7 @@ describe 'cinder::backend::iscsi' do
         params.merge!( :extra_options => {'hippo/param1' => {'value' => 'value1'}} )
       end
 
-      it { should contain_cinder_config('hippo/param1').with(
+      it { is_expected.to contain_cinder_config('hippo/param1').with(
         :value => 'value1',
       )}
     end
@@ -85,7 +85,7 @@ describe 'cinder::backend::iscsi' do
         })
       end
 
-      it { should contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.42') }
+      it { is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.42') }
     end
 
     context 'with no target_ip_address or iscsi_ip_address' do
@@ -93,12 +93,12 @@ describe 'cinder::backend::iscsi' do
         params.delete(:target_ip_address)
       end
 
-      it { should raise_error(Puppet::Error, /A target_ip_address or iscsi_ip_address must be specified./) }
+      it { is_expected.to raise_error(Puppet::Error, /A target_ip_address or iscsi_ip_address must be specified./) }
     end
   end
 
   shared_examples 'cinder::backend::iscsi on RedHat' do
-    it { should contain_file_line('cinder include').with(
+    it { is_expected.to contain_file_line('cinder include').with(
       :line => 'include /var/lib/cinder/volumes/*',
       :path => '/etc/tgt/targets.conf'
     )}
