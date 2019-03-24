@@ -17,7 +17,7 @@ class cinder::db::sync(
 
   exec { 'cinder-manage db_sync':
     command     => "cinder-manage ${extra_params} db sync",
-    path        => '/usr/bin',
+    path        => ['/bin', '/usr/bin'],
     user        => 'cinder',
     refreshonly => true,
     try_sleep   => 5,

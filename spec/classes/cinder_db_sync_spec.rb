@@ -6,7 +6,7 @@ describe 'cinder::db::sync' do
       is_expected.to contain_exec('cinder-manage db_sync').with(
         :command     => 'cinder-manage  db sync',
         :user        => 'cinder',
-        :path        => '/usr/bin',
+        :path        => ['/bin', '/usr/bin'],
         :refreshonly => 'true',
         :try_sleep   => 5,
         :tries       => 10,
@@ -30,7 +30,7 @@ describe 'cinder::db::sync' do
         is_expected.to contain_exec('cinder-manage db_sync').with(
           :command     => 'cinder-manage --config-file /etc/cinder/cinder.conf db sync',
           :user        => 'cinder',
-          :path        => '/usr/bin',
+          :path        => ['/bin', '/usr/bin'],
           :refreshonly => 'true',
           :try_sleep   => 5,
           :tries       => 10,
