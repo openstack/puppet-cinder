@@ -151,8 +151,8 @@ define cinder::backend::rbd (
 
   case $::osfamily {
     'Debian': {
-      $override_line    = "env CEPH_ARGS=\"--id ${rbd_user}\""
-      $override_match   = '^env CEPH_ARGS='
+      $override_line    = "CEPH_ARGS=\"--id ${rbd_user}\""
+      $override_match   = '^CEPH_ARGS='
     }
     'RedHat': {
       $override_line    = "export CEPH_ARGS=\"--id ${rbd_user}\""

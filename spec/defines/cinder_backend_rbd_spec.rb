@@ -98,13 +98,13 @@ describe 'cinder::backend::rbd' do
   end
 
   shared_examples 'cinder::backend::rbd on Debian' do
-    it { is_expected.to contain_file('/etc/init/cinder-volume.override').with(
+    it { is_expected.to contain_file('/etc/default/cinder-volume').with(
       :ensure => 'present'
     )}
 
     it { is_expected.to contain_file_line('set initscript env rbd-ssd').with(
-      :line   => /env CEPH_ARGS=\"--id test\"/,
-      :path   => '/etc/init/cinder-volume.override',
+      :line   => /CEPH_ARGS=\"--id test\"/,
+      :path   => '/etc/default/cinder-volume',
       :notify => 'Anchor[cinder::service::begin]'
     )}
   end
