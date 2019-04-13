@@ -23,7 +23,7 @@ class cinder::params {
     $db_sync_command           = 'cinder-manage db sync'
     $tgt_package_name          = 'tgt'
     $tgt_service_name          = 'tgt'
-    $ceph_init_override        = '/etc/init/cinder-volume.override'
+    $ceph_init_override        = '/etc/default/cinder-volume'
     $ceph_common_package_name  = 'ceph-common'
     $target_helper             = 'tgtadm'
     $lio_package_name          = 'targetcli'
