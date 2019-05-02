@@ -19,9 +19,10 @@
       TripleO standalone Job running Cinder specific Tempest tests.
     vars:
       featureset_override:
-        run_tempest: true
-        tempest_whitelist:
+        run_tempest: false
+        tempest_services:
+          - cinder
+        tempest_test_whitelist:
           - 'volume'
           - 'cinder_tempest_plugin'
-        tempest_plugins:
-          - 'python-cinder-tests-tempest'
+        use_os_tempest: true
