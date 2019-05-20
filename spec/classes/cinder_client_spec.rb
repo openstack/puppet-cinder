@@ -16,6 +16,7 @@ describe 'cinder::client' do
       default_params.merge(params)
     end
 
+    it { is_expected.to contain_class('cinder::deps') }
     it { is_expected.to contain_class('cinder::params') }
 
     it 'installs cinder client package' do
