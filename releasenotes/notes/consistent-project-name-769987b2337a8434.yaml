@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The default value of cinder::nova::project_name is changed from 'service'
+    to 'services'.

@@ -73,7 +73,7 @@
 #
 # [*project_name*]
 #   (Optional) Nova admin project name.
-#   Defaults to 'service'
+#   Defaults to 'services'
 #
 # [*project_domain_name*]
 #   (Optional) Nova admin project domain name.
@@ -96,7 +96,7 @@ class cinder::nova (
   $username            = 'nova',
   $user_domain_name    = 'Default',
   $password            = undef,
-  $project_name        = 'service',
+  $project_name        = 'services',
   $project_domain_name = 'Default',
 ) {
 

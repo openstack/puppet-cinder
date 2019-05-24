@@ -64,7 +64,7 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/username').with_value('nova')
         is_expected.to contain_cinder_config('nova/user_domain_name').with_value('Default')
         is_expected.to contain_cinder_config('nova/password').with_value('foo')
-        is_expected.to contain_cinder_config('nova/project_name').with_value('service')
+        is_expected.to contain_cinder_config('nova/project_name').with_value('services')
         is_expected.to contain_cinder_config('nova/project_domain_name').with_value('Default')
       }
     end
