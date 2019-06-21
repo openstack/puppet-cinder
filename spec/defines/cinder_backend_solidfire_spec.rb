@@ -24,7 +24,6 @@ describe 'cinder::backend::solidfire' do
       :sf_api_port               => '<SERVICE DEFAULT>',
       :sf_volume_prefix          => '<SERVICE DEFAULT>',
       :sf_svip                   => '<SERVICE DEFAULT>',
-      :sf_enable_volume_mapping  => '<SERVICE DEFAULT>',
       :sf_enable_vag             => '<SERVICE DEFAULT>',
     }
   end

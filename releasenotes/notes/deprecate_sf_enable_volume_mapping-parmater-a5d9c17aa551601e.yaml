@@ -1,0 +1,4 @@
+---
+deprecations:
+  - Solidfire option sf_enable_volume_mapping is deprecated and will be
+    removed in a future release.

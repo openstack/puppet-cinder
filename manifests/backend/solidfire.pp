@@ -66,12 +66,6 @@
 #   VLANs for iSCSI networks in their cloud.
 #   Defaults to $::os_service_default
 #
-# [*sf_enable_volume_mapping*]
-#   (optional) Create an internal mapping of volume IDs and account.
-#   Optimizes lookups and performance at the expense of memory, very
-#   large deployments may want to consider setting to False.
-#   Defaults to $::os_service_default
-#
 # [*sf_enable_vag*]
 #   (optional) Utilize volume access groups on a per-tenant basis.
 #   Defaults to $::os_service_default
@@ -88,6 +82,14 @@
 #   Example :
 #     { 'solidfire_backend/param1' => { 'value' => value1 } }
 #
+# DEPRECATED PARAMETERS
+#
+# [*sf_enable_volume_mapping*]
+#   (optional) Create an internal mapping of volume IDs and account.
+#   Optimizes lookups and performance at the expense of memory, very
+#   large deployments may want to consider setting to False.
+#   Defaults to undef
+#
 define cinder::backend::solidfire(
   $san_ip,
   $san_login,
@@ -103,13 +105,18 @@ define cinder::backend::solidfire(
   $sf_api_port               = $::os_service_default,
   $sf_volume_prefix          = $::os_service_default,
   $sf_svip                   = $::os_service_default,
-  $sf_enable_volume_mapping  = $::os_service_default,
   $sf_enable_vag             = $::os_service_default,
   $manage_volume_type        = false,
   $extra_options             = {},
+  # DEPRECATED PARAMETERS
+  $sf_enable_volume_mapping  = undef,
 ) {
 
   include ::cinder::deps
+
+  if $sf_enable_volume_mapping {
+    warning('The sf_enable_volume_mapping parameter is deprecated, has no effect and will be removed in the future release.')
+  }
 
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
@@ -126,7 +133,6 @@ define cinder::backend::solidfire(
     "${name}/sf_api_port":                 value => $sf_api_port;
     "${name}/sf_volume_prefix":            value => $sf_volume_prefix;
     "${name}/sf_svip":                     value => $sf_svip;
-    "${name}/sf_enable_volume_mapping":    value => $sf_enable_volume_mapping;
     "${name}/sf_enable_vag":               value => $sf_enable_vag;
   }
 
