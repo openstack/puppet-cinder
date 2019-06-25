@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    New hieradata, cinder::keystone::authtoken::service_token_roles, is
+    introduced so that specific role can be assigned to the service user
+    who can use service token feature.
+  - |
+    New hieradata, cinder::keystone::roles, roles_v2 and roles_v3 are
+    introduced to configure customized role for cinder user in keystone
+    identity.

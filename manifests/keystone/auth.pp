@@ -111,6 +111,18 @@
 #   (Optional) Tenant for Cinder v3 user.
 #   Defaults to 'services'.
 #
+# [*roles*]
+#   (Optional) List of roles assigned to Cinder user
+#   Defaults to ['admin']
+#
+# [*roles_v2*]
+#   (Optional) List of roles assigned to Cinder v2 user
+#   Defaults to ['admin']
+#
+# [*roles_v3*]
+#   (Optional) List of roles assigned to Cinder v3 user
+#   Defaults to ['admin']
+#
 # [*public_url_v2*]
 #   (Optional) The v2 endpoint's public url.
 #   This url should *not* contain any trailing '/'.
@@ -193,6 +205,9 @@ class cinder::keystone::auth (
   $tenant                 = 'services',
   $tenant_user_v2         = 'services',
   $tenant_user_v3         = 'services',
+  $roles                  = ['admin'],
+  $roles_v2               = ['admin'],
+  $roles_v3               = ['admin'],
   $email                  = 'cinder@localhost',
   $email_user_v2          = 'cinderv2@localhost',
   $email_user_v3          = 'cinderv3@localhost',
@@ -264,6 +279,7 @@ class cinder::keystone::auth (
     password            => $password,
     email               => $email,
     tenant              => $tenant,
+    roles               => $roles,
   }
 
   keystone::resource::service_identity { 'cinderv2':
@@ -278,6 +294,7 @@ class cinder::keystone::auth (
     password            => $password_user_v2,
     email               => $email_user_v2,
     tenant              => $tenant_user_v2,
+    roles               => $roles_v2,
     public_url          => $public_url_v2,
     admin_url           => $admin_url_v2,
     internal_url        => $internal_url_v2,
@@ -295,6 +312,7 @@ class cinder::keystone::auth (
     password            => $password_user_v3,
     email               => $email_user_v3,
     tenant              => $tenant_user_v3,
+    roles               => $roles_v3,
     public_url          => $public_url_v3,
     admin_url           => $admin_url_v3,
     internal_url        => $internal_url_v3,
