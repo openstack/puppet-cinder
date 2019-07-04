@@ -90,6 +90,10 @@
 #   middleware should parse the proxy headers or not.(boolean value)
 #   Defaults to $::os_service_default
 #
+# [*max_request_body_size*]
+#   (Optional) Set max request body size
+#   Defaults to $::os_service_default.
+#
 # [*use_ssl*]
 #   (optional) Enable SSL on the API server
 #   Defaults to false
@@ -174,6 +178,7 @@ class cinder::api (
   $osapi_max_limit                = $::os_service_default,
   $service_name                   = $::cinder::params::api_service,
   $enable_proxy_headers_parsing   = $::os_service_default,
+  $max_request_body_size          = $::os_service_default,
   $use_ssl                        = false,
   $cert_file                      = $::os_service_default,
   $key_file                       = $::os_service_default,
@@ -291,6 +296,7 @@ running as a standalone service, or httpd for being run by a httpd server")
 
   oslo::middleware {'cinder_config':
     enable_proxy_headers_parsing => $enable_proxy_headers_parsing,
+    max_request_body_size        => $max_request_body_size,
   }
 
   cinder_config {

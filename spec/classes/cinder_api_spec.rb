@@ -57,6 +57,7 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with('value' => '<SERVICE DEFAULT>')
         is_expected.to contain_oslo__middleware('cinder_config').with(
           :enable_proxy_headers_parsing => '<SERVICE DEFAULT>',
+          :max_request_body_size        => '<SERVICE DEFAULT>',
         )
       end
     end
