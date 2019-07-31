@@ -41,6 +41,7 @@ describe 'cinder::keystone::authtoken' do
         is_expected.to contain_cinder_config('keystone_authtoken/memcached_servers').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('keystone_authtoken/region_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('keystone_authtoken/token_cache_time').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('keystone_authtoken/service_token_roles').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('keystone_authtoken/service_token_roles_required').with_value('<SERVICE DEFAULT>')
       end
     end
@@ -48,39 +49,40 @@ describe 'cinder::keystone::authtoken' do
     context 'when overriding parameters' do
       before do
         params.merge!({
-          :www_authenticate_uri                 => 'https://10.0.0.1:9999/',
-          :username                             => 'myuser',
-          :password                             => 'mypasswd',
-          :auth_url                             => 'https://127.0.0.1:5000',
-          :project_name                         => 'service_project',
-          :user_domain_name                     => 'domainX',
-          :project_domain_name                  => 'domainX',
-          :insecure                             => false,
-          :auth_section                         => 'new_section',
-          :auth_type                            => 'password',
-          :auth_version                         => 'v3',
-          :cache                                => 'somevalue',
-          :cafile                               => '/opt/stack/data/cafile.pem',
-          :certfile                             => 'certfile.crt',
-          :delay_auth_decision                  => false,
-          :enforce_token_bind                   => 'permissive',
-          :http_connect_timeout                 => '300',
-          :http_request_max_retries             => '3',
-          :include_service_catalog              => true,
-          :keyfile                              => 'keyfile',
-          :memcache_pool_conn_get_timeout       => '9',
-          :memcache_pool_dead_retry             => '302',
-          :memcache_pool_maxsize                => '11',
-          :memcache_pool_socket_timeout         => '2',
-          :memcache_pool_unused_timeout         => '61',
-          :memcache_secret_key                  => 'secret_key',
-          :memcache_security_strategy           => 'ENCRYPT',
-          :memcache_use_advanced_pool           => true,
-          :memcached_servers                    => ['memcached01:11211','memcached02:11211'],
-          :manage_memcache_package              => true,
-          :region_name                          => 'region2',
-          :token_cache_time                     => '301',
-          :service_token_roles_required         => false,
+          :www_authenticate_uri           => 'https://10.0.0.1:9999/',
+          :username                       => 'myuser',
+          :password                       => 'mypasswd',
+          :auth_url                       => 'https://127.0.0.1:5000',
+          :project_name                   => 'service_project',
+          :user_domain_name               => 'domainX',
+          :project_domain_name            => 'domainX',
+          :insecure                       => false,
+          :auth_section                   => 'new_section',
+          :auth_type                      => 'password',
+          :auth_version                   => 'v3',
+          :cache                          => 'somevalue',
+          :cafile                         => '/opt/stack/data/cafile.pem',
+          :certfile                       => 'certfile.crt',
+          :delay_auth_decision            => false,
+          :enforce_token_bind             => 'permissive',
+          :http_connect_timeout           => '300',
+          :http_request_max_retries       => '3',
+          :include_service_catalog        => true,
+          :keyfile                        => 'keyfile',
+          :memcache_pool_conn_get_timeout => '9',
+          :memcache_pool_dead_retry       => '302',
+          :memcache_pool_maxsize          => '11',
+          :memcache_pool_socket_timeout   => '2',
+          :memcache_pool_unused_timeout   => '61',
+          :memcache_secret_key            => 'secret_key',
+          :memcache_security_strategy     => 'ENCRYPT',
+          :memcache_use_advanced_pool     => true,
+          :memcached_servers              => ['memcached01:11211','memcached02:11211'],
+          :manage_memcache_package        => true,
+          :region_name                    => 'region2',
+          :token_cache_time               => '301',
+          :service_token_roles            => ['admin'],
+          :service_token_roles_required   => true,
         })
       end
 
@@ -116,6 +118,7 @@ describe 'cinder::keystone::authtoken' do
         is_expected.to contain_cinder_config('keystone_authtoken/memcached_servers').with_value('memcached01:11211,memcached02:11211')
         is_expected.to contain_cinder_config('keystone_authtoken/region_name').with_value(params[:region_name])
         is_expected.to contain_cinder_config('keystone_authtoken/token_cache_time').with_value(params[:token_cache_time])
+        is_expected.to contain_cinder_config('keystone_authtoken/service_token_roles').with_value(params[:service_token_roles])
         is_expected.to contain_cinder_config('keystone_authtoken/service_token_roles_required').with_value(params[:service_token_roles_required])
       end
 

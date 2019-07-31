@@ -48,6 +48,7 @@ describe 'cinder::keystone::auth' do
     context 'when overriding parameters' do
       before do
         params.merge!({
+          :roles           => ['admin', 'service'],
           :region          => 'RegionThree',
           :public_url_v2   => 'https://10.0.42.1:4242/v42/%(tenant_id)s',
           :admin_url_v2    => 'https://10.0.42.2:4242/v42/%(tenant_id)s',
@@ -57,6 +58,11 @@ describe 'cinder::keystone::auth' do
           :internal_url_v3 => 'https://10.0.42.3:4242/v43/%(tenant_id)s'
         })
       end
+
+      it { is_expected.to contain_keystone_user_role('cinder@services').with(
+        :ensure  => 'present',
+        :roles   => ['admin', 'service']
+      )}
 
       it { is_expected.to contain_keystone_endpoint('RegionThree/cinderv2::volumev2').with(
         :ensure       => 'present',
