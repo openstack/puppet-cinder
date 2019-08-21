@@ -28,6 +28,7 @@ describe 'cinder' do
         is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_in_pthread').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_reconnect_delay').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_failover_strategy').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_messaging_rabbit/kombu_compression').with(:value => '<SERVICE DEFAULT>')
@@ -55,11 +56,13 @@ describe 'cinder' do
     context 'with rabbitmq heartbeats' do
       let :params do
         req_params.merge( :rabbit_heartbeat_timeout_threshold => '60',
-                          :rabbit_heartbeat_rate              => '10' )
+                          :rabbit_heartbeat_rate              => '10',
+                          :rabbit_heartbeat_in_pthread        => true )
       end
 
       it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value('60') }
       it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_rate').with_value('10') }
+      it { is_expected.to contain_cinder_config('oslo_messaging_rabbit/heartbeat_in_pthread').with_value(true) }
     end
 
     context 'with SSL enabled with kombu' do
