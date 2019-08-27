@@ -24,6 +24,8 @@ define cinder::type_set (
 
   include ::cinder::deps
 
+  warning('The cinder::type_set class is deprecated, please use the cinder_type resource instead.')
+
   cinder_type { $type:
     ensure     => present,
     properties => ["${key}=${value}"],

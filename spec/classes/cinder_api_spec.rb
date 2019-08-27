@@ -30,8 +30,6 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_workers').with(
          :value => '8'
         )
-        # nova_catalog_info has been deprecated
-        is_expected.not_to contain_cinder_config('DEFAULT/nova_catalog_info')
         is_expected.to contain_cinder_config('DEFAULT/default_volume_type').with(
          :value => '<SERVICE DEFAULT>'
         )
@@ -59,26 +57,6 @@ describe 'cinder::api' do
           :enable_proxy_headers_parsing => '<SERVICE DEFAULT>',
           :max_request_body_size        => '<SERVICE DEFAULT>',
         )
-      end
-    end
-
-    context 'with deprecated parameters' do
-      let :params do
-        req_params.merge({
-          'nova_catalog_info'           => 'compute:nova:publicURL',
-          'os_privileged_user_name'     => 'admin',
-          'os_privileged_user_password' => 'password',
-          'os_privileged_user_tenant'   => 'admin',
-          'os_privileged_user_auth_url' => 'http://localhost:8080',
-        })
-      end
-      it 'should not add them to the config' do
-        is_expected.not_to contain_cinder_config('DEFAULT/nova_catalog_info')
-        is_expected.not_to contain_cinder_config('DEFAULT/os_privileged_user_name')
-        is_expected.not_to contain_cinder_config('DEFAULT/os_privileged_user_password')
-        is_expected.not_to contain_cinder_config('DEFAULT/os_privileged_user_tenant')
-        is_expected.not_to contain_cinder_config('DEFAULT/os_privileged_user_auth_url')
-
       end
     end
 
@@ -290,17 +268,6 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('key_manager/backend').with_value('castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
         is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('https://localhost:9311/v1')
         is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('https://localhost:5000/v3')
-      end
-    end
-
-    context 'with barbican deprecated parameters' do
-      let :params do
-        req_params.merge!({
-          :keymgr_api_class           => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
-        })
-      end
-      it 'should set keymgr parameter' do
-        is_expected.to contain_cinder_config('key_manager/backend').with_value('castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
       end
     end
 

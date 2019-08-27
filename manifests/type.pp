@@ -24,6 +24,8 @@ define cinder::type (
 
   include ::cinder::deps
 
+  warning('The cinder::type is deprecated, please use the cinder_type resource.')
+
   if ($set_value and $set_key) {
     if is_array($set_value) {
       $value = join($set_value, ',')

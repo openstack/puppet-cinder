@@ -76,25 +76,6 @@ describe 'cinder::backend::iscsi' do
         :value => 'value1',
       )}
     end
-
-    context 'with deprecated iscsi_ip_address' do
-      before :each do
-        params.merge!({
-          :target_ip_address => :undef,
-          :iscsi_ip_address  => '127.0.0.42',
-        })
-      end
-
-      it { is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('127.0.0.42') }
-    end
-
-    context 'with no target_ip_address or iscsi_ip_address' do
-      before :each do
-        params.delete(:target_ip_address)
-      end
-
-      it { is_expected.to raise_error(Puppet::Error, /A target_ip_address or iscsi_ip_address must be specified./) }
-    end
   end
 
   shared_examples 'cinder::backend::iscsi on RedHat' do

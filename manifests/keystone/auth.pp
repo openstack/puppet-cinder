@@ -161,40 +161,6 @@
 #    admin_url    => 'https://10.0.0.30:8776/v3/%(tenant_id)s',
 #  }
 #
-# DEPRECATED PARAMETERS
-#
-# [*configure_endpoint*]
-#   (Optional) Should Cinder v1 endpoint be configured?
-#   API v1 was removed in Queens.
-#   Defaults to undef
-#
-# [*public_url*]
-#   (Optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:8776/v1/%(tenant_id)s')
-#   This url should *not* contain any trailing '/'.
-#   Defaults to undef
-#
-# [*internal_url*]
-#   (Optional) The endpoint's internal url.
-#   This url should *not* contain any trailing '/'.
-#   Defaults to undef
-#
-# [*admin_url*]
-#   (Optional) The endpoint's admin url.
-#   This url should *not* contain any trailing '/'.
-#   Defaults to undef
-#
-# [*service_name*]
-#   (Optional) Name of the service.
-#   Defaults to undef
-#
-# [*service_type*]
-#   (Optional) Type of service.
-#   Defaults to undef
-#
-# [*service_description*]
-#   (Optional) Description for keystone service.
-#   Defaults to undef
-#
 class cinder::keystone::auth (
   $password,
   $password_user_v2       = undef,
@@ -232,33 +198,9 @@ class cinder::keystone::auth (
   $service_description_v2 = 'Cinder Service v2',
   $service_description_v3 = 'Cinder Service v3',
   $region                 = 'RegionOne',
-  # DEPRECATED PARAMETERS
-  $configure_endpoint     = undef,
-  $public_url             = undef,
-  $internal_url           = undef,
-  $admin_url              = undef,
-  $service_name           = undef,
-  $service_type           = undef,
-  $service_description    = undef,
 ) {
 
   include ::cinder::deps
-
-  $deprecated_param_names = [
-    'configure_endpoint',
-    'public_url',
-    'internal_url',
-    'admin_url',
-    'service_name',
-    'service_type',
-    'service_description',
-  ]
-  $deprecated_param_names.each |$param_name| {
-    $param = getvar($param_name)
-    if $param != undef{
-      warning("The ${param_name} parameter is deprecated, has no effect and will be removed in the future release.")
-    }
-  }
 
   if $configure_endpoint_v2 {
     Keystone_endpoint["${region}/${service_name_v2}::${service_type_v2}"] -> Anchor['cinder::service::end']

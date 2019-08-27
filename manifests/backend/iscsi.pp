@@ -5,9 +5,6 @@
 #
 # [*target_ip_address*]
 #   (optional) The IP address that the iSCSI daemon is listening on.
-#   If not set, the iscsi_ip_address must be specified. The target_ip_address
-#   will be required once the deprecated iscsi_ip_address parameter is
-#   removed in a future release.
 #   Defaults to undef.
 #
 # [*volume_backend_name*]
@@ -52,20 +49,6 @@
 #   Example :
 #     { 'iscsi_backend/param1' => { 'value' => value1 } }
 #
-# DEPRECATED PARAMETERS
-#
-# [*iscsi_ip_address*]
-#   (Optional) The IP address that the iSCSI daemon is listening on
-#   Defaults to undef.
-#
-# [*iscsi_helper*]
-#   (Optional) iSCSI target user-land tool to use.
-#   Defaults to undef.
-#
-# [*iscsi_protocol*]
-#   (Optional) Protocol to use as iSCSI driver
-#   Defaults to undef.
-#
 define cinder::backend::iscsi (
   $target_ip_address         = undef,
   $volume_backend_name       = $name,
@@ -77,10 +60,6 @@ define cinder::backend::iscsi (
   $target_protocol           = $::os_service_default,
   $manage_volume_type        = false,
   $extra_options             = {},
-  # DEPRECATED PARAMETERS
-  $iscsi_ip_address          = undef,
-  $iscsi_helper              = undef,
-  $iscsi_protocol            = undef,
 ) {
 
   include ::cinder::deps
@@ -97,38 +76,15 @@ define cinder::backend::iscsi (
     }
   }
 
-  if $target_ip_address or $iscsi_ip_address {
-    if $iscsi_ip_address {
-      warning('The iscsi_ip_address parameter is deprecated, use target_ip_address instead.')
-    }
-    $target_ip_address_real = pick($target_ip_address, $iscsi_ip_address)
-  } else {
-    fail('A target_ip_address or iscsi_ip_address must be specified.')
-  }
-
-  if $iscsi_helper {
-    warning('The iscsi_helper parameter is deprecated, use target_helper instead.')
-    $target_helper_real = $iscsi_helper
-  } else {
-    $target_helper_real = $target_helper
-  }
-
-  if $iscsi_protocol {
-    warning('The iscsi_protocol parameter is deprecated, use target_protocol instead.')
-    $target_protocol_real = $iscsi_protocol
-  } else {
-    $target_protocol_real = $target_protocol
-  }
-
   cinder_config {
     "${name}/volume_backend_name":        value => $volume_backend_name;
     "${name}/backend_availability_zone":  value => $backend_availability_zone;
     "${name}/volume_driver":              value => $volume_driver;
-    "${name}/target_ip_address":          value => $target_ip_address_real;
-    "${name}/target_helper":              value => $target_helper_real;
+    "${name}/target_ip_address":          value => $target_ip_address;
+    "${name}/target_helper":              value => $target_helper;
     "${name}/volume_group":               value => $volume_group;
     "${name}/volumes_dir":                value => $volumes_dir;
-    "${name}/target_protocol":            value => $target_protocol_real;
+    "${name}/target_protocol":            value => $target_protocol;
   }
 
   if $manage_volume_type {
@@ -140,7 +96,7 @@ define cinder::backend::iscsi (
 
   create_resources('cinder_config', $extra_options)
 
-  case $target_helper_real {
+  case $target_helper {
     'tgtadm': {
       package { 'tgt':
         ensure => present,
@@ -181,7 +137,7 @@ define cinder::backend::iscsi (
     }
 
     default: {
-      fail("Unsupported target helper: ${target_helper_real}.")
+      fail("Unsupported target helper: ${target_helper}.")
     }
   }
 
