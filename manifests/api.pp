@@ -124,40 +124,6 @@
 #   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
 #   Defaults to 'cinder.keymgr.conf_key_mgr.ConfKeyManager'.
 #
-# DEPRECATED PARAMETERS
-#
-# [*keymgr_api_class*]
-#   (optional) Deprecated. Key Manager service class.
-#   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
-#   Defaults to undef.
-#
-# [*nova_catalog_info*]
-#   (optional) Match this value when searching for nova in the service
-#   catalog.
-#   Defaults to undef.
-#
-# [*os_privileged_user_name*]
-#   (optional) OpenStack privileged account username. Used for requests to
-#   other services (such as Nova) that require an account with
-#   special rights.
-#   Defaults to undef.
-#
-# [*os_privileged_user_password*]
-#   (optional) Password associated with the OpenStack privileged account.
-#   Defaults to undef.
-#
-# [*os_privileged_user_tenant*]
-#   (optional) Tenant name associated with the OpenStack privileged account.
-#   Defaults to undef.
-#
-# [*os_privileged_user_auth_url*]
-#   (optional) Auth URL associated with the OpenStack privileged account.
-#   Defaults to undef.
-#
-# [*privileged_user*]
-#   (optional) Enables OpenStack privileged account.
-#   Defaults to undef.
-#
 class cinder::api (
   $os_region_name                 = $::os_service_default,
   $keymgr_encryption_api_url      = $::os_service_default,
@@ -186,14 +152,6 @@ class cinder::api (
   $auth_strategy                  = 'keystone',
   $osapi_volume_listen_port       = $::os_service_default,
   $keymgr_backend                 = 'cinder.keymgr.conf_key_mgr.ConfKeyManager',
-  # DEPRECATED PARAMETERS
-  $keymgr_api_class               = undef,
-  $nova_catalog_info              = undef,
-  $os_privileged_user_name        = undef,
-  $os_privileged_user_password    = undef,
-  $os_privileged_user_tenant      = undef,
-  $os_privileged_user_auth_url    = undef,
-  $privileged_user                = undef,
 ) inherits cinder::params {
 
   include ::cinder::deps
@@ -203,21 +161,6 @@ class cinder::api (
   validate_legacy(Boolean, 'validate_bool', $manage_service)
   validate_legacy(Boolean, 'validate_bool', $enabled)
 
-  $deprecated_param_names = [
-    'nova_catalog_info',
-    'privileged_user',
-    'os_privileged_user_name',
-    'os_privileged_user_password',
-    'os_privileged_user_tenant',
-    'os_privileged_user_auth_url',
-  ]
-  $deprecated_param_names.each |$param_name| {
-    $param = getvar($param_name)
-    if $param != undef{
-      warning("The ${param_name} parameter is deprecated, has no effect and will be removed in the future release.")
-    }
-  }
-
   if $use_ssl {
     if is_service_default($cert_file) {
       fail('The cert_file parameter is required when use_ssl is set to true')
@@ -225,13 +168,6 @@ class cinder::api (
     if is_service_default($key_file) {
       fail('The key_file parameter is required when use_ssl is set to true')
     }
-  }
-
-  if $keymgr_api_class {
-    warning('The keymgr_api_class parameter is deprecated, use keymgr_backend')
-    $keymgr_backend_real = $keymgr_api_class
-  } else {
-    $keymgr_backend_real = $keymgr_backend
   }
 
   if $::cinder::params::api_package {
@@ -300,7 +236,7 @@ running as a standalone service, or httpd for being run by a httpd server")
   }
 
   cinder_config {
-    'key_manager/backend':        value => $keymgr_backend_real;
+    'key_manager/backend':        value => $keymgr_backend;
     'barbican/barbican_endpoint': value => $keymgr_encryption_api_url;
     'barbican/auth_endpoint':     value => $keymgr_encryption_auth_url;
   }

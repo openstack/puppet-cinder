@@ -1,0 +1,34 @@
+---
+upgrade:
+  - |
+    The deprecated parameter cinder::api::keymgr_api_class is removed.
+    Please use the cinder::api::keymgr_backend parameter.
+  - |
+    The deprecated parameters nova_catalog_info, os_privileged_user_name,
+    os_privileged_user_password, os_privileged_user_tenant, os_privileged_user_auth_url
+    and privileged_user in cinder::api is removed.
+  - |
+    The deprecated cinder::backend::bdd block device driver is removed.
+  - |
+    The deprecated parameters excluded_domain_ip, iscsi_ip_address and iscsi_port in
+    cinder::backend::dellsc_iscsi is removed.
+    Please use the excluded_domain_ips, target_ip_address and target_port parameters.
+  - |
+    The deprecated parameter storage_vnx_pool_name in cinder::backend::emc_vnx is removed.
+    Please use the storage_vnx_pool_names parameter.
+  - |
+    The deprecated parameters iscsi_ip_address, iscsi_helper and iscsi_protocol in
+    cinder::backend::iscsi is removed. Please use target_ip_address, target_helper
+    and target_protocol.
+  - |
+    The deprecated parameter cinder::glance::glance_api_version is removed.
+  - |
+    The deprecated parameters configure_endpoint, public_url, internal_url, admin_url,
+    service_name, service_type and service_description in cinder::keystone::auth is removed.
+    These were used to configure Cinder V1 which is removed, see corresponding parameters
+    for Cinder V2 and Cinder V3.
+deprecations:
+  - |
+    The cinder::type_set class is deprecated, please use the cinder_type resource.
+  - |
+    The cinder::type class is deprecated, please use the cinder_type resource.

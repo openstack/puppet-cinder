@@ -40,7 +40,6 @@ describe 'cinder::backend::dellsc_iscsi' do
       :dell_sc_verify_cert       => true,
       :dell_sc_volume_folder     => 'other_vol',
       :target_port               => 222,
-      :excluded_domain_ip        => '127.0.0.2',
       :secondary_san_ip          => '127.0.0.3',
       :secondary_san_login       => 'Foo',
       :secondary_san_password    => 'Bar',
@@ -94,25 +93,6 @@ describe 'cinder::backend::dellsc_iscsi' do
       end
 
       it { is_expected.to contain_cinder_type('dellsc_iscsi').with(:ensure => :present, :properties => ['volume_backend_name=dellsc_iscsi']) }
-    end
-
-    context 'with deprecated iscsi_ip_address' do
-      before do
-        params.merge!({
-          :target_ip_address => :undef,
-          :iscsi_ip_address  => '127.0.0.42',
-        })
-      end
-
-      it { is_expected.to contain_cinder_config('dellsc_iscsi/target_ip_address').with_value('127.0.0.42') }
-    end
-
-    context 'with no target_ip_address or iscsi_ip_address' do
-      before do
-        params.delete(:target_ip_address)
-      end
-
-      it { is_expected.to raise_error(Puppet::Error, /A target_ip_address or iscsi_ip_address must be specified./) }
     end
   end
 

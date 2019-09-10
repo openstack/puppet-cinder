@@ -29,12 +29,6 @@
 #   (optional) http/https timeout value for glance operations.
 #   Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*glance_api_version*]
-#   (optional) Glance API version.
-#   Defaults to undef.
-#
 # === Author(s)
 #
 # Emilien Macchi <emilien.macchi@enovance.com>
@@ -61,15 +55,9 @@ class cinder::glance (
   $glance_api_insecure        = $::os_service_default,
   $glance_api_ssl_compression = $::os_service_default,
   $glance_request_timeout     = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $glance_api_version         = undef,
 ) {
 
   include ::cinder::deps
-
-  if $glance_api_version != undef {
-    warning('The glance_api_version parameter is deprecated, has no effect and will be removed in the future release.')
-  }
 
   cinder_config {
     'DEFAULT/glance_api_servers':         value => join(any2array($glance_api_servers), ',');

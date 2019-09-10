@@ -79,11 +79,6 @@
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
 #
-# DEPRECATED PARAMETERS
-#
-# [*storage_vnx_pool_name*]
-#   (required) Storage pool name.
-#
 define cinder::backend::emc_vnx (
   $san_ip,
   $san_password,
@@ -102,17 +97,10 @@ define cinder::backend::emc_vnx (
   $storage_vnx_security_file_dir = $::os_service_default,
   $naviseccli_path               = $::os_service_default,
   $manage_volume_type            = false,
-  # DEPRECATED PARAMETERS
-  $storage_vnx_pool_name         = undef,
 ) {
 
   include ::cinder::deps
   include ::cinder::params
-
-  if $storage_vnx_pool_name {
-    warning('The storage_vnx_pool_name parameter is deprecated. Please use storage_vnx_pool_names instead.')
-  }
-  $storage_vnx_pool_names_real = pick($storage_vnx_pool_name, $storage_vnx_pool_names)
 
   cinder_config {
     "${name}/default_timeout":                 value => $default_timeout;
@@ -121,7 +109,7 @@ define cinder::backend::emc_vnx (
     "${name}/san_ip":                          value => $san_ip;
     "${name}/san_login":                       value => $san_login;
     "${name}/san_password":                    value => $san_password, secret => true;
-    "${name}/storage_vnx_pool_names":          value => $storage_vnx_pool_names_real;
+    "${name}/storage_vnx_pool_names":          value => $storage_vnx_pool_names;
     "${name}/volume_backend_name":             value => $volume_backend_name;
     "${name}/backend_availability_zone":       value => $backend_availability_zone;
     "${name}/volume_driver":                   value => $volume_driver;
