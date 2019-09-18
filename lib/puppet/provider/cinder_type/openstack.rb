@@ -80,7 +80,7 @@ Puppet::Type.type(:cinder_type).provide(
     list.each do |type|
       if type[:is_public] == 'False'
         type_details = request('volume type', 'show', type[:id])
-        type[:access_project_ids] = string2array(type_details[:access_project_ids])
+        type[:access_project_ids] = parsestring(type_details[:access_project_ids])
         type[:is_public] = false
       else
         type[:access_project_ids] = []
@@ -93,7 +93,7 @@ Puppet::Type.type(:cinder_type).provide(
         :name               => type[:name],
         :ensure             => :present,
         :id                 => type[:id],
-        :properties         => string2array(type[:properties]),
+        :properties         => parsestring(type[:properties]),
         :is_public          => type[:is_public],
         :access_project_ids => type[:access_project_ids]
       })
@@ -111,5 +111,24 @@ Puppet::Type.type(:cinder_type).provide(
 
   def self.string2array(input)
     return input.delete("'").split(/,\s/)
+  end
+
+  def self.pythondict2array(input)
+    json_input = JSON.parse(input.gsub(/u'(\w*)'/, '"\1"').gsub(/'/, '"'))
+    output = []
+    json_input.each do | k, v |
+      output = output + ["#{k}=#{v}"]
+    end
+    return output
+  end
+
+  def self.parsestring(input)
+    if input[0] == '{'
+      # 4.0.0+ output, python dict
+      return self.pythondict2array(input)
+    else
+      # Pre-4.0.0 output, key=value
+      return self.string2array(input)
+    end
   end
 end
