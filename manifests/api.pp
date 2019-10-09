@@ -118,11 +118,12 @@
 #   (optional) What port the API listens on. Defaults to $::os_service_default
 #   If this value is modified the catalog URLs in the keystone::auth class
 #   will also need to be changed to match.
+#   Defaults to $::os_service_default
 #
 # [*keymgr_backend*]
 #   (optional) Key Manager service class.
-#   Example of valid value: castellan.key_manager.barbican_key_manager.BarbicanKeyManager
-#   Defaults to 'cinder.keymgr.conf_key_mgr.ConfKeyManager'.
+#   Example of valid value: barbican
+#   Defaults to $::os_service_default
 #
 class cinder::api (
   $os_region_name                 = $::os_service_default,
@@ -151,7 +152,7 @@ class cinder::api (
   $ca_file                        = $::os_service_default,
   $auth_strategy                  = 'keystone',
   $osapi_volume_listen_port       = $::os_service_default,
-  $keymgr_backend                 = 'cinder.keymgr.conf_key_mgr.ConfKeyManager',
+  $keymgr_backend                 = $::os_service_default,
 ) inherits cinder::params {
 
   include ::cinder::deps

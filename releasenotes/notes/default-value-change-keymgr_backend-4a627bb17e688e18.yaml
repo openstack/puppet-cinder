@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The default value of cinder::api::keymgr_backend is changed from the invalid
+    value cinder.keymgr.conf_key_mgr.ConfKeyManager to service default.
