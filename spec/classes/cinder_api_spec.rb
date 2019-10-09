@@ -24,35 +24,19 @@ describe 'cinder::api' do
       )}
 
       it 'should configure cinder api correctly' do
-        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen').with(
-         :value => '0.0.0.0'
-        )
-        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_workers').with(
-         :value => '8'
-        )
-        is_expected.to contain_cinder_config('DEFAULT/default_volume_type').with(
-         :value => '<SERVICE DEFAULT>'
-        )
-        is_expected.to contain_cinder_config('DEFAULT/public_endpoint').with(
-         :value => '<SERVICE DEFAULT>'
-        )
-        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_base_URL').with(
-         :value => '<SERVICE DEFAULT>'
-        )
-        is_expected.to contain_cinder_config('DEFAULT/osapi_max_limit').with(
-         :value => '<SERVICE DEFAULT>'
-        )
-        is_expected.to contain_cinder_config('DEFAULT/os_region_name').with(
-         :value => '<SERVICE DEFAULT>'
-        )
-        is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with(
-         :value => 'keystone'
-        )
-
-        is_expected.to contain_cinder_config('key_manager/backend').with_value('cinder.keymgr.conf_key_mgr.ConfKeyManager')
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen').with_value('0.0.0.0')
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_workers').with_value('8')
+        is_expected.to contain_cinder_config('DEFAULT/default_volume_type').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/public_endpoint').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_base_URL').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/osapi_max_limit').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/os_region_name').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with_value('keystone')
+        is_expected.to contain_cinder_config('key_manager/backend').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with('value' => '<SERVICE DEFAULT>')
+
         is_expected.to contain_oslo__middleware('cinder_config').with(
           :enable_proxy_headers_parsing => '<SERVICE DEFAULT>',
           :max_request_body_size        => '<SERVICE DEFAULT>',
@@ -259,13 +243,13 @@ describe 'cinder::api' do
     context 'with barbican parameters' do
       let :params do
         req_params.merge!({
-          :keymgr_backend             => 'castellan.key_manager.barbican_key_manager.BarbicanKeyManager',
+          :keymgr_backend             => 'barbican',
           :keymgr_encryption_api_url  => 'https://localhost:9311/v1',
           :keymgr_encryption_auth_url => 'https://localhost:5000/v3',
         })
       end
       it 'should set keymgr parameters' do
-        is_expected.to contain_cinder_config('key_manager/backend').with_value('castellan.key_manager.barbican_key_manager.BarbicanKeyManager')
+        is_expected.to contain_cinder_config('key_manager/backend').with_value('barbican')
         is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('https://localhost:9311/v1')
         is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('https://localhost:5000/v3')
       end
