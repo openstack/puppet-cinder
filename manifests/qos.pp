@@ -22,7 +22,7 @@ define cinder::qos (
   $properties   = undef,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_qos { $name:
     ensure       => present,

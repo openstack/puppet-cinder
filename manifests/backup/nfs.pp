@@ -80,7 +80,7 @@ class cinder::backup::nfs (
   $backup_compression_algorithm = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   validate_legacy(String, 'validate_string', $backup_share)
 

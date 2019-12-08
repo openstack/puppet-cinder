@@ -119,7 +119,7 @@ class cinder::logging(
   $log_date_format               = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   oslo::log { 'cinder_config':
     debug                         => $debug,

@@ -21,18 +21,18 @@
 #
 # sudo pcs constraint colocation add cinder_api_service with cinder_vip
 
-class { '::cinder':
+class { 'cinder':
   database_connection  => 'mysql://cinder:secret_block_password@openstack-controller.example.com/cinder',
 }
 
-class { '::cinder::api':
+class { 'cinder::api':
   keystone_password => 'CINDER_PW',
   keystone_user     => 'cinder',
   enabled           => false,
   manage_service    => false,
 }
 
-class { '::cinder::scheduler':
+class { 'cinder::scheduler':
   enabled        => false,
   manage_service => false,
 }

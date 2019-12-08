@@ -59,8 +59,8 @@ define cinder::backend::nvmeof (
   $volume_group              = $::os_service_default,
 ) {
 
-  include ::cinder::deps
-  include ::cinder::params
+  include cinder::deps
+  include cinder::params
 
   cinder_config {
     "${name}/target_ip_address":         value => $target_ip_address;

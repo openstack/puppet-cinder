@@ -33,7 +33,7 @@ class cinder::config (
   $api_paste_ini_config  = {},
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   validate_legacy(Hash, 'validate_hash', $cinder_config)
   validate_legacy(Hash, 'validate_hash', $api_paste_ini_config)

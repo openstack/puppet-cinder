@@ -83,7 +83,7 @@ define cinder::backend::vmdk (
   $extra_options               = {},
   ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if $volume_folder == 'cinder-volumes' {
     warning("The OpenStack default value of volume_folder differs from the puppet module \

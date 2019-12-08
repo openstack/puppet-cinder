@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cinder::api' do
   shared_examples 'cinder api' do
     let :pre_condition do
-      "class { '::cinder::keystone::authtoken':
+      "class { 'cinder::keystone::authtoken':
          password => 'foo',
       }"
     end
@@ -181,9 +181,9 @@ describe 'cinder::api' do
       end
 
       let :pre_condition do
-        "include ::apache
+        "include apache
          class { 'cinder': }
-         class { '::cinder::keystone::authtoken':
+         class { 'cinder::keystone::authtoken':
            password => 'foo',
          }"
       end
@@ -203,9 +203,9 @@ describe 'cinder::api' do
       end
 
       let :pre_condition do
-        "include ::apache
+        "include apache
          class { 'cinder': }
-         class { '::cinder::keystone::authtoken':
+         class { 'cinder::keystone::authtoken':
            password => 'foo',
          }"
       end

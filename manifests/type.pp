@@ -22,7 +22,7 @@ define cinder::type (
   $set_value = undef,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   warning('The cinder::type is deprecated, please use the cinder_type resource.')
 

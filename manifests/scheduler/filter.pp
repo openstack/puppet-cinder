@@ -12,7 +12,7 @@ class cinder::scheduler::filter (
   $scheduler_default_filters = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if (!is_service_default($scheduler_default_filters)) {
     cinder_config {

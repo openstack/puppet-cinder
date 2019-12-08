@@ -100,7 +100,7 @@ class cinder::nova (
   $project_domain_name = 'Default',
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_config {
     'nova/region_name':    value => $region_name;

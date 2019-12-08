@@ -61,7 +61,7 @@ define cinder::backend::hpelefthand_iscsi(
   $extra_options                  = {},
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_config {
     "${name}/volume_backend_name":            value => $volume_backend_name;

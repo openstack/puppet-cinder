@@ -155,9 +155,9 @@ class cinder::api (
   $keymgr_backend                 = $::os_service_default,
 ) inherits cinder::params {
 
-  include ::cinder::deps
-  include ::cinder::params
-  include ::cinder::policy
+  include cinder::deps
+  include cinder::params
+  include cinder::policy
 
   validate_legacy(Boolean, 'validate_bool', $manage_service)
   validate_legacy(Boolean, 'validate_bool', $enabled)
@@ -180,7 +180,7 @@ class cinder::api (
   }
 
   if $sync_db {
-    include ::cinder::db::sync
+    include cinder::db::sync
   }
 
   if $enabled {
@@ -203,7 +203,7 @@ class cinder::api (
     }
 
   } elsif $service_name == 'httpd' {
-    include ::apache::params
+    include apache::params
     service { 'cinder-api':
       ensure => 'stopped',
       name   => $::cinder::params::api_service,
@@ -243,7 +243,7 @@ running as a standalone service, or httpd for being run by a httpd server")
   }
 
   if $auth_strategy == 'keystone' {
-    include ::cinder::keystone::authtoken
+    include cinder::keystone::authtoken
   }
 
   # SSL Options

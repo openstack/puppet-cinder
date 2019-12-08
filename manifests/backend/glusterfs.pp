@@ -72,7 +72,7 @@ define cinder::backend::glusterfs (
   $extra_options                = {},
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   $content = join($glusterfs_shares, "\n")
 

@@ -305,8 +305,8 @@ class cinder (
   $backend_host                       = $::os_service_default,
 ) inherits cinder::params {
 
-  include ::cinder::deps
-  include ::cinder::db
+  include cinder::deps
+  include cinder::db
 
   package { 'cinder':
     ensure => $package_ensure,

@@ -22,7 +22,7 @@ class cinder::setup_test_volume(
   $loopback_device = '/dev/loop2'
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   package { 'lvm2':
     ensure => present,

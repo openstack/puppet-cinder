@@ -64,7 +64,7 @@ define cinder::backend::dellemc_xtremio_iscsi (
   $extra_options                     = {},
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   $driver = 'dell_emc.xtremio.XtremIOISCSIDriver'
   cinder_config {

@@ -42,7 +42,7 @@ class cinder::db::mysql (
   $collate       = 'utf8_general_ci',
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   validate_legacy(String, 'validate_string', $password)
 

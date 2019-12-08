@@ -22,7 +22,7 @@ define cinder::type_set (
   $value = $name,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   warning('The cinder::type_set class is deprecated, please use the cinder_type resource instead.')
 

@@ -119,12 +119,12 @@ class cinder::wsgi::apache (
   $custom_wsgi_process_options = {},
 ) {
 
-  include ::cinder::deps
-  include ::cinder::params
-  include ::apache
-  include ::apache::mod::wsgi
+  include cinder::deps
+  include cinder::params
+  include apache
+  include apache::mod::wsgi
   if $ssl {
-    include ::apache::mod::ssl
+    include apache::mod::ssl
   }
 
   ::openstacklib::wsgi::apache { 'cinder_wsgi':

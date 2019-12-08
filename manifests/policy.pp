@@ -28,8 +28,8 @@ class cinder::policy (
   $policy_path = '/etc/cinder/policy.json',
 ) {
 
-  include ::cinder::deps
-  include ::cinder::params
+  include cinder::deps
+  include cinder::params
 
   validate_legacy(Hash, 'validate_hash', $policies)
 

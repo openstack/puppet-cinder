@@ -24,7 +24,7 @@ class cinder::ceilometer (
   $notification_topics        = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   oslo::messaging::notifications { 'cinder_config':
     transport_url => $notification_transport_url,

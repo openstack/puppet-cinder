@@ -13,7 +13,7 @@ class cinder::db::sync(
   $extra_params = undef,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   exec { 'cinder-manage db_sync':
     command     => "cinder-manage ${extra_params} db sync",

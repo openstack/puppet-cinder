@@ -3,7 +3,7 @@
 # Parameters for puppet-cinder
 #
 class cinder::params {
-  include ::openstacklib::defaults
+  include openstacklib::defaults
   $pyvers = $::openstacklib::defaults::pyvers
 
   $client_package            = "python${pyvers}-cinderclient"

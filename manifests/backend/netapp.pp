@@ -233,7 +233,7 @@ define cinder::backend::netapp (
   $nas_secure_file_permissions      = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if $nfs_shares {
     validate_legacy(Array, 'validate_array', $nfs_shares)

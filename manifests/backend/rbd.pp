@@ -93,8 +93,8 @@ define cinder::backend::rbd (
   $extra_options                    = {},
 ) {
 
-  include ::cinder::deps
-  include ::cinder::params
+  include cinder::deps
+  include cinder::params
 
   $rbd_cluster_name = basename($rbd_ceph_conf, '.conf')
   if $rbd_cluster_name == 'ceph' {

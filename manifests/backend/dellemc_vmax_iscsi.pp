@@ -44,7 +44,7 @@ define cinder::backend::dellemc_vmax_iscsi (
   $manage_volume_type            = false,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
 
   cinder_config {

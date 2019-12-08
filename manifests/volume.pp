@@ -43,8 +43,8 @@ class cinder::volume (
   $volume_clear_ionice = $::os_service_default,
 ) {
 
-  include ::cinder::deps
-  include ::cinder::params
+  include cinder::deps
+  include cinder::params
 
   validate_legacy(Boolean, 'validate_bool', $manage_service)
   validate_legacy(Boolean, 'validate_bool', $enabled)

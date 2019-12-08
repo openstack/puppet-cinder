@@ -88,7 +88,7 @@ class cinder::backup::swift (
   $backup_compression_algorithm = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_config {
     'DEFAULT/backup_driver':                value => $backup_driver;

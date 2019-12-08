@@ -112,7 +112,7 @@ define cinder::backend::solidfire(
   $sf_enable_volume_mapping  = undef,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if $sf_enable_volume_mapping {
     warning('The sf_enable_volume_mapping parameter is deprecated, has no effect and will be removed in the future release.')

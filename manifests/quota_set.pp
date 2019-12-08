@@ -58,7 +58,7 @@ define cinder::quota_set (
   $volume_type     = $name,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if $os_region_name {
     $cinder_env = [

@@ -90,7 +90,7 @@ define cinder::backend::eqlx (
   $manage_volume_type        = false,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if is_service_default($chap_username) {
     fail('chap_username need to be set.')

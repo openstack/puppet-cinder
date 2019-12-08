@@ -113,7 +113,7 @@ define cinder::backend::nfs (
   $extra_options               = {},
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   file {$nfs_shares_config:
     content => join($nfs_servers, "\n"),

@@ -69,7 +69,7 @@ class cinder::cron::db_purge (
   $maxdelay    = 0
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if $maxdelay == 0 {
     $sleep = ''

@@ -200,7 +200,7 @@ class cinder::keystone::auth (
   $region                 = 'RegionOne',
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if $configure_endpoint_v2 {
     Keystone_endpoint["${region}/${service_name_v2}::${service_type_v2}"] -> Anchor['cinder::service::end']

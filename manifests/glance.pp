@@ -57,7 +57,7 @@ class cinder::glance (
   $glance_request_timeout     = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_config {
     'DEFAULT/glance_api_servers':         value => join(any2array($glance_api_servers), ',');

@@ -80,7 +80,7 @@ class cinder::keystone::service_user(
   $region_name             = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   keystone::resource::service_user { 'cinder_config':
     username                => $username,

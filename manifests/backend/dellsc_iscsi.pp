@@ -110,7 +110,7 @@ define cinder::backend::dellsc_iscsi (
   $extra_options                = {},
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if $dell_sc_server_folder == 'srv' {
     warning("The OpenStack default value of dell_sc_server_folder differs from the puppet module \

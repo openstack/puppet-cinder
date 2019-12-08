@@ -4,7 +4,7 @@
 #
 class cinder::vmware {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_type { 'vmware-thin':
     ensure     => present,

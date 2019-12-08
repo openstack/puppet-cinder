@@ -48,7 +48,7 @@ class cinder::backup::tsm (
   $backup_tsm_compression   = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_config {
     'DEFAULT/backup_driver':            value => $backup_driver;

@@ -20,7 +20,7 @@ class cinder::backends (
   $backend_host     = hiera('cinder::backend_host', undef)
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   if $enabled_backends == undef {
     warning("Configurations that are setting backend config in ``[DEFAULT]`` \

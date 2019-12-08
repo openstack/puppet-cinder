@@ -103,7 +103,7 @@ class cinder::backup::google (
   $backup_gcs_enable_progress_timer = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_config {
     'DEFAULT/backup_driver':                   value => $backup_driver;

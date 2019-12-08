@@ -62,8 +62,8 @@ define cinder::backend::iscsi (
   $extra_options             = {},
 ) {
 
-  include ::cinder::deps
-  include ::cinder::params
+  include cinder::deps
+  include cinder::params
 
   # NOTE(mnaser): Cinder requires /usr/sbin/thin_check to create volumes which
   #               does not get installed with Cinder (see LP#1615134).

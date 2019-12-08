@@ -79,7 +79,7 @@ define cinder::backend::vstorage (
   $manage_package            = true,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_config {
     "${name}/volume_backend_name":             value => $volume_backend_name;

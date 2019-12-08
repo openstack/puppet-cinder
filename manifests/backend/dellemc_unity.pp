@@ -60,7 +60,7 @@ define cinder::backend::dellemc_unity (
   $extra_options             = {},
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   $driver = 'dell_emc.unity.Driver'
   cinder_config {

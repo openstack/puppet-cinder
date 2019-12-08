@@ -63,7 +63,7 @@ class cinder::backup::posix (
   $backup_container            = $::os_service_default,
 ) {
 
-  include ::cinder::deps
+  include cinder::deps
 
   cinder_config {
     'DEFAULT/backup_driver':               value => $backup_driver;

@@ -28,8 +28,8 @@ class cinder::scheduler (
   $manage_service   = true
 ) {
 
-  include ::cinder::deps
-  include ::cinder::params
+  include cinder::deps
+  include cinder::params
 
   validate_legacy(Boolean, 'validate_bool', $manage_service)
   validate_legacy(Boolean, 'validate_bool', $enabled)
