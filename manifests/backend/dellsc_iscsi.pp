@@ -145,11 +145,6 @@ default of \"vol\" and will be changed to the upstream OpenStack default in N-re
     "${name}/use_multipath_for_image_xfer": value => $use_multipath_for_image_xfer;
   }
 
-  # TODO(tobias-urdin): Remove this in U release.
-  cinder_config {
-    "${name}/excluded_domain_ip": ensure => absent;
-  }
-
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
