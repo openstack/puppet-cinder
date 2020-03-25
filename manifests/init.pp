@@ -176,10 +176,6 @@
 #   Timeout when db connections should be reaped.
 #   (Optional) Defaults to undef.
 #
-# [*database_min_pool_size*]
-#   Minimum number of SQL connections to keep open in a pool.
-#   (Optional) Defaults to undef.
-#
 # [*database_max_pool_size*]
 #   Maximum number of SQL connections to keep open in a pool.
 #   (Optional) Defaults to undef.
@@ -249,10 +245,15 @@
 #   (optional) Backend override of host value.
 #   Defaults to $::os_service_default.
 #
+# DEPRECATED PARAMETERS
+#
+# [*database_min_pool_size*]
+#   Minimum number of SQL connections to keep open in a pool.
+#   (Optional) Defaults to undef.
+#
 class cinder (
   $database_connection                = undef,
   $database_idle_timeout              = undef,
-  $database_min_pool_size             = undef,
   $database_max_pool_size             = undef,
   $database_max_retries               = undef,
   $database_retry_interval            = undef,
@@ -303,6 +304,8 @@ class cinder (
   $enable_new_services                = $::os_service_default,
   $purge_config                       = false,
   $backend_host                       = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $database_min_pool_size             = undef,
 ) inherits cinder::params {
 
   include cinder::deps
