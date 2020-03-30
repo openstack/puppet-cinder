@@ -151,7 +151,6 @@ This is a feature and bugfix release in the Juno series.
 This is a backwards-incompatible major release for OpenStack Juno.
 
 ####Backwards-incompatible changes
-- Change the default value of the san_thin_provision parameter for eqlx
 - Migrate the mysql backend to use openstacklib::db::mysql, adding dependency
   on puppet-openstacklib
 

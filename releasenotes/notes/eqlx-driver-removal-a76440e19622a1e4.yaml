@@ -1,0 +1,6 @@
+---
+deprecations:
+  - Remove eqlx define and class.
+  - Remove all eqlx parameters in define and class.
+  - Remove all tests related to eqlx.
+  - Remove all references to eqlx in docs
