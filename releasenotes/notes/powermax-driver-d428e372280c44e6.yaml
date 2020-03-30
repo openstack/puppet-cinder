@@ -1,0 +1,4 @@
+---
+features:
+  - Add new PowerMax backend driver options to support
+    both iSCSI and FC options.`
