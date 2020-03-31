@@ -43,7 +43,15 @@ describe 'cinder::client' do
         when 'Debian'
           { :client_package_name => 'python3-cinderclient' }
         when 'RedHat'
-          { :client_package_name => 'python-cinderclient' }
+          if facts[:operatingsystem] == 'Fedora'
+            { :client_package_name => 'python3-cinderclient' }
+          else
+            if facts[:operatingsystemmajrelease] > '7'
+              { :client_package_name => 'python3-cinderclient' }
+            else
+              { :client_package_name => 'python-cinderclient' }
+            end
+          end
         end
       end
 
