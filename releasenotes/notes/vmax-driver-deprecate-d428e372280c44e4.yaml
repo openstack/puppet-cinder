@@ -1,0 +1,4 @@
+---
+deprecations:
+  - cinder::backend::dellemc_vmax_iscsi is not supported anymore,
+    use resource cinder::backend::dellemc_powermax resource instead.
