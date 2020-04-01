@@ -7,7 +7,6 @@ upgrade:
 
     * Removed cinder::volume::dellsc_iscsi, use cinder::backend::dellsc_iscsi
     * Removed cinder::volume::emc_vnx, use cinder::backend::emc_vnc
-    * Removed cinder::volume::eqlx, use cinder::backend::eqlx
     * Removed cinder::volume::glusterfs, use cinder::backend::glusterfs
     * Removed cinder::volume::gpfs, use cinder::backend::gpfs
     * Removed cinder::volume::hpe3par_iscsi, use cinder::backend::hpe3par_iscsi
