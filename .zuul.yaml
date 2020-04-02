@@ -21,7 +21,8 @@
       featureset_override:
         run_tempest: true
         tempest_whitelist:
-          - 'volume'
-          - 'cinder_tempest_plugin'
+          - 'tempest.api.volume'
+          - 'tempest.scenario.test_volume_boot_pattern'
+          - 'cinder_tempest_plugin.api'
         tempest_plugins:
           - 'python-cinder-tests-tempest'
