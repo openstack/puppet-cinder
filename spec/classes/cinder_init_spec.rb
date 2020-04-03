@@ -23,6 +23,15 @@ describe 'cinder' do
         is_expected.to contain_cinder_config('DEFAULT/transport_url').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/rpc_response_timeout').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/control_exchange').with(:value => 'openstack')
+      }
+
+      it { is_expected.to contain_oslo__messaging__notifications('cinder_config').with(
+        :transport_url => '<SERVICE DEFAULT>',
+        :driver        => '<SERVICE DEFAULT>',
+        :topics        => '<SERVICE DEFAULT>',
+      )}
+
+      it {
         is_expected.to contain_cinder_config('DEFAULT/report_interval').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/service_down_time').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_messaging_rabbit/rabbit_ha_queues').with(:value => '<SERVICE DEFAULT>')
@@ -248,6 +257,22 @@ describe 'cinder' do
       end
 
       it { is_expected.to contain_cinder_config('DEFAULT/transport_url').with_value('rabbit://rabbit_user:password@localhost:5673') }
+    end
+
+    context 'with notifications' do
+      let :params do
+        req_params.merge({
+          :notification_transport_url => 'rabbit://notif_user:password@localhost:5673',
+          :notification_driver        => 'messagingv2',
+          :notification_topics        => 'test',
+        })
+      end
+
+      it { is_expected.to contain_oslo__messaging__notifications('cinder_config').with(
+        :transport_url => params[:notification_transport_url],
+        :driver        => params[:notification_driver],
+        :topics        => params[:notification_topics],
+      )}
     end
   end
 

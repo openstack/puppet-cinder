@@ -1,0 +1,12 @@
+---
+upgrade:
+  - |
+    The cinder::ceilometer class is deprecated and has no effect. The parameters
+    notification_transport_url, notification_driver and notification_topics has
+    been moved to the cinder class. The default value of notification_driver has
+    been changed, you need to explicitly set it to messagingv2 or another driver
+    that you want to use.
+deprecations:
+  - |
+    The cinder::ceilometer class is deprecated and has no effect. The parameters
+    for this class has been moved to the cinder class.

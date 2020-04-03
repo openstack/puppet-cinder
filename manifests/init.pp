@@ -22,6 +22,20 @@
 #   (Optional)
 #   Defaults to 'openstack'.
 #
+# [*notification_transport_url*]
+#   (Optional) A URL representing the messaging driver to use for notifications
+#   and its full configuration. Transport URLs take the form:
+#     transport://user:pass@host1:port[,hostN:portN]/virtual_host
+#   Defaults to $::os_service_default
+#
+# [*notification_driver*]
+#   (Option) Driver or drivers to handle sending notifications.
+#   Defaults to $::os_service_default
+#
+# [*notification_topics*]
+#   (Optional) AMQP topic used for OpenStack notifications
+#   Defaults to $::os_service_default
+#
 # [*rabbit_ha_queues*]
 #   (optional) Use HA queues in RabbitMQ (x-ha-policy: all).
 #   Defaults to $::os_service_default
@@ -261,6 +275,9 @@ class cinder (
   $default_transport_url              = $::os_service_default,
   $rpc_response_timeout               = $::os_service_default,
   $control_exchange                   = 'openstack',
+  $notification_transport_url         = $::os_service_default,
+  $notification_driver                = $::os_service_default,
+  $notification_topics                = $::os_service_default,
   $rabbit_ha_queues                   = $::os_service_default,
   $rabbit_heartbeat_timeout_threshold = $::os_service_default,
   $rabbit_heartbeat_rate              = $::os_service_default,
@@ -360,6 +377,20 @@ class cinder (
     transport_url        => $default_transport_url,
     rpc_response_timeout => $rpc_response_timeout,
     control_exchange     => $control_exchange,
+  }
+
+  # TODO(tobias-urdin): Remove pick's when cinder::ceilometer is removed.
+  $notification_transport_url_real = pick($cinder::ceilometer::notification_transport_url,
+                                          $notification_transport_url)
+  $notification_driver_real = pick($cinder::ceilometer::notification_driver,
+                                    $notification_driver)
+  $notification_topics_real = pick($cinder::ceilometer::notification_topics,
+                                    $notification_topics)
+
+  oslo::messaging::notifications { 'cinder_config':
+    transport_url => $notification_transport_url_real,
+    driver        => $notification_driver_real,
+    topics        => $notification_topics_real,
   }
 
   if ! $default_availability_zone {
