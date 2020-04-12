@@ -30,7 +30,6 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/public_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_base_URL').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_max_limit').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('DEFAULT/os_region_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with_value('keystone')
         is_expected.to contain_cinder_config('key_manager/backend').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
@@ -40,17 +39,6 @@ describe 'cinder::api' do
         is_expected.to contain_oslo__middleware('cinder_config').with(
           :enable_proxy_headers_parsing => '<SERVICE DEFAULT>',
           :max_request_body_size        => '<SERVICE DEFAULT>',
-        )
-      end
-    end
-
-    context 'with a custom region for nova' do
-      let :params do
-        req_params.merge({'os_region_name' => 'MyRegion'})
-      end
-      it 'should configure the region for nova' do
-        is_expected.to contain_cinder_config('DEFAULT/os_region_name').with(
-          :value => 'MyRegion'
         )
       end
     end

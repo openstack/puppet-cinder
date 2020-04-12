@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The cinder::api::os_region_name parameter was deprecated and has no effect.
+    Use cinder::nova::region_name instead.

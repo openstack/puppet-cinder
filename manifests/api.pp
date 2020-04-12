@@ -14,12 +14,6 @@
 #   http://auth_url:5000/v3
 #   Defaults to $::os_service_default.
 #
-# [*os_region_name*]
-#   (optional) Some operations require cinder to make API requests
-#   to Nova. This sets the keystone region to be used for these
-#   requests. For example, boot-from-volume.
-#   Defaults to $::os_service_default
-#
 # [*service_workers*]
 #   (optional) Number of cinder-api workers
 #   Defaults to $::os_workers
@@ -125,8 +119,15 @@
 #   Example of valid value: barbican
 #   Defaults to $::os_service_default
 #
+# DEPRECATED PARAMETERS
+#
+# [*os_region_name*]
+#   (optional) Some operations require cinder to make API requests
+#   to Nova. This sets the keystone region to be used for these
+#   requests. For example, boot-from-volume.
+#   Defaults to undef
+#
 class cinder::api (
-  $os_region_name                 = $::os_service_default,
   $keymgr_encryption_api_url      = $::os_service_default,
   $keymgr_encryption_auth_url     = $::os_service_default,
   $service_workers                = $::os_workers,
@@ -153,11 +154,18 @@ class cinder::api (
   $auth_strategy                  = 'keystone',
   $osapi_volume_listen_port       = $::os_service_default,
   $keymgr_backend                 = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $os_region_name                 = undef
 ) inherits cinder::params {
 
   include ::cinder::deps
   include ::cinder::params
   include ::cinder::policy
+
+  if $os_region_name != undef {
+    warning('cinder::api::os_region_name is deprecated and has no effect. \
+Use cinder::nova::region_name instead')
+  }
 
   validate_legacy(Boolean, 'validate_bool', $manage_service)
   validate_legacy(Boolean, 'validate_bool', $enabled)
@@ -222,7 +230,6 @@ running as a standalone service, or httpd for being run by a httpd server")
   cinder_config {
     'DEFAULT/osapi_volume_listen':      value => $bind_host;
     'DEFAULT/osapi_volume_workers':     value => $service_workers;
-    'DEFAULT/os_region_name':           value => $os_region_name;
     'DEFAULT/default_volume_type':      value => $default_volume_type;
     'DEFAULT/public_endpoint':          value => $public_endpoint;
     'DEFAULT/osapi_volume_base_URL':    value => $osapi_volume_base_url;
