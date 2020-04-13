@@ -79,5 +79,5 @@
     ],
     "source": "git://github.com/openstack/puppet-cinder.git",
     "summary": "Puppet module for OpenStack Cinder",
-    "version": "16.2.0"
+    "version": "16.2.1"
 }
