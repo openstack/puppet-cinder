@@ -34,12 +34,10 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
     @credentials.password = cinder_credentials['password']
     @credentials.project_name = cinder_credentials['project_name']
     @credentials.auth_url = auth_endpoint
+    @credentials.user_domain_name = cinder_credentials['user_domain_name']
+    @credentials.project_domain_name = cinder_credentials['project_domain_name']
     if cinder_credentials['region_name']
       @credentials.region_name = cinder_credentials['region_name']
-    end
-    if @credentials.version == '3'
-      @credentials.user_domain_name = cinder_credentials['user_domain_name']
-      @credentials.project_domain_name = cinder_credentials['project_domain_name']
     end
     raise error unless @credentials.set?
     Puppet::Provider::Openstack.request(service, action, properties, @credentials)
@@ -61,19 +59,22 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
         auth_keys.all?{|k| !conf['keystone_authtoken'][k].nil?}
       creds = Hash[ auth_keys.map \
                    { |k| [k, conf['keystone_authtoken'][k].strip] } ]
-      if conf['project_domain_name']
-        creds['project_domain_name'] = conf['project_domain_name']
+      if conf['keystone_authtoken']['project_domain_name']
+        creds['project_domain_name'] = conf['keystone_authtoken']['project_domain_name']
       else
         creds['project_domain_name'] = 'Default'
       end
-      if conf['user_domain_name']
-        creds['user_domain_name'] = conf['user_domain_name']
+
+      if conf['keystone_authtoken']['user_domain_name']
+        creds['user_domain_name'] = conf['keystone_authtoken']['user_domain_name']
       else
         creds['user_domain_name'] = 'Default'
       end
-      if conf['DEFAULT'] and conf['DEFAULT']['os_region_name']
-        creds['region_name'] = conf['DEFAULT']['os_region_name']
+
+      if conf['keystone_authtoken']['region_name']
+        creds['region_name'] = conf['keystone_authtoken']['region_name']
       end
+
       return creds
     else
       raise(Puppet::Error, "File: #{conf_filename} does not contain all " +
