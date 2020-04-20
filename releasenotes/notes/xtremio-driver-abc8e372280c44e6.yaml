@@ -1,0 +1,4 @@
+---
+features:
+  - Added Dell EMC XtremIO backend driver config that supports
+    both iSCSI and FC options.
