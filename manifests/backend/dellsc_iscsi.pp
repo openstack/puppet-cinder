@@ -112,6 +112,9 @@ define cinder::backend::dellsc_iscsi (
 
   include cinder::deps
 
+  warning('The cinder::backend::dellsc_iscsi is deprecated and will be removed in V-release, \
+please use cinder::backend::dellemc_sc resource instead.')
+
   if $dell_sc_server_folder == 'srv' {
     warning("The OpenStack default value of dell_sc_server_folder differs from the puppet module \
 default of \"srv\" and will be changed to the upstream OpenStack default in N-release.")

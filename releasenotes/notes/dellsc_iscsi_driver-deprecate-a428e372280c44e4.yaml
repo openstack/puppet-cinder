@@ -1,0 +1,5 @@
+---
+deprecations:
+  - cinder::backend::dellsc_iscsi is deprecated and will be
+    removed in the V-release, use new resource
+    cinder::backend::dellemc_sc instead.
