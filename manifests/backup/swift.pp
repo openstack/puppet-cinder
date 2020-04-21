@@ -17,6 +17,10 @@
 #   (optional) The URL of the Keystone endpoint for authentication.
 #   Defaults to $::os_service_default
 #
+# [*swift_catalog_info*]
+#   (optional) Info to match when looking for swift in the service catalog
+#   Defaults to $::os_service_default
+#
 # [*backup_swift_container*]
 #   (optional) The default Swift container to use.
 #   Defaults to 'volumebackups'
@@ -78,6 +82,7 @@ class cinder::backup::swift (
   $backup_driver                = 'cinder.backup.drivers.swift.SwiftBackupDriver',
   $backup_swift_url             = $::os_service_default,
   $backup_swift_auth_url        = $::os_service_default,
+  $swift_catalog_info           = $::os_service_default,
   $backup_swift_container       = 'volumebackups',
   $backup_swift_object_size     = $::os_service_default,
   $backup_swift_retry_attempts  = $::os_service_default,
@@ -94,6 +99,7 @@ class cinder::backup::swift (
     'DEFAULT/backup_driver':                value => $backup_driver;
     'DEFAULT/backup_swift_url':             value => $backup_swift_url;
     'DEFAULT/backup_swift_auth_url':        value => $backup_swift_auth_url;
+    'DEFAULT/swift_catalog_info':           value => $swift_catalog_info;
     'DEFAULT/backup_swift_container':       value => $backup_swift_container;
     'DEFAULT/backup_swift_object_size':     value => $backup_swift_object_size;
     'DEFAULT/backup_swift_retry_attempts':  value => $backup_swift_retry_attempts;
