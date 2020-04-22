@@ -66,6 +66,9 @@ define cinder::backend::dellemc_xtremio_iscsi (
 
   include cinder::deps
 
+  warning('The cinder::backend::dellemc_xtremio_iscsi is deprecated and will be removed in V-release, \
+please use cinder::backend::dellemc_xtremio resource instead.')
+
   $driver = 'dell_emc.xtremio.XtremIOISCSIDriver'
   cinder_config {
     "${name}/volume_backend_name":               value => $volume_backend_name;
