@@ -25,6 +25,7 @@ describe 'cinder::backup::swift' do
     {
       :backup_swift_url             => '<SERVICE DEFAULT>',
       :backup_swift_auth_url        => '<SERVICE DEFAULT>',
+      :swift_catalog_info           => '<SERVICE DEFAULT>',
       :backup_swift_container       => 'volumebackups',
       :backup_swift_object_size     => '<SERVICE DEFAULT>',
       :backup_swift_retry_attempts  => '<SERVICE DEFAULT>',
@@ -49,6 +50,7 @@ describe 'cinder::backup::swift' do
       is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.swift.SwiftBackupDriver')
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_url').with_value(p[:backup_swift_url])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_auth_url').with_value(p[:backup_swift_auth_url])
+      is_expected.to contain_cinder_config('DEFAULT/swift_catalog_info').with_value(p[:swift_catalog_info])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_container').with_value(p[:backup_swift_container])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_object_size').with_value(p[:backup_swift_object_size])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_attempts').with_value(p[:backup_swift_retry_attempts])
@@ -63,6 +65,7 @@ describe 'cinder::backup::swift' do
       before :each do
         params.merge!(:backup_swift_url => 'https://controller2:8080/v1/AUTH_')
         params.merge!(:backup_swift_auth_url => 'https://controller2:5000')
+        params.merge!(:swift_catalog_info => 'object-store:swift:internalURL')
         params.merge!(:backup_swift_container => 'toto')
         params.merge!(:backup_swift_object_size => '123')
         params.merge!(:backup_swift_retry_attempts => '99')
@@ -72,6 +75,7 @@ describe 'cinder::backup::swift' do
       it 'should replace default parameters with new values' do
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_url').with_value(p[:backup_swift_url])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_auth_url').with_value(p[:backup_swift_auth_url])
+        is_expected.to contain_cinder_config('DEFAULT/swift_catalog_info').with_value(p[:swift_catalog_info])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_container').with_value(p[:backup_swift_container])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_object_size').with_value(p[:backup_swift_object_size])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_attempts').with_value(p[:backup_swift_retry_attempts])

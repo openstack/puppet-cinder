@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``cinder::backup::swift::swift_catalog_info`` parameter was added
+    to set info to lookup swift service in the service catalog.
