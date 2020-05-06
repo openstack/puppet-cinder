@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    Support for GlusterFS volume driver has been deprecated and will be removed
+    in a future release.
