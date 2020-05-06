@@ -1,5 +1,6 @@
 # == Class: cinder::backend::nexenta_edge
 #
+# DEPRECATED!
 # Setups Cinder with Nexenta Edge volume driver.
 #
 # === Parameters
@@ -73,6 +74,9 @@ define cinder::backend::nexenta_edge (
   $manage_volume_type        = false,
   $extra_options             = {},
 ) {
+
+  warning('Support for Nexenta Edge Driver has been deprecated and will be removed \
+in a future release')
 
   cinder_config {
     "${name}/volume_backend_name":       value => $volume_backend_name;

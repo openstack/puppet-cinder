@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    Support for Nexenta Edge Driver has been deprecated and will be removed in
+    a future release.
