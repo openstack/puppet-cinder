@@ -127,6 +127,9 @@ define cinder::backend::scaleio (
   $extra_options                    = {},
 ) {
 
+  warning('The cinder::backend::sclaeio is deprecated and will be removed in W-release, \
+please use cinder::backend::dellemc_vxflexos resource instead.')
+
   cinder_config {
     "${name}/volume_backend_name":              value => $volume_backend_name;
     "${name}/backend_availability_zone":        value => $backend_availability_zone;
