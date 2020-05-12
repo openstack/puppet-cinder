@@ -1,0 +1,5 @@
+---
+deprecations:
+  - cinder::backend:scaleio is deprecated and will be
+    removed in the W-release, use new resource
+    cinder::backend::dellemc_vxflexos instead.
