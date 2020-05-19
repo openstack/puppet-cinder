@@ -48,7 +48,7 @@ class cinder::db::mysql (
 
   ::openstacklib::db::mysql { 'cinder':
     user          => $user,
-    password_hash => mysql::password($password),
+    password      => $password,
     dbname        => $dbname,
     host          => $host,
     charset       => $charset,
