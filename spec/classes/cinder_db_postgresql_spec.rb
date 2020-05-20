@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cinder::db::postgresql' do
   shared_examples 'cinder::db::postgresql' do
     let :req_params do
-      { :password => 'pw' }
+      { :password => 'cinderpass' }
     end
 
     let :pre_condition do
@@ -15,12 +15,14 @@ describe 'cinder::db::postgresql' do
         req_params
       end
 
-      it { is_expected.to contain_postgresql__server__db('cinder').with(
-        :user     => 'cinder',
-        :password => 'md506736c3030793e09882cc536063d433f'
+      it { is_expected.to contain_openstacklib__db__postgresql('cinder').with(
+        :user       => 'cinder',
+        :password   => 'cinderpass',
+        :dbname     => 'cinder',
+        :encoding   => nil,
+        :privileges => 'ALL',
       )}
     end
-
   end
 
   on_supported_os({

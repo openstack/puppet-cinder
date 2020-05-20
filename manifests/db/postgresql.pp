@@ -35,11 +35,11 @@ class cinder::db::postgresql(
   include cinder::deps
 
   ::openstacklib::db::postgresql { 'cinder':
-    password_hash => postgresql_password($user, $password),
-    dbname        => $dbname,
-    user          => $user,
-    encoding      => $encoding,
-    privileges    => $privileges,
+    password   => $password,
+    dbname     => $dbname,
+    user       => $user,
+    encoding   => $encoding,
+    privileges => $privileges,
   }
 
   Anchor['cinder::db::begin']

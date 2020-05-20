@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cinder::db::mysql' do
   let :req_params do
     {
-      :password => 'pw',
+      :password => 'cinderpass',
     }
   end
 
@@ -18,25 +18,25 @@ describe 'cinder::db::mysql' do
       end
 
       it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
-        :user          => 'cinder',
-        :password_hash => '*D821809F681A40A6E379B50D0463EFAE20BDD122',
-        :host          => '127.0.0.1',
-        :charset       => 'utf8',
-        :collate       => 'utf8_general_ci',
+        :user     => 'cinder',
+        :password => 'cinderpass',
+        :host     => '127.0.0.1',
+        :charset  => 'utf8',
+        :collate  => 'utf8_general_ci',
       )}
     end
 
     context "overriding allowed_hosts param to array" do
       let :params do
         {
-          :password       => 'cinderpass',
-          :allowed_hosts  => ['127.0.0.1','%']
+          :password      => 'cinderpass',
+          :allowed_hosts => ['127.0.0.1','%']
         }
       end
 
       it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
         :user          => 'cinder',
-        :password_hash => '*1C8A189441ED992638DD234B6711CD5064DA8C6E',
+        :password      => 'cinderpass',
         :host          => '127.0.0.1',
         :charset       => 'utf8',
         :collate       => 'utf8_general_ci',
@@ -47,14 +47,14 @@ describe 'cinder::db::mysql' do
     context "overriding allowed_hosts param to string" do
       let :params do
         {
-          :password       => 'cinderpass2',
-          :allowed_hosts  => '192.168.1.1'
+          :password      => 'cinderpass2',
+          :allowed_hosts => '192.168.1.1'
         }
       end
 
       it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
         :user          => 'cinder',
-        :password_hash => '*0E9E710049E74D36D29D615DFC55F3FFD45413BC',
+        :password      => 'cinderpass2',
         :host          => '127.0.0.1',
         :charset       => 'utf8',
         :collate       => 'utf8_general_ci',
@@ -72,7 +72,7 @@ describe 'cinder::db::mysql' do
 
       it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
         :user          => 'cinder',
-        :password_hash => '*0E9E710049E74D36D29D615DFC55F3FFD45413BC',
+        :password      => 'cinderpass2',
         :host          => '127.0.0.1',
         :charset       => 'utf8',
         :collate       => 'utf8_general_ci',
