@@ -47,23 +47,11 @@ class cinder::params {
     $tgt_service_name          = 'tgtd'
     $ceph_init_override        = '/etc/sysconfig/openstack-cinder-volume'
     $ceph_common_package_name  = 'ceph-common'
+    $target_helper             = 'lioadm'
     $lio_package_name          = 'targetcli'
     $lock_path                 = '/var/lib/cinder/tmp'
     $cinder_wsgi_script_path   = '/var/www/cgi-bin/cinder'
     $pywbem_package_name       = 'pywbem'
-
-    case $::operatingsystem {
-      'RedHat', 'CentOS', 'Scientific', 'OracleLinux': {
-        if (versioncmp($::operatingsystemmajrelease, '7') >= 0) {
-          $target_helper = 'lioadm'
-        } else {
-          $target_helper = 'tgtadm'
-        }
-      }
-      default: {
-        $target_helper = 'lioadm'
-      }
-    }
 
   } else {
     fail("unsupported osfamily ${::osfamily}, currently Debian and Redhat are the only supported platforms")
