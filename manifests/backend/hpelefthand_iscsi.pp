@@ -1,3 +1,4 @@
+# DEPRECATED !!
 # Configures Cinder volume HPE lefthand ISCSI driver.
 # Parameters are particular to each volume driver.
 #
@@ -62,6 +63,9 @@ define cinder::backend::hpelefthand_iscsi(
 ) {
 
   include cinder::deps
+
+  warning('The support for HPE Lefthand Driver has been deprecated and will
+be removed in a future release')
 
   cinder_config {
     "${name}/volume_backend_name":            value => $volume_backend_name;

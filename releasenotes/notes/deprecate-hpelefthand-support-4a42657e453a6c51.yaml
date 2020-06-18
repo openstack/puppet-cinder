@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The support for HPE Lefthand driver has been deprecated and will be removed
+    in a future release, in favor of removal of Lefthand driver from cinder.
