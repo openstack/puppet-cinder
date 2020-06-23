@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The cinder::ceilometer class is removed, set the parameters in the cinder
+    class directly instead.

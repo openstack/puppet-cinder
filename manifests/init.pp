@@ -379,18 +379,10 @@ class cinder (
     control_exchange     => $control_exchange,
   }
 
-  # TODO(tobias-urdin): Remove pick's when cinder::ceilometer is removed.
-  $notification_transport_url_real = pick($cinder::ceilometer::notification_transport_url,
-                                          $notification_transport_url)
-  $notification_driver_real = pick($cinder::ceilometer::notification_driver,
-                                    $notification_driver)
-  $notification_topics_real = pick($cinder::ceilometer::notification_topics,
-                                    $notification_topics)
-
   oslo::messaging::notifications { 'cinder_config':
-    transport_url => $notification_transport_url_real,
-    driver        => $notification_driver_real,
-    topics        => $notification_topics_real,
+    transport_url => $notification_transport_url,
+    driver        => $notification_driver,
+    topics        => $notification_topics,
   }
 
   if ! $default_availability_zone {
