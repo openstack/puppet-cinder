@@ -182,6 +182,21 @@
 #   (Optional) Password for message broker authentication
 #   Defaults to $::os_service_default.
 #
+# [*keymgr_backend*]
+#   (Optional) Key Manager service class.
+#   Example of valid value: barbican
+#   Defaults to $::os_service_default.
+#
+# [*keymgr_encryption_api_url*]
+#   (Optional) Key Manager service URL
+#   Example of valid value: https://localhost:9311/v1
+#   Defaults to $::os_service_default.
+#
+# [*keymgr_encryption_auth_url*]
+#   (Optional) Auth URL for keymgr authentication. Should be in format
+#   http://auth_url:5000/v3
+#   Defaults to $::os_service_default.
+#
 # [*database_connection*]
 #    Url used to connect to database.
 #    (Optional) Defaults to undef.
@@ -309,6 +324,9 @@ class cinder (
   $amqp_sasl_config_name              = $::os_service_default,
   $amqp_username                      = $::os_service_default,
   $amqp_password                      = $::os_service_default,
+  $keymgr_backend                     = $::os_service_default,
+  $keymgr_encryption_api_url          = $::os_service_default,
+  $keymgr_encryption_auth_url         = $::os_service_default,
   $package_ensure                     = 'present',
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
   $storage_availability_zone          = 'nova',
@@ -399,6 +417,13 @@ class cinder (
     $default_availability_zone_real = $default_availability_zone
   }
 
+  # NOTE(abishop): Remove the picks when cinder::api::keymgr_* are removed.
+  $keymgr_backend_real = pick($cinder::api::keymgr_backend, $keymgr_backend)
+  $keymgr_encryption_api_url_real = pick($cinder::api::keymgr_encryption_api_url,
+                                          $keymgr_encryption_api_url)
+  $keymgr_encryption_auth_url_real = pick($cinder::api::keymgr_encryption_auth_url,
+                                          $keymgr_encryption_auth_url)
+
   cinder_config {
     'DEFAULT/report_interval':                  value => $report_interval;
     'DEFAULT/service_down_time':                value => $service_down_time;
@@ -409,6 +434,9 @@ class cinder (
     'DEFAULT/image_conversion_dir':             value => $image_conversion_dir;
     'DEFAULT/host':                             value => $host;
     'DEFAULT/enable_new_services':              value => $enable_new_services;
+    'key_manager/backend':                      value => $keymgr_backend_real;
+    'barbican/barbican_endpoint':               value => $keymgr_encryption_api_url_real;
+    'barbican/auth_endpoint':                   value => $keymgr_encryption_auth_url_real;
 
     # NOTE(abishop): $backend_host is not written here because it is not a valid
     # DEFAULT option. It is only recognized in the backend sections. Instead,

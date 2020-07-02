@@ -1,0 +1,18 @@
+---
+deprecations:
+  - |
+    Cinder's Key Manager parameters have moved from cinder::api to
+    the cinder class. The following parameters are deprecated:
+    * cinder::api::keymgr_backend
+    * cinder::api::keymgr_encryption_api_url
+    * cinder::api::keymgr_encryption_auth_url
+    They are replaced by the following new parameters:
+    * cinder::keymgr_backend
+    * cinder::keymgr_encryption_api_url
+    * cinder::keymgr_encryption_auth_url
+fixes:
+  - |
+    Cinder's Key Manager parameters are no longer associated with just the
+    cinder-api service. The parameters are always configured so that the
+    cinder-volume and cinder-backup services can also access the Key Manager.
+    Fixes `bug 1886081 <https://bugs.launchpad.net/puppet-cinder/+bug/1886081>`

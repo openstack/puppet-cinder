@@ -48,6 +48,9 @@ describe 'cinder' do
         is_expected.to contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
+        is_expected.to contain_cinder_config('key_manager/backend').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('<SERVICE DEFAULT>')
 
         # backend_host should not be written to DEFAULT section
         is_expected.not_to contain_cinder_config('DEFAULT/backend_host')
@@ -273,6 +276,21 @@ describe 'cinder' do
         :driver        => params[:notification_driver],
         :topics        => params[:notification_topics],
       )}
+    end
+
+    context 'with keymgr parameters' do
+      let :params do
+        req_params.merge!({
+          :keymgr_backend             => 'barbican',
+          :keymgr_encryption_api_url  => 'https://localhost:9311/v1',
+          :keymgr_encryption_auth_url => 'https://localhost:5000/v3',
+        })
+      end
+      it 'should set keymgr parameters' do
+        is_expected.to contain_cinder_config('key_manager/backend').with_value('barbican')
+        is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('https://localhost:9311/v1')
+        is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('https://localhost:5000/v3')
+      end
     end
   end
 

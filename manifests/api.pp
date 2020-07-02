@@ -4,16 +4,6 @@
 #
 # === Parameters
 #
-# [*keymgr_encryption_api_url*]
-#   (optional) Key Manager service URL
-#   Example of valid value: https://localhost:9311/v1
-#   Defaults to $::os_service_default
-#
-# [*keymgr_encryption_auth_url*]
-#   (optional) Auth URL for keymgr authentication. Should be in format
-#   http://auth_url:5000/v3
-#   Defaults to $::os_service_default.
-#
 # [*service_workers*]
 #   (optional) Number of cinder-api workers
 #   Defaults to $::os_workers
@@ -114,12 +104,22 @@
 #   will also need to be changed to match.
 #   Defaults to $::os_service_default
 #
+# DEPRECATED PARAMETERS
+#
+# [*keymgr_encryption_api_url*]
+#   (optional) Key Manager service URL
+#   Example of valid value: https://localhost:9311/v1
+#   Defaults to undef
+#
+# [*keymgr_encryption_auth_url*]
+#   (optional) Auth URL for keymgr authentication. Should be in format
+#   http://auth_url:5000/v3
+#   Defaults to undef
+#
 # [*keymgr_backend*]
 #   (optional) Key Manager service class.
 #   Example of valid value: barbican
-#   Defaults to $::os_service_default
-#
-# DEPRECATED PARAMETERS
+#   Defaults to undef
 #
 # [*os_region_name*]
 #   (optional) Some operations require cinder to make API requests
@@ -128,8 +128,6 @@
 #   Defaults to undef
 #
 class cinder::api (
-  $keymgr_encryption_api_url      = $::os_service_default,
-  $keymgr_encryption_auth_url     = $::os_service_default,
   $service_workers                = $::os_workers,
   $package_ensure                 = 'present',
   $bind_host                      = '0.0.0.0',
@@ -153,14 +151,22 @@ class cinder::api (
   $ca_file                        = $::os_service_default,
   $auth_strategy                  = 'keystone',
   $osapi_volume_listen_port       = $::os_service_default,
-  $keymgr_backend                 = $::os_service_default,
   # DEPRECATED PARAMETERS
+  $keymgr_backend                 = undef,
+  $keymgr_encryption_api_url      = undef,
+  $keymgr_encryption_auth_url     = undef,
   $os_region_name                 = undef
 ) inherits cinder::params {
 
   include cinder::deps
   include cinder::params
   include cinder::policy
+
+  ['keymgr_backend', 'keymgr_encryption_api_url', 'keymgr_encryption_auth_url'].each |String $keymgr_var| {
+    if getvar("${keymgr_var}") != undef {
+      warning("cinder::api::${keymgr_var} is deprecated, use cinder::${keymgr_var} instead.")
+    }
+  }
 
   if $os_region_name != undef {
     warning('cinder::api::os_region_name is deprecated and has no effect. \
@@ -241,12 +247,6 @@ running as a standalone service, or httpd for being run by a httpd server")
   oslo::middleware {'cinder_config':
     enable_proxy_headers_parsing => $enable_proxy_headers_parsing,
     max_request_body_size        => $max_request_body_size,
-  }
-
-  cinder_config {
-    'key_manager/backend':        value => $keymgr_backend;
-    'barbican/barbican_endpoint': value => $keymgr_encryption_api_url;
-    'barbican/auth_endpoint':     value => $keymgr_encryption_auth_url;
   }
 
   if $auth_strategy == 'keystone' {
