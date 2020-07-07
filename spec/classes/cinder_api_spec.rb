@@ -31,9 +31,6 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_base_URL').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_max_limit').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with_value('keystone')
-        is_expected.to contain_cinder_config('key_manager/backend').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with('value' => '<SERVICE DEFAULT>')
 
         is_expected.to contain_oslo__middleware('cinder_config').with(
@@ -117,16 +114,6 @@ describe 'cinder::api' do
 
       it { is_expected.to contain_cinder_api_paste_ini('filter:ratelimit/limits').with(
         :value => '(GET, "*", .*, 100, MINUTE);(POST, "*", .*, 200, MINUTE)'
-      )}
-    end
-
-    context 'with encryption_auth_url' do
-      let :params do
-        req_params.merge({ :keymgr_encryption_auth_url => 'http://localhost:5000/v3' })
-      end
-
-      it { is_expected.to contain_cinder_config('barbican/auth_endpoint').with(
-        :value => 'http://localhost:5000/v3'
       )}
     end
 
@@ -227,22 +214,6 @@ describe 'cinder::api' do
 
       it_raises 'a Puppet::Error', /The cert_file parameter is required when use_ssl is set to true/
     end
-
-    context 'with barbican parameters' do
-      let :params do
-        req_params.merge!({
-          :keymgr_backend             => 'barbican',
-          :keymgr_encryption_api_url  => 'https://localhost:9311/v1',
-          :keymgr_encryption_auth_url => 'https://localhost:5000/v3',
-        })
-      end
-      it 'should set keymgr parameters' do
-        is_expected.to contain_cinder_config('key_manager/backend').with_value('barbican')
-        is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('https://localhost:9311/v1')
-        is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('https://localhost:5000/v3')
-      end
-    end
-
   end
 
   on_supported_os({
