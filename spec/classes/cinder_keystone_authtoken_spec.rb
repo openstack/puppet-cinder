@@ -43,6 +43,7 @@ describe 'cinder::keystone::authtoken' do
         is_expected.to contain_cinder_config('keystone_authtoken/token_cache_time').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('keystone_authtoken/service_token_roles').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('keystone_authtoken/service_token_roles_required').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('keystone_authtoken/interface').with_value('<SERVICE DEFAULT>')
       end
     end
 
@@ -83,6 +84,7 @@ describe 'cinder::keystone::authtoken' do
           :token_cache_time               => '301',
           :service_token_roles            => ['admin'],
           :service_token_roles_required   => true,
+          :interface                      => 'internal',
         })
       end
 
@@ -120,6 +122,7 @@ describe 'cinder::keystone::authtoken' do
         is_expected.to contain_cinder_config('keystone_authtoken/token_cache_time').with_value(params[:token_cache_time])
         is_expected.to contain_cinder_config('keystone_authtoken/service_token_roles').with_value(params[:service_token_roles])
         is_expected.to contain_cinder_config('keystone_authtoken/service_token_roles_required').with_value(params[:service_token_roles_required])
+        is_expected.to contain_cinder_config('keystone_authtoken/interface').with_value(params[:interface])
       end
 
       it 'installs python memcache package' do
