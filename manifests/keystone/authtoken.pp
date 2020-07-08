@@ -181,6 +181,11 @@
 #   true/false
 #   Defaults to $::os_service_default.
 #
+# [*interface*]
+#  (Optional) Interface to use for the Identity API endpoint. Valid values are
+#  "public", "internal" or "admin".
+#  Defaults to $::os_service_default.
+#
 class cinder::keystone::authtoken(
   $username                       = 'cinder',
   $password                       = $::os_service_default,
@@ -216,6 +221,7 @@ class cinder::keystone::authtoken(
   $token_cache_time               = $::os_service_default,
   $service_token_roles            = $::os_service_default,
   $service_token_roles_required   = $::os_service_default,
+  $interface                      = $::os_service_default,
 ) {
 
   include cinder::deps
@@ -259,5 +265,6 @@ class cinder::keystone::authtoken(
     token_cache_time               => $token_cache_time,
     service_token_roles            => $service_token_roles,
     service_token_roles_required   => $service_token_roles_required,
+    interface                      => $interface,
   }
 }
