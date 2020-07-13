@@ -21,5 +21,5 @@ class cinder::client(
     tag    => ['openstack', 'cinder-support-package'],
   }
 
-  include '::openstacklib::openstackclient'
+  include openstacklib::openstackclient
 }
