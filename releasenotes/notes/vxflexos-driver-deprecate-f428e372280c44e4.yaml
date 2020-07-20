@@ -1,0 +1,5 @@
+---
+deprecations:
+  - VxFlexOS is rebranded to Powerflex.
+    cinder::backend::dellemc_vxflexos is deprecated and will be removed in
+    W-Release. Use rebranded resource cinder::backend::dellemc_powerflex.
