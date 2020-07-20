@@ -1,0 +1,3 @@
+---
+features:
+  - Add Dell EMC PowerStore backend cinder driver support
