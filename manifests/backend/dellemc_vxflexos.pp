@@ -1,4 +1,4 @@
-# == define: cinder::backend::vxflexos
+# == define: cinder::backend::dellemc_vxflexos
 #
 # Configures Cinder to use the Dell EMC VxFlexOS Block Storage driver
 # Compatible for multiple backends
@@ -22,7 +22,7 @@
 #   Each pool should be specified as a protection_domain_name:storage_pool_name value
 #
 # [*volume_backend_name*]
-#   (optional) The name of the cinder::backend::vxflexos_ ressource
+#   (optional) The name of the cinder::backend::dellemc_vxflexos resource
 #   Defaults to $name.
 #
 # [*backend_availability_zone*]
@@ -90,10 +90,10 @@
 #
 # === Examples
 #
-#  cinder::backend::vxflexos_ { 'myBackend':
+#  cinder::backend::dellemc_vxflexos { 'myBackend':
 #    san_login              => 'admin',
 #    san_password           => 'password',
-#    san_ip                 => 'vxflexos_.mycorp.com',
+#    san_ip                 => 'dellemc_vxflexos.mycorp.com',
 #    vxflexos_storage_pools => 'domain1:pool1',
 #  }
 #
