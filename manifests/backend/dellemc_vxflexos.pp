@@ -120,6 +120,9 @@ define cinder::backend::dellemc_vxflexos(
 
   include cinder::deps
 
+  warning('The cinder::backend::dellemc_vxflexos is rebranded and deprecated. It will be removed \
+    in W-release, please use cinder::backend::dellemc_powerflex resource instead.')
+
   cinder_config {
     "${name}/volume_driver":                           value => 'cinder.volume.drivers.dell_emc.vxflexos.driver.VxFlexOSDriver';
     "${name}/san_login":                               value => $san_login;
