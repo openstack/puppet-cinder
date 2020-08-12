@@ -34,6 +34,7 @@ describe 'cinder::wsgi::apache' do
           :bind_host                   => '10.42.51.1',
           :port                        => 12345,
           :ssl                         => false,
+          :vhost_custom_fragment       => 'Timeout 99',
           :wsgi_process_display_name   => 'cinder-api',
           :workers                     => 37,
           :custom_wsgi_process_options => {
@@ -57,6 +58,7 @@ describe 'cinder::wsgi::apache' do
         :ssl                       => false,
         :threads                   => 1,
         :user                      => 'cinder',
+        :vhost_custom_fragment     => 'Timeout 99',
         :workers                   => 37,
         :wsgi_daemon_process       => 'cinder-api',
         :wsgi_process_display_name => 'cinder-api',
