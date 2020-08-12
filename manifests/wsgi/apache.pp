@@ -102,6 +102,11 @@
 #     { python-path => '/my/python/virtualenv' }
 #     Defaults to {}
 #
+#   [*vhost_custom_fragment*]
+#     (optional) Passes a string of custom configuration
+#     directives to be placed at the end of the vhost configuration.
+#     Defaults to undef.
+#
 # == Dependencies
 #
 #   requires Class['apache'] & Class['cinder']
@@ -137,6 +142,7 @@ class cinder::wsgi::apache (
   $error_log_pipe              = undef,
   $error_log_syslog            = undef,
   $custom_wsgi_process_options = {},
+  $vhost_custom_fragment       = undef,
 ) {
 
   include cinder::deps
@@ -164,6 +170,7 @@ class cinder::wsgi::apache (
     ssl_key                     => $ssl_key,
     threads                     => $threads,
     user                        => 'cinder',
+    vhost_custom_fragment       => $vhost_custom_fragment,
     workers                     => $workers,
     wsgi_daemon_process         => 'cinder-api',
     wsgi_process_display_name   => $wsgi_process_display_name,
