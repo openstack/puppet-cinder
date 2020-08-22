@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Now the ``cinder::nova`` class set credential parameters like username even
+    if auth_type is not ``password``. This fixes the problem with the other
+    auth_type value like ``v3password``.

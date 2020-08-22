@@ -69,7 +69,7 @@
 #
 # [*password*]
 #   (Optional) Nova admin password.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*project_name*]
 #   (Optional) Nova admin project name.
@@ -95,7 +95,7 @@ class cinder::nova (
   $auth_url            = $::os_service_default,
   $username            = 'nova',
   $user_domain_name    = 'Default',
-  $password            = undef,
+  $password            = $::os_service_default,
   $project_name        = 'services',
   $project_domain_name = 'Default',
 ) {
@@ -103,28 +103,23 @@ class cinder::nova (
   include cinder::deps
 
   cinder_config {
-    'nova/region_name':    value => $region_name;
-    'nova/interface':      value => $interface;
-    'nova/token_auth_url': value => $token_auth_url;
-    'nova/cafile':         value => $cafile;
-    'nova/certfile':       value => $certfile;
-    'nova/keyfile':        value => $keyfile;
-    'nova/insecure':       value => $insecure;
-    'nova/timeout':        value => $timeout;
-    'nova/collect_timing': value => $collect_timing;
-    'nova/split_loggers':  value => $split_loggers;
-    'nova/auth_type':      value => $auth_type;
-    'nova/auth_section':   value => $auth_section;
-  }
-
-  if $auth_type == 'password' {
-    cinder_config {
-      'nova/auth_url':            value => $auth_url;
-      'nova/username':            value => $username;
-      'nova/user_domain_name':    value => $user_domain_name;
-      'nova/password':            value => $password, secret => true;
-      'nova/project_name':        value => $project_name;
-      'nova/project_domain_name': value => $project_domain_name;
-    }
+    'nova/region_name':         value => $region_name;
+    'nova/interface':           value => $interface;
+    'nova/token_auth_url':      value => $token_auth_url;
+    'nova/cafile':              value => $cafile;
+    'nova/certfile':            value => $certfile;
+    'nova/keyfile':             value => $keyfile;
+    'nova/insecure':            value => $insecure;
+    'nova/timeout':             value => $timeout;
+    'nova/collect_timing':      value => $collect_timing;
+    'nova/split_loggers':       value => $split_loggers;
+    'nova/auth_type':           value => $auth_type;
+    'nova/auth_section':        value => $auth_section;
+    'nova/auth_url':            value => $auth_url;
+    'nova/username':            value => $username;
+    'nova/user_domain_name':    value => $user_domain_name;
+    'nova/password':            value => $password, secret => true;
+    'nova/project_name':        value => $project_name;
+    'nova/project_domain_name': value => $project_domain_name;
   }
 }
