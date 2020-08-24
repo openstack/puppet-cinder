@@ -16,14 +16,12 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/split_loggers').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/auth_type').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/auth_section').with_value('<SERVICE DEFAULT>')
-
-        # These should be added only when auth_type is 'password'
-        is_expected.not_to contain_cinder_config('nova/auth_url')
-        is_expected.not_to contain_cinder_config('nova/username')
-        is_expected.not_to contain_cinder_config('nova/user_domain_name')
-        is_expected.not_to contain_cinder_config('nova/password')
-        is_expected.not_to contain_cinder_config('nova/project_name')
-        is_expected.not_to contain_cinder_config('nova/project_domain_name')
+        is_expected.to contain_cinder_config('nova/auth_url').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nova/username').with_value('nova')
+        is_expected.to contain_cinder_config('nova/user_domain_name').with_value('Default')
+        is_expected.to contain_cinder_config('nova/password').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nova/project_name').with_value('services')
+        is_expected.to contain_cinder_config('nova/project_domain_name').with_value('Default')
       }
     end
 
