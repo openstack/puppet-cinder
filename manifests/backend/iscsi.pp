@@ -98,10 +98,12 @@ define cinder::backend::iscsi (
 
   case $target_helper {
     'tgtadm': {
-      package { 'tgt':
-        ensure => present,
-        name   => $::cinder::params::tgt_package_name,
-        tag    => 'cinder-support-package',
+      if ! defined(Package['tgt']) {
+        package { 'tgt':
+          ensure => present,
+          name   => $::cinder::params::tgt_package_name,
+          tag    => 'cinder-support-package',
+        }
       }
 
       if($::osfamily == 'RedHat') {
@@ -114,25 +116,31 @@ define cinder::backend::iscsi (
         }
       }
 
-      service { 'tgtd':
-        ensure => running,
-        name   => $::cinder::params::tgt_service_name,
-        enable => true,
-        tag    => 'cinder-support-service',
+      if ! defined(Service['tgtd']) {
+        service { 'tgtd':
+          ensure => running,
+          name   => $::cinder::params::tgt_service_name,
+          enable => true,
+          tag    => 'cinder-support-service',
+        }
       }
     }
 
     'lioadm': {
-      service { 'target':
-        ensure => running,
-        enable => true,
-        tag    => 'cinder-support-service',
+      if ! defined(Service['target']) {
+        service { 'target':
+          ensure => running,
+          enable => true,
+          tag    => 'cinder-support-service',
+        }
       }
 
-      package { 'targetcli':
-        ensure => present,
-        name   => $::cinder::params::lio_package_name,
-        tag    => 'cinder-support-package',
+      if ! defined(Package['targetcli']) {
+        package { 'targetcli':
+          ensure => present,
+          name   => $::cinder::params::lio_package_name,
+          tag    => 'cinder-support-package',
+        }
       }
     }
 
