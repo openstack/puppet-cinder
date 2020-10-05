@@ -40,9 +40,6 @@
 #   is used as the default for all backends.
 #   Defaults to $::os_service_default.
 #
-# [*volume_driver*]
-#   (optional) The Dell EMC PowerMax Driver
-#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created

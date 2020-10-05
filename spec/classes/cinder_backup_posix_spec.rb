@@ -44,20 +44,25 @@ describe 'cinder::backup::posix' do
       is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.posix.PosixBackupDriver')
       is_expected.to contain_cinder_config('DEFAULT/backup_file_size').with_value(p[:backup_file_size])
       is_expected.to contain_cinder_config('DEFAULT/backup_sha_block_size_bytes').with_value(p[:backup_sha_block_size_bytes])
+      is_expected.to contain_cinder_config('DEFAULT/backup_enable_progress_timer').with_value(p[:backup_sha_block_size_bytes])
       is_expected.to contain_cinder_config('DEFAULT/backup_posix_path').with_value(p[:backup_posix_path])
       is_expected.to contain_cinder_config('DEFAULT/backup_container').with_value(p[:backup_container])
     end
 
     context 'when overriding default parameters' do
       before :each do
-        params.merge!(:backup_file_size => '4')
-        params.merge!(:backup_sha_block_size_bytes => '2')
-        params.merge!(:backup_posix_path => '/etc/backup')
-        params.merge!(:backup_container => 'mycontainer')
+        params.merge!(
+          { :backup_file_size             => '4',
+            :backup_sha_block_size_bytes  => '2',
+            :backup_enable_progress_timer => true,
+            :backup_posix_path            => '/etc/backup',
+            :backup_container             => 'mycontainer' })
       end
+
       it 'should replace default parameters with new values' do
         is_expected.to contain_cinder_config('DEFAULT/backup_file_size').with_value(p[:backup_file_size])
         is_expected.to contain_cinder_config('DEFAULT/backup_sha_block_size_bytes').with_value(p[:backup_sha_block_size_bytes])
+        is_expected.to contain_cinder_config('DEFAULT/backup_enable_progress_timer').with_value(p[:backup_enable_progress_timer])
         is_expected.to contain_cinder_config('DEFAULT/backup_posix_path').with_value(p[:backup_posix_path])
         is_expected.to contain_cinder_config('DEFAULT/backup_container').with_value(p[:backup_container])
       end

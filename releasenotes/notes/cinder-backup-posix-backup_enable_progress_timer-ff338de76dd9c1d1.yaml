@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    The ``cinder::backup::posix::backup_enable_progress_timer`` parameter has
+    been described in parameter but been invalid. Now the parameter is
+    implemented as a valid paramater.
