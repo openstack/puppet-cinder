@@ -17,6 +17,8 @@ describe 'cinder::db::mysql' do
         req_params
       end
 
+      it { is_expected.to contain_class('cinder::deps') }
+
       it { is_expected.to contain_openstacklib__db__mysql('cinder').with(
         :user     => 'cinder',
         :password => 'cinderpass',
