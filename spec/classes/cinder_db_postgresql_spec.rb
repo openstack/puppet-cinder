@@ -15,6 +15,8 @@ describe 'cinder::db::postgresql' do
         req_params
       end
 
+      it { is_expected.to contain_class('cinder::deps') }
+
       it { is_expected.to contain_openstacklib__db__postgresql('cinder').with(
         :user       => 'cinder',
         :password   => 'cinderpass',
