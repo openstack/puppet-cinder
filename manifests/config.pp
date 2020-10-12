@@ -2,9 +2,7 @@
 #
 # This class is used to manage arbitrary cinder configurations.
 #
-# === Parameters
-#
-# [*xxx_config*]
+# example xxx_config
 #   (optional) Allow configuration of arbitrary cinder configurations.
 #   The value is a hash of xxx_config resources. Example:
 #   { 'DEFAULT/foo' => { value => 'fooValue'},
@@ -17,6 +15,8 @@
 #       value: fooValue
 #     DEFAULT/bar:
 #       value: barValue
+#
+# === Parameters
 #
 # [*cinder_config*]
 #   (optional) Allow configuration of cinder.conf configurations.

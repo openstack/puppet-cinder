@@ -56,21 +56,23 @@
 #
 #
 class cinder::backup::posix (
-  $backup_driver               = 'cinder.backup.drivers.posix.PosixBackupDriver',
-  $backup_file_size            = $::os_service_default,
-  $backup_sha_block_size_bytes = $::os_service_default,
-  $backup_posix_path           = $::os_service_default,
-  $backup_container            = $::os_service_default,
+  $backup_driver                = 'cinder.backup.drivers.posix.PosixBackupDriver',
+  $backup_file_size             = $::os_service_default,
+  $backup_sha_block_size_bytes  = $::os_service_default,
+  $backup_enable_progress_timer = $::os_service_default,
+  $backup_posix_path            = $::os_service_default,
+  $backup_container             = $::os_service_default,
 ) {
 
   include cinder::deps
 
   cinder_config {
-    'DEFAULT/backup_driver':               value => $backup_driver;
-    'DEFAULT/backup_file_size':            value => $backup_file_size;
-    'DEFAULT/backup_sha_block_size_bytes': value => $backup_sha_block_size_bytes;
-    'DEFAULT/backup_posix_path':           value => $backup_posix_path;
-    'DEFAULT/backup_container':            value => $backup_container;
+    'DEFAULT/backup_driver':                value => $backup_driver;
+    'DEFAULT/backup_file_size':             value => $backup_file_size;
+    'DEFAULT/backup_sha_block_size_bytes':  value => $backup_sha_block_size_bytes;
+    'DEFAULT/backup_enable_progress_timer': value => $backup_enable_progress_timer;
+    'DEFAULT/backup_posix_path':            value => $backup_posix_path;
+    'DEFAULT/backup_container':             value => $backup_container;
   }
 
 }
