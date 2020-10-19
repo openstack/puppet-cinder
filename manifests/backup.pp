@@ -28,6 +28,15 @@
 #   (optional) Template string to be used to generate backup names.
 #   Defaults to $::os_service_default
 #
+# [*backup_workers*]
+#   (optional) Number of backup processes to launch.
+#   Defaults to $::os_service_default
+#
+# [*backup_max_operations*]
+#   (optional) Maximum number of concurrent memory heavy operations: backup
+#   and restore. Value of 0 means unlimited.
+#   Defaults to $::os_service_default
+#
 # === Author(s)
 #
 # Emilien Macchi <emilien.macchi@enovance.com>
@@ -49,12 +58,14 @@
 # under the License.
 #
 class cinder::backup (
-  $enabled              = true,
-  $manage_service       = true,
-  $package_ensure       = 'present',
-  $backup_manager       = $::os_service_default,
-  $backup_api_class     = $::os_service_default,
-  $backup_name_template = $::os_service_default,
+  $enabled               = true,
+  $manage_service        = true,
+  $package_ensure        = 'present',
+  $backup_manager        = $::os_service_default,
+  $backup_api_class      = $::os_service_default,
+  $backup_name_template  = $::os_service_default,
+  $backup_workers        = $::os_service_default,
+  $backup_max_operations = $::os_service_default,
 ) {
 
   include cinder::deps
@@ -88,9 +99,11 @@ class cinder::backup (
   }
 
   cinder_config {
-    'DEFAULT/backup_manager':       value => $backup_manager;
-    'DEFAULT/backup_api_class':     value => $backup_api_class;
-    'DEFAULT/backup_name_template': value => $backup_name_template;
+    'DEFAULT/backup_manager':        value => $backup_manager;
+    'DEFAULT/backup_api_class':      value => $backup_api_class;
+    'DEFAULT/backup_name_template':  value => $backup_name_template;
+    'DEFAULT/backup_workers':        value => $backup_workers;
+    'DEFAULT/backup_max_operations': value => $backup_max_operations;
   }
 
 }

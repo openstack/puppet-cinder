@@ -23,11 +23,13 @@ require 'spec_helper'
 describe 'cinder::backup' do
   let :default_params do
     {
-      :enable               => true,
-      :manage_service       => true,
-      :backup_manager       => '<SERVICE DEFAULT>',
-      :backup_api_class     => '<SERVICE DEFAULT>',
-      :backup_name_template => '<SERVICE DEFAULT>'
+      :enable                => true,
+      :manage_service        => true,
+      :backup_manager        => '<SERVICE DEFAULT>',
+      :backup_api_class      => '<SERVICE DEFAULT>',
+      :backup_name_template  => '<SERVICE DEFAULT>',
+      :backup_workers        => '<SERVICE DEFAULT>',
+      :backup_max_operations => '<SERVICE DEFAULT>',
     }
   end
 
@@ -66,14 +68,22 @@ describe 'cinder::backup' do
       is_expected.to contain_cinder_config('DEFAULT/backup_manager').with_value(p[:backup_manager])
       is_expected.to contain_cinder_config('DEFAULT/backup_api_class').with_value(p[:backup_api_class])
       is_expected.to contain_cinder_config('DEFAULT/backup_name_template').with_value(p[:backup_name_template])
+      is_expected.to contain_cinder_config('DEFAULT/backup_workers').with_value(p[:backup_workers])
+      is_expected.to contain_cinder_config('DEFAULT/backup_max_operations').with_value(p[:backup_max_operations])
     end
 
-    context 'when overriding backup_name_template' do
+    context 'when overriding parameters' do
       before :each do
-        params.merge!(:backup_name_template => 'foo-bar-%s')
+        params.merge!({
+          :backup_name_template  => 'foo-bar-%s',
+          :backup_workers        => 1,
+          :backup_max_operations => 2,
+        })
       end
       it 'should replace default parameter with new value' do
         is_expected.to contain_cinder_config('DEFAULT/backup_name_template').with_value(p[:backup_name_template])
+        is_expected.to contain_cinder_config('DEFAULT/backup_workers').with_value(p[:backup_workers])
+        is_expected.to contain_cinder_config('DEFAULT/backup_max_operations').with_value(p[:backup_max_operations])
       end
     end
 

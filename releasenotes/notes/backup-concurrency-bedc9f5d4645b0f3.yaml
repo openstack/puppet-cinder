@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following two parameters have been added to the ``cinder::backup``
+    class, to support the corresponding parameters to define concurrency of
+    cinder-backup.
+
+    - ``backup_workers``
+    - ``backup_max_operations``
