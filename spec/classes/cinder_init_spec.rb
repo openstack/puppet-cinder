@@ -3,8 +3,7 @@ require 'spec_helper'
 describe 'cinder' do
   let :req_params do
     {
-      :database_connection => 'mysql+pymysql://user:password@host/database',
-      :lock_path           => '/var/lock/cinder',
+      :lock_path => '/var/lock/cinder',
     }
   end
 
@@ -15,7 +14,6 @@ describe 'cinder' do
       end
 
       it { is_expected.to contain_class('cinder::params') }
-      it { is_expected.to contain_class('mysql::bindings::python') }
 
       it { is_expected.to contain_resources('cinder_config').with_purge(false) }
 
@@ -206,18 +204,6 @@ describe 'cinder' do
         is_expected.to contain_cinder_config('oslo_messaging_amqp/username').with_value('amqp_user')
         is_expected.to contain_cinder_config('oslo_messaging_amqp/password').with_value('password')
       }
-    end
-
-    context 'with postgresql' do
-      let :params do
-        {
-          :database_connection => 'postgresql://user:drowssap@host/database',
-        }
-      end
-
-      it { is_expected.not_to contain_class('mysql::python') }
-      it { is_expected.not_to contain_class('mysql::bindings') }
-      it { is_expected.not_to contain_class('mysql::bindings::python') }
     end
 
     context 'with APIs set for Mitaka (proposed)' do
