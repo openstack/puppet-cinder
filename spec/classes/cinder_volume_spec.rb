@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'cinder::volume' do
   let :pre_condition do
-    "class { 'cinder':
+    "class { 'cinder::db':
        database_connection => 'mysql://a:b@c/d'
      }"
   end

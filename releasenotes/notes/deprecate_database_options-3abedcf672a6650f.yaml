@@ -1,0 +1,12 @@
+---
+deprecations:
+  - |
+    The following options have been deprecated, as those options have been
+    moved to cinder::db class.
+
+    - ``cinder::database_connection``
+    - ``cinder::database_idle_timeout``
+    - ``cinder::database_max_overflow``
+    - ``cinder::database_max_pool_size``
+    - ``cinder::database_max_retries``
+    - ``cinder::database_retry_interval``
