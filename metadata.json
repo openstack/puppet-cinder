@@ -69,7 +69,7 @@
             "version_requirement": ">= 6.0.0 < 7.0.0"
         }
     ],
-    "source": "git://github.com/openstack/puppet-cinder.git",
+    "source": "https://opendev.org/openstack/puppet-cinder.git",
     "summary": "Puppet module for OpenStack Cinder",
     "version": "18.0.0"
 }
