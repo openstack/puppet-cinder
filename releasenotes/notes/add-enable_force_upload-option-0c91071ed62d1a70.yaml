@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Added ability to set ``enable_force_upload`` option in the ``cinder`` class
