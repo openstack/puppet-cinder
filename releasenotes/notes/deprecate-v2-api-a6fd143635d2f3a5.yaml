@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    If any keystone resources for volume v2 API have been created, all of these
+    resources should be manually deleted during upgrade.
+
+deprecations:
+  - |
+    The support for cinder v2 API has been deprecated. The resource for cinder
+    v2 API(service, endpoint, user and role assignment) is no longer managed.
