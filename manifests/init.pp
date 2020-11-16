@@ -245,6 +245,12 @@
 #   (optional) Backend override of host value.
 #   Defaults to $::os_service_default.
 #
+# [*enable_force_upload*]
+#   (optional) Enables the Force option on upload_to_image. This
+#   enables running upload_volume on in-use volumes for backends that
+#   support it.
+#   Defaults to $::os_service_default.
+#
 # DEPRECATED PARAMETERS
 #
 # [*database_min_pool_size*]
@@ -332,6 +338,7 @@ class cinder (
   $enable_new_services                = $::os_service_default,
   $purge_config                       = false,
   $backend_host                       = $::os_service_default,
+  $enable_force_upload                = $::os_service_default,
   # DEPRECATED PARAMETERS
   $database_min_pool_size             = undef,
   $database_connection                = undef,
@@ -461,10 +468,10 @@ removed in a future realse. Use cinder::db::database_max_overflow instead')
     'DEFAULT/image_conversion_dir':             value => $image_conversion_dir;
     'DEFAULT/host':                             value => $host;
     'DEFAULT/enable_new_services':              value => $enable_new_services;
+    'DEFAULT/enable_force_upload':              value => $enable_force_upload;
     'key_manager/backend':                      value => $keymgr_backend_real;
     'barbican/barbican_endpoint':               value => $keymgr_encryption_api_url_real;
     'barbican/auth_endpoint':                   value => $keymgr_encryption_auth_url_real;
-
     # NOTE(abishop): $backend_host is not written here because it is not a valid
     # DEFAULT option. It is only recognized in the backend sections. Instead,
     # for backward compatibility, backends.pp references this parameter.
