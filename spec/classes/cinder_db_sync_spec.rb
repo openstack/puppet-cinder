@@ -13,6 +13,7 @@ describe 'cinder::db::sync' do
         :refreshonly => 'true',
         :try_sleep   => 5,
         :tries       => 10,
+        :timeout     => 300,
         :logoutput   => 'on_failure',
         :subscribe   => ['Anchor[cinder::install::end]',
                          'Anchor[cinder::config::end]',
@@ -22,10 +23,11 @@ describe 'cinder::db::sync' do
       )
     end
 
-    context "overriding extra_params" do
+    context "overriding params" do
       let :params do
         {
-          :extra_params => '--config-file /etc/cinder/cinder.conf',
+          :extra_params    => '--config-file /etc/cinder/cinder.conf',
+          :db_sync_timeout => 750,
         }
       end
 
@@ -37,6 +39,7 @@ describe 'cinder::db::sync' do
           :refreshonly => 'true',
           :try_sleep   => 5,
           :tries       => 10,
+          :timeout     => 750,
           :logoutput   => 'on_failure',
           :subscribe   => ['Anchor[cinder::install::end]',
                          'Anchor[cinder::config::end]',
