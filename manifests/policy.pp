@@ -20,12 +20,12 @@
 #   Defaults to empty hash.
 #
 # [*policy_path*]
-#   (Optional) Path to the cinder policy.json file
-#   Defaults to /etc/cinder/policy.json
+#   (Optional) Path to the cinder policy.yaml file
+#   Defaults to /etc/cinder/policy.yaml
 #
 class cinder::policy (
   $policies    = {},
-  $policy_path = '/etc/cinder/policy.json',
+  $policy_path = '/etc/cinder/policy.yaml',
 ) {
 
   include cinder::deps
@@ -34,9 +34,10 @@ class cinder::policy (
   validate_legacy(Hash, 'validate_hash', $policies)
 
   Openstacklib::Policy::Base {
-    file_path  => $policy_path,
-    file_user  => 'root',
-    file_group => $::cinder::params::group,
+    file_path   => $policy_path,
+    file_user   => 'root',
+    file_group  => $::cinder::params::group,
+    file_format => 'yaml',
   }
 
   create_resources('openstacklib::policy::base', $policies)

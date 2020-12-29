@@ -4,7 +4,7 @@ describe 'cinder::policy' do
   shared_examples 'cinder policies' do
     let :params do
       {
-        :policy_path => '/etc/cinder/policy.json',
+        :policy_path => '/etc/cinder/policy.yaml',
         :policies    => {
           'context_is_admin' => {
             'key'   => 'context_is_admin',
@@ -16,13 +16,14 @@ describe 'cinder::policy' do
 
     it 'set up the policies' do
       is_expected.to contain_openstacklib__policy__base('context_is_admin').with({
-        :key        => 'context_is_admin',
-        :value      => 'foo:bar',
-        :file_user  => 'root',
-        :file_group => 'cinder',
+        :key         => 'context_is_admin',
+        :value       => 'foo:bar',
+        :file_user   => 'root',
+        :file_group  => 'cinder',
+        :file_format => 'yaml',
       })
       is_expected.to contain_oslo__policy('cinder_config').with(
-        :policy_file => '/etc/cinder/policy.json',
+        :policy_file => '/etc/cinder/policy.yaml',
       )
     end
   end
