@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    The ``cinder::backup::tsm`` class has been deprecated and has no effect,
+    because TSM driver has been removed from cinder. This class will be removed
+    completely in a future release.

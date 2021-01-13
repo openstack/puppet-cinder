@@ -1,5 +1,5 @@
 # == Class: cinder::backup::tsm
-#
+# DEPRECATED !
 # Setup Cinder to backup volumes into the Tivoli Storage Manager (TSM)
 #
 # === Parameters
@@ -48,13 +48,5 @@ class cinder::backup::tsm (
   $backup_tsm_compression   = $::os_service_default,
 ) {
 
-  include cinder::deps
-
-  cinder_config {
-    'DEFAULT/backup_driver':            value => $backup_driver;
-    'DEFAULT/backup_tsm_volume_prefix': value => $backup_tsm_volume_prefix;
-    'DEFAULT/backup_tsm_password':      value => $backup_tsm_password, secret => true;
-    'DEFAULT/backup_tsm_compression':   value => $backup_tsm_compression;
-  }
-
+  warning('Support for tsm backup driver has been deprecated and has no effect')
 }
