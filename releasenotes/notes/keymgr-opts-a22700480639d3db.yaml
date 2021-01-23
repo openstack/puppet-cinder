@@ -1,0 +1,21 @@
+---
+features:
+  - |
+    The new ``cinder::key_manager`` class has been added. This class manages
+    basic options of key managers.
+
+  - |
+    The new ``cinder::key_manager::barbican`` class has been added. This class
+    manages options of BarbicanKeyManager.
+
+deprecations:
+  - |
+    The ``cinder::api::keymgr_backend`` parameter has been deprecated. Use
+    the ``cinder::key_manager`` class.
+
+  - |
+    The following parameters of the ``cinder`` class have been deprecated in
+    favor of the new ``cinder::key_manager::barbican`` class.
+
+    - ``keymgr_encryption_api_url``
+    - ``keymgr_encryption_auth_url``

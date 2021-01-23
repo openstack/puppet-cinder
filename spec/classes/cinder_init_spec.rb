@@ -46,9 +46,6 @@ describe 'cinder' do
         is_expected.to contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
-        is_expected.to contain_cinder_config('key_manager/backend').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('barbican/barbican_endpoint').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('barbican/auth_endpoint').with_value('<SERVICE DEFAULT>')
 
         # backend_host should not be written to DEFAULT section
         is_expected.not_to contain_cinder_config('DEFAULT/backend_host')
