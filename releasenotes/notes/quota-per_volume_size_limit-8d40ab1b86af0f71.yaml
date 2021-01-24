@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``cinder::quota`` class now supports the ``per_volume_size_limit``
+    parameter, which defines max size allowed per volume.
