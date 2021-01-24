@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Now the ``cinder::quota`` class supports parameters about backup quotas.
