@@ -1,44 +1,42 @@
 require 'spec_helper'
 
 describe 'cinder::quota' do
-  let :default_params do
-    {
-      :quota_volumes   => '<SERVICE DEFAULT>',
-      :quota_snapshots => '<SERVICE DEFAULT>',
-      :quota_gigabytes => '<SERVICE DEFAULT>',
-      :quota_driver    => '<SERVICE DEFAULT>'
-    }
-  end
-
-  let :params do
-    {}
-  end
-
   shared_examples 'cinder quota' do
 
-    let :p do
-      default_params.merge(params)
-    end
+    context 'with defualt params' do
+      let :params do
+        {}
+      end
 
-    it 'contains default values' do
-      is_expected.to contain_cinder_config('DEFAULT/quota_volumes').with_value(p[:quota_volumes])
-      is_expected.to contain_cinder_config('DEFAULT/quota_snapshots').with_value(p[:quota_snapshots])
-      is_expected.to contain_cinder_config('DEFAULT/quota_gigabytes').with_value(p[:quota_gigabytes])
-      is_expected.to contain_cinder_config('DEFAULT/quota_driver').with_value(p[:quota_driver])
+      it 'contains default values' do
+        is_expected.to contain_cinder_config('DEFAULT/quota_volumes').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/quota_snapshots').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/quota_gigabytes').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/quota_backups').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/quota_backup_gigabytes').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/quota_driver').with_value('<SERVICE DEFAULT>')
+      end
     end
 
     context 'configure quota with parameters' do
-      before :each do
-        params.merge!({ :quota_volumes => 1000,
-          :quota_snapshots => 1000,
-          :quota_gigabytes => 100000 })
+      let :params do
+        {
+          :quota_volumes          => 2000,
+          :quota_snapshots        => 1000,
+          :quota_gigabytes        => 100000,
+          :quota_backups          => 100,
+          :quota_backup_gigabytes => 10000,
+          :quota_driver           => 'cinder.quota.DbQuotaDriver'
+        }
       end
 
       it 'contains overrided values' do
-        is_expected.to contain_cinder_config('DEFAULT/quota_volumes').with_value(p[:quota_volumes])
-        is_expected.to contain_cinder_config('DEFAULT/quota_snapshots').with_value(p[:quota_snapshots])
-        is_expected.to contain_cinder_config('DEFAULT/quota_gigabytes').with_value(p[:quota_gigabytes])
-        is_expected.to contain_cinder_config('DEFAULT/quota_driver').with_value(p[:quota_driver])
+        is_expected.to contain_cinder_config('DEFAULT/quota_volumes').with_value(2000)
+        is_expected.to contain_cinder_config('DEFAULT/quota_snapshots').with_value(1000)
+        is_expected.to contain_cinder_config('DEFAULT/quota_gigabytes').with_value(100000)
+        is_expected.to contain_cinder_config('DEFAULT/quota_backups').with_value(100)
+        is_expected.to contain_cinder_config('DEFAULT/quota_backup_gigabytes').with_value(10000)
+        is_expected.to contain_cinder_config('DEFAULT/quota_driver').with_value('cinder.quota.DbQuotaDriver')
       end
     end
   end
