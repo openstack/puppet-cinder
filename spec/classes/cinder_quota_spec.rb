@@ -15,6 +15,7 @@ describe 'cinder::quota' do
         is_expected.to contain_cinder_config('DEFAULT/quota_backups').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/quota_backup_gigabytes').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/quota_driver').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/per_volume_size_limit').with_value('<SERVICE DEFAULT>')
       end
     end
 
@@ -26,7 +27,8 @@ describe 'cinder::quota' do
           :quota_gigabytes        => 100000,
           :quota_backups          => 100,
           :quota_backup_gigabytes => 10000,
-          :quota_driver           => 'cinder.quota.DbQuotaDriver'
+          :quota_driver           => 'cinder.quota.DbQuotaDriver',
+          :per_volume_size_limit  => 50
         }
       end
 
@@ -37,6 +39,7 @@ describe 'cinder::quota' do
         is_expected.to contain_cinder_config('DEFAULT/quota_backups').with_value(100)
         is_expected.to contain_cinder_config('DEFAULT/quota_backup_gigabytes').with_value(10000)
         is_expected.to contain_cinder_config('DEFAULT/quota_driver').with_value('cinder.quota.DbQuotaDriver')
+        is_expected.to contain_cinder_config('DEFAULT/per_volume_size_limit').with_value(50)
       end
     end
   end
