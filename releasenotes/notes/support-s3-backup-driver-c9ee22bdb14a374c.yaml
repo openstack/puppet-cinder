@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Add support for configuring the S3 backup driver.
