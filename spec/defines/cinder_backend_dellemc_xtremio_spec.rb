@@ -20,6 +20,7 @@ describe 'cinder::backend::dellemc_xtremio_iscsi' do
       :xtremio_array_busy_retry_count    => 5,
       :xtremio_array_busy_retry_interval => 5,
       :xtremio_volumes_per_glance_cache  => 100,
+      :xtremio_ports                     => '<SERVICE DEFAULT>',
     }
   end
 
@@ -29,6 +30,7 @@ describe 'cinder::backend::dellemc_xtremio_iscsi' do
       :xtremio_array_busy_retry_count    => 15,
       :xtremio_array_busy_retry_interval => 25,
       :xtremio_volumes_per_glance_cache  => 10,
+      :xtremio_ports                     => '10.10.57.45,10.10.57.46',
     }
   end
 

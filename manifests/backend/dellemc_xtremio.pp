@@ -38,6 +38,11 @@
 #   (optional) Number of volumes created from each cached glance image.
 #   Defaults to 100
 #
+# [*xtremio_ports*]
+#   (optional) Allowed ports. Comma separated list of XtremIO iSCSI IPs or
+#   FC WWNs (ex. 58:cc:f0:98:49:22:07:02) to be used. If is not set all ports
+#   are allowed.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
 #   Defaults to: {}
@@ -68,6 +73,7 @@ define cinder::backend::dellemc_xtremio (
   $xtremio_volumes_per_glance_cache  = 100,
   $manage_volume_type                = false,
   $xtremio_storage_protocol          = 'iSCSI',
+  $xtremio_ports                     = $::os_service_default,
   $extra_options                     = {},
 ) {
 
@@ -94,6 +100,7 @@ define cinder::backend::dellemc_xtremio (
     "${name}/xtremio_array_busy_retry_count":    value => $xtremio_array_busy_retry_count;
     "${name}/xtremio_array_busy_retry_interval": value => $xtremio_array_busy_retry_interval;
     "${name}/xtremio_volumes_per_glance_cache":  value => $xtremio_volumes_per_glance_cache;
+    "${name}/xtremio_ports":                     value => $xtremio_ports;
 
   }
 
