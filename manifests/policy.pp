@@ -4,6 +4,10 @@
 #
 # === Parameters
 #
+# [*enforce_scope*]
+#  (Optional) Whether or not to enforce scope when evaluating policies.
+#  Defaults to $::os_service_default.
+#
 # [*policies*]
 #   (Optional) Set of policies to configure for cinder
 #   Example :
@@ -24,8 +28,9 @@
 #   Defaults to /etc/cinder/policy.yaml
 #
 class cinder::policy (
-  $policies    = {},
-  $policy_path = '/etc/cinder/policy.yaml',
+  $enforce_scope = $::os_service_default,
+  $policies      = {},
+  $policy_path   = '/etc/cinder/policy.yaml',
 ) {
 
   include cinder::deps
@@ -42,6 +47,9 @@ class cinder::policy (
 
   create_resources('openstacklib::policy::base', $policies)
 
-  oslo::policy { 'cinder_config': policy_file => $policy_path }
+  oslo::policy { 'cinder_config':
+    enforce_scope => $enforce_scope,
+    policy_file   => $policy_path
+  }
 
 }
