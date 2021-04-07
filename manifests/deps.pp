@@ -38,6 +38,11 @@ class cinder::deps {
   -> Openstacklib::Policy::Base<||>
   ~> Anchor['cinder::config::end']
 
+  # On any uwsgi config change, we must restart Cinder API.
+  Anchor['cinder::config::begin']
+  -> Cinder_api_uwsgi_config<||>
+  ~> Anchor['cinder::config::end']
+
   # Support packages need to be installed in the install phase, but we don't
   # put them in the chain above because we don't want any false dependencies
   # between packages with the cinder-package tag and the cinder-support-package
