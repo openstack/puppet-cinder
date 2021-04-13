@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    Remove deprecated cinder::backend::dellemc_xtremio_iscsi. Use
+    cinder::backend::dellemc_xtremio instead.
