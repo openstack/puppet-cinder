@@ -451,13 +451,6 @@ removed in a future realse. Use cinder::db::database_max_overflow instead')
     $default_availability_zone_real = $default_availability_zone
   }
 
-  # NOTE(abishop): Remove the picks when cinder::api::keymgr_* are removed.
-  $keymgr_backend_real = pick($cinder::api::keymgr_backend, $keymgr_backend)
-  $keymgr_encryption_api_url_real = pick($cinder::api::keymgr_encryption_api_url,
-                                          $keymgr_encryption_api_url)
-  $keymgr_encryption_auth_url_real = pick($cinder::api::keymgr_encryption_auth_url,
-                                          $keymgr_encryption_auth_url)
-
   cinder_config {
     'DEFAULT/report_interval':                  value => $report_interval;
     'DEFAULT/service_down_time':                value => $service_down_time;
@@ -469,9 +462,9 @@ removed in a future realse. Use cinder::db::database_max_overflow instead')
     'DEFAULT/host':                             value => $host;
     'DEFAULT/enable_new_services':              value => $enable_new_services;
     'DEFAULT/enable_force_upload':              value => $enable_force_upload;
-    'key_manager/backend':                      value => $keymgr_backend_real;
-    'barbican/barbican_endpoint':               value => $keymgr_encryption_api_url_real;
-    'barbican/auth_endpoint':                   value => $keymgr_encryption_auth_url_real;
+    'key_manager/backend':                      value => $keymgr_backend;
+    'barbican/barbican_endpoint':               value => $keymgr_encryption_api_url;
+    'barbican/auth_endpoint':                   value => $keymgr_encryption_auth_url;
     # NOTE(abishop): $backend_host is not written here because it is not a valid
     # DEFAULT option. It is only recognized in the backend sections. Instead,
     # for backward compatibility, backends.pp references this parameter.

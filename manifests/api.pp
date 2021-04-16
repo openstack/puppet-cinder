@@ -104,23 +104,6 @@
 #   will also need to be changed to match.
 #   Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*keymgr_encryption_api_url*]
-#   (optional) Key Manager service URL
-#   Example of valid value: https://localhost:9311/v1
-#   Defaults to undef
-#
-# [*keymgr_encryption_auth_url*]
-#   (optional) Auth URL for keymgr authentication. Should be in format
-#   http://auth_url:5000/v3
-#   Defaults to undef
-#
-# [*keymgr_backend*]
-#   (optional) Key Manager service class.
-#   Example of valid value: barbican
-#   Defaults to undef
-#
 # [*os_region_name*]
 #   (optional) Some operations require cinder to make API requests
 #   to Nova. This sets the keystone region to be used for these
@@ -152,21 +135,12 @@ class cinder::api (
   $auth_strategy                  = 'keystone',
   $osapi_volume_listen_port       = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $keymgr_backend                 = undef,
-  $keymgr_encryption_api_url      = undef,
-  $keymgr_encryption_auth_url     = undef,
   $os_region_name                 = undef
 ) inherits cinder::params {
 
   include cinder::deps
   include cinder::params
   include cinder::policy
-
-  ['keymgr_backend', 'keymgr_encryption_api_url', 'keymgr_encryption_auth_url'].each |String $keymgr_var| {
-    if getvar("${keymgr_var}") != undef {
-      warning("cinder::api::${keymgr_var} is deprecated, use cinder::${keymgr_var} instead.")
-    }
-  }
 
   if $os_region_name != undef {
     warning('cinder::api::os_region_name is deprecated and has no effect. \

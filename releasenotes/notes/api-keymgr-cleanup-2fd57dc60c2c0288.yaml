@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The following parameters of the ``cinder::api`` class have been removed.
+    Use the same parameters of the ``cinder`` class.
+
+    - ``keymgr_encryption_api_url``
+    - ``keymgr_encryption_auth_url``
+    - ``keymgr_backend``
