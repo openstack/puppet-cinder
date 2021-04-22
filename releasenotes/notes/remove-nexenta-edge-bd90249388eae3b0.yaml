@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Support for Nexenta Edge Driver has been removed.
