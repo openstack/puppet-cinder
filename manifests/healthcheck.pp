@@ -1,4 +1,4 @@
-# == Define: cinder::healthcheck
+# == Class: cinder::healthcheck
 #
 # Configure oslo_middleware options in healthcheck section
 #
