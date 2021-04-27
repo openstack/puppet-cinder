@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Support for Veritas HyperScale Block Storage driver has been removed.
