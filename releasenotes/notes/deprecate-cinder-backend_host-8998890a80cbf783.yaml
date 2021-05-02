@@ -1,0 +1,10 @@
+---
+deprecations:
+  - |
+    The ``cinder::backend_host`` parameter has been deprecated and will be
+    remove in a future release. Use the ``cinder::backends::backend_host``
+    parameter instead.
+
+  - |
+    Passing a false value for ``cinder::backends::backend_host`` has been
+    deprecated. Use ``$::os_service_default`` instead.

@@ -43,9 +43,9 @@ describe 'cinder::backends' do
 
       it 'configures cinder.conf with default params' do
         is_expected.to contain_cinder_config('DEFAULT/enabled_backends').with_value(p[:enabled_backends].join(','))
-        is_expected.to_not contain_cinder_config('lowcost/backend_host')
-        is_expected.to_not contain_cinder_config('regular/backend_host')
-        is_expected.to_not contain_cinder_config('premium/backend_host')
+        is_expected.to contain_cinder_config('lowcost/backend_host').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('regular/backend_host').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('premium/backend_host').with_value('<SERVICE DEFAULT>')
       end
     end
 

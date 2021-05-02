@@ -12,12 +12,12 @@
 #
 # [*backend_host*]
 #   (optional) Backend override of host value.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # Author: Andrew Woodward <awoodward@mirantis.com>
 class cinder::backends (
   $enabled_backends = undef,
-  $backend_host     = undef,
+  $backend_host     = $::os_service_default,
 ) {
 
   include cinder::deps
@@ -26,6 +26,10 @@ class cinder::backends (
     $backend_host_real = $::cinder::backend_host
   } else {
     $backend_host_real = $backend_host
+    if ! $backend_host_real {
+      warning('Using a false value for backend_host is deprecated. \
+Use $::os_service_default instead')
+    }
   }
 
   if $enabled_backends == undef {

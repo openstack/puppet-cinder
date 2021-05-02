@@ -337,7 +337,6 @@ class cinder (
   $host                               = $::os_service_default,
   $enable_new_services                = $::os_service_default,
   $purge_config                       = false,
-  $backend_host                       = undef,
   $enable_force_upload                = $::os_service_default,
   # DEPRECATED PARAMETERS
   $database_min_pool_size             = undef,
@@ -348,6 +347,7 @@ class cinder (
   $database_retry_interval            = undef,
   $database_max_overflow              = undef,
   $amqp_allow_insecure_clients        = undef,
+  $backend_host                       = undef,
 ) inherits cinder::params {
 
   include cinder::deps
@@ -465,15 +465,14 @@ removed in a future realse. Use cinder::db::database_max_overflow instead')
     'key_manager/backend':                      value => $keymgr_backend;
     'barbican/barbican_endpoint':               value => $keymgr_encryption_api_url;
     'barbican/auth_endpoint':                   value => $keymgr_encryption_auth_url;
-    # NOTE(abishop): $backend_host is not written here because it is not a valid
-    # DEFAULT option. It is only recognized in the backend sections. Instead,
-    # for backward compatibility, backends.pp references this parameter.
   }
 
   if $backend_host != undef {
     if defined(Class[cinder::backends]){
       fail('The cinder::backend_host parameter has no effect unless cinder::backends is included later')
     }
+    warning('The cinder::backend_host parameter is deprecated. \
+Use the cinder::backends::backend_host parameter instead')
   }
 
   # V3 APIs
