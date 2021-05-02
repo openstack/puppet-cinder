@@ -12,15 +12,21 @@
 #
 # [*backend_host*]
 #   (optional) Backend override of host value.
-#   Defaults to hiera('cinder::backend_host', undef)
+#   Defaults to undef
 #
 # Author: Andrew Woodward <awoodward@mirantis.com>
 class cinder::backends (
   $enabled_backends = undef,
-  $backend_host     = hiera('cinder::backend_host', undef)
+  $backend_host     = undef,
 ) {
 
   include cinder::deps
+
+  if pick($::cinder::backend_host, false) {
+    $backend_host_real = $::cinder::backend_host
+  } else {
+    $backend_host_real = $backend_host
+  }
 
   if $enabled_backends == undef {
     warning("Configurations that are setting backend config in ``[DEFAULT]`` \
@@ -31,12 +37,12 @@ set up backends. No volume service(s) started successfully otherwise.")
     cinder_config {
       'DEFAULT/enabled_backends': value => join($enabled_backends, ',');
     }
-    if $backend_host {
+    if $backend_host_real {
       $enabled_backends.each |$backend| {
         # Avoid colliding with code in backend/rbd.pp
         unless defined(Cinder_config["${backend}/backend_host"]) {
           cinder_config {
-            "${backend}/backend_host": value => $backend_host;
+            "${backend}/backend_host": value => $backend_host_real;
           }
         }
       }

@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    Fixed the ``cinder::backend_host`` parameter which was ignored when its
+    value is defined in class definitions.
+    Because of this, the ``cinder`` class should be declared before
+    the ``cinder::backends`` class if the ``cinder::backend_host`` parameter is
+    set.

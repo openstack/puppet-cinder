@@ -243,7 +243,7 @@
 #
 # [*backend_host*]
 #   (optional) Backend override of host value.
-#   Defaults to $::os_service_default.
+#   Defaults to undef.
 #
 # [*enable_force_upload*]
 #   (optional) Enables the Force option on upload_to_image. This
@@ -337,7 +337,7 @@ class cinder (
   $host                               = $::os_service_default,
   $enable_new_services                = $::os_service_default,
   $purge_config                       = false,
-  $backend_host                       = $::os_service_default,
+  $backend_host                       = undef,
   $enable_force_upload                = $::os_service_default,
   # DEPRECATED PARAMETERS
   $database_min_pool_size             = undef,
@@ -468,6 +468,12 @@ removed in a future realse. Use cinder::db::database_max_overflow instead')
     # NOTE(abishop): $backend_host is not written here because it is not a valid
     # DEFAULT option. It is only recognized in the backend sections. Instead,
     # for backward compatibility, backends.pp references this parameter.
+  }
+
+  if $backend_host != undef {
+    if defined(Class[cinder::backends]){
+      fail('The cinder::backend_host parameter has no effect unless cinder::backends is included later')
+    }
   }
 
   # V3 APIs
