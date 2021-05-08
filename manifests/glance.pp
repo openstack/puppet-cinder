@@ -7,7 +7,7 @@
 # [*glance_api_servers*]
 #   (optional) A list of the glance api servers available to cinder.
 #   Should be an array with [hostname|ip]:port
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*glance_num_retries*]
 #   (optional) Number retries when downloading an image from glance.
@@ -50,7 +50,7 @@
 # under the License.
 #
 class cinder::glance (
-  $glance_api_servers         = undef,
+  $glance_api_servers         = $::os_service_default,
   $glance_num_retries         = $::os_service_default,
   $glance_api_insecure        = $::os_service_default,
   $glance_api_ssl_compression = $::os_service_default,
