@@ -31,6 +31,7 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_base_URL').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_max_limit').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with_value('keystone')
+        is_expected.to contain_cinder_config('DEFAULT/use_forwarded_for').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with('value' => '<SERVICE DEFAULT>')
 
         is_expected.to contain_oslo__middleware('cinder_config').with(
@@ -140,6 +141,17 @@ describe 'cinder::api' do
       end
     end
 
+    context 'with a custom use_forwarded_for' do
+      let :params do
+        req_params.merge({'use_forwarded_for' => true})
+      end
+      it 'should configure the osapi_max_limit to 10000' do
+        is_expected.to contain_cinder_config('DEFAULT/use_forwarded_for').with(
+          :value => true
+        )
+      end
+    end
+
     context 'with a custom osapi_max_limit' do
       let :params do
         req_params.merge({'osapi_max_limit' => '10000'})
@@ -150,6 +162,7 @@ describe 'cinder::api' do
         )
       end
     end
+
     context 'when running cinder-api in wsgi' do
       let :params do
         req_params.merge!({ :service_name => 'httpd' })
