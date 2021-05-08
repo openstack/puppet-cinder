@@ -20,61 +20,63 @@
 require 'spec_helper'
 
 describe 'cinder::glance' do
-  let :default_params do
-    {
-      :glance_api_servers         => '<SERVICE DEFAULT>',
-      :glance_num_retries         => '<SERVICE DEFAULT>',
-      :glance_api_insecure        => '<SERVICE DEFAULT>',
-      :glance_api_ssl_compression => '<SERVICE DEFAULT>',
-      :glance_request_timeout     => '<SERVICE DEFAULT>'
-    }
-  end
+  shared_examples 'cinder::glance' do
+    context 'with defaults' do
+      let :params do
+        {}
+      end
 
-  let :params do
-    {}
-  end
-
-  shared_examples 'cinder with glance' do
-    let :p do
-      default_params.merge(params)
+      it 'configures cinder.conf with defaults' do
+        is_expected.to contain_cinder_config('DEFAULT/glance_api_servers').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/glance_num_retries').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/glance_api_insecure').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/glance_api_ssl_compression').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/glance_request_timeout').with_value('<SERVICE DEFAULT>')
+      end
     end
 
-    it 'configures cinder.conf with default params' do
-      is_expected.to contain_cinder_config('DEFAULT/glance_api_servers').with_value(p[:glance_api_servers])
-      is_expected.to contain_cinder_config('DEFAULT/glance_num_retries').with_value(p[:glance_num_retries])
-      is_expected.to contain_cinder_config('DEFAULT/glance_api_insecure').with_value(p[:glance_api_insecure])
-      is_expected.to contain_cinder_config('DEFAULT/glance_api_ssl_compression').with_value(p[:glance_api_ssl_compression])
-      is_expected.to contain_cinder_config('DEFAULT/glance_request_timeout').with_value(p[:glance_request_timeout])
+    context 'with parameters overridden' do
+      let :params do
+        {
+          :glance_api_servers         => '10.0.0.1:9292',
+          :glance_num_retries         => 3,
+          :glance_api_insecure        => false,
+          :glance_api_ssl_compression => false,
+          :glance_request_timeout     => 300,
+        }
+      end
+
+      it 'configures cinder.conf with defaults' do
+        is_expected.to contain_cinder_config('DEFAULT/glance_api_servers').with_value('10.0.0.1:9292')
+        is_expected.to contain_cinder_config('DEFAULT/glance_num_retries').with_value('3')
+        is_expected.to contain_cinder_config('DEFAULT/glance_api_insecure').with_value(false)
+        is_expected.to contain_cinder_config('DEFAULT/glance_api_ssl_compression').with_value(false)
+        is_expected.to contain_cinder_config('DEFAULT/glance_request_timeout').with_value(300)
+      end
     end
 
-     context 'configure cinder with one glance server' do
-       before :each do
-        params.merge!(:glance_api_servers => '10.0.0.1:9292')
-       end
-       it 'should configure one glance server' do
-         is_expected.to contain_cinder_config('DEFAULT/glance_api_servers').with_value(p[:glance_api_servers])
-       end
-     end
+    context 'with parameters in array' do
+      let :params do
+        {
+          :glance_api_servers => ['10.0.0.1:9292','10.0.0.2:9292'],
+        }
+      end
 
-     context 'configure cinder with two glance servers' do
-       before :each do
-        params.merge!(:glance_api_servers => ['10.0.0.1:9292','10.0.0.2:9292'])
-       end
-       it 'should configure two glance servers' do
-         is_expected.to contain_cinder_config('DEFAULT/glance_api_servers').with_value(p[:glance_api_servers].join(','))
-       end
-     end
+      it 'should configure parameters in comma-separated list' do
+        is_expected.to contain_cinder_config('DEFAULT/glance_api_servers').with_value('10.0.0.1:9292,10.0.0.2:9292')
+      end
+    end
   end
 
   on_supported_os({
     :supported_os   => OSDefaults.get_supported_os
   }).each do |os,facts|
-    context "on #{os}" do
-      let (:facts) do
-        facts.merge(OSDefaults.get_facts({:os_workers => 8}))
-      end
+    let (:facts) do
+      facts.merge(OSDefaults.get_facts())
+    end
 
-      it_behaves_like 'cinder with glance'
+    context "on #{os}" do
+      it_behaves_like 'cinder::glance'
     end
   end
 end
