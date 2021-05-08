@@ -32,6 +32,10 @@ describe 'cinder::glance' do
         is_expected.to contain_cinder_config('DEFAULT/glance_api_insecure').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/glance_api_ssl_compression').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/glance_request_timeout').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/allowed_direct_url_schemes').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/verify_glance_signatures').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/glance_catalog_info').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/glance_core_properties').with_value('<SERVICE DEFAULT>')
       end
     end
 
@@ -43,6 +47,10 @@ describe 'cinder::glance' do
           :glance_api_insecure        => false,
           :glance_api_ssl_compression => false,
           :glance_request_timeout     => 300,
+          :allowed_direct_url_schemes => 'file',
+          :verify_glance_signatures   => true,
+          :glance_catalog_info        => 'image:glance:publicURL',
+          :glance_core_properties     => 'checksum',
         }
       end
 
@@ -52,18 +60,26 @@ describe 'cinder::glance' do
         is_expected.to contain_cinder_config('DEFAULT/glance_api_insecure').with_value(false)
         is_expected.to contain_cinder_config('DEFAULT/glance_api_ssl_compression').with_value(false)
         is_expected.to contain_cinder_config('DEFAULT/glance_request_timeout').with_value(300)
+        is_expected.to contain_cinder_config('DEFAULT/allowed_direct_url_schemes').with_value('file')
+        is_expected.to contain_cinder_config('DEFAULT/verify_glance_signatures').with_value(true)
+        is_expected.to contain_cinder_config('DEFAULT/glance_catalog_info').with_value('image:glance:publicURL')
+        is_expected.to contain_cinder_config('DEFAULT/glance_core_properties').with_value('checksum')
       end
     end
 
     context 'with parameters in array' do
       let :params do
         {
-          :glance_api_servers => ['10.0.0.1:9292','10.0.0.2:9292'],
+          :glance_api_servers         => ['10.0.0.1:9292','10.0.0.2:9292'],
+          :allowed_direct_url_schemes => [ 'file', 'cinder'],
+          :glance_core_properties     => ['checksum', 'container_format'],
         }
       end
 
       it 'should configure parameters in comma-separated list' do
         is_expected.to contain_cinder_config('DEFAULT/glance_api_servers').with_value('10.0.0.1:9292,10.0.0.2:9292')
+        is_expected.to contain_cinder_config('DEFAULT/allowed_direct_url_schemes').with_value('file,cinder')
+        is_expected.to contain_cinder_config('DEFAULT/glance_core_properties').with_value('checksum,container_format')
       end
     end
   end

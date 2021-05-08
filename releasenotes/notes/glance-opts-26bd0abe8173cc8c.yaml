@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``cinder::glance`` class.
+
+    - ``allowed_direct_url_schemes``
+    - ``verify_glance_signatures``
+    - ``glance_catalog_info``
+    - ``glance_core_properties``
