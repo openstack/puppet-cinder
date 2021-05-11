@@ -178,21 +178,6 @@
 #   (Optional) Password for message broker authentication
 #   Defaults to $::os_service_default.
 #
-# [*keymgr_backend*]
-#   (Optional) Key Manager service class.
-#   Example of valid value: barbican
-#   Defaults to $::os_service_default.
-#
-# [*keymgr_encryption_api_url*]
-#   (Optional) Key Manager service URL
-#   Example of valid value: https://localhost:9311/v1
-#   Defaults to $::os_service_default.
-#
-# [*keymgr_encryption_auth_url*]
-#   (Optional) Auth URL for keymgr authentication. Should be in format
-#   http://auth_url:5000/v3
-#   Defaults to $::os_service_default.
-#
 # [*storage_availability_zone*]
 #   (optional) Availability zone of the node.
 #   Defaults to 'nova'
@@ -241,10 +226,6 @@
 #   in the cinder config.
 #   Defaults to false.
 #
-# [*backend_host*]
-#   (optional) Backend override of host value.
-#   Defaults to undef.
-#
 # [*enable_force_upload*]
 #   (optional) Enables the Force option on upload_to_image. This
 #   enables running upload_volume on in-use volumes for backends that
@@ -286,6 +267,25 @@
 #   (Optional) Accept clients using either SSL or plain TCP
 #   Defaults to undef.
 #
+# [*backend_host*]
+#   (optional) Backend override of host value.
+#   Defaults to undef.
+#
+# [*keymgr_backend*]
+#   (Optional) Key Manager service class.
+#   Example of valid value: barbican
+#   Defaults to undef.
+#
+# [*keymgr_encryption_api_url*]
+#   (Optional) Key Manager service URL
+#   Example of valid value: https://localhost:9311/v1
+#   Defaults to undef.
+#
+# [*keymgr_encryption_auth_url*]
+#   (Optional) Auth URL for keymgr authentication. Should be in format
+#   http://auth_url:5000/v3
+#   Defaults to undef.
+#
 class cinder (
   $default_transport_url              = $::os_service_default,
   $rpc_response_timeout               = $::os_service_default,
@@ -323,9 +323,6 @@ class cinder (
   $amqp_sasl_config_name              = $::os_service_default,
   $amqp_username                      = $::os_service_default,
   $amqp_password                      = $::os_service_default,
-  $keymgr_backend                     = $::os_service_default,
-  $keymgr_encryption_api_url          = $::os_service_default,
-  $keymgr_encryption_auth_url         = $::os_service_default,
   $package_ensure                     = 'present',
   $api_paste_config                   = '/etc/cinder/api-paste.ini',
   $storage_availability_zone          = 'nova',
@@ -348,6 +345,9 @@ class cinder (
   $database_max_overflow              = undef,
   $amqp_allow_insecure_clients        = undef,
   $backend_host                       = undef,
+  $keymgr_backend                     = undef,
+  $keymgr_encryption_api_url          = undef,
+  $keymgr_encryption_auth_url         = undef,
 ) inherits cinder::params {
 
   include cinder::deps
@@ -462,9 +462,6 @@ removed in a future realse. Use cinder::db::database_max_overflow instead')
     'DEFAULT/host':                             value => $host;
     'DEFAULT/enable_new_services':              value => $enable_new_services;
     'DEFAULT/enable_force_upload':              value => $enable_force_upload;
-    'key_manager/backend':                      value => $keymgr_backend;
-    'barbican/barbican_endpoint':               value => $keymgr_encryption_api_url;
-    'barbican/auth_endpoint':                   value => $keymgr_encryption_auth_url;
   }
 
   if $backend_host != undef {
@@ -478,6 +475,18 @@ Use the cinder::backends::backend_host parameter instead')
   # V3 APIs
   cinder_config {
     'DEFAULT/enable_v3_api': value => $enable_v3_api;
+  }
+
+  if $keymgr_backend != undef {
+    warning('The keymgr_backend parameter is deprecated. Use the cinder::key_manager class')
+    include cinder::key_manager
+  }
+
+  ['keymgr_encryption_api_url', 'keymgr_encryption_auth_url'].each |String $barbican_opt| {
+    if getvar("${barbican_opt}") != undef {
+      warning("The ${barbican_opt} parameter is deprecated. Use the cinder::key_manager::barbican class")
+    }
+    include cinder::key_manager::barbican
   }
 
   oslo::concurrency { 'cinder_config':
