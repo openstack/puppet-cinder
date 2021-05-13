@@ -68,7 +68,7 @@ class cinder::glance (
   include ::cinder::deps
 
   if $glance_api_version != undef {
-    warning("The glance_api_version parameter is deprecated, has no effect and will be removed in the future release.")
+    warning('The glance_api_version parameter is deprecated, has no effect and will be removed in the future release.')
   }
 
   cinder_config {
