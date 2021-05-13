@@ -104,6 +104,13 @@
 #   will also need to be changed to match.
 #   Defaults to $::os_service_default
 #
+# [*use_forwarded_for*]
+#   (optional) Treat X-Forwarded-For as the canonical remote address. Only
+#   enable this if you have a sanitizing proxy.
+#   Defaults to $::os_service_default
+#
+# DEPRECATED PARAMETERS
+#
 # [*os_region_name*]
 #   (optional) Some operations require cinder to make API requests
 #   to Nova. This sets the keystone region to be used for these
@@ -134,6 +141,7 @@ class cinder::api (
   $ca_file                        = $::os_service_default,
   $auth_strategy                  = 'keystone',
   $osapi_volume_listen_port       = $::os_service_default,
+  $use_forwarded_for              = $::os_service_default,
   # DEPRECATED PARAMETERS
   $os_region_name                 = undef
 ) inherits cinder::params {
@@ -216,6 +224,7 @@ running as a standalone service, or httpd for being run by a httpd server")
     'DEFAULT/osapi_max_limit':          value => $osapi_max_limit;
     'DEFAULT/osapi_volume_listen_port': value => $osapi_volume_listen_port;
     'DEFAULT/auth_strategy':            value => $auth_strategy;
+    'DEFAULT/use_forwarded_for':        value => $use_forwarded_for;
   }
 
   oslo::middleware {'cinder_config':
