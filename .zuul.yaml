@@ -24,7 +24,6 @@
         tempest_services:
           - cinder
         tempest_test_whitelist:
-          - 'tempest.api.volume'
-          - 'tempest.scenario.test_volume_boot_pattern'
-          - 'cinder_tempest_plugin.api'
+          - 'tempest.scenario.test_volume_boot_pattern.TestVolumeBootPattern.test_volume_boot_pattern'
+          - 'tempest.scenario.test_snapshot_pattern.TestSnapshotPattern.test_snapshot_pattern'
         use_os_tempest: true
