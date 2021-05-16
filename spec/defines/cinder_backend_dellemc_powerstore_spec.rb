@@ -10,8 +10,6 @@ describe 'cinder::backend::dellemc_powerstore' do
       :san_ip                => '172.23.8.101',
       :san_login             => 'Admin',
       :san_password          => '12345',
-      :powerstore_appliances => 'Appliance-1',
-
     }
   end
 

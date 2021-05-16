@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The ``cinder::backend::dellemc_powerstore::powerstore_appliances``
+    parameter has been deprecated and has no effect now. This parameter will be
+    removed in a future release.

@@ -13,9 +13,6 @@
 # [*san_password*]
 #   (required) PowerStore REST password
 #
-# [*powerstore_appliances*]
-#   (required) PowerStore appliances
-#
 # [*powerstore_ports*]
 #   (optional) PowerStore allowed ports
 #
@@ -45,20 +42,30 @@
 #   Example:
 #     { 'dellemc_powerstore_backend/param1' => { 'value' => value1 } }
 #
+# DEPRECATED PARAMETERS
+#
+# [*powerstore_appliances*]
+#   (optional) PowerStore appliances
+#   Defaults to undef
+#
 define cinder::backend::dellemc_powerstore (
   $san_ip,
   $san_login,
   $san_password,
-  $powerstore_appliances,
   $powerstore_ports            = $::os_service_default,
   $storage_protocol            = 'iSCSI',
   $volume_backend_name         = $name,
   $backend_availability_zone   = $::os_service_default,
   $manage_volume_type          = false,
   $extra_options               = {},
+  $powerstore_appliances       = undef,
 ) {
 
   include cinder::deps
+
+  if $powerstore_appliances != undef {
+    warning('The powerstore_appliances parameter has been deprecated and has no effect')
+  }
 
   if $storage_protocol == 'iSCSI' {
     $driver = 'dell_emc.powerstore.driver.PowerStoreDriver'
@@ -77,10 +84,12 @@ define cinder::backend::dellemc_powerstore (
     "${name}/san_ip":                    value => $san_ip;
     "${name}/san_login":                 value => $san_login;
     "${name}/san_password":              value => $san_password, secret => true;
-    "${name}/powerstore_appliances":     value => $powerstore_appliances;
     "${name}/powerstore_ports":          value => $powerstore_ports;
     "${name}/storage_protocol":          value => $storage_protocol;
+  }
 
+  cinder_config {
+    "${name}/powerstore_appliances": ensure => absent;
   }
 
   if $manage_volume_type {
