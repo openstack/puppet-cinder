@@ -4,9 +4,8 @@
 #
 class cinder::params {
   include openstacklib::defaults
-  $pyvers = $::openstacklib::defaults::pyvers
 
-  $client_package            = "python${pyvers}-cinderclient"
+  $client_package            = 'python3-cinderclient'
   $group                     = 'cinder'
   $cinder_wsgi_script_source = '/usr/bin/cinder-wsgi'
 
