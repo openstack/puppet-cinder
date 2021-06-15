@@ -16,7 +16,7 @@ describe provider_class do
       {
          :name               => 'Backend_1',
          :ensure             => :present,
-         :properties         => ['key=value', 'new_key=new_value', 'multiattach="<is> True"'],
+         :properties         => ['key=value', 'new_key=a-new_value', 'multiattach="<is> True"'],
          :is_public          => true,
          :access_project_ids => [],
       }
@@ -41,10 +41,10 @@ describe provider_class do
       describe '#create' do
         it 'creates a type' do
           provider_class.expects(:openstack)
-            .with('volume type', 'create', '--format', 'shell', ['--property', 'key=value', '--property', 'new_key=new_value', '--property', 'multiattach="<is> True"', '--public', 'Backend_1'])
+            .with('volume type', 'create', '--format', 'shell', ['--property', 'key=value', '--property', 'new_key=a-new_value', '--property', 'multiattach="<is> True"', '--public', 'Backend_1'])
             .returns('id="90e19aff-1b35-4d60-9ee3-383c530275ab"
 name="Backend_1"
-properties="key=\'value\', new_key=\'new_value\', multiattach=\'<is> True\'"
+properties="key=\'value\', new_key=\'a-new_value\', multiattach=\'<is> True\'"
 is_public="True"
 access_project_ids=""
 ')
