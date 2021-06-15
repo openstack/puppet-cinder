@@ -114,7 +114,7 @@ Puppet::Type.type(:cinder_type).provide(
   end
 
   def self.pythondict2array(input)
-    json_input = JSON.parse(input.gsub(/u'(\w*)'/, '"\1"').gsub(/'/, '"'))
+    json_input = JSON.parse(input.gsub(/u'([^']*)'/, '"\1"').gsub(/'/, '"'))
     output = []
     json_input.each do | k, v |
       output = output + ["#{k}=#{v}"]
