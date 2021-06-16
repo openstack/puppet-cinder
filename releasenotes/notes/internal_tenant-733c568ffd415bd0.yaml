@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Now the ``cinder`` class supports the following two parameters.
+
+    - ``cinder_internal_tenant_project_id``
+    - ``cinder_internal_tenant_user_id``
