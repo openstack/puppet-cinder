@@ -232,6 +232,16 @@
 #   support it.
 #   Defaults to $::os_service_default.
 #
+# [*cinder_internal_tenant_project_id*]
+#   (optional) ID of the project which will be used as the Cinder internal
+#   tenant.
+#   Defaults to $::os_service_default.
+#
+# [*cinder_internal_tenant_user_id*]
+#   (optional) ID of the user to be used in volume operations as the Cinder
+#   internal tenant.
+#   Defaults to $::os_service_default.
+#
 # DEPRECATED PARAMETERS
 #
 # [*database_min_pool_size*]
@@ -335,6 +345,8 @@ class cinder (
   $enable_new_services                = $::os_service_default,
   $purge_config                       = false,
   $enable_force_upload                = $::os_service_default,
+  $cinder_internal_tenant_project_id  = $::os_service_default,
+  $cinder_internal_tenant_user_id     = $::os_service_default,
   # DEPRECATED PARAMETERS
   $database_min_pool_size             = undef,
   $database_connection                = undef,
@@ -452,16 +464,18 @@ removed in a future realse. Use cinder::db::database_max_overflow instead')
   }
 
   cinder_config {
-    'DEFAULT/report_interval':                  value => $report_interval;
-    'DEFAULT/service_down_time':                value => $service_down_time;
-    'DEFAULT/api_paste_config':                 value => $api_paste_config;
-    'DEFAULT/storage_availability_zone':        value => $storage_availability_zone;
-    'DEFAULT/default_availability_zone':        value => $default_availability_zone_real;
-    'DEFAULT/allow_availability_zone_fallback': value => $allow_availability_zone_fallback;
-    'DEFAULT/image_conversion_dir':             value => $image_conversion_dir;
-    'DEFAULT/host':                             value => $host;
-    'DEFAULT/enable_new_services':              value => $enable_new_services;
-    'DEFAULT/enable_force_upload':              value => $enable_force_upload;
+    'DEFAULT/report_interval':                   value => $report_interval;
+    'DEFAULT/service_down_time':                 value => $service_down_time;
+    'DEFAULT/api_paste_config':                  value => $api_paste_config;
+    'DEFAULT/storage_availability_zone':         value => $storage_availability_zone;
+    'DEFAULT/default_availability_zone':         value => $default_availability_zone_real;
+    'DEFAULT/allow_availability_zone_fallback':  value => $allow_availability_zone_fallback;
+    'DEFAULT/image_conversion_dir':              value => $image_conversion_dir;
+    'DEFAULT/host':                              value => $host;
+    'DEFAULT/enable_new_services':               value => $enable_new_services;
+    'DEFAULT/enable_force_upload':               value => $enable_force_upload;
+    'DEFAULT/cinder_internal_tenant_project_id': value => $cinder_internal_tenant_project_id;
+    'DEFAULT/cinder_internal_tenant_user_id':    value => $cinder_internal_tenant_user_id;
   }
 
   if $backend_host != undef {

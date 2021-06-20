@@ -43,9 +43,13 @@ describe 'cinder' do
         is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
         is_expected.to contain_cinder_config('DEFAULT/allow_availability_zone_fallback').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
+        is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
+        is_expected.to contain_cinder_config('DEFAULT/image_conversion_dir').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
+        is_expected.to contain_cinder_config('DEFAULT/enable_force_upload').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/cinder_internal_tenant_project_id').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/cinder_internal_tenant_user_id').with_value('<SERVICE DEFAULT>')
 
         # backend_host should not be written to DEFAULT section
         is_expected.not_to contain_cinder_config('DEFAULT/backend_host')
@@ -282,6 +286,19 @@ describe 'cinder' do
       end
       it 'should set volume api parameters' do
         is_expected.to contain_cinder_config('DEFAULT/enable_force_upload').with_value(true)
+      end
+    end
+
+    context 'with internal tenant parameters' do
+      let :params do
+        req_params.merge!({
+          :cinder_internal_tenant_project_id => 'projectid',
+          :cinder_internal_tenant_user_id    => 'userid',
+        })
+      end
+      it 'should set internal tenant parameters' do
+        is_expected.to contain_cinder_config('DEFAULT/cinder_internal_tenant_project_id').with_value('projectid')
+        is_expected.to contain_cinder_config('DEFAULT/cinder_internal_tenant_user_id').with_value('userid')
       end
     end
   end
