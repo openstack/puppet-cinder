@@ -79,7 +79,6 @@ describe 'cinder::backend::pure' do
         :properties => ['volume_backend_name=pure']
       )}
     end
-  end
 
     context 'pure volume driver with image_volume_cache_enabled disabled' do
       let :params do
@@ -90,6 +89,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('false')
       }
     end
+  end
 
   on_supported_os({
     :supported_os => OSDefaults.get_supported_os
