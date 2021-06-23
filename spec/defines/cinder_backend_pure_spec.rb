@@ -23,6 +23,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
         is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
+        is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -42,6 +43,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
         is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('true')
+        is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -56,6 +58,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
         is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
+        is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -87,6 +90,16 @@ describe 'cinder::backend::pure' do
 
       it {
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('false')
+      }
+    end
+
+    context 'pure volume driver with pure_host_personality set' do
+      let :params do
+        req_params.merge({'pure_host_personality' => 'oracle-vm-server'})
+      end
+
+      it {
+        is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('oracle-vm-server')
       }
     end
   end
