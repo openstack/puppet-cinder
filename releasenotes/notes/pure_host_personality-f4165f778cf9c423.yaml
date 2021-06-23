@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``pure_host_personality`` parameter has been added to
+    ``cinder::backend::pure``
