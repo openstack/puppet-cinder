@@ -14,7 +14,7 @@ class cinder::coordination (
 
   include cinder::deps
 
-  cinder_config {
-    'coordination/backend_url': value => $backend_url;
+  oslo::coordination{ 'cinder_config':
+    backend_url => $backend_url
   }
 }

@@ -4,7 +4,9 @@ describe 'cinder::coordination' do
   shared_examples 'cinder::coordination' do
     context 'with default parameters' do
       it {
-        is_expected.to contain_cinder_config('coordination/backend_url').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_oslo__coordination('cinder_config').with(
+          :backend_url => '<SERVICE DEFAULT>'
+        )
       }
     end
 
@@ -16,7 +18,9 @@ describe 'cinder::coordination' do
       end
 
       it {
-        is_expected.to contain_cinder_config('coordination/backend_url').with_value('etcd3+http://127.0.0.1:2379')
+        is_expected.to contain_oslo__coordination('cinder_config').with(
+          :backend_url => 'etcd3+http://127.0.0.1:2379'
+        )
       }
     end
   end
