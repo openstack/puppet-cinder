@@ -16,7 +16,7 @@ Puppet::Type.newtype(:cinder_type) do
       is.sort == should.sort
     end
     validate do |value|
-      raise ArgumentError, "Properties doesn't match" unless value.match(/^\s*[^=\s]+=[^=\s]+$/)
+      raise ArgumentError, "Properties doesn't match" unless value.match(/^\s*[^=\s]+=\S(([^=,])+((?<=\S),(?=\S))?)+([^\s=,])+$/)
     end
   end
 
