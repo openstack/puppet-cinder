@@ -25,6 +25,10 @@
 #   (optional) The default Swift container to use.
 #   Defaults to 'volumebackups'
 #
+# [*backup_swift_create_storage_policy*]
+#   (optional) The storage policy to use when creating the Swift container.
+#   Defaults to $::os_service_default
+#
 # [*backup_swift_object_size*]
 #   (optional) The size in bytes of Swift backup objects.
 #   Defaults to $::os_service_default
@@ -79,35 +83,37 @@
 #
 #
 class cinder::backup::swift (
-  $backup_driver                = 'cinder.backup.drivers.swift.SwiftBackupDriver',
-  $backup_swift_url             = $::os_service_default,
-  $backup_swift_auth_url        = $::os_service_default,
-  $swift_catalog_info           = $::os_service_default,
-  $backup_swift_container       = 'volumebackups',
-  $backup_swift_object_size     = $::os_service_default,
-  $backup_swift_retry_attempts  = $::os_service_default,
-  $backup_swift_retry_backoff   = $::os_service_default,
-  $backup_swift_user_domain     = $::os_service_default,
-  $backup_swift_project_domain  = $::os_service_default,
-  $backup_swift_project         = $::os_service_default,
-  $backup_compression_algorithm = $::os_service_default,
+  $backup_driver                      = 'cinder.backup.drivers.swift.SwiftBackupDriver',
+  $backup_swift_url                   = $::os_service_default,
+  $backup_swift_auth_url              = $::os_service_default,
+  $swift_catalog_info                 = $::os_service_default,
+  $backup_swift_container             = 'volumebackups',
+  $backup_swift_create_storage_policy = $::os_service_default,
+  $backup_swift_object_size           = $::os_service_default,
+  $backup_swift_retry_attempts        = $::os_service_default,
+  $backup_swift_retry_backoff         = $::os_service_default,
+  $backup_swift_user_domain           = $::os_service_default,
+  $backup_swift_project_domain        = $::os_service_default,
+  $backup_swift_project               = $::os_service_default,
+  $backup_compression_algorithm       = $::os_service_default,
 ) {
 
   include cinder::deps
 
   cinder_config {
-    'DEFAULT/backup_driver':                value => $backup_driver;
-    'DEFAULT/backup_swift_url':             value => $backup_swift_url;
-    'DEFAULT/backup_swift_auth_url':        value => $backup_swift_auth_url;
-    'DEFAULT/swift_catalog_info':           value => $swift_catalog_info;
-    'DEFAULT/backup_swift_container':       value => $backup_swift_container;
-    'DEFAULT/backup_swift_object_size':     value => $backup_swift_object_size;
-    'DEFAULT/backup_swift_retry_attempts':  value => $backup_swift_retry_attempts;
-    'DEFAULT/backup_swift_retry_backoff':   value => $backup_swift_retry_backoff;
-    'DEFAULT/backup_swift_user_domain':     value => $backup_swift_user_domain;
-    'DEFAULT/backup_swift_project_domain':  value => $backup_swift_project_domain;
-    'DEFAULT/backup_swift_project':         value => $backup_swift_project;
-    'DEFAULT/backup_compression_algorithm': value => $backup_compression_algorithm;
+    'DEFAULT/backup_driver':                      value => $backup_driver;
+    'DEFAULT/backup_swift_url':                   value => $backup_swift_url;
+    'DEFAULT/backup_swift_auth_url':              value => $backup_swift_auth_url;
+    'DEFAULT/swift_catalog_info':                 value => $swift_catalog_info;
+    'DEFAULT/backup_swift_container':             value => $backup_swift_container;
+    'DEFAULT/backup_swift_create_storage_policy': value => $backup_swift_create_storage_policy;
+    'DEFAULT/backup_swift_object_size':           value => $backup_swift_object_size;
+    'DEFAULT/backup_swift_retry_attempts':        value => $backup_swift_retry_attempts;
+    'DEFAULT/backup_swift_retry_backoff':         value => $backup_swift_retry_backoff;
+    'DEFAULT/backup_swift_user_domain':           value => $backup_swift_user_domain;
+    'DEFAULT/backup_swift_project_domain':        value => $backup_swift_project_domain;
+    'DEFAULT/backup_swift_project':               value => $backup_swift_project;
+    'DEFAULT/backup_compression_algorithm':       value => $backup_compression_algorithm;
   }
 
 }

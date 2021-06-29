@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added parameter backup_swift_create_storage_policy to cinder::backup::swift
+    class.
