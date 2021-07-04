@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``cinder::cors`` option has been added.
