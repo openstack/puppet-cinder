@@ -1,4 +1,4 @@
 ---
 features:
   - |
-    The new ``cinder::cors`` option has been added.
+    The new ``cinder::cors`` class has been added.
