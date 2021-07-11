@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``cinder::backend::solidfire:sf_enable_volume_mapping`` parameter has
+    been removed.

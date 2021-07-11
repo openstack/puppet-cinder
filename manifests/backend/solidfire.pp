@@ -82,14 +82,6 @@
 #   Example :
 #     { 'solidfire_backend/param1' => { 'value' => value1 } }
 #
-# DEPRECATED PARAMETERS
-#
-# [*sf_enable_volume_mapping*]
-#   (optional) Create an internal mapping of volume IDs and account.
-#   Optimizes lookups and performance at the expense of memory, very
-#   large deployments may want to consider setting to False.
-#   Defaults to undef
-#
 define cinder::backend::solidfire(
   $san_ip,
   $san_login,
@@ -108,15 +100,9 @@ define cinder::backend::solidfire(
   $sf_enable_vag             = $::os_service_default,
   $manage_volume_type        = false,
   $extra_options             = {},
-  # DEPRECATED PARAMETERS
-  $sf_enable_volume_mapping  = undef,
 ) {
 
   include cinder::deps
-
-  if $sf_enable_volume_mapping {
-    warning('The sf_enable_volume_mapping parameter is deprecated, has no effect and will be removed in the future release.')
-  }
 
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
