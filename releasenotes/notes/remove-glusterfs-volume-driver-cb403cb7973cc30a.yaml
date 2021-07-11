@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``cinder::backend::glusterfs`` resource type has been removed.
