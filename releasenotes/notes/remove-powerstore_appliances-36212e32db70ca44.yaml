@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``cinder::backend::dellemc_powerstore::powerstore_appliances``
+    parameter has been removed.
