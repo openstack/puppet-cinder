@@ -205,16 +205,6 @@ describe 'cinder' do
       }
     end
 
-    context 'with APIs set for Mitaka (proposed)' do
-      let :params do
-        {
-          :enable_v3_api => true,
-        }
-      end
-
-      it { is_expected.to contain_cinder_config('DEFAULT/enable_v3_api').with_value(true) }
-    end
-
     context 'with image_conversion_dir' do
       let :params do
         req_params.merge({

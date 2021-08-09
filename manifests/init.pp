@@ -196,10 +196,6 @@
 #   (Optional)
 #   Defaults to '/etc/cinder/api-paste.ini',
 #
-# [*enable_v3_api*]
-#   (Optional) Whether to enable the v3 API (true/false).
-#   Defaults to 'true'.
-#
 # [*lock_path*]
 #   (optional) Where to store lock files. This directory must be writeable
 #   by the user executing the agent
@@ -296,6 +292,10 @@
 #   http://auth_url:5000/v3
 #   Defaults to undef.
 #
+# [*enable_v3_api*]
+#   (Optional) Whether to enable the v3 API (true/false).
+#   Defaults to undef.
+#
 class cinder (
   $default_transport_url              = $::os_service_default,
   $rpc_response_timeout               = $::os_service_default,
@@ -338,7 +338,6 @@ class cinder (
   $storage_availability_zone          = 'nova',
   $default_availability_zone          = false,
   $allow_availability_zone_fallback   = $::os_service_default,
-  $enable_v3_api                      = true,
   $lock_path                          = $::cinder::params::lock_path,
   $image_conversion_dir               = $::os_service_default,
   $host                               = $::os_service_default,
@@ -360,6 +359,7 @@ class cinder (
   $keymgr_backend                     = undef,
   $keymgr_encryption_api_url          = undef,
   $keymgr_encryption_auth_url         = undef,
+  $enable_v3_api                      = undef,
 ) inherits cinder::params {
 
   include cinder::deps
@@ -399,6 +399,10 @@ removed in a future realse. Use cinder::db::database_retry_interval instead')
   if $database_max_overflow != undef {
     warning('The database_max_overflow parameter is deprecated and will be \
 removed in a future realse. Use cinder::db::database_max_overflow instead')
+  }
+
+  if $enable_v3_api != undef {
+    warning('The enable_v3_api parameter is deprecated and has no effect')
   }
 
   package { 'cinder':
@@ -484,11 +488,6 @@ removed in a future realse. Use cinder::db::database_max_overflow instead')
     }
     warning('The cinder::backend_host parameter is deprecated. \
 Use the cinder::backends::backend_host parameter instead')
-  }
-
-  # V3 APIs
-  cinder_config {
-    'DEFAULT/enable_v3_api': value => $enable_v3_api;
   }
 
   if $keymgr_backend != undef {

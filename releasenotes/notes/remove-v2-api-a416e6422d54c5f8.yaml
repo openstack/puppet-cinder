@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The parameters for v2 API support have been removed from
+    the ``cinder::keystone::auth`` class.
+
+deprecations:
+  - |
+    The ``cinder::enable_v3_api`` parameter has been deprecated.
