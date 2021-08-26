@@ -76,6 +76,7 @@
 #  server and ignore it if not. "strict" like "permissive" but if the bind
 #  type is unknown the token will be rejected. "required" any form of token
 #  binding is needed to be allowed. Finally the name of a binding method that
+#  must be present in tokens. String value.
 #  Defaults to $::os_service_default.
 #
 # [*http_connect_timeout*]
