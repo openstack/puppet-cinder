@@ -30,7 +30,7 @@
 #
 # [*ratelimits_factory*]
 #   (optional) Factory to use for ratelimiting
-#   Defaults to 'cinder.api.v1.limits:RateLimitingMiddleware.factory'
+#   Defaults to 'cinder.api.v2.limits:RateLimitingMiddleware.factory'
 #
 # [*default_volume_type*]
 #   (optional) default volume type to use.
@@ -126,7 +126,7 @@ class cinder::api (
   $ratelimits                     = $::os_service_default,
   $default_volume_type            = $::os_service_default,
   $ratelimits_factory =
-    'cinder.api.v1.limits:RateLimitingMiddleware.factory',
+    'cinder.api.v2.limits:RateLimitingMiddleware.factory',
   $validate                       = false,
   $sync_db                        = true,
   $public_endpoint                = $::os_service_default,
