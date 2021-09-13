@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``cinder::backup::tsm`` class has been removed.
