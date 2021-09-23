@@ -17,7 +17,7 @@ describe 'cinder::backend::dellemc_vmax_iscsi' do
   shared_examples 'cinder::backend::dellemc_vmax_iscsi' do
     context 'dell emc vmax iscsi volume driver' do
       it {
-        is_expected.to contain_package('pywbem').with(:ensure => :present)
+        is_expected.to contain_package('pywbem').with_ensure('installed')
         is_expected.to contain_cinder_config('dellemc_vmax_iscsi/volume_driver').with_value('cinder.volume.drivers.dell_emc.vmax.iscsi.VMAXISCSIDriver')
         is_expected.to contain_cinder_config('dellemc_vmax_iscsi/cinder_emc_config_file').with_value('/etc/cinder/cinder_emc_config_CONF_GROUP_ISCSI.xml')
       }
