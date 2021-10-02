@@ -1,132 +1,103 @@
+#
+# Unit tests for cinder::keystone::auth
+#
+
 require 'spec_helper'
 
 describe 'cinder::keystone::auth' do
-  let :params do
-    {
-      :password => 'pw'
-    }
-  end
+  shared_examples_for 'cinder::keystone::auth' do
+    context 'with default class parameters' do
+      let :params do
+        { :password => 'cinder_password' }
+      end
 
-  shared_examples 'cinder::keystone::auth' do
-    context 'with required parameters' do
-      it { is_expected.to contain_keystone_user('cinder').with(
-        :ensure   => 'present',
-        :password => 'pw',
-        :email    => 'cinder@localhost',
-      )}
+      it { is_expected.to contain_keystone__resource__service_identity('cinder').with(
+        :configure_user      => true,
+        :configure_user_role => true,
+        :configure_endpoint  => false,
+        :configure_service   => false,
+        :region              => 'RegionOne',
+        :auth_name           => 'cinder',
+        :password            => 'cinder_password',
+        :email               => 'cinder@localhost',
+        :tenant              => 'services',
+        :roles               => ['admin'],
+      ) }
 
-      it { is_expected.to contain_keystone_user_role('cinder@services').with(
-        :ensure  => 'present',
-        :roles   => ['admin']
-      )}
-
-      it { is_expected.to contain_keystone_service('cinderv3::volumev3').with(
-        :ensure      => 'present',
-        :description => 'Cinder Service v3'
-      )}
-
-      it { is_expected.to contain_keystone_endpoint('RegionOne/cinderv3::volumev3').with(
-        :ensure       => 'present',
-        :public_url   => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
-        :admin_url    => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
-        :internal_url => 'http://127.0.0.1:8776/v3/%(tenant_id)s'
-      )}
+      it { is_expected.to contain_keystone__resource__service_identity('cinderv3').with(
+        :configure_user      => false,
+        :configure_user_role => false,
+        :configure_endpoint  => true,
+        :service_name        => 'cinderv3',
+        :service_type        => 'volumev3',
+        :service_description => 'Cinder Service v3',
+        :region              => 'RegionOne',
+        :auth_name           => 'cinderv3',
+        :email               => 'cinderv3@localhost',
+        :tenant              => 'services',
+        :roles               => ['admin'],
+        :public_url          => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
+        :internal_url        => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
+        :admin_url           => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
+      ) }
     end
 
     context 'when overriding parameters' do
-      before do
-        params.merge!({
-          :roles                 => ['admin', 'service'],
-          :region                => 'RegionThree',
-          :public_url_v3         => 'https://10.0.42.1:4242/v43/%(tenant_id)s',
-          :admin_url_v3          => 'https://10.0.42.2:4242/v43/%(tenant_id)s',
-          :internal_url_v3       => 'https://10.0.42.3:4242/v43/%(tenant_id)s'
-        })
-      end
-
-      it { is_expected.to contain_keystone_user_role('cinder@services').with(
-        :ensure  => 'present',
-        :roles   => ['admin', 'service']
-      )}
-
-      it { is_expected.to contain_keystone_endpoint('RegionThree/cinderv3::volumev3').with(
-        :ensure       => 'present',
-        :public_url   => 'https://10.0.42.1:4242/v43/%(tenant_id)s',
-        :admin_url    => 'https://10.0.42.2:4242/v43/%(tenant_id)s',
-        :internal_url => 'https://10.0.42.3:4242/v43/%(tenant_id)s'
-      )}
-    end
-
-    context 'when endpoint should not be configured' do
-      before do
-        params.merge!(
-          :configure_endpoint_v3 => false
-        )
-      end
-
-      it { is_expected.not_to contain_keystone_endpoint('RegionOne/cinderv3::volumev3') }
-    end
-
-    context 'when user should not be configured' do
-      before do
-        params.merge!(
-          :configure_user => false
-        )
-      end
-
-      it { is_expected.not_to contain_keystone_user('cinder') }
-      it { is_expected.to contain_keystone_user_role('cinder@services') }
-
-      it { is_expected.to contain_keystone_service('cinderv3::volumev3').with(
-        :ensure      => 'present',
-        :description => 'Cinder Service v3'
-      )}
-    end
-
-    context 'when user and user role should not be configured' do
-      before do
-        params.merge!(
-          :configure_user      => false,
-          :configure_user_role => false
-        )
-      end
-
-      it { is_expected.not_to contain_keystone_user('cinder') }
-      it { is_expected.not_to contain_keystone_user_role('cinder@services') }
-
-      it { is_expected.to contain_keystone_service('cinderv3::volumev3').with(
-        :ensure      => 'present',
-        :description => 'Cinder Service v3'
-      )}
-    end
-
-    context 'when user and user role for v3 should be configured' do
-      before do
-        params.merge!(
+      let :params do
+        { :password               => 'cinder_password',
+          :auth_name              => 'alt_cinder',
+          :email                  => 'alt_cinder@alt_localhost',
+          :tenant                 => 'alt_service',
+          :roles                  => ['admin', 'service'],
+          :configure_user         => false,
+          :configure_user_role    => false,
+          :password_user_v3       => 'cinderv3_password',
+          :auth_name_v3           => 'alt_cinderv3',
+          :email_user_v3          => 'alt_cinderv3@alt_localhost',
+          :tenant_user_v3         => 'alt_servicev3',
+          :roles_v3               => ['admin', 'service'],
           :configure_user_v3      => true,
           :configure_user_role_v3 => true,
-        )
+          :service_description_v3 => 'Alternative Cinder Service v3',
+          :service_name_v3        => 'alt_servicev3',
+          :service_type_v3        => 'alt_volumev3',
+          :region                 => 'RegionTwo',
+          :public_url_v3          => 'https://10.10.10.10:80',
+          :internal_url_v3        => 'http://10.10.10.11:81',
+          :admin_url_v3           => 'http://10.10.10.12:81',
+          :configure_endpoint_v3  => false }
       end
+
+      it { is_expected.to contain_keystone__resource__service_identity('cinder').with(
+        :configure_user      => false,
+        :configure_user_role => false,
+        :configure_endpoint  => false,
+        :configure_service   => false,
+        :region              => 'RegionTwo',
+        :auth_name           => 'alt_cinder',
+        :password            => 'cinder_password',
+        :email               => 'alt_cinder@alt_localhost',
+        :tenant              => 'alt_service',
+        :roles               => ['admin', 'service'],
+      ) }
 
       it { is_expected.to contain_keystone__resource__service_identity('cinderv3').with(
         :configure_user      => true,
         :configure_user_role => true,
-        :email               => 'cinderv3@localhost',
-        :tenant              => 'services'
-      )}
-    end
-
-    context 'when overriding service names' do
-      before do
-        params.merge!(
-          :service_name_v3 => 'cinder_service_v3',
-        )
-      end
-
-      it { is_expected.to contain_keystone_user('cinder') }
-      it { is_expected.to contain_keystone_user_role('cinder@services') }
-      it { is_expected.to contain_keystone_service('cinder_service_v3::volumev3') }
-      it { is_expected.to contain_keystone_endpoint('RegionOne/cinder_service_v3::volumev3') }
+        :configure_endpoint  => false,
+        :service_name        => 'alt_servicev3',
+        :service_type        => 'alt_volumev3',
+        :service_description => 'Alternative Cinder Service v3',
+        :region              => 'RegionTwo',
+        :auth_name           => 'alt_cinderv3',
+        :password            => 'cinderv3_password',
+        :email               => 'alt_cinderv3@alt_localhost',
+        :tenant              => 'alt_servicev3',
+        :roles               => ['admin', 'service'],
+        :public_url          => 'https://10.10.10.10:80',
+        :internal_url        => 'http://10.10.10.11:81',
+        :admin_url           => 'http://10.10.10.12:81',
+      ) }
     end
   end
 
