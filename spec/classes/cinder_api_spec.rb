@@ -125,7 +125,7 @@ describe 'cinder::api' do
       end
       it { is_expected.to contain_openstacklib__service_validation('cinder-api').with(
         :command   => 'cinder --os-auth-url http://localhost:5000 --os-project-name services --os-username cinder --os-password foo list',
-        :subscribe => 'Service[cinder-api]',
+        :subscribe => 'Anchor[cinder::service::end]',
       )}
     end
 

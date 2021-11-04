@@ -281,7 +281,7 @@ running as a standalone service, or httpd for being run by a httpd server")
         # lint:endignore
       }
     }
-    create_resources('openstacklib::service_validation', $validation_cmd, {'subscribe' => 'Service[cinder-api]'})
+    create_resources('openstacklib::service_validation', $validation_cmd, {'subscribe' => 'Anchor[cinder::service::end]'})
   }
 
 }
