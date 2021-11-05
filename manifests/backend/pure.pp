@@ -50,6 +50,18 @@
 #   the array and the initiator.
 #   Defaults to $::os_service_default
 #
+# [*pure_eradicate_on_delete*]
+#   (Optional) Determines how the Purity system treates deleted volumes.
+#   Whether to immeadiately eradicate on delete or leave for auto-eradication
+#   in 24 hours
+#   Defaults to $::os_service_default
+#
+# [*pure_iscsi_cidr*]
+#   (Optional) Identifies which iSCSI network CIDR should be used for
+#   iscsi connections to the FlashArray if the array is configured with
+#   multiple iSCSI VLANs.
+#   Defaults to $::os_service_default
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
 #   Defaults to: {}
@@ -67,6 +79,8 @@ define cinder::backend::pure(
   $manage_volume_type           = false,
   $image_volume_cache_enabled   = true,
   $pure_host_personality        = $::os_service_default,
+  $pure_eradicate_on_delete     = $::os_service_default,
+  $pure_iscsi_cidr              = $::os_service_default,
   $extra_options                = {},
 ) {
 
@@ -87,6 +101,8 @@ define cinder::backend::pure(
     "${name}/use_multipath_for_image_xfer":  value => $use_multipath_for_image_xfer;
     "${name}/image_volume_cache_enabled":    value => $image_volume_cache_enabled;
     "${name}/pure_host_personality":         value => $pure_host_personality;
+    "${name}/pure_eradicate_on_delete":      value => $pure_eradicate_on_delete;
+    "${name}/pure_iscsi_cidr":               value => $pure_iscsi_cidr;
   }
 
   if $manage_volume_type {
