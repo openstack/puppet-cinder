@@ -14,14 +14,7 @@ class cinder::scheduler::filter (
 
   include cinder::deps
 
-  if (!is_service_default($scheduler_default_filters)) {
-    cinder_config {
-      'DEFAULT/scheduler_default_filters': value  => join(any2array($scheduler_default_filters),',')
-    }
-  } else {
-    cinder_config {
-      'DEFAULT/scheduler_default_filters': ensure => absent
-    }
+  cinder_config {
+    'DEFAULT/scheduler_default_filters': value  => join(any2array($scheduler_default_filters),',')
   }
-
 }

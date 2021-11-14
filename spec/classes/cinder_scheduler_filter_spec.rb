@@ -18,7 +18,7 @@ describe 'cinder::scheduler::filter' do
     end
 
     it 'contains default values' do
-      is_expected.to contain_cinder_config('DEFAULT/scheduler_default_filters').with_ensure('absent')
+      is_expected.to contain_cinder_config('DEFAULT/scheduler_default_filters').with_value(p[:scheduler_default_filters])
     end
 
     context 'configure filters with array' do
