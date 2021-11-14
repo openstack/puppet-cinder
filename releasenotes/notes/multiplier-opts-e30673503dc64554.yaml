@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following three parameters have been added to
+    the ``cinder::scheduler::filter`` class.
+
+    - ``capacity_weight_multiplier``
+    - ``allocated_capacity_weight_multiplier``
+    - ``volume_number_multiplier``
