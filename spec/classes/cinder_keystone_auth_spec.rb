@@ -22,6 +22,8 @@ describe 'cinder::keystone::auth' do
         :email               => 'cinder@localhost',
         :tenant              => 'services',
         :roles               => ['admin'],
+        :system_scope        => 'all',
+        :system_roles        => [],
       ) }
 
       it { is_expected.to contain_keystone__resource__service_identity('cinderv3').with(
@@ -36,6 +38,8 @@ describe 'cinder::keystone::auth' do
         :email               => 'cinderv3@localhost',
         :tenant              => 'services',
         :roles               => ['admin'],
+        :system_scope        => 'all',
+        :system_roles        => [],
         :public_url          => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
         :internal_url        => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
         :admin_url           => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
@@ -49,13 +53,17 @@ describe 'cinder::keystone::auth' do
           :email                  => 'alt_cinder@alt_localhost',
           :tenant                 => 'alt_service',
           :roles                  => ['admin', 'service'],
+          :system_scope           => 'alt_all',
+          :system_roles           => ['admin', 'member', 'reader'],
           :configure_user         => false,
           :configure_user_role    => false,
           :password_user_v3       => 'cinderv3_password',
           :auth_name_v3           => 'alt_cinderv3',
           :email_user_v3          => 'alt_cinderv3@alt_localhost',
           :tenant_user_v3         => 'alt_servicev3',
-          :roles_v3               => ['admin', 'service'],
+          :roles_v3               => ['adminv3', 'servicev3'],
+          :system_scope_v3        => 'alt_all_v3',
+          :system_roles_v3        => ['adminv3', 'memberv3', 'readerv3'],
           :configure_user_v3      => true,
           :configure_user_role_v3 => true,
           :service_description_v3 => 'Alternative Cinder Service v3',
@@ -79,6 +87,8 @@ describe 'cinder::keystone::auth' do
         :email               => 'alt_cinder@alt_localhost',
         :tenant              => 'alt_service',
         :roles               => ['admin', 'service'],
+        :system_scope        => 'alt_all',
+        :system_roles        => ['admin', 'member', 'reader'],
       ) }
 
       it { is_expected.to contain_keystone__resource__service_identity('cinderv3').with(
@@ -93,7 +103,9 @@ describe 'cinder::keystone::auth' do
         :password            => 'cinderv3_password',
         :email               => 'alt_cinderv3@alt_localhost',
         :tenant              => 'alt_servicev3',
-        :roles               => ['admin', 'service'],
+        :roles               => ['adminv3', 'servicev3'],
+        :system_scope        => 'alt_all_v3',
+        :system_roles        => ['adminv3', 'memberv3', 'readerv3'],
         :public_url          => 'https://10.10.10.10:80',
         :internal_url        => 'http://10.10.10.11:81',
         :admin_url           => 'http://10.10.10.12:81',

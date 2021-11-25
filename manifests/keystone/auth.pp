@@ -79,6 +79,22 @@
 #   (Optional) List of roles assigned to Cinder v3 user
 #   Defaults to ['admin']
 #
+# [*system_scope*]
+#   (Optional) Scope for system operations used by Cinder v3 user.
+#   Defaults to 'all'
+#
+# [*system_scope_v3*]
+#   (Optional) Scope for system operations used by Cinder v3 user.
+#   Defaults to 'all'
+#
+# [*system_roles*]
+#   (Optional) List of system roles assigned to Cinder user.
+#   Defaults to []
+#
+# [*system_roles_v3*]
+#   (Optional) List of system roles assigned to Cinder v3 user.
+#   Defaults to []
+#
 # [*public_url_v3*]
 #   (0ptional) The v3 endpoint's public url.
 #   This url should *not* contain any trailing '/'.
@@ -111,6 +127,10 @@ class cinder::keystone::auth (
   $tenant_user_v3         = 'services',
   $roles                  = ['admin'],
   $roles_v3               = ['admin'],
+  $system_scope           = 'all',
+  $system_scope_v3        = 'all',
+  $system_roles           = [],
+  $system_roles_v3        = [],
   $email                  = 'cinder@localhost',
   $email_user_v3          = 'cinderv3@localhost',
   $public_url_v3          = 'http://127.0.0.1:8776/v3/%(tenant_id)s',
@@ -129,6 +149,9 @@ class cinder::keystone::auth (
 
   include cinder::deps
 
+  Keystone_user_role<| name == "${auth_name}@${tenant}" |> -> Anchor['cinder::service::end']
+  Keystone_user_role<| name == "${auth_name}@::::${system_scope}" |> -> Anchor['cinder::service::end']
+
   if $configure_endpoint_v3 {
     Keystone_endpoint["${region}/${service_name_v3}::${service_type_v3}"] -> Anchor['cinder::service::end']
   }
@@ -146,6 +169,8 @@ class cinder::keystone::auth (
     email               => $email,
     tenant              => $tenant,
     roles               => $roles,
+    system_scope        => $system_scope,
+    system_roles        => $system_roles,
   }
 
   keystone::resource::service_identity { 'cinderv3':
@@ -161,13 +186,11 @@ class cinder::keystone::auth (
     email               => $email_user_v3,
     tenant              => $tenant_user_v3,
     roles               => $roles_v3,
+    system_scope        => $system_scope_v3,
+    system_roles        => $system_roles_v3,
     public_url          => $public_url_v3,
     admin_url           => $admin_url_v3,
     internal_url        => $internal_url_v3,
-  }
-
-  if $configure_user_role {
-    Keystone_user_role["${auth_name}@${tenant}"] -> Anchor['cinder::service::end']
   }
 
 }
