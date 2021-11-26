@@ -22,6 +22,7 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/password').with_value('<SERVICE DEFAULT>').with_secret(true)
         is_expected.to contain_cinder_config('nova/project_name').with_value('services')
         is_expected.to contain_cinder_config('nova/project_domain_name').with_value('Default')
+        is_expected.to contain_cinder_config('nova/system_scope').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -64,6 +65,21 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/password').with_value('foo').with_secret(true)
         is_expected.to contain_cinder_config('nova/project_name').with_value('services')
         is_expected.to contain_cinder_config('nova/project_domain_name').with_value('Default')
+        is_expected.to contain_cinder_config('nova/system_scope').with_value('<SERVICE DEFAULT>')
+      }
+    end
+
+    context 'with system_scope set' do
+      let :params do
+        {
+          :system_scope => 'all'
+        }
+      end
+
+      it {
+        is_expected.to contain_cinder_config('nova/project_name').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nova/project_domain_name').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nova/system_scope').with_value('all')
       }
     end
   end

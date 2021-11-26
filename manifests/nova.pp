@@ -79,6 +79,10 @@
 #   (Optional) Nova admin project domain name.
 #   Defaults to 'Default'
 #
+# [*system_scope*]
+#   (Optional) Scope for system operations
+#   Defaults to $::os_service_default
+#
 class cinder::nova (
   $region_name         = $::os_service_default,
   $interface           = $::os_service_default,
@@ -98,9 +102,18 @@ class cinder::nova (
   $password            = $::os_service_default,
   $project_name        = 'services',
   $project_domain_name = 'Default',
+  $system_scope        = $::os_service_default,
 ) {
 
   include cinder::deps
+
+  if is_service_default($system_scope) {
+    $project_name_real = $project_name
+    $project_domain_name_real = $project_domain_name
+  } else {
+    $project_name_real = $::os_service_default
+    $project_domain_name_real = $::os_service_default
+  }
 
   cinder_config {
     'nova/region_name':         value => $region_name;
@@ -119,7 +132,8 @@ class cinder::nova (
     'nova/username':            value => $username;
     'nova/user_domain_name':    value => $user_domain_name;
     'nova/password':            value => $password, secret => true;
-    'nova/project_name':        value => $project_name;
-    'nova/project_domain_name': value => $project_domain_name;
+    'nova/project_name':        value => $project_name_real;
+    'nova/project_domain_name': value => $project_domain_name_real;
+    'nova/system_scope':        value => $system_scope;
   }
 }
