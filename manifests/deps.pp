@@ -35,7 +35,7 @@ class cinder::deps {
 
   # policy config should occur in the config block also.
   Anchor['cinder::config::begin']
-  -> Openstacklib::Policy::Base<||>
+  -> Openstacklib::Policy<||>
   ~> Anchor['cinder::config::end']
 
   # On any uwsgi config change, we must restart Cinder API.
