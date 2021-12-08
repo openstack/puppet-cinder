@@ -20,7 +20,7 @@
 #
 # [*control_exchange*]
 #   (Optional)
-#   Defaults to 'openstack'.
+#   Defaults to $::os_service_default
 #
 # [*notification_transport_url*]
 #   (Optional) A URL representing the messaging driver to use for notifications
@@ -299,7 +299,7 @@
 class cinder (
   $default_transport_url              = $::os_service_default,
   $rpc_response_timeout               = $::os_service_default,
-  $control_exchange                   = 'openstack',
+  $control_exchange                   = $::os_service_default,
   $notification_transport_url         = $::os_service_default,
   $notification_driver                = $::os_service_default,
   $notification_topics                = $::os_service_default,
