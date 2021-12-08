@@ -29,6 +29,10 @@ class cinder::deps {
   -> Cinder_api_paste_ini<||>
   ~> Anchor['cinder::config::end']
 
+  # all coordination settings should be applied and all packages should be
+  # installed before service startup
+  Oslo::Coordination<||> -> Anchor['cinder::service::begin']
+
   # all db settings should be applied and all packages should be installed
   # before dbsync starts
   Oslo::Db<||> -> Anchor['cinder::dbsync::begin']
