@@ -199,7 +199,6 @@ Use cinder::nova::region_name instead')
     }
 
   } elsif $service_name == 'httpd' {
-    include apache::params
     service { 'cinder-api':
       ensure => 'stopped',
       name   => $::cinder::params::api_service,

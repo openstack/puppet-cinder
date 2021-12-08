@@ -152,11 +152,6 @@ class cinder::wsgi::apache (
 
   include cinder::deps
   include cinder::params
-  include apache
-  include apache::mod::wsgi
-  if $ssl_real {
-    include apache::mod::ssl
-  }
 
   ::openstacklib::wsgi::apache { 'cinder_wsgi':
     bind_host                   => $bind_host,
