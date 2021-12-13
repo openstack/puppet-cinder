@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The service validation feature of the ``cinder::api`` class is deprecated,
+    and the ``cinder::api::validate`` parameter has no effect now.

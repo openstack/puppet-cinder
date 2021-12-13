@@ -118,18 +118,6 @@ describe 'cinder::api' do
       )}
     end
 
-    context 'while validating the service with default command' do
-      let :params do
-        req_params.merge({
-          :validate => true,
-        })
-      end
-      it { is_expected.to contain_openstacklib__service_validation('cinder-api').with(
-        :command   => 'cinder --os-auth-url http://localhost:5000 --os-project-name services --os-username cinder --os-password foo list',
-        :subscribe => 'Anchor[cinder::service::end]',
-      )}
-    end
-
     context 'with a custom auth_strategy' do
       let :params do
         req_params.merge({'auth_strategy' => 'noauth'})

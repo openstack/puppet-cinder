@@ -39,10 +39,6 @@
 #   without specifying a type.
 #   Defaults to $::os_service_default.
 #
-# [*validate*]
-#   (optional) Whether to validate the service is working after any service refreshes
-#   Defaults to false
-#
 # [*sync_db*]
 #   (Optional) Run db sync on the node.
 #   Defaults to true
@@ -117,6 +113,11 @@
 #   requests. For example, boot-from-volume.
 #   Defaults to undef
 #
+# [*validate*]
+#   (optional) Whether to validate the service is working after any service
+#   refreshes
+#   Defaults to undef
+#
 class cinder::api (
   $service_workers                = $::os_workers,
   $package_ensure                 = 'present',
@@ -127,7 +128,6 @@ class cinder::api (
   $default_volume_type            = $::os_service_default,
   $ratelimits_factory =
     'cinder.api.v2.limits:RateLimitingMiddleware.factory',
-  $validate                       = false,
   $sync_db                        = true,
   $public_endpoint                = $::os_service_default,
   $osapi_volume_base_url          = $::os_service_default,
@@ -143,7 +143,8 @@ class cinder::api (
   $osapi_volume_listen_port       = $::os_service_default,
   $use_forwarded_for              = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $os_region_name                 = undef
+  $os_region_name                 = undef,
+  $validate                       = undef,
 ) inherits cinder::params {
 
   include cinder::deps
@@ -153,6 +154,10 @@ class cinder::api (
   if $os_region_name != undef {
     warning('cinder::api::os_region_name is deprecated and has no effect. \
 Use cinder::nova::region_name instead')
+  }
+
+  if $validate != undef {
+    warning('The cinder::api::validate parameter is deprecated and has no effect')
   }
 
   validate_legacy(Boolean, 'validate_bool', $manage_service)
@@ -250,20 +255,4 @@ running as a standalone service, or httpd for being run by a httpd server")
       'filter:ratelimit/limits':               value => $ratelimits;
     }
   }
-
-  if $validate {
-    $keystone_project_name = $::cinder::keystone::authtoken::project_name
-    $keystone_username = $::cinder::keystone::authtoken::username
-    $keystone_password = $::cinder::keystone::authtoken::password
-
-    $validation_cmd = {
-      'cinder-api' => {
-        # lint:ignore:140chars
-        'command'  => "cinder --os-auth-url ${::cinder::keystone::authtoken::www_authenticate_uri} --os-project-name ${keystone_project_name} --os-username ${keystone_username} --os-password ${keystone_password} list",
-        # lint:endignore
-      }
-    }
-    create_resources('openstacklib::service_validation', $validation_cmd, {'subscribe' => 'Anchor[cinder::service::end]'})
-  }
-
 }
