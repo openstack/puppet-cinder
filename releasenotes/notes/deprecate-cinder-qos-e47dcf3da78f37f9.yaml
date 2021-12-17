@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``cinder::qos`` resource type has been deprecated.
+    Use the ``cinder_qos`` class directly instead.
