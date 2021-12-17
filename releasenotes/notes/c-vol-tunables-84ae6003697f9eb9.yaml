@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    The ``cinder::volume`` class now supports the following parameters.
+
+    - ``migration_create_volume_timeout_secs``
+    - ``volume_service_inithost_offload``
+    - ``reinit_driver_count``
+    - ``init_host_max_objects_retrieval``
+    - ``backend_stats_polling_interval``

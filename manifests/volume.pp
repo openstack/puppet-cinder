@@ -33,14 +33,43 @@
 #   for example "-c3" for idle only priority.
 #   Defaults to $::os_service_default.
 #
+# [*migration_create_volume_timeout_secs*]
+#   (Optional) Timeout for creating the volume to migrate to when performing
+#   volume migration (seconds).
+#   Defaults to $::os_service_default.
+#
+# [*volume_service_inithost_offload*]
+#   (Optional) Offload pending volume delete during volume service startup.
+#   Defaults to $::os_service_default.
+#
+# [*reinit_driver_count*]
+#   (Optional) Maximum times to reinitialize the driver if volume
+#   initialization fails.
+#   Defaults to $::os_service_default.
+#
+# [*init_host_max_objects_retrieval*]
+#   (Optional) Max number of volumes and snapshots to be retrieved per batch
+#   during volume manager host initialization.
+#   Defaults to $::os_service_default.
+#
+# [*backend_stats_polling_interval*]
+#   (Optional) Time in seconds between requests for usage statistics from
+#   the backend.
+#   Defaults to $::os_service_default.
+#
 class cinder::volume (
-  $package_ensure      = 'present',
-  $enabled             = true,
-  $manage_service      = true,
-  $cluster             = $::os_service_default,
-  $volume_clear        = $::os_service_default,
-  $volume_clear_size   = $::os_service_default,
-  $volume_clear_ionice = $::os_service_default,
+  $package_ensure                       = 'present',
+  $enabled                              = true,
+  $manage_service                       = true,
+  $cluster                              = $::os_service_default,
+  $volume_clear                         = $::os_service_default,
+  $volume_clear_size                    = $::os_service_default,
+  $volume_clear_ionice                  = $::os_service_default,
+  $migration_create_volume_timeout_secs = $::os_service_default,
+  $volume_service_inithost_offload      = $::os_service_default,
+  $reinit_driver_count                  = $::os_service_default,
+  $init_host_max_objects_retrieval      = $::os_service_default,
+  $backend_stats_polling_interval       = $::os_service_default,
 ) {
 
   include cinder::deps
@@ -74,9 +103,14 @@ class cinder::volume (
   }
 
   cinder_config {
-    'DEFAULT/cluster':             value => $cluster;
-    'DEFAULT/volume_clear':        value => $volume_clear;
-    'DEFAULT/volume_clear_size':   value => $volume_clear_size;
-    'DEFAULT/volume_clear_ionice': value => $volume_clear_ionice;
+    'DEFAULT/cluster':                              value => $cluster;
+    'DEFAULT/volume_clear':                         value => $volume_clear;
+    'DEFAULT/volume_clear_size':                    value => $volume_clear_size;
+    'DEFAULT/volume_clear_ionice':                  value => $volume_clear_ionice;
+    'DEFAULT/migration_create_volume_timeout_secs': value => $migration_create_volume_timeout_secs;
+    'DEFAULT/volume_service_inithost_offload':      value => $volume_service_inithost_offload;
+    'DEFAULT/reinit_driver_count':                  value => $reinit_driver_count;
+    'DEFAULT/init_host_max_objects_retrieval':      value => $init_host_max_objects_retrieval;
+    'DEFAULT/backend_stats_polling_interval':       value => $backend_stats_polling_interval;
   }
 }
