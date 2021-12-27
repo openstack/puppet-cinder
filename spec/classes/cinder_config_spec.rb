@@ -34,6 +34,18 @@ describe 'cinder::config' do
     end
   end
 
+  shared_examples 'cinder_rootwrap_config' do
+    let :params do
+      { :cinder_rootwrap_config => config_hash }
+    end
+
+    it 'configures arbitrary cinder-rootwrap-config configurations' do
+      is_expected.to contain_cinder_rootwrap_config('DEFAULT/foo').with_value('fooValue')
+      is_expected.to contain_cinder_rootwrap_config('DEFAULT/bar').with_value('barValue')
+      is_expected.to contain_cinder_rootwrap_config('DEFAULT/baz').with_ensure('absent')
+    end
+  end
+
   on_supported_os({
     :supported_os   => OSDefaults.get_supported_os
   }).each do |os,facts|
@@ -44,6 +56,7 @@ describe 'cinder::config' do
 
       it_behaves_like 'cinder_config'
       it_behaves_like 'cinder_api_paste_ini'
+      it_behaves_like 'cinder_rootwrap_config'
     end
   end
 end

@@ -29,6 +29,11 @@ class cinder::deps {
   -> Cinder_api_paste_ini<||>
   ~> Anchor['cinder::config::end']
 
+  # rootwrap config should occur in the config block also.
+  Anchor['cinder::config::begin']
+  -> Cinder_rootwrap_config<||>
+  ~> Anchor['cinder::config::end']
+
   # all coordination settings should be applied and all packages should be
   # installed before service startup
   Oslo::Coordination<||> -> Anchor['cinder::service::begin']
