@@ -3,7 +3,7 @@ Puppet::Type.newtype(:cinder_api_uwsgi_config) do
   ensurable
 
   newparam(:name, :namevar => true) do
-    desc 'Section/setting name to manage from /etc/neutron/neutron-api-uwsgi.ini'
+    desc 'Section/setting name to manage from /etc/cinder/cnder-api-uwsgi.ini'
     newvalues(/\S+\/\S+/)
   end
 
