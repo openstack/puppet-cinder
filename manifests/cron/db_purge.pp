@@ -86,6 +86,6 @@ class cinder::cron::db_purge (
     monthday    => $monthday,
     month       => $month,
     weekday     => $weekday,
-    require     => Anchor['cinder::install::end'],
+    require     => Anchor['cinder::dbsync::end'],
   }
 }
