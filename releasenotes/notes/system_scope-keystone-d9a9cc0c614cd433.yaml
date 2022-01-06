@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    The ``cinder::keystone::auth`` class now supports the following new
+    parameters to define system-scoped roles.
+
+    - ``system_scope``
+    - ``system_roles``
+    - ``system_scope_v3``
+    - ``system_roles_v3``
+
+  - |
+    The ``system_scope`` parameter has been added to the following classes.
+
+    - ``cinder::keystone::authtoken``
+    - ``cinder::keystone::service_user``
