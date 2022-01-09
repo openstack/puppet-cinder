@@ -5,17 +5,9 @@ describe 'cinder::backend::rbd' do
 
   let :req_params do
     {
-      :volume_backend_name              => 'rbd-ssd',
-      :rbd_pool                         => 'volumes',
-      :rbd_user                         => 'test',
-      :rbd_secret_uuid                  => '<SERVICE DEFAULT>',
-      :rbd_ceph_conf                    => '/foo/boo/zoo/ceph.conf',
-      :rbd_flatten_volume_from_snapshot => true,
-      :rbd_max_clone_depth              => '0',
-      :rados_connect_timeout            => '<SERVICE DEFAULT>',
-      :rados_connection_interval        => '<SERVICE DEFAULT>',
-      :rados_connection_retries         => '<SERVICE DEFAULT>',
-      :rbd_store_chunk_size             => '<SERVICE DEFAULT>'
+      :volume_backend_name => 'rbd-ssd',
+      :rbd_pool            => 'volumes',
+      :rbd_user            => 'test',
     }
   end
 
@@ -31,19 +23,52 @@ describe 'cinder::backend::rbd' do
         is_expected.to contain_package('ceph-common').with_ensure('installed')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_backend_name").with_value(req_params[:volume_backend_name])
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver')
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_ceph_conf").with_value(req_params[:rbd_ceph_conf])
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_flatten_volume_from_snapshot").with_value(req_params[:rbd_flatten_volume_from_snapshot])
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_max_clone_depth").with_value(req_params[:rbd_max_clone_depth])
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_ceph_conf").with_value('/etc/ceph/ceph.conf')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_flatten_volume_from_snapshot").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_max_clone_depth").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_pool").with_value(req_params[:rbd_pool])
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_user").with_value(req_params[:rbd_user])
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_secret_uuid").with_value(req_params[:rbd_secret_uuid])
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_secret_uuid").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/backend_host").with_value('rbd:'"#{req_params[:rbd_pool]}")
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connect_timeout").with_value(req_params[:rados_connect_timeout])
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value(req_params[:rados_connection_interval])
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value(req_params[:rados_connection_retries])
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value(req_params[:rbd_store_chunk_size])
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connect_timeout").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
       }
+
+      context 'with parameters' do
+        let :params do
+          req_params.merge!({
+            :rbd_ceph_conf                    => '/opt/ceph.conf',
+            :rbd_flatten_volume_from_snapshot => true,
+            :rbd_secret_uuid                  => 'b129523a-61a5-4653-86d1-2b055f970801',
+            :rbd_max_clone_depth              => 5,
+            :rados_connect_timeout            => 10,
+            :rados_connection_interval        => 5,
+            :rados_connection_retries         => 3,
+            :rbd_store_chunk_size             => 4,
+          })
+        end
+
+        it {
+          is_expected.to contain_package('ceph-common').with_ensure('installed')
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_backend_name").with_value(req_params[:volume_backend_name])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver')
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_ceph_conf").with_value(params[:rbd_ceph_conf])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_flatten_volume_from_snapshot").with_value(params[:rbd_flatten_volume_from_snapshot])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_max_clone_depth").with_value(params[:rbd_max_clone_depth])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_pool").with_value(req_params[:rbd_pool])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_user").with_value(req_params[:rbd_user])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_secret_uuid").with_value(params[:rbd_secret_uuid])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/backend_host").with_value('rbd:'"#{req_params[:rbd_pool]}")
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connect_timeout").with_value(params[:rados_connect_timeout])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value(params[:rados_connection_interval])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value(params[:rados_connection_retries])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value(params[:rbd_store_chunk_size])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
+        }
+      end
 
       context 'with another RBD backend' do
         let :pre_condition do
