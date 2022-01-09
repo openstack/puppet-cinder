@@ -34,6 +34,8 @@ describe 'cinder::backend::rbd' do
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_dynamic_total_capacity").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_exclusive_cinder_pool").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
       }
 
@@ -48,6 +50,8 @@ describe 'cinder::backend::rbd' do
             :rados_connection_interval        => 5,
             :rados_connection_retries         => 3,
             :rbd_store_chunk_size             => 4,
+            :report_dynamic_total_capacity    => true,
+            :rbd_exclusive_cinder_pool        => false,
           })
         end
 
@@ -66,6 +70,8 @@ describe 'cinder::backend::rbd' do
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value(params[:rados_connection_interval])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value(params[:rados_connection_retries])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value(params[:rbd_store_chunk_size])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_dynamic_total_capacity").with_value(params[:report_dynamic_total_capacity])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_exclusive_cinder_pool").with_value(params[:rbd_exclusive_cinder_pool])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
         }
       end

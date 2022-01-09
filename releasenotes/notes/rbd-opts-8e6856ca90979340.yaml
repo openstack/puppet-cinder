@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``cinder::backend::rbd``
+    resource type.
+
+    - ``report_dynamic_total_capacity``
+    - ``rbd_exclusive_cinder_pool``

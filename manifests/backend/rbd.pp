@@ -63,6 +63,15 @@
 #   (optional) Volumes will be chunked into objects of this size (in megabytes).
 #   Defaults to $::os_service_default
 #
+# [*report_dynamic_total_capacity*]
+#   (optional) Set to True for driver to report total capacity as a dynamic
+#   value
+#   Defaults to $::os_service_default
+#
+# [*rbd_exclusive_cinder_pool*]
+#   (optional) Set to True if the pool is used exclusively by Cinder.
+#   Defaults to $::os_service_default
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -89,6 +98,8 @@ define cinder::backend::rbd (
   $rados_connection_interval        = $::os_service_default,
   $rados_connection_retries         = $::os_service_default,
   $rbd_store_chunk_size             = $::os_service_default,
+  $report_dynamic_total_capacity    = $::os_service_default,
+  $rbd_exclusive_cinder_pool        = $::os_service_default,
   $manage_volume_type               = false,
   $extra_options                    = {},
 ) {
@@ -119,6 +130,8 @@ define cinder::backend::rbd (
     "${name}/rados_connection_retries":         value => $rados_connection_retries;
     "${name}/rbd_store_chunk_size":             value => $rbd_store_chunk_size;
     "${name}/rbd_cluster_name":                 value => $rbd_cluster_name_real;
+    "${name}/report_dynamic_total_capacity":    value => $report_dynamic_total_capacity;
+    "${name}/rbd_exclusive_cinder_pool":        value => $rbd_exclusive_cinder_pool;
     "${name}/report_discard_supported":         value => true;
   }
 
