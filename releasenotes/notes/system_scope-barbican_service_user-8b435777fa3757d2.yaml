@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``cinder::key_manager::barbican::service_user`` class now supports
+    the ``system_scope`` parameter.
