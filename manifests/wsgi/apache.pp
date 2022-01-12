@@ -153,6 +153,8 @@ class cinder::wsgi::apache (
   include cinder::deps
   include cinder::params
 
+  Anchor['cinder::install::end'] -> Class['apache']
+
   ::openstacklib::wsgi::apache { 'cinder_wsgi':
     bind_host                   => $bind_host,
     bind_port                   => $port,
@@ -186,6 +188,5 @@ class cinder::wsgi::apache (
     error_log_file              => $error_log_file,
     error_log_pipe              => $error_log_pipe,
     error_log_syslog            => $error_log_syslog,
-    require                     => Anchor['cinder::install::end'],
   }
 }
