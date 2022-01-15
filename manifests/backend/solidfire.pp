@@ -40,17 +40,6 @@
 #   (optional) Prefix to use when creating tenant accounts on SolidFire Cluster.
 #   Defaults to $::os_service_default
 #
-# [*sf_template_account_name*]
-#   (optional) Account name on the SolidFire Cluster to use as owner of
-#   template/cache volumes (created if does not exist)
-#   Defaults to $::os_service_default
-#
-# [*sf_allow_template_caching*]
-#   (optional) Create an internal cache of copy of images when a bootable
-#   volume is created to eliminate fetch from glance and qemu-
-#   conversion on subsequent calls.
-#   Defaults to $::os_service_default
-#
 # [*sf_api_port*]
 #   (optional) Port ID to use to connect to SolidFire API.
 #   Defaults to $::os_service_default
@@ -82,6 +71,19 @@
 #   Example :
 #     { 'solidfire_backend/param1' => { 'value' => value1 } }
 #
+# DEPRECATED PARAMETERS
+#
+# [*sf_template_account_name*]
+#   (optional) Account name on the SolidFire Cluster to use as owner of
+#   template/cache volumes (created if does not exist)
+#   Defaults to undef
+#
+# [*sf_allow_template_caching*]
+#   (optional) Create an internal cache of copy of images when a bootable
+#   volume is created to eliminate fetch from glance and qemu-
+#   conversion on subsequent calls.
+#   Defaults to undef
+#
 define cinder::backend::solidfire(
   $san_ip,
   $san_login,
@@ -92,17 +94,29 @@ define cinder::backend::solidfire(
   $sf_emulate_512            = $::os_service_default,
   $sf_allow_tenant_qos       = $::os_service_default,
   $sf_account_prefix         = $::os_service_default,
-  $sf_template_account_name  = $::os_service_default,
-  $sf_allow_template_caching = $::os_service_default,
   $sf_api_port               = $::os_service_default,
   $sf_volume_prefix          = $::os_service_default,
   $sf_svip                   = $::os_service_default,
   $sf_enable_vag             = $::os_service_default,
   $manage_volume_type        = false,
   $extra_options             = {},
+  # DEPRECATED PARAMETERS
+  $sf_template_account_name  = undef,
+  $sf_allow_template_caching = undef,
 ) {
 
   include cinder::deps
+
+  if $sf_template_account_name != undef {
+    warning('The sf_template_account_name parameter has been deprecated and has no effect.')
+  }
+  if $sf_allow_template_caching != undef {
+    warning('The sf_allow_template_caching parameter has been deprecated and has no effect.')
+  }
+  cinder_config {
+    "${name}/sf_template_account_name":  ensure => absent;
+    "${name}/sf_allow_template_caching": ensure => absent;
+  }
 
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
@@ -114,8 +128,6 @@ define cinder::backend::solidfire(
     "${name}/sf_emulate_512":              value => $sf_emulate_512;
     "${name}/sf_allow_tenant_qos":         value => $sf_allow_tenant_qos;
     "${name}/sf_account_prefix":           value => $sf_account_prefix;
-    "${name}/sf_template_account_name":    value => $sf_template_account_name;
-    "${name}/sf_allow_template_caching":   value => $sf_allow_template_caching;
     "${name}/sf_api_port":                 value => $sf_api_port;
     "${name}/sf_volume_prefix":            value => $sf_volume_prefix;
     "${name}/sf_svip":                     value => $sf_svip;

@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The following parameters of the ``cinder::backend::solidfire`` resource
+    type have been deprecated and have no effect now.
+
+    - ``sf_template_account_name``
+    - ``sf_allow_template_caching``

@@ -19,8 +19,6 @@ describe 'cinder::backend::solidfire' do
       :sf_emulate_512            => '<SERVICE DEFAULT>',
       :sf_allow_tenant_qos       => '<SERVICE DEFAULT>',
       :sf_account_prefix         => '<SERVICE DEFAULT>',
-      :sf_template_account_name  => '<SERVICE DEFAULT>',
-      :sf_allow_template_caching => '<SERVICE DEFAULT>',
       :sf_api_port               => '<SERVICE DEFAULT>',
       :sf_volume_prefix          => '<SERVICE DEFAULT>',
       :sf_svip                   => '<SERVICE DEFAULT>',
