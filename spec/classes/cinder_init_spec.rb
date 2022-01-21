@@ -69,7 +69,9 @@ describe 'cinder' do
         is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
         is_expected.to contain_cinder_config('DEFAULT/allow_availability_zone_fallback').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
-        is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with(:value => '/var/lock/cinder')
+        is_expected.to contain_oslo__concurrency('cinder_config').with(
+          :lock_path => '/var/lock/cinder'
+        )
         is_expected.to contain_cinder_config('DEFAULT/image_conversion_dir').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
@@ -167,7 +169,9 @@ describe 'cinder' do
         req_params.merge!( :lock_path => '/var/run/cinder.locks' )
       end
 
-      it { is_expected.to contain_cinder_config('oslo_concurrency/lock_path').with_value('/var/run/cinder.locks') }
+      it { is_expected.to contain_oslo__concurrency('cinder_config').with(
+        :lock_path => '/var/run/cinder.locks'
+      ) }
     end
 
     context 'with amqp_durable_queues enabled' do
