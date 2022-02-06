@@ -149,12 +149,8 @@ class cinder::keystone::auth (
 
   include cinder::deps
 
-  Keystone_user_role<| name == "${auth_name}@${tenant}" |> -> Anchor['cinder::service::end']
-  Keystone_user_role<| name == "${auth_name}@::::${system_scope}" |> -> Anchor['cinder::service::end']
-
-  if $configure_endpoint_v3 {
-    Keystone_endpoint["${region}/${service_name_v3}::${service_type_v3}"] -> Anchor['cinder::service::end']
-  }
+  Keystone::Resource::Service_identity['cinder'] -> Anchor['cinder::service::end']
+  Keystone::Resource::Service_identity['cinderv3'] -> Anchor['cinder::service::end']
 
   # Always configure the original user and user roles, as these
   # can be used by the v3 service.
