@@ -240,10 +240,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*amqp_allow_insecure_clients*]
-#   (Optional) Accept clients using either SSL or plain TCP
-#   Defaults to undef.
-#
 # [*backend_host*]
 #   (optional) Backend override of host value.
 #   Defaults to undef.
@@ -318,7 +314,6 @@ class cinder (
   $cinder_internal_tenant_project_id  = $::os_service_default,
   $cinder_internal_tenant_user_id     = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $amqp_allow_insecure_clients        = undef,
   $backend_host                       = undef,
   $keymgr_backend                     = undef,
   $keymgr_encryption_api_url          = undef,
@@ -328,11 +323,6 @@ class cinder (
 
   include cinder::deps
   include cinder::db
-
-  if $amqp_allow_insecure_clients != undef {
-    warning('The amqp_allow_insecure_clients parameter is deprecated and \
-will be removed in a future release.')
-  }
 
   if $enable_v3_api != undef {
     warning('The enable_v3_api parameter is deprecated and has no effect')
