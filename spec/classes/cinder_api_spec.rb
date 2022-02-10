@@ -101,7 +101,7 @@ describe 'cinder::api' do
         req_params.merge({'manage_service' => false})
       end
       it 'should not change the state of the service' do
-        is_expected.to contain_service('cinder-api').without_ensure
+        is_expected.to_not contain_service('cinder-api')
       end
       it 'includes cinder::db::sync' do
         is_expected.to contain_class('cinder::db::sync')

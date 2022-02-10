@@ -88,14 +88,14 @@ class cinder::backup (
     } else {
       $ensure = 'stopped'
     }
-  }
 
-  service { 'cinder-backup':
-    ensure    => $ensure,
-    name      => $::cinder::params::backup_service,
-    enable    => $enabled,
-    hasstatus => true,
-    tag       => 'cinder-service',
+    service { 'cinder-backup':
+      ensure    => $ensure,
+      name      => $::cinder::params::backup_service,
+      enable    => $enabled,
+      hasstatus => true,
+      tag       => 'cinder-service',
+    }
   }
 
   cinder_config {

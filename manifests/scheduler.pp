@@ -50,13 +50,13 @@ class cinder::scheduler (
     } else {
       $ensure = 'stopped'
     }
-  }
 
-  service { 'cinder-scheduler':
-    ensure    => $ensure,
-    name      => $::cinder::params::scheduler_service,
-    enable    => $enabled,
-    hasstatus => true,
-    tag       => 'cinder-service',
+    service { 'cinder-scheduler':
+      ensure    => $ensure,
+      name      => $::cinder::params::scheduler_service,
+      enable    => $enabled,
+      hasstatus => true,
+      tag       => 'cinder-service',
+    }
   }
 }
