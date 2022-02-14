@@ -91,13 +91,8 @@ describe 'cinder::backup' do
       before :each do
         params.merge!(:manage_service => false)
       end
-      it 'should not change the state of the service' do
-        is_expected.to contain_service('cinder-backup').with(
-          :ensure    => nil,
-          :name      => platform_params[:backup_service],
-          :hasstatus => true,
-          :tag       => 'cinder-service',
-        )
+      it 'should not configure the service' do
+        is_expected.to_not contain_service('cinder-backup')
       end
     end
 

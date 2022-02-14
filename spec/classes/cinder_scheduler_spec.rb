@@ -40,7 +40,7 @@ describe 'cinder::scheduler' do
         }
       end
 
-      it { is_expected.to contain_service('cinder-scheduler').without_ensure }
+      it { is_expected.to_not contain_service('cinder-scheduler') }
     end
   end
 

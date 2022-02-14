@@ -32,7 +32,7 @@ describe 'cinder::volume' do
         }
       end
 
-      it { is_expected.to contain_service('cinder-volume').without_ensure }
+      it { is_expected.to_not contain_service('cinder-volume') }
     end
 
     context 'with parameters overridden' do

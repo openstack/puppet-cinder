@@ -92,14 +92,14 @@ class cinder::volume (
     } else {
       $ensure = 'stopped'
     }
-  }
 
-  service { 'cinder-volume':
-    ensure    => $ensure,
-    name      => $::cinder::params::volume_service,
-    enable    => $enabled,
-    hasstatus => true,
-    tag       => 'cinder-service',
+    service { 'cinder-volume':
+      ensure    => $ensure,
+      name      => $::cinder::params::volume_service,
+      enable    => $enabled,
+      hasstatus => true,
+      tag       => 'cinder-service',
+    }
   }
 
   cinder_config {

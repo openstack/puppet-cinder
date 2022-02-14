@@ -184,39 +184,37 @@ Use cinder::nova::region_name instead')
     include cinder::db::sync
   }
 
-  if $enabled {
-    if $manage_service {
+  if $manage_service {
+    if $enabled {
       $ensure = 'running'
-    }
-  } else {
-    if $manage_service {
+    } else {
       $ensure = 'stopped'
     }
-  }
 
-  if $service_name == $::cinder::params::api_service {
-    service { 'cinder-api':
-      ensure    => $ensure,
-      name      => $::cinder::params::api_service,
-      enable    => $enabled,
-      hasstatus => true,
-      tag       => 'cinder-service',
-    }
+    if $service_name == $::cinder::params::api_service {
+      service { 'cinder-api':
+        ensure    => $ensure,
+        name      => $::cinder::params::api_service,
+        enable    => $enabled,
+        hasstatus => true,
+        tag       => 'cinder-service',
+      }
 
-  } elsif $service_name == 'httpd' {
-    service { 'cinder-api':
-      ensure => 'stopped',
-      name   => $::cinder::params::api_service,
-      enable => false,
-      tag    => ['cinder-service'],
-    }
-    Service <| title == 'httpd' |> { tag +> 'cinder-service' }
+    } elsif $service_name == 'httpd' {
+      service { 'cinder-api':
+        ensure => 'stopped',
+        name   => $::cinder::params::api_service,
+        enable => false,
+        tag    => ['cinder-service'],
+      }
+      Service <| title == 'httpd' |> { tag +> 'cinder-service' }
 
-    # we need to make sure cinder-api/eventlet is stopped before trying to start apache
-    Service['cinder-api'] -> Service[$service_name]
-  } else {
-    fail("Invalid service_name. Either cinder-api/openstack-cinder-api for \
+      # we need to make sure cinder-api/eventlet is stopped before trying to start apache
+      Service['cinder-api'] -> Service[$service_name]
+    } else {
+      fail("Invalid service_name. Either cinder-api/openstack-cinder-api for \
 running as a standalone service, or httpd for being run by a httpd server")
+    }
   }
 
   cinder_config {
