@@ -95,5 +95,6 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
   def self.reset
     @cinder_conf = nil
     @cinder_credentials = nil
+    @auth_endpoint = nil
   end
 end
