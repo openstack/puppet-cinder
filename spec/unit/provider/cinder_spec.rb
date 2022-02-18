@@ -13,7 +13,7 @@ describe Puppet::Provider::Cinder do
 
   describe 'when retrieving the auth credentials' do
 
-    it 'should fail if no auth params are passed and the glance config file does not have the expected contents' do
+    it 'should fail if no auth params are passed and the cinder config file does not have the expected contents' do
       mock = {}
       Puppet::Util::IniConfig::File.expects(:new).returns(mock)
       mock.expects(:read).with('/etc/cinder/cinder.conf')
