@@ -25,7 +25,7 @@ define cinder::qos (
 
   include cinder::deps
 
-    warning('The cinder::type is deprecated, please use the cinder_qos resource.')
+  warning('The cinder::qos resource type is deprecated, please use the cinder_qos resource.')
 
   cinder_qos { $name:
     ensure       => present,
