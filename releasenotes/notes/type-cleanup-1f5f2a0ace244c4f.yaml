@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``cinder::type`` resource type and the ``cinder::type_set`` resource
+    type have been removed.
