@@ -48,7 +48,7 @@
 #
 # [*mount_user*]
 #   (optional) Mount user.
-#   Defaults to: cinder
+#   Defaults to: $::cinder::params::user
 #
 # [*mount_group*]
 #   (optional) Mount group.
@@ -73,13 +73,16 @@ define cinder::backend::vstorage (
   $mount_point_base          = $::os_service_default,
   $default_volume_format     = $::os_service_default,
   $manage_volume_type        = false,
-  $mount_user                = 'cinder',
+  $mount_user                = undef,
   $mount_group               = 'root',
   $mount_permissions         = '0770',
   $manage_package            = true,
 ) {
 
   include cinder::deps
+  include cinder::params
+
+  $mount_user_real = pick($mount_user, $::cinder::params::user)
 
   cinder_config {
     "${name}/volume_backend_name":             value => $volume_backend_name;
@@ -110,12 +113,12 @@ define cinder::backend::vstorage (
     }
   }
 
-  $mount_opts = ['-u', $mount_user, '-g', $mount_group, '-m', $mount_permissions]
+  $mount_opts = ['-u', $mount_user_real, '-g', $mount_group, '-m', $mount_permissions]
 
   file { $shares_config_path:
     content => inline_template("${cluster_name}:${cluster_password} <%= @mount_opts %>"),
     owner   => 'root',
-    group   => 'cinder',
+    group   => $::cinder::params::group,
     mode    => '0640',
     require => Anchor['cinder::install::end'],
     notify  => Anchor['cinder::service::begin'],
