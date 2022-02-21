@@ -1,0 +1,12 @@
+---
+deprecations:
+  - |
+    The following resource types have been using the credential written in
+    the ``[keystone_authtoken]`` section of ``cinder.conf``. However this
+    behavior has been deprecated and now these resource types first look for
+    the yaml files in ``/etc/openstack/puppet``. Make sure one of
+    ``clouds.yaml`` or ``admin-clouds.yaml`` (which is created by
+    puppet-keystone) is created in that directory.
+
+    - ``cinder_type``
+    - ``cinder_qos``
