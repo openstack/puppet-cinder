@@ -158,7 +158,7 @@ class cinder::wsgi::apache (
   ::openstacklib::wsgi::apache { 'cinder_wsgi':
     bind_host                   => $bind_host,
     bind_port                   => $port,
-    group                       => 'cinder',
+    group                       => $::cinder::params::group,
     path                        => $path,
     priority                    => $priority,
     servername                  => $servername,
@@ -171,7 +171,7 @@ class cinder::wsgi::apache (
     ssl_crl_path                => $ssl_crl_path,
     ssl_key                     => $ssl_key,
     threads                     => $threads,
-    user                        => 'cinder',
+    user                        => $::cinder::params::user,
     vhost_custom_fragment       => $vhost_custom_fragment,
     workers                     => $workers,
     wsgi_daemon_process         => 'cinder-api',
