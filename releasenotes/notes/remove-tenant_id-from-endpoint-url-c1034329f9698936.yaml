@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    Default values of the ``cinder::keystone::auth::*_url_v3`` parameters have
+    been updated and now these no longer include the ``%(tenant_id)s``
+    template.
