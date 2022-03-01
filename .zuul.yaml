@@ -8,6 +8,7 @@
     check:
       jobs:
         - puppet-cinder-tripleo-standalone
+        - puppet-cinder-tripleo-centos-9-standalone
     gate:
       jobs:
         - puppet-cinder-tripleo-standalone
@@ -17,7 +18,7 @@
     parent: tripleo-puppet-ci-centos-8-standalone
     description: |
       TripleO standalone Job running Cinder specific Tempest tests.
-    vars:
+    vars: &standalone_vars
       build_container_images: true
       featureset_override:
         run_tempest: false
@@ -27,3 +28,11 @@
           - 'tempest.scenario.test_volume_boot_pattern.TestVolumeBootPattern.test_volume_boot_pattern'
           - 'tempest.scenario.test_snapshot_pattern.TestSnapshotPattern.test_snapshot_pattern'
         use_os_tempest: true
+
+- job:
+    name: puppet-cinder-tripleo-centos-9-standalone
+    parent: tripleo-puppet-ci-centos-9-standalone
+    description: |
+      TripleO standalone Job running Cinder specific Tempest tests.
+    voting: false
+    vars: *standalone_vars
