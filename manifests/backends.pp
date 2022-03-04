@@ -22,16 +22,6 @@ class cinder::backends (
 
   include cinder::deps
 
-  if pick($::cinder::backend_host, false) {
-    $backend_host_real = $::cinder::backend_host
-  } else {
-    $backend_host_real = $backend_host
-    if ! $backend_host_real {
-      warning('Using a false value for backend_host is deprecated. \
-Use $::os_service_default instead')
-    }
-  }
-
   if $enabled_backends == undef {
     warning("Configurations that are setting backend config in ``[DEFAULT]`` \
 section are now not supported. You should use ``enabled_backends``option to  \
@@ -41,13 +31,12 @@ set up backends. No volume service(s) started successfully otherwise.")
     cinder_config {
       'DEFAULT/enabled_backends': value => join($enabled_backends, ',');
     }
-    if $backend_host_real {
-      $enabled_backends.each |$backend| {
-        # Avoid colliding with code in backend/rbd.pp
-        unless defined(Cinder_config["${backend}/backend_host"]) {
-          cinder_config {
-            "${backend}/backend_host": value => $backend_host_real;
-          }
+
+    $enabled_backends.each |$backend| {
+      # Avoid colliding with code in backend/rbd.pp
+      unless defined(Cinder_config["${backend}/backend_host"]) {
+        cinder_config {
+          "${backend}/backend_host": value => $backend_host;
         }
       }
     }

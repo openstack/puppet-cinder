@@ -240,10 +240,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*backend_host*]
-#   (optional) Backend override of host value.
-#   Defaults to undef.
-#
 # [*keymgr_backend*]
 #   (Optional) Key Manager service class.
 #   Example of valid value: barbican
@@ -314,7 +310,6 @@ class cinder (
   $cinder_internal_tenant_project_id  = $::os_service_default,
   $cinder_internal_tenant_user_id     = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $backend_host                       = undef,
   $keymgr_backend                     = undef,
   $keymgr_encryption_api_url          = undef,
   $keymgr_encryption_auth_url         = undef,
@@ -403,14 +398,6 @@ class cinder (
     'DEFAULT/enable_force_upload':               value => $enable_force_upload;
     'DEFAULT/cinder_internal_tenant_project_id': value => $cinder_internal_tenant_project_id;
     'DEFAULT/cinder_internal_tenant_user_id':    value => $cinder_internal_tenant_user_id;
-  }
-
-  if $backend_host != undef {
-    if defined(Class[cinder::backends]){
-      fail('The cinder::backend_host parameter has no effect unless cinder::backends is included later')
-    }
-    warning('The cinder::backend_host parameter is deprecated. \
-Use the cinder::backends::backend_host parameter instead')
   }
 
   if $keymgr_backend != undef {
