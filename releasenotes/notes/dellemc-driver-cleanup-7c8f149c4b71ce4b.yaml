@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The following resource types have been removed.
+
+    - ``cinder::backend::scaleio``
+    - ``cinder::backend::dellemc_vxflexos``
+    - ``cinder::backend::dellemc_vmax_iscsi``
