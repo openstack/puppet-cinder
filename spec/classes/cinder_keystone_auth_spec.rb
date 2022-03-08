@@ -40,9 +40,9 @@ describe 'cinder::keystone::auth' do
         :roles               => ['admin'],
         :system_scope        => 'all',
         :system_roles        => [],
-        :public_url          => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
-        :internal_url        => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
-        :admin_url           => 'http://127.0.0.1:8776/v3/%(tenant_id)s',
+        :public_url          => 'http://127.0.0.1:8776/v3',
+        :internal_url        => 'http://127.0.0.1:8776/v3',
+        :admin_url           => 'http://127.0.0.1:8776/v3',
       ) }
     end
 

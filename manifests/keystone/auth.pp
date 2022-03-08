@@ -98,24 +98,24 @@
 # [*public_url_v3*]
 #   (0ptional) The v3 endpoint's public url.
 #   This url should *not* contain any trailing '/'.
-#   Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s'
+#   Defaults to 'http://127.0.0.1:8776/v3'
 #
 # [*internal_url_v3*]
 #   (Optional) The v3 endpoint's internal url.
 #   This url should *not* contain any trailing '/'.
-#   Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s'
+#   Defaults to 'http://127.0.0.1:8776/v3'
 #
 # [*admin_url_v3*]
 #   (Optional) The v3 endpoint's admin url.
 #   This url should *not* contain any trailing '/'.
-#   Defaults to 'http://127.0.0.1:8776/v3/%(tenant_id)s'
+#   Defaults to 'http://127.0.0.1:8776/v3'
 #
 # === Examples
 #
 #  class { 'cinder::keystone::auth':
-#    public_url   => 'https://10.0.0.10:8776/v3/%(tenant_id)s',
-#    internal_url => 'https://10.0.0.20:8776/v3/%(tenant_id)s',
-#    admin_url    => 'https://10.0.0.30:8776/v3/%(tenant_id)s',
+#    public_url   => 'https://10.0.0.10:8776/v3',
+#    internal_url => 'https://10.0.0.20:8776/v3',
+#    admin_url    => 'https://10.0.0.30:8776/v3',
 #  }
 #
 class cinder::keystone::auth (
@@ -133,9 +133,9 @@ class cinder::keystone::auth (
   $system_roles_v3        = [],
   $email                  = 'cinder@localhost',
   $email_user_v3          = 'cinderv3@localhost',
-  $public_url_v3          = 'http://127.0.0.1:8776/v3/%(tenant_id)s',
-  $internal_url_v3        = 'http://127.0.0.1:8776/v3/%(tenant_id)s',
-  $admin_url_v3           = 'http://127.0.0.1:8776/v3/%(tenant_id)s',
+  $public_url_v3          = 'http://127.0.0.1:8776/v3',
+  $internal_url_v3        = 'http://127.0.0.1:8776/v3',
+  $admin_url_v3           = 'http://127.0.0.1:8776/v3',
   $configure_endpoint_v3  = true,
   $configure_user         = true,
   $configure_user_v3      = false,
