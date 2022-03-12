@@ -29,6 +29,7 @@ class Puppet::Provider::Cinder < Puppet::Provider::Openstack
   end
 
   def self.cinder_request(service, action, error, properties=nil)
+    warning('Usage of keystone_authtoken parameters is deprecated.')
     properties ||= []
     @credentials.username = cinder_credentials['username']
     @credentials.password = cinder_credentials['password']
