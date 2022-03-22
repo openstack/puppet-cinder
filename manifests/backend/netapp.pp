@@ -30,8 +30,7 @@
 # [*netapp_server_port*]
 #   (optional) The TCP port to use for communication with the storage
 #   system or proxy. If not specified, Data ONTAP drivers will use 80
-#   for HTTP and 443 for HTTPS; E-Series will use 8080 for HTTP and
-#   8443 for HTTPS.
+#   for HTTP and 443 for HTTPS;
 #   Defaults to 80
 #
 # [*netapp_size_multiplier*]
@@ -41,9 +40,8 @@
 #   Defaults to 1.2
 #
 # [*netapp_storage_family*]
-#   (optional) The storage family type used on the storage system; valid values
-#   are ontap_cluster for using clustered Data ONTAP, or eseries for NetApp
-#   E-Series.
+#   (optional) The storage family type used on the storage system; valid value
+#   is ontap_cluster for using clustered Data ONTAP.
 #   Defaults to ontap_cluster
 #
 # [*netapp_storage_protocol*]
@@ -103,18 +101,6 @@
 #   effective user of the cinder-volume process to execute the file.
 #   Defaults to undef
 #
-# [*netapp_controller_ips*]
-#   (optional) This option is only utilized when the storage family is
-#   configured to eseries. This option is used to restrict provisioning to the
-#   specified controllers. Specify the value of this option to be a comma
-#   separated list of controller hostnames or IP addresses to be used for
-#   provisioning.
-#   Defaults to undef
-#
-# [*netapp_sa_password*]
-#   (optional) Password for the NetApp E-Series storage array.
-#   Defaults to undef
-#
 # [*netapp_pool_name_search_pattern*]
 #   (optional) This option is only utilized when the Cinder driver is
 #   configured to use iSCSI or Fibre Channel. It is used to restrict
@@ -129,14 +115,6 @@
 #   (optional) This option is used to define how the controllers will work with
 #   the particular operating system on the hosts that are connected to it.
 #   Defaults to $::os_service_default
-#
-# [*netapp_webservice_path*]
-#   (optional) This option is used to specify the path to the E-Series proxy
-#   application on a proxy server. The value is combined with the value of the
-#   netapp_transport_type, netapp_server_hostname, and netapp_server_port
-#   options to create the URL used by the driver to connect to the proxy
-#   application.
-#   Defaults to '/devmgr/v2'
 #
 # [*nas_secure_file_operations*]
 #   (Optional) Allow network-attached storage systems to operate in a secure
@@ -184,6 +162,26 @@
 #   required if the storage protocol selected is FC.
 #   Defaults to undef
 #
+# [*netapp_webservice_path*]
+#   (optional) This option is used to specify the path to the E-Series proxy
+#   application on a proxy server. The value is combined with the value of the
+#   netapp_transport_type, netapp_server_hostname, and netapp_server_port
+#   options to create the URL used by the driver to connect to the proxy
+#   application.
+#   Defaults to undef
+#
+# [*netapp_controller_ips*]
+#   (optional) This option is only utilized when the storage family is
+#   configured to eseries. This option is used to restrict provisioning to the
+#   specified controllers. Specify the value of this option to be a comma
+#   separated list of controller hostnames or IP addresses to be used for
+#   provisioning.
+#   Defaults to undef
+#
+# [*netapp_sa_password*]
+#   (optional) Password for the NetApp E-Series storage array.
+#   Defaults to undef
+#
 # === Examples
 #
 #  cinder::backend::netapp { 'myBackend':
@@ -222,10 +220,7 @@ define cinder::backend::netapp (
   $nfs_shares_config                = '/etc/cinder/shares.conf',
   $nfs_mount_options                = $::os_service_default,
   $netapp_copyoffload_tool_path     = undef,
-  $netapp_controller_ips            = undef,
-  $netapp_sa_password               = undef,
   $netapp_host_type                 = $::os_service_default,
-  $netapp_webservice_path           = '/devmgr/v2',
   $manage_volume_type               = false,
   $extra_options                    = {},
   $netapp_pool_name_search_pattern  = '(.+)',
@@ -234,15 +229,23 @@ define cinder::backend::netapp (
   # DEPRECATED PARAMETERS
   $netapp_vfiler                    = undef,
   $netapp_partner_backend_name      = undef,
+  $netapp_webservice_path           = undef,
+  $netapp_controller_ips            = undef,
+  $netapp_sa_password               = undef,
 ) {
 
   include cinder::deps
 
-  if $netapp_vfiler != undef {
-    warning('The netapp_vfiler parameter is deprecated and has no effect.')
-  }
-  if $netapp_partner_backend_name != undef {
-    warning('The netapp_partner_backend_name parameter is deprecated and has no effect.')
+  [
+    'netapp_vfilter',
+    'netapp_partner_backend_name',
+    'netapp_webservice_path',
+    'netapp_controller_ips',
+    'netapp_sa_password'
+  ].each |String $dep_opt| {
+    if getvar($dep_opt) != undef {
+      warning("The ${dep_opt} parameter is deprecated and has no effect.")
+    }
   }
 
   if $nfs_shares {
@@ -274,11 +277,8 @@ define cinder::backend::netapp (
     "${name}/thres_avl_size_perc_stop":         value => $thres_avl_size_perc_stop;
     "${name}/nfs_shares_config":                value => $nfs_shares_config;
     "${name}/netapp_copyoffload_tool_path":     value => $netapp_copyoffload_tool_path;
-    "${name}/netapp_controller_ips":            value => $netapp_controller_ips;
-    "${name}/netapp_sa_password":               value => $netapp_sa_password, secret => true;
     "${name}/netapp_pool_name_search_pattern":  value => $netapp_pool_name_search_pattern;
     "${name}/netapp_host_type":                 value => $netapp_host_type;
-    "${name}/netapp_webservice_path":           value => $netapp_webservice_path;
     "${name}/nas_secure_file_operations":       value => $nas_secure_file_operations;
     "${name}/nas_secure_file_permissions":      value => $nas_secure_file_permissions;
   }
@@ -286,18 +286,15 @@ define cinder::backend::netapp (
   cinder_config {
     "${name}/netapp_vfiler":               ensure => absent;
     "${name}/netapp_partner_backend_name": ensure => absent;
+    "${name}/netapp_webservice_path":      ensure => absent;
+    "${name}/netapp_controller_ips":       ensure => absent;
+    "${name}/netapp_sa_password":          ensure => absent;
   }
 
   if $manage_volume_type {
     cinder_type { $name:
       ensure     => present,
       properties => ["volume_backend_name=${name}"],
-    }
-  }
-
-  if $netapp_storage_family == 'eseries' {
-    cinder_config {
-      "${name}/use_multipath_for_image_xfer": value => true;
     }
   }
 

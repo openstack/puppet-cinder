@@ -12,8 +12,6 @@ describe 'cinder::backend::netapp' do
       :netapp_server_hostname       => '127.0.0.2',
       :netapp_vserver               => 'netapp_vserver',
       :netapp_copyoffload_tool_path => '/tmp/na_copyoffload_64',
-      :netapp_controller_ips        => '10.0.0.2,10.0.0.3',
-      :netapp_sa_password           => 'password',
     }
   end
 
@@ -30,7 +28,6 @@ describe 'cinder::backend::netapp' do
       :thres_avl_size_perc_stop    => '60',
       :nfs_shares_config           => '/etc/cinder/shares.conf',
       :nfs_mount_options           => '<SERVICE DEFAULT>',
-      :netapp_webservice_path      => '/devmgr/v2',
       :nas_secure_file_operations  => '<SERVICE DEFAULT>',
       :nas_secure_file_permissions => '<SERVICE DEFAULT>',
     }
@@ -51,7 +48,6 @@ describe 'cinder::backend::netapp' do
 
     it {
       is_expected.to contain_cinder_config('netapp/netapp_password').with_secret( true )
-      is_expected.to contain_cinder_config('netapp/netapp_sa_password').with_secret( true )
     }
   end
 
@@ -66,14 +62,6 @@ describe 'cinder::backend::netapp' do
 
     context 'with provided parameters' do
       it_behaves_like 'netapp volume driver'
-    end
-
-    context 'with netapp_storage_family eseries' do
-      before do
-        params.merge!( :netapp_storage_family => 'eseries' )
-      end
-
-      it { is_expected.to contain_cinder_config('netapp/use_multipath_for_image_xfer').with_value('true') }
     end
 
     context 'with nfs_mount_options' do
