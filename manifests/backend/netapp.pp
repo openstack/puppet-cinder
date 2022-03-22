@@ -5,16 +5,6 @@
 #
 # === Parameters
 #
-# [*volume_backend_name*]
-#   (optional) The name of the cinder::backend::netapp ressource
-#   Defaults to $name.
-#
-# [*backend_availability_zone*]
-#   (Optional) Availability zone for this volume backend.
-#   If not set, the storage_availability_zone option value
-#   is used as the default for all backends.
-#   Defaults to $::os_service_default.
-#
 # [*netapp_login*]
 #   (required) Administrative user account name used to access the storage
 #   system or proxy server.
@@ -27,22 +17,32 @@
 #   (required) The hostname (or IP address) for the storage system or proxy
 #   server.
 #
+# [*volume_backend_name*]
+#   (optional) The name of the cinder::backend::netapp ressource
+#   Defaults to $name.
+#
+# [*backend_availability_zone*]
+#   (Optional) Availability zone for this volume backend.
+#   If not set, the storage_availability_zone option value
+#   is used as the default for all backends.
+#   Defaults to $::os_service_default.
+#
 # [*netapp_server_port*]
 #   (optional) The TCP port to use for communication with the storage
 #   system or proxy. If not specified, Data ONTAP drivers will use 80
 #   for HTTP and 443 for HTTPS;
-#   Defaults to 80
+#   Defaults to $::os_service_default.
 #
 # [*netapp_size_multiplier*]
 #   (optional) The quantity to be multiplied by the requested volume size to
 #   ensure enough space is available on the virtual storage server (Vserver) to
 #   fulfill the volume creation request.
-#   Defaults to 1.2
+#   Defaults to $::os_service_default.
 #
 # [*netapp_storage_family*]
 #   (optional) The storage family type used on the storage system; valid value
 #   is ontap_cluster for using clustered Data ONTAP.
-#   Defaults to ontap_cluster
+#   Defaults to $::os_service_default.
 #
 # [*netapp_storage_protocol*]
 #   (optional) The storage protocol to be used on the data path with the storage
@@ -52,13 +52,13 @@
 # [*netapp_transport_type*]
 #   (optional) The transport protocol used when communicating with the storage
 #   system or proxy server. Valid values are http or https.
-#   Defaults to http
+#   Defaults to $::os_service_default.
 #
 # [*netapp_vserver*]
 #   (optional) This option specifies the virtual storage server (Vserver)
 #   name on the storage cluster on which provisioning of block storage volumes
 #   should occur.
-#   Defaults to undef
+#   Defaults to $::os_service_default.
 #
 # [*expiry_thres_minutes*]
 #   (optional) This parameter specifies the threshold for last access time for
@@ -66,20 +66,20 @@
 #   in the cache that have not been accessed in the last M minutes, where M is
 #   the value of this parameter, will be deleted from the cache to create free
 #   space on the NFS share.
-#   Defaults to 720
+#   Defaults to $::os_service_default.
 #
 # [*thres_avl_size_perc_start*]
 #   (optional) If the percentage of available space for an NFS share has
 #   dropped below the value specified by this parameter, the NFS image cache
 #   will be cleaned.
-#   Defaults to 20
+#   Defaults to $::os_service_default.
 #
 # [*thres_avl_size_perc_stop*]
 #   (optional) When the percentage of available space on an NFS share has
 #   reached the percentage specified by this parameter, the driver will stop
 #   clearing files from the NFS image cache that have not been accessed in the
 #   last M minutes, where M is the value of the expiry_thres_minutes parameter.
-#   Defaults to 60
+#   Defaults to $::os_service_default.
 #
 # [*nfs_shares*]
 #   (optional) Array of NFS exports in the form of host:/share; will be written into
@@ -99,7 +99,7 @@
 #   (optional) This option specifies the path of the NetApp Copy Offload tool
 #   binary. Ensure that the binary has execute permissions set which allow the
 #   effective user of the cinder-volume process to execute the file.
-#   Defaults to undef
+#   Defaults to $::os_service_default.
 #
 # [*netapp_pool_name_search_pattern*]
 #   (optional) This option is only utilized when the Cinder driver is
@@ -109,7 +109,7 @@
 #   FlexVol volumes from the storage backend which represent pools in Cinder.
 #   ^ (beginning of string) and $ (end of string) are implicitly wrapped around
 #   the regular expression specified before filtering.
-#   Defaults to (.+)
+#   Defaults to $::os_service_default.
 #
 # [*netapp_host_type*]
 #   (optional) This option is used to define how the controllers will work with
@@ -207,23 +207,23 @@ define cinder::backend::netapp (
   $netapp_server_hostname,
   $volume_backend_name              = $name,
   $backend_availability_zone        = $::os_service_default,
-  $netapp_server_port               = '80',
-  $netapp_size_multiplier           = '1.2',
-  $netapp_storage_family            = 'ontap_cluster',
+  $netapp_server_port               = $::os_service_default,
+  $netapp_size_multiplier           = $::os_service_default,
+  $netapp_storage_family            = $::os_service_default,
   $netapp_storage_protocol          = 'nfs',
-  $netapp_transport_type            = 'http',
-  $netapp_vserver                   = undef,
-  $expiry_thres_minutes             = '720',
-  $thres_avl_size_perc_start        = '20',
-  $thres_avl_size_perc_stop         = '60',
+  $netapp_transport_type            = $::os_service_default,
+  $netapp_vserver                   = $::os_service_default,
+  $expiry_thres_minutes             = $::os_service_default,
+  $thres_avl_size_perc_start        = $::os_service_default,
+  $thres_avl_size_perc_stop         = $::os_service_default,
   $nfs_shares                       = undef,
   $nfs_shares_config                = '/etc/cinder/shares.conf',
   $nfs_mount_options                = $::os_service_default,
-  $netapp_copyoffload_tool_path     = undef,
+  $netapp_copyoffload_tool_path     = $::os_service_default,
   $netapp_host_type                 = $::os_service_default,
   $manage_volume_type               = false,
   $extra_options                    = {},
-  $netapp_pool_name_search_pattern  = '(.+)',
+  $netapp_pool_name_search_pattern  = $::os_service_default,
   $nas_secure_file_operations       = $::os_service_default,
   $nas_secure_file_permissions      = $::os_service_default,
   # DEPRECATED PARAMETERS

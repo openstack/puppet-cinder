@@ -17,19 +17,21 @@ describe 'cinder::backend::netapp' do
 
   let :default_params do
     {
-      :backend_availability_zone   => '<SERVICE DEFAULT>',
-      :netapp_server_port          => '80',
-      :netapp_size_multiplier      => '1.2',
-      :netapp_storage_family       => 'ontap_cluster',
-      :netapp_storage_protocol     => 'nfs',
-      :netapp_transport_type       => 'http',
-      :expiry_thres_minutes        => '720',
-      :thres_avl_size_perc_start   => '20',
-      :thres_avl_size_perc_stop    => '60',
-      :nfs_shares_config           => '/etc/cinder/shares.conf',
-      :nfs_mount_options           => '<SERVICE DEFAULT>',
-      :nas_secure_file_operations  => '<SERVICE DEFAULT>',
-      :nas_secure_file_permissions => '<SERVICE DEFAULT>',
+      :backend_availability_zone    => '<SERVICE DEFAULT>',
+      :netapp_server_port           => '<SERVICE DEFAULT>',
+      :netapp_size_multiplier       => '<SERVICE DEFAULT>',
+      :netapp_storage_family        => '<SERVICE DEFAULT>',
+      :netapp_storage_protocol      => 'nfs',
+      :netapp_transport_type        => '<SERVICE DEFAULT>',
+      :netapp_vserver               => '<SERVICE DEFAULT>',
+      :expiry_thres_minutes         => '<SERVICE DEFAULT>',
+      :thres_avl_size_perc_start    => '<SERVICE DEFAULT>',
+      :thres_avl_size_perc_stop     => '<SERVICE DEFAULT>',
+      :nfs_shares_config            => '/etc/cinder/shares.conf',
+      :netapp_copyoffload_tool_path => '<SERVICE DEFAULT>',
+      :nfs_mount_options            => '<SERVICE DEFAULT>',
+      :nas_secure_file_operations   => '<SERVICE DEFAULT>',
+      :nas_secure_file_permissions  => '<SERVICE DEFAULT>',
     }
   end
 
