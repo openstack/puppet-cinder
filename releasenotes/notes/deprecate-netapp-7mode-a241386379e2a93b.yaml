@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    The following parameters of the ``cinder::backend::netapp`` resource type
+    have been deprecated and have no effect now.
+
+    - ``netapp_vfiler``
+    - ``netapp_partner_backend_name``
