@@ -100,8 +100,7 @@ define cinder::backend::dellemc_xtremio (
     "${name}/xtremio_array_busy_retry_count":    value => $xtremio_array_busy_retry_count;
     "${name}/xtremio_array_busy_retry_interval": value => $xtremio_array_busy_retry_interval;
     "${name}/xtremio_volumes_per_glance_cache":  value => $xtremio_volumes_per_glance_cache;
-    "${name}/xtremio_ports":                     value => $xtremio_ports;
-
+    "${name}/xtremio_ports":                     value => join(any2array($xtremio_ports), ',');
   }
 
   if $manage_volume_type {
