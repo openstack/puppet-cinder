@@ -28,20 +28,21 @@
 #
 # [*xtremio_array_busy_retry_count*]
 #   (optional) Number of retries in case array is busy.
-#   Defaults to 5
+#   Defaults to $::os_service_default
 #
 # [*xtremio_array_busy_retry_interval*]
 #   (optional) Interval between retries in case array is busy.
-#   Defaults to 5
+#   Defaults to $::os_service_default
 #
 # [*xtremio_volumes_per_glance_cache*]
 #   (optional) Number of volumes created from each cached glance image.
-#   Defaults to 100
+#   Defaults to $::os_service_default
 #
 # [*xtremio_ports*]
 #   (optional) Allowed ports. Comma separated list of XtremIO iSCSI IPs or
 #   FC WWNs (ex. 58:cc:f0:98:49:22:07:02) to be used. If is not set all ports
 #   are allowed.
+#   Defaults to $::os_service_default
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
@@ -68,9 +69,9 @@ define cinder::backend::dellemc_xtremio (
   $xtremio_cluster_name,
   $volume_backend_name               = $name,
   $backend_availability_zone         = $::os_service_default,
-  $xtremio_array_busy_retry_count    = 5,
-  $xtremio_array_busy_retry_interval = 5,
-  $xtremio_volumes_per_glance_cache  = 100,
+  $xtremio_array_busy_retry_count    = $::os_service_default,
+  $xtremio_array_busy_retry_interval = $::os_service_default,
+  $xtremio_volumes_per_glance_cache  = $::os_service_default,
   $manage_volume_type                = false,
   $xtremio_storage_protocol          = 'iSCSI',
   $xtremio_ports                     = $::os_service_default,
