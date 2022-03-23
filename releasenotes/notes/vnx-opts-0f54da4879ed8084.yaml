@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The ``cinder::backend::emc_vnx`` resource type now supports the following
+    parameters of EMC VNX driver.
+
+    - ``destroy_empty_storage_group``
+    - ``iscsi_initiators``
+    - ``io_port_list``
+    - ``initiator_auto_deregistration``
+    - ``force_delete_lun_in_storagegroup``
+    - ``ignore_pool_full_threshold``
+    - ``vnx_async_migrate``

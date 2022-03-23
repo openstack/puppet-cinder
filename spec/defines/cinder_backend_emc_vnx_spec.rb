@@ -5,10 +5,10 @@ describe 'cinder::backend::emc_vnx' do
 
   let :req_params do
     {
-      :san_ip                   => '127.0.0.2',
-      :san_login                => 'emc',
-      :san_password             => 'password',
-      :storage_vnx_pool_names   => 'emc-storage-pool'
+      :san_ip                 => '127.0.0.2',
+      :san_login              => 'emc',
+      :san_password           => 'password',
+      :storage_vnx_pool_names => 'emc-storage-pool'
     }
   end
 
@@ -25,7 +25,14 @@ describe 'cinder::backend::emc_vnx' do
         is_expected.to contain_cinder_config('emc/san_login').with_value('emc')
         is_expected.to contain_cinder_config('emc/san_password').with_value('password').with_secret(true)
         is_expected.to contain_cinder_config('emc/storage_vnx_pool_names').with_value('emc-storage-pool')
+        is_expected.to contain_cinder_config('emc/destroy_empty_storage_group').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/iscsi_initiators').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/io_port_list').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/initiator_auto_registration').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/initiator_auto_deregistration').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/force_delete_lun_in_storagegroup').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/ignore_pool_full_threshold').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/vnx_async_migrate').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/naviseccli_path').with_value('<SERVICE DEFAULT>')
@@ -36,20 +43,34 @@ describe 'cinder::backend::emc_vnx' do
     context 'emc vnx backend overriding some parameters' do
       before :each do
         params.merge!({
-          :storage_vnx_pool_names        => ['emc-storage-pool1', 'emc-storage-pool2'],
-          :initiator_auto_registration   => true,
-          :storage_vnx_auth_type         => 'global',
-          :storage_vnx_security_file_dir => '/etc/secfile/array1',
-          :naviseccli_path               => '/opt/Navisphere/bin/naviseccli',
-          :manage_volume_type            => true,
-          :storage_protocol              => 'fc',
-          :backend_availability_zone     => 'my_zone',
+          :storage_vnx_pool_names           => ['emc-storage-pool1', 'emc-storage-pool2'],
+          :destroy_empty_storage_group      => false,
+          :iscsi_initiators                 => '{"host1":["10.0.0.1", "10.0.0.2"]}',
+          :io_port_list                     => ['a-1', 'B-3'],
+          :initiator_auto_registration      => true,
+          :initiator_auto_deregistration    => false,
+          :force_delete_lun_in_storagegroup => false,
+          :ignore_pool_full_threshold       => false,
+          :vnx_async_migrate                => true,
+          :storage_vnx_auth_type            => 'global',
+          :storage_vnx_security_file_dir    => '/etc/secfile/array1',
+          :naviseccli_path                  => '/opt/Navisphere/bin/naviseccli',
+          :manage_volume_type               => true,
+          :storage_protocol                 => 'fc',
+          :backend_availability_zone        => 'my_zone',
         })
       end
 
       it {
         is_expected.to contain_cinder_config('emc/storage_vnx_pool_names').with_value(params[:storage_vnx_pool_names].join(','))
+        is_expected.to contain_cinder_config('emc/destroy_empty_storage_group').with_value(params[:destroy_empty_storage_group])
+        is_expected.to contain_cinder_config('emc/iscsi_initiators').with_value(params[:iscsi_initiators])
+        is_expected.to contain_cinder_config('emc/io_port_list').with_value(params[:io_port_list].join(','))
         is_expected.to contain_cinder_config('emc/initiator_auto_registration').with_value(params[:initiator_auto_registration])
+        is_expected.to contain_cinder_config('emc/initiator_auto_deregistration').with_value(params[:initiator_auto_deregistration])
+        is_expected.to contain_cinder_config('emc/force_delete_lun_in_storagegroup').with_value(params[:force_delete_lun_in_storagegroup])
+        is_expected.to contain_cinder_config('emc/ignore_pool_full_threshold').with_value(params[:ignore_pool_full_threshold])
+        is_expected.to contain_cinder_config('emc/vnx_async_migrate').with_value(params[:vnx_async_migrate])
         is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value(params[:storage_vnx_auth_type])
         is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value(params[:storage_vnx_security_file_dir])
         is_expected.to contain_cinder_config('emc/naviseccli_path').with_value(params[:naviseccli_path])
