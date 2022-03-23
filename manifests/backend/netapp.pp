@@ -42,8 +42,8 @@
 #
 # [*netapp_storage_family*]
 #   (optional) The storage family type used on the storage system; valid values
-#   are ontap_7mode for using Data ONTAP operating in 7-Mode, ontap_cluster
-#   for using clustered Data ONTAP, or eseries for NetApp E-Series.
+#   are ontap_cluster for using clustered Data ONTAP, or eseries for NetApp
+#   E-Series.
 #   Defaults to ontap_cluster
 #
 # [*netapp_storage_protocol*]
@@ -56,25 +56,10 @@
 #   system or proxy server. Valid values are http or https.
 #   Defaults to http
 #
-# [*netapp_vfiler*]
-#   (optional) The vFiler unit on which provisioning of block storage volumes
-#   will be done. This parameter is only used by the driver when connecting to
-#   an instance with a storage family of Data ONTAP operating in 7-Mode. Only
-#   use this parameter when utilizing the MultiStore feature on the NetApp
-#   storage system.
-#   Defaults to undef
-#
 # [*netapp_vserver*]
 #   (optional) This option specifies the virtual storage server (Vserver)
 #   name on the storage cluster on which provisioning of block storage volumes
 #   should occur.
-#   Defaults to undef
-#
-# [*netapp_partner_backend_name*]
-#   (optional) The name of the config.conf stanza for a Data ONTAP (7-mode)
-#   HA partner.  This option is only used by the driver when connecting to an
-#   instance with a storage family of Data ONTAP operating in 7-Mode, and it is
-#   required if the storage protocol selected is FC.
 #   Defaults to undef
 #
 # [*expiry_thres_minutes*]
@@ -182,6 +167,23 @@
 #   Example :
 #     { 'netapp_backend/param1' => { 'value' => value1 } }
 #
+# DEPRECATED PARAMETERS
+#
+# [*netapp_vfiler*]
+#   (optional) The vFiler unit on which provisioning of block storage volumes
+#   will be done. This parameter is only used by the driver when connecting to
+#   an instance with a storage family of Data ONTAP operating in 7-Mode. Only
+#   use this parameter when utilizing the MultiStore feature on the NetApp
+#   storage system.
+#   Defaults to undef
+#
+# [*netapp_partner_backend_name*]
+#   (optional) The name of the config.conf stanza for a Data ONTAP (7-mode)
+#   HA partner.  This option is only used by the driver when connecting to an
+#   instance with a storage family of Data ONTAP operating in 7-Mode, and it is
+#   required if the storage protocol selected is FC.
+#   Defaults to undef
+#
 # === Examples
 #
 #  cinder::backend::netapp { 'myBackend':
@@ -212,9 +214,7 @@ define cinder::backend::netapp (
   $netapp_storage_family            = 'ontap_cluster',
   $netapp_storage_protocol          = 'nfs',
   $netapp_transport_type            = 'http',
-  $netapp_vfiler                    = undef,
   $netapp_vserver                   = undef,
-  $netapp_partner_backend_name      = undef,
   $expiry_thres_minutes             = '720',
   $thres_avl_size_perc_start        = '20',
   $thres_avl_size_perc_stop         = '60',
@@ -231,9 +231,19 @@ define cinder::backend::netapp (
   $netapp_pool_name_search_pattern  = '(.+)',
   $nas_secure_file_operations       = $::os_service_default,
   $nas_secure_file_permissions      = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $netapp_vfiler                    = undef,
+  $netapp_partner_backend_name      = undef,
 ) {
 
   include cinder::deps
+
+  if $netapp_vfiler != undef {
+    warning('The netapp_vfiler parameter is deprecated and has no effect.')
+  }
+  if $netapp_partner_backend_name != undef {
+    warning('The netapp_partner_backend_name parameter is deprecated and has no effect.')
+  }
 
   if $nfs_shares {
     validate_legacy(Array, 'validate_array', $nfs_shares)
@@ -258,9 +268,7 @@ define cinder::backend::netapp (
     "${name}/netapp_storage_family":            value => $netapp_storage_family;
     "${name}/netapp_storage_protocol":          value => $netapp_storage_protocol;
     "${name}/netapp_transport_type":            value => $netapp_transport_type;
-    "${name}/netapp_vfiler":                    value => $netapp_vfiler;
     "${name}/netapp_vserver":                   value => $netapp_vserver;
-    "${name}/netapp_partner_backend_name":      value => $netapp_partner_backend_name;
     "${name}/expiry_thres_minutes":             value => $expiry_thres_minutes;
     "${name}/thres_avl_size_perc_start":        value => $thres_avl_size_perc_start;
     "${name}/thres_avl_size_perc_stop":         value => $thres_avl_size_perc_stop;
@@ -273,6 +281,11 @@ define cinder::backend::netapp (
     "${name}/netapp_webservice_path":           value => $netapp_webservice_path;
     "${name}/nas_secure_file_operations":       value => $nas_secure_file_operations;
     "${name}/nas_secure_file_permissions":      value => $nas_secure_file_permissions;
+  }
+
+  cinder_config {
+    "${name}/netapp_vfiler":               ensure => absent;
+    "${name}/netapp_partner_backend_name": ensure => absent;
   }
 
   if $manage_volume_type {
