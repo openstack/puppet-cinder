@@ -1,0 +1,9 @@
+---
+deprecations:
+  - |
+    The following parameters of the ``cinder::backend::netapp`` resource type
+    have been deprecated and have no effect now.
+
+    - ``netapp_webservice_path``
+    - ``netapp_controller_ips``
+    - ``netapp_sa_password``
