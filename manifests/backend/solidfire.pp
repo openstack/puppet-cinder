@@ -59,6 +59,34 @@
 #   (optional) Utilize volume access groups on a per-tenant basis.
 #   Defaults to $::os_service_default
 #
+# [*sf_provisioning_calc*]
+#   (optional) Change how SolidFire reports used space and provisioning
+#   calculations.
+#   Defaults to $::os_service_default
+#
+# [*sf_cluster_pairing_timeout*]
+#   (optional) Sets time in seconds to wait for cluster to complete paring.
+#   Defaults to $::os_service_default
+#
+# [*sf_volume_pairing_timeout*]
+#   (optional) Sets time in seconds to wait for a migrating volume to complete
+#   paring and sync.
+#   Defaults to $::os_service_default
+#
+# [*sf_api_request_timeout*]
+#   (optional) Sets time in seconds to wait for an api request to complete.
+#   Defaults to $::os_service_default
+#
+# [*sf_volume_clone_timeout*]
+#   (optional) Sets time in seconds to wait for a clone of a volume or snapshot
+#   to complete.
+#   Defaults to $::os_service_default
+#
+# [*sf_volume_create_timeout*]
+#   (optional) Sets time in seconds to wait for a create volume operation to
+#   complete.
+#   Defaults to $::os_service_default
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -88,21 +116,27 @@ define cinder::backend::solidfire(
   $san_ip,
   $san_login,
   $san_password,
-  $volume_backend_name       = $name,
-  $backend_availability_zone = $::os_service_default,
-  $volume_driver             = 'cinder.volume.drivers.solidfire.SolidFireDriver',
-  $sf_emulate_512            = $::os_service_default,
-  $sf_allow_tenant_qos       = $::os_service_default,
-  $sf_account_prefix         = $::os_service_default,
-  $sf_api_port               = $::os_service_default,
-  $sf_volume_prefix          = $::os_service_default,
-  $sf_svip                   = $::os_service_default,
-  $sf_enable_vag             = $::os_service_default,
-  $manage_volume_type        = false,
-  $extra_options             = {},
+  $volume_backend_name        = $name,
+  $backend_availability_zone  = $::os_service_default,
+  $volume_driver              = 'cinder.volume.drivers.solidfire.SolidFireDriver',
+  $sf_emulate_512             = $::os_service_default,
+  $sf_allow_tenant_qos        = $::os_service_default,
+  $sf_account_prefix          = $::os_service_default,
+  $sf_api_port                = $::os_service_default,
+  $sf_volume_prefix           = $::os_service_default,
+  $sf_svip                    = $::os_service_default,
+  $sf_enable_vag              = $::os_service_default,
+  $sf_provisioning_calc       = $::os_service_default,
+  $sf_cluster_pairing_timeout = $::os_service_default,
+  $sf_volume_pairing_timeout  = $::os_service_default,
+  $sf_api_request_timeout     = $::os_service_default,
+  $sf_volume_clone_timeout    = $::os_service_default,
+  $sf_volume_create_timeout   = $::os_service_default,
+  $manage_volume_type         = false,
+  $extra_options              = {},
   # DEPRECATED PARAMETERS
-  $sf_template_account_name  = undef,
-  $sf_allow_template_caching = undef,
+  $sf_template_account_name   = undef,
+  $sf_allow_template_caching  = undef,
 ) {
 
   include cinder::deps
@@ -119,19 +153,25 @@ define cinder::backend::solidfire(
   }
 
   cinder_config {
-    "${name}/volume_backend_name":         value => $volume_backend_name;
-    "${name}/backend_availability_zone":   value => $backend_availability_zone;
-    "${name}/volume_driver":               value => $volume_driver;
-    "${name}/san_ip":                      value => $san_ip;
-    "${name}/san_login":                   value => $san_login;
-    "${name}/san_password":                value => $san_password, secret => true;
-    "${name}/sf_emulate_512":              value => $sf_emulate_512;
-    "${name}/sf_allow_tenant_qos":         value => $sf_allow_tenant_qos;
-    "${name}/sf_account_prefix":           value => $sf_account_prefix;
-    "${name}/sf_api_port":                 value => $sf_api_port;
-    "${name}/sf_volume_prefix":            value => $sf_volume_prefix;
-    "${name}/sf_svip":                     value => $sf_svip;
-    "${name}/sf_enable_vag":               value => $sf_enable_vag;
+    "${name}/volume_backend_name":        value => $volume_backend_name;
+    "${name}/backend_availability_zone":  value => $backend_availability_zone;
+    "${name}/volume_driver":              value => $volume_driver;
+    "${name}/san_ip":                     value => $san_ip;
+    "${name}/san_login":                  value => $san_login;
+    "${name}/san_password":               value => $san_password, secret => true;
+    "${name}/sf_emulate_512":             value => $sf_emulate_512;
+    "${name}/sf_allow_tenant_qos":        value => $sf_allow_tenant_qos;
+    "${name}/sf_account_prefix":          value => $sf_account_prefix;
+    "${name}/sf_api_port":                value => $sf_api_port;
+    "${name}/sf_volume_prefix":           value => $sf_volume_prefix;
+    "${name}/sf_svip":                    value => $sf_svip;
+    "${name}/sf_enable_vag":              value => $sf_enable_vag;
+    "${name}/sf_provisioning_calc":       value => $sf_provisioning_calc;
+    "${name}/sf_cluster_pairing_timeout": value => $sf_cluster_pairing_timeout;
+    "${name}/sf_volume_pairing_timeout":  value => $sf_volume_pairing_timeout;
+    "${name}/sf_api_request_timeout":     value => $sf_api_request_timeout;
+    "${name}/sf_volume_clone_timeout":    value => $sf_volume_clone_timeout;
+    "${name}/sf_volume_create_timeout":   value => $sf_volume_create_timeout;
   }
 
   if $manage_volume_type {
