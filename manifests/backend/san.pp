@@ -19,39 +19,49 @@
 #   Defaults to $::os_service_default.
 #
 # [*san_thin_provision*]
-#   (optional) Use thin provisioning for SAN volumes? Defaults to true.
+#   (optional) Use thin provisioning for SAN volumes?
+#   Defaults to $::os_service_default.
 #
 # [*san_ip*]
 #   (optional) IP address of SAN controller.
+#   Defaults to $::os_service_default.
 #
 # [*san_login*]
 #   (optional) Username for SAN controller. Defaults to 'admin'.
+#   Defaults to $::os_service_default.
 #
 # [*san_password*]
 #   (optional) Password for SAN controller.
+#   Defaults to $::os_service_default.
 #
 # [*san_private_key*]
 #   (optional) Filename of private key to use for SSH authentication.
+#   Defaults to $::os_service_default.
 #
 # [*san_clustername*]
 #   (optional) Cluster name to use for creating volumes.
+#   Defaults to $::os_service_default.
 #
 # [*san_ssh_port*]
-#   (optional) SSH port to use with SAN. Defaults to 22.
+#   (optional) SSH port to use with SAN.
+#   Defaults to $::os_service_default.
 #
 # [*san_is_local*]
 #   (optional) Execute commands locally instead of over SSH
 #   use if the volume service is running on the SAN device.
+#   Defaults to $::os_service_default.
 #
 # [*ssh_conn_timeout*]
-#   (optional) SSH connection timeout in seconds. Defaults to 30.
+#   (optional) SSH connection timeout in seconds.
+#   Defaults to $::os_service_default.
 #
 # [*ssh_min_pool_conn*]
 #   (optional) Minimum ssh connections in the pool.
+#   Defaults to $::os_service_default.
 #
 # [*ssh_max_pool_conn*]
 #   (Optional) Maximum ssh connections in the pool.
-#   Defaults to '5'.
+#   Defaults to $::os_service_default.
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -69,17 +79,17 @@ define cinder::backend::san (
   $volume_driver,
   $volume_backend_name       = $name,
   $backend_availability_zone = $::os_service_default,
-  $san_thin_provision        = true,
-  $san_ip                    = undef,
-  $san_login                 = 'admin',
-  $san_password              = undef,
-  $san_private_key           = undef,
-  $san_clustername           = undef,
-  $san_ssh_port              = 22,
-  $san_is_local              = false,
-  $ssh_conn_timeout          = 30,
-  $ssh_min_pool_conn         = 1,
-  $ssh_max_pool_conn         = 5,
+  $san_thin_provision        = $::os_service_default,
+  $san_ip                    = $::os_service_default,
+  $san_login                 = $::os_service_default,
+  $san_password              = $::os_service_default,
+  $san_private_key           = $::os_service_default,
+  $san_clustername           = $::os_service_default,
+  $san_ssh_port              = $::os_service_default,
+  $san_is_local              = $::os_service_default,
+  $ssh_conn_timeout          = $::os_service_default,
+  $ssh_min_pool_conn         = $::os_service_default,
+  $ssh_max_pool_conn         = $::os_service_default,
   $manage_volume_type        = false,
   $extra_options             = {},
 ) {
