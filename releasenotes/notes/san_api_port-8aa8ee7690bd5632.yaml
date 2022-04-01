@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``cinder::backend::san`` defined type now supports the ``san_api_port``
+    parameter.
