@@ -109,7 +109,7 @@ define cinder::backend::emc_vnx (
     "${name}/san_ip":                          value => $san_ip;
     "${name}/san_login":                       value => $san_login;
     "${name}/san_password":                    value => $san_password, secret => true;
-    "${name}/storage_vnx_pool_names":          value => $storage_vnx_pool_names;
+    "${name}/storage_vnx_pool_names":          value => join(any2array($storage_vnx_pool_names), ',');
     "${name}/volume_backend_name":             value => $volume_backend_name;
     "${name}/backend_availability_zone":       value => $backend_availability_zone;
     "${name}/volume_driver":                   value => $volume_driver;

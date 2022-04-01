@@ -36,6 +36,7 @@ describe 'cinder::backend::emc_vnx' do
     context 'emc vnx backend overriding some parameters' do
       before :each do
         params.merge!({
+          :storage_vnx_pool_names        => ['emc-storage-pool1', 'emc-storage-pool2'],
           :initiator_auto_registration   => true,
           :storage_vnx_auth_type         => 'global',
           :storage_vnx_security_file_dir => '/etc/secfile/array1',
@@ -47,6 +48,7 @@ describe 'cinder::backend::emc_vnx' do
       end
 
       it {
+        is_expected.to contain_cinder_config('emc/storage_vnx_pool_names').with_value(params[:storage_vnx_pool_names].join(','))
         is_expected.to contain_cinder_config('emc/initiator_auto_registration').with_value(params[:initiator_auto_registration])
         is_expected.to contain_cinder_config('emc/storage_vnx_authentication_type').with_value(params[:storage_vnx_auth_type])
         is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value(params[:storage_vnx_security_file_dir])
