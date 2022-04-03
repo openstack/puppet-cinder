@@ -245,6 +245,12 @@ running as a standalone service, or httpd for being run by a httpd server")
       'ssl/key_file' :  value => $key_file;
       'ssl/ca_file' :   value => $ca_file;
     }
+  } else {
+    cinder_config {
+      'ssl/cert_file' : value => $::os_service_default;
+      'ssl/key_file' :  value => $::os_service_default;
+      'ssl/ca_file' :   value => $::os_service_default;
+    }
   }
 
   if (!is_service_default($ratelimits)) {
