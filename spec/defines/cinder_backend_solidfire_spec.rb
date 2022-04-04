@@ -13,7 +13,7 @@ describe 'cinder::backend::solidfire' do
     }
   end
 
-  let :other_params do
+  let :default_params do
     {
       :backend_availability_zone => '<SERVICE DEFAULT>',
       :sf_emulate_512            => '<SERVICE DEFAULT>',
@@ -26,66 +26,69 @@ describe 'cinder::backend::solidfire' do
     }
   end
 
+  let :other_params do
+    {
+      :backend_availability_zone => 'az1',
+      :sf_emulate_512            => true,
+      :sf_allow_tenant_qos       => false,
+      :sf_account_prefix         => 'acc_prefix',
+      :sf_api_port               => 443,
+      :sf_volume_prefix          => 'UUID-',
+      :sf_svip                   => 'svip',
+      :sf_enable_vag             => false,
+    }
+  end
+
+  shared_examples 'a solidfire volume driver' do
+    let :params_hash do
+      default_params.merge(params)
+    end
+ 
+    it {
+      is_expected.to contain_cinder_config("#{config_group_name}/volume_driver").with(
+        :value => 'cinder.volume.drivers.solidfire.SolidFireDriver'
+      )
+
+      params_hash.each_pair do |config,value|
+        is_expected.to contain_cinder_config("#{config_group_name}/#{config}").with_value(value)
+      end
+
+      is_expected.to contain_cinder_config("#{config_group_name}/san_password").with_secret(true)
+    }
+  end
+
   shared_examples 'cinder::backend::solidfire' do
-    context 'SolidFire backend driver with minimal params' do
+    context 'with minimal params' do
       let :params do
         req_params
       end
 
-      it { is_expected.to contain_cinder__backend__solidfire(config_group_name) }
-      it { is_expected.to contain_cinder_config("#{config_group_name}/volume_driver").with(
-        :value => 'cinder.volume.drivers.solidfire.SolidFireDriver'
-      )}
-
-      it {
-        params.each_pair do |config,value|
-          is_expected.to contain_cinder_config(
-            "#{config_group_name}/#{config}").with_value(value)
-        end
-      }
-
-      it { is_expected.to contain_cinder_config('solidfire/san_password').with_secret(true) }
+      it_behaves_like 'a solidfire volume driver'
     end
 
-    context 'SolidFire backend driver with all params' do
+    context 'with all params' do
       let :params do
         req_params.merge(other_params)
       end
 
-      it { is_expected.to contain_cinder__backend__solidfire(config_group_name) }
-      it { is_expected.to contain_cinder_config("#{config_group_name}/volume_driver").with(
-        :value => 'cinder.volume.drivers.solidfire.SolidFireDriver'
-      )}
-
-      it {
-        params.each_pair do |config,value|
-          is_expected.to contain_cinder_config(
-            "#{config_group_name}/#{config}").with_value(value)
-        end
-      }
-
-      it { is_expected.to contain_cinder_config('solidfire/san_password').with_secret(true) }
+      it_behaves_like 'a solidfire volume driver'
     end
 
-    context 'solidfire backend with additional configuration' do
+    context 'with extra options' do
       let :params do
-        req_params
-      end
-
-      before :each do
-        params.merge!( :extra_options => {'solidfire/param1' => {'value' => 'value1'}} )
+        req_params.merge({
+          :extra_options => {
+            'solidfire/param1' => {'value' => 'value1'}
+          }
+        })
       end
 
       it { is_expected.to contain_cinder_config('solidfire/param1').with_value('value1') }
     end
 
-    context 'solidfire backend with cinder type' do
+    context 'with cinder type management enabled' do
       let :params do
-        req_params
-      end
-
-      before :each do
-        params.merge!( :manage_volume_type => true )
+        req_params.merge( :manage_volume_type => true )
       end
 
       it { is_expected.to contain_cinder_type('solidfire').with(
