@@ -38,6 +38,9 @@ describe 'cinder::api' do
           :enable_proxy_headers_parsing => '<SERVICE DEFAULT>',
           :max_request_body_size        => '<SERVICE DEFAULT>',
         )
+        is_expected.to contain_cinder_config('ssl/ca_file').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('ssl/cert_file').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('ssl/key_file').with_value('<SERVICE DEFAULT>')
       end
     end
 
