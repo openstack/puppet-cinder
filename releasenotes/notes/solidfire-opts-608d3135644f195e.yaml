@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The ``cinder::backend::solidfire`` defined type now supports the following
+    new parameters.
+
+    - ``sf_provisioning_calc``
+    - ``sf_cluster_pairing_timeout``
+    - ``sf_volume_pairing_timeout``
+    - ``sf_api_request_timeout``
+    - ``sf_volume_clone_timeout``
+    - ``sf_volume_create_timeout``

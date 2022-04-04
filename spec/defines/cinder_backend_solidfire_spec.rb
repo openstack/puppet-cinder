@@ -15,27 +15,39 @@ describe 'cinder::backend::solidfire' do
 
   let :default_params do
     {
-      :backend_availability_zone => '<SERVICE DEFAULT>',
-      :sf_emulate_512            => '<SERVICE DEFAULT>',
-      :sf_allow_tenant_qos       => '<SERVICE DEFAULT>',
-      :sf_account_prefix         => '<SERVICE DEFAULT>',
-      :sf_api_port               => '<SERVICE DEFAULT>',
-      :sf_volume_prefix          => '<SERVICE DEFAULT>',
-      :sf_svip                   => '<SERVICE DEFAULT>',
-      :sf_enable_vag             => '<SERVICE DEFAULT>',
+      :backend_availability_zone  => '<SERVICE DEFAULT>',
+      :sf_emulate_512             => '<SERVICE DEFAULT>',
+      :sf_allow_tenant_qos        => '<SERVICE DEFAULT>',
+      :sf_account_prefix          => '<SERVICE DEFAULT>',
+      :sf_api_port                => '<SERVICE DEFAULT>',
+      :sf_volume_prefix           => '<SERVICE DEFAULT>',
+      :sf_svip                    => '<SERVICE DEFAULT>',
+      :sf_enable_vag              => '<SERVICE DEFAULT>',
+      :sf_provisioning_calc       => '<SERVICE DEFAULT>',
+      :sf_cluster_pairing_timeout => '<SERVICE DEFAULT>',
+      :sf_volume_pairing_timeout  => '<SERVICE DEFAULT>',
+      :sf_api_request_timeout     => '<SERVICE DEFAULT>',
+      :sf_volume_clone_timeout    => '<SERVICE DEFAULT>',
+      :sf_volume_create_timeout   => '<SERVICE DEFAULT>',
     }
   end
 
   let :other_params do
     {
-      :backend_availability_zone => 'az1',
-      :sf_emulate_512            => true,
-      :sf_allow_tenant_qos       => false,
-      :sf_account_prefix         => 'acc_prefix',
-      :sf_api_port               => 443,
-      :sf_volume_prefix          => 'UUID-',
-      :sf_svip                   => 'svip',
-      :sf_enable_vag             => false,
+      :backend_availability_zone  => 'az1',
+      :sf_emulate_512             => true,
+      :sf_allow_tenant_qos        => false,
+      :sf_account_prefix          => 'acc_prefix',
+      :sf_api_port                => 443,
+      :sf_volume_prefix           => 'UUID-',
+      :sf_svip                    => 'svip',
+      :sf_enable_vag              => false,
+      :sf_provisioning_calc       => 'maxProvisionedSpace',
+      :sf_cluster_pairing_timeout => 60,
+      :sf_volume_pairing_timeout  => 3600,
+      :sf_api_request_timeout     => 30,
+      :sf_volume_clone_timeout    => 600,
+      :sf_volume_create_timeout   => 60,
     }
   end
 
