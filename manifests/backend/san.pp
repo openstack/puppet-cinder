@@ -46,6 +46,10 @@
 #   (optional) SSH port to use with SAN.
 #   Defaults to $::os_service_default.
 #
+# [*san_api_port*]
+#   (optional) Port to use to access the SAN API.
+#   Defaults to $::os_service_default.
+#
 # [*san_is_local*]
 #   (optional) Execute commands locally instead of over SSH
 #   use if the volume service is running on the SAN device.
@@ -86,6 +90,7 @@ define cinder::backend::san (
   $san_private_key           = $::os_service_default,
   $san_clustername           = $::os_service_default,
   $san_ssh_port              = $::os_service_default,
+  $san_api_port              = $::os_service_default,
   $san_is_local              = $::os_service_default,
   $ssh_conn_timeout          = $::os_service_default,
   $ssh_min_pool_conn         = $::os_service_default,
@@ -107,6 +112,7 @@ define cinder::backend::san (
     "${name}/san_private_key":           value => $san_private_key;
     "${name}/san_clustername":           value => $san_clustername;
     "${name}/san_ssh_port":              value => $san_ssh_port;
+    "${name}/san_api_port":              value => $san_api_port;
     "${name}/san_is_local":              value => $san_is_local;
     "${name}/ssh_conn_timeout":          value => $ssh_conn_timeout;
     "${name}/ssh_min_pool_conn":         value => $ssh_min_pool_conn;
