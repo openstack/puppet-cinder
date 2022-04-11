@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``cinder::qos`` defined resource type has been removed.
