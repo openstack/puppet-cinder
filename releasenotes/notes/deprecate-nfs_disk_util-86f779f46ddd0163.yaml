@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``cinder::backend::nfs_disk_util`` parameter has been deprecated and
+    has no effect. This parameter has had no effect since Havana release.

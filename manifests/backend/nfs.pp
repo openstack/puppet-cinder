@@ -26,10 +26,6 @@
 #   (Optional) Mount options passed to the nfs client.
 #   Defaults to $::os_service_default
 #
-# [*nfs_disk_util*]
-#   (Optional) TODO
-#   Defaults to $::os_service_default
-#
 # [*nfs_sparsed_volumes*]
 #   (Optional) Create volumes as sparsed files which take no space.
 #   If set to False volume is created as regular file.
@@ -93,13 +89,18 @@
 #   Example :
 #     { 'nfs_backend/param1' => { 'value' => value1 } }
 #
+# DEPRECATED PARAMETERS
+#
+# [*nfs_disk_util*]
+#   (Optional) Use du or df for free space calculation.
+#   Defaults to undef
+#
 define cinder::backend::nfs (
   $volume_backend_name         = $name,
   $backend_availability_zone   = $::os_service_default,
   $nfs_servers                 = [],
   $nfs_mount_attempts          = $::os_service_default,
   $nfs_mount_options           = $::os_service_default,
-  $nfs_disk_util               = $::os_service_default,
   $nfs_sparsed_volumes         = $::os_service_default,
   $nfs_mount_point_base        = $::os_service_default,
   $nfs_shares_config           = '/etc/cinder/shares.conf',
@@ -111,9 +112,17 @@ define cinder::backend::nfs (
   $nfs_qcow2_volumes           = $::os_service_default,
   $manage_volume_type          = false,
   $extra_options               = {},
+  $nfs_disk_util               = undef,
 ) {
 
   include cinder::deps
+
+  if $nfs_disk_util != undef {
+    warning('The nfs_disk_util parameter is deprecated and has no effect.')
+  }
+  cinder_config {
+    "${name}/nfs_disk_util": ensure => absent
+  }
 
   file {$nfs_shares_config:
     content => join($nfs_servers, "\n"),
@@ -129,7 +138,6 @@ define cinder::backend::nfs (
     "${name}/nfs_shares_config":           value => $nfs_shares_config;
     "${name}/nfs_mount_attempts":          value => $nfs_mount_attempts;
     "${name}/nfs_mount_options":           value => $nfs_mount_options;
-    "${name}/nfs_disk_util":               value => $nfs_disk_util;
     "${name}/nfs_sparsed_volumes":         value => $nfs_sparsed_volumes;
     "${name}/nfs_mount_point_base":        value => $nfs_mount_point_base;
     "${name}/nfs_used_ratio":              value => $nfs_used_ratio;
