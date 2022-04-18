@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``cinder::backend_host`` parameter has been removed.
+    Use the ``cinder::backends::backend_host`` parameter instead.
