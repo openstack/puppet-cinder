@@ -5,12 +5,9 @@ describe 'cinder::backend::vmdk' do
 
   let :params do
     {
-      :host_ip                     => '172.16.16.16',
-      :host_password               => 'asdf',
-      :host_username               => 'user',
-      :api_retry_count             => '<SERVICE DEFAULT>',
-      :max_object_retrieval        => '<SERVICE DEFAULT>',
-      :image_transfer_timeout_secs => '<SERVICE DEFAULT>'
+      :host_ip       => '172.16.16.16',
+      :host_password => 'asdf',
+      :host_username => 'user',
     }
   end
 
@@ -33,11 +30,11 @@ describe 'cinder::backend::vmdk' do
       is_expected.to contain_cinder_config('hippo/vmware_host_ip').with_value(params[:host_ip])
       is_expected.to contain_cinder_config('hippo/vmware_host_username').with_value(params[:host_username])
       is_expected.to contain_cinder_config('hippo/vmware_host_password').with_value(params[:host_password]).with_secret(true)
-      is_expected.to contain_cinder_config('hippo/vmware_volume_folder').with_value('cinder-volumes')
-      is_expected.to contain_cinder_config('hippo/vmware_api_retry_count').with_value(params[:api_retry_count])
-      is_expected.to contain_cinder_config('hippo/vmware_max_object_retrieval').with_value(params[:max_object_retrieval])
-      is_expected.to contain_cinder_config('hippo/vmware_task_poll_interval').with_value(5)
-      is_expected.to contain_cinder_config('hippo/vmware_image_transfer_timeout_secs').with_value(params[:image_transfer_timeout_secs])
+      is_expected.to contain_cinder_config('hippo/vmware_volume_folder').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('hippo/vmware_api_retry_count').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('hippo/vmware_max_object_retrieval').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('hippo/vmware_task_poll_interval').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('hippo/vmware_image_transfer_timeout_secs').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('hippo/vmware_wsdl_location').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
     }

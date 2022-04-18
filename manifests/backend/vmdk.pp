@@ -28,6 +28,11 @@
 #   e.g., socket error, etc.
 #   Defaults to $::os_service_default.
 #
+# [*volume_folder*]
+#   (optional) The name for the folder in the VC datacenter that will contain
+#   cinder volumes.
+#   Defaults to $::os_service_default.
+#
 # [*max_object_retrieval*]
 #   (optional) The maximum number of ObjectContent data objects that should
 #   be returned in a single result. A positive value will cause
@@ -39,10 +44,11 @@
 #
 # [*task_poll_interval*]
 #   (optional) The interval in seconds used for polling of remote tasks.
-#   Defaults to 5.
+#   Defaults to $::os_service_default.
 #
 # [*image_transfer_timeout_secs*]
-#   (optional) The timeout in seconds for VMDK volume transfer between Cinder and Glance.
+#   (optional) The timeout in seconds for VMDK volume transfer between Cinder
+#   and Glance.
 #   Defaults to $::os_service_default
 #
 # [*wsdl_location*]
@@ -50,10 +56,6 @@
 #   http://<server>/vimService.wsdl. Optional over-ride to
 #   default location for bug work-arounds.
 #   Defaults to $::os_service_default.
-#
-# [*volume_folder*]
-#   (optional) The name for the folder in the VC datacenter that will contain cinder volumes.
-#   Defaults to 'cinder-volumes'.
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -73,10 +75,10 @@ define cinder::backend::vmdk (
   $host_password,
   $volume_backend_name         = $name,
   $backend_availability_zone   = $::os_service_default,
-  $volume_folder               = 'cinder-volumes',
+  $volume_folder               = $::os_service_default,
   $api_retry_count             = $::os_service_default,
   $max_object_retrieval        = $::os_service_default,
-  $task_poll_interval          = 5,
+  $task_poll_interval          = $::os_service_default,
   $image_transfer_timeout_secs = $::os_service_default,
   $wsdl_location               = $::os_service_default,
   $manage_volume_type          = false,
@@ -84,16 +86,6 @@ define cinder::backend::vmdk (
   ) {
 
   include cinder::deps
-
-  if $volume_folder == 'cinder-volumes' {
-    warning("The OpenStack default value of volume_folder differs from the puppet module \
-default of \"cinder-volumes\" and will be changed to the upstream OpenStack default in N-release.")
-  }
-
-  if $task_poll_interval == 5 {
-    warning("The OpenStack default value of task_poll_interval differs from the puppet \
-module default of \"5\" and will be changed to the upstream OpenStack default in N-release.")
-  }
 
   cinder_config {
     "${name}/volume_backend_name":                value => $volume_backend_name;

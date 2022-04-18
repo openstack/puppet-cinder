@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The ``cinder::backends::vmdk::volume_foler`` parameter and
+    the ``cinder::backends::vmdk::task_poll_interval`` parameter now default
+    to the service default values. Make sure these parameters are set if
+    the previous default value should be used.
