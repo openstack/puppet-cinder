@@ -14,7 +14,7 @@
 #
 # [*bind_host*]
 #   (optional) The cinder api bind address
-#   Defaults to 0.0.0.0
+#   Defaults to $::os_service_default
 #
 # [*enabled*]
 #   (optional) The state of the service (boolean value)
@@ -121,7 +121,7 @@
 class cinder::api (
   $service_workers                = $::os_workers,
   $package_ensure                 = 'present',
-  $bind_host                      = '0.0.0.0',
+  $bind_host                      = $::os_service_default,
   $enabled                        = true,
   $manage_service                 = true,
   $ratelimits                     = $::os_service_default,

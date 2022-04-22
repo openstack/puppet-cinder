@@ -24,7 +24,8 @@ describe 'cinder::api' do
       )}
 
       it 'should configure cinder api correctly' do
-        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen').with_value('0.0.0.0')
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/osapi_volume_workers').with_value('8')
         is_expected.to contain_cinder_config('DEFAULT/default_volume_type').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/public_endpoint').with_value('<SERVICE DEFAULT>')
@@ -32,7 +33,6 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('DEFAULT/osapi_max_limit').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/auth_strategy').with_value('keystone')
         is_expected.to contain_cinder_config('DEFAULT/use_forwarded_for').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen_port').with('value' => '<SERVICE DEFAULT>')
 
         is_expected.to contain_oslo__middleware('cinder_config').with(
           :enable_proxy_headers_parsing => '<SERVICE DEFAULT>',
@@ -41,6 +41,17 @@ describe 'cinder::api' do
         is_expected.to contain_cinder_config('ssl/ca_file').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('ssl/cert_file').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('ssl/key_file').with_value('<SERVICE DEFAULT>')
+      end
+    end
+
+    context 'with a customized host' do
+      let :params do
+        req_params.merge({'bind_host' => '192.0.2.11'})
+      end
+      it 'should customize the host' do
+        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen').with(
+         :value => '192.0.2.11'
+        )
       end
     end
 
@@ -62,17 +73,6 @@ describe 'cinder::api' do
       it 'should configure the default volume type for cinder' do
         is_expected.to contain_cinder_config('DEFAULT/default_volume_type').with(
           :value => 'foo'
-        )
-      end
-    end
-
-    context 'with only required params' do
-      let :params do
-        req_params.merge({'bind_host' => '192.168.1.3'})
-      end
-      it 'should configure cinder api correctly' do
-        is_expected.to contain_cinder_config('DEFAULT/osapi_volume_listen').with(
-         :value => '192.168.1.3'
         )
       end
     end
