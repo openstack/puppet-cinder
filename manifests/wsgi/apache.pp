@@ -38,7 +38,7 @@
 #
 #   [*ssl*]
 #     Use ssl ? (boolean)
-#     Optional. Defaults to true
+#     Optional. Defaults to false
 #
 #   [*workers*]
 #     Number of WSGI workers to spawn.
@@ -122,7 +122,7 @@ class cinder::wsgi::apache (
   $port                        = 8776,
   $bind_host                   = undef,
   $path                        = '/',
-  $ssl                         = undef,
+  $ssl                         = false,
   $workers                     = $::os_workers,
   $ssl_cert                    = undef,
   $ssl_key                     = undef,
@@ -145,11 +145,6 @@ class cinder::wsgi::apache (
   $vhost_custom_fragment       = undef,
 ) {
 
-  if $ssl == undef {
-    warning('Default of the ssl parameter will be changed in a future release')
-  }
-  $ssl_real = pick($ssl, true)
-
   include cinder::deps
   include cinder::params
 
@@ -162,7 +157,7 @@ class cinder::wsgi::apache (
     path                        => $path,
     priority                    => $priority,
     servername                  => $servername,
-    ssl                         => $ssl_real,
+    ssl                         => $ssl,
     ssl_ca                      => $ssl_ca,
     ssl_cert                    => $ssl_cert,
     ssl_certs_dir               => $ssl_certs_dir,
