@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``cinder::api::os_region_name`` parameter has been removed.

@@ -107,12 +107,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*os_region_name*]
-#   (optional) Some operations require cinder to make API requests
-#   to Nova. This sets the keystone region to be used for these
-#   requests. For example, boot-from-volume.
-#   Defaults to undef
-#
 # [*validate*]
 #   (optional) Whether to validate the service is working after any service
 #   refreshes
@@ -143,18 +137,12 @@ class cinder::api (
   $osapi_volume_listen_port       = $::os_service_default,
   $use_forwarded_for              = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $os_region_name                 = undef,
   $validate                       = undef,
 ) inherits cinder::params {
 
   include cinder::deps
   include cinder::params
   include cinder::policy
-
-  if $os_region_name != undef {
-    warning('cinder::api::os_region_name is deprecated and has no effect. \
-Use cinder::nova::region_name instead')
-  }
 
   if $validate != undef {
     warning('The cinder::api::validate parameter is deprecated and has no effect')
