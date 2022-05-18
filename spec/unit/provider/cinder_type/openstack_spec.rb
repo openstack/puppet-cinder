@@ -122,7 +122,7 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
 
       describe '#pythondict2array' do
         it 'should return an array with key-value when provided with a unicode python dict' do
-          s = "{u'key': 'value', u'key2': 'value2'}"
+          s = "{'key': 'value', 'key2': 'value2'}"
           expect(provider_class.pythondict2array(s)).to eq(['key=value', 'key2=value2'])
         end
 
@@ -139,7 +139,7 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
         end
 
         it 'should call pythondict2array when provided with a hash' do
-          s = "{u'key': 'value', u'key2': 'value2'}"
+          s = "{'key': 'value', 'key2': 'value2'}"
           expect(provider_class.parsestring(s)).to eq(['key=value', 'key2=value2'])
         end
       end
