@@ -1,0 +1,7 @@
+---
+features:
+    - |
+      Introduce a new Class cinder::backend::defaults, that provides a
+      way to configure parameters for all cinder backends in [backend_defaults]
+      section of cinder configuration file.
+      This parameter ``use_multipath_for_image_xfer`` is supported currently.
