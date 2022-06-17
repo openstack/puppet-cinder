@@ -60,7 +60,7 @@
 #   Defaults to $::os_service_default
 #
 # [*iscsi_initiators*]
-#   (optional) Mapping betwene hostname and its iSCSI initiator IP addresses.
+#   (optional) Mapping between hostname and its iSCSI initiator IP addresses.
 #   Defaults to $::os_service_default
 #
 # [*io_port_list*]

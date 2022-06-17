@@ -96,7 +96,7 @@
 #   Defaults to []
 #
 # [*public_url_v3*]
-#   (0ptional) The v3 endpoint's public url.
+#   (Optional) The v3 endpoint's public url.
 #   This url should *not* contain any trailing '/'.
 #   Defaults to 'http://127.0.0.1:8776/v3'
 #

@@ -39,7 +39,7 @@
 #   Defaults to 'srv'
 #
 # [*dell_sc_verify_cert*]
-#   (optional) Enable HTTPS SC ceritifcate verification
+#   (optional) Enable HTTPS SC certificate verification
 #   Defaults to $::os_service_default
 #
 # [*dell_sc_volume_folder*]

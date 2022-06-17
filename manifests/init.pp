@@ -110,7 +110,7 @@
 #
 # [*kombu_compression*]
 #   (optional) Possible values are: gzip, bz2. If not set compression will not
-#   be used. This option may notbe available in future versions. EXPERIMENTAL.
+#   be used. This option may not be available in future versions. EXPERIMENTAL.
 #   (string value)
 #   Defaults to $::os_service_default
 #
@@ -189,7 +189,7 @@
 #   Defaults to false
 #
 # [*allow_availability_zone_fallback*]
-#   (optional) Allow availability zone fallback if preferred availabilty zone cannot be deployed to.
+#   (optional) Allow availability zone fallback if preferred availability zone cannot be deployed to.
 #   Defaults to $::os_service_default
 #
 # [*api_paste_config*]

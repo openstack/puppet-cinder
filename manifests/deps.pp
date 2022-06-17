@@ -55,7 +55,7 @@ class cinder::deps {
   # Support packages need to be installed in the install phase, but we don't
   # put them in the chain above because we don't want any false dependencies
   # between packages with the cinder-package tag and the cinder-support-package
-  # tag.  Note: the package resources here will have a 'before' relationshop on
+  # tag.  Note: the package resources here will have a 'before' relationship on
   # the cinder::install::end anchor.  The line between cinder-support-package and
   # cinder-package should be whether or not cinder services would need to be
   # restarted if the package state was changed.

@@ -9,7 +9,7 @@
 #   Defaults to $::os_service_default.
 #
 # [*package_ensure*]
-#   (Optioanl) The state of the package.
+#   (Optional) The state of the package.
 #   Defaults to 'present'.
 #
 # [*enabled*]

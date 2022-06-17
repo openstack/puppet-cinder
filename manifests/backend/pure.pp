@@ -51,8 +51,8 @@
 #   Defaults to $::os_service_default
 #
 # [*pure_eradicate_on_delete*]
-#   (Optional) Determines how the Purity system treates deleted volumes.
-#   Whether to immeadiately eradicate on delete or leave for auto-eradication
+#   (Optional) Determines how the Purity system treats deleted volumes.
+#   Whether to immediately eradicate on delete or leave for auto-eradication
 #   in 24 hours
 #   Defaults to $::os_service_default
 #

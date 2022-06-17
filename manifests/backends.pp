@@ -27,7 +27,7 @@ class cinder::backends (
 section are now not supported. You should use ``enabled_backends``option to  \
 set up backends. No volume service(s) started successfully otherwise.")
   } else {
-    # Maybe this could be extented to dynamicly find the enabled names
+    # Maybe this could be extended to dynamically find the enabled names
     cinder_config {
       'DEFAULT/enabled_backends': value => join($enabled_backends, ',');
     }
