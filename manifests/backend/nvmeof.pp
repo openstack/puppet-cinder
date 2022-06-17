@@ -13,7 +13,7 @@
 #   (Required) Target user-land tool to use.
 #
 # [*target_protocol*]
-#   (Required) Target rotocol to use.
+#   (Required) Target protocol to use.
 #
 # [*target_prefix*]
 #   (Optional) Prefix for LVM volumes.

@@ -18,7 +18,7 @@
 #   server.
 #
 # [*volume_backend_name*]
-#   (optional) The name of the cinder::backend::netapp ressource
+#   (optional) The name of the cinder::backend::netapp resource
 #   Defaults to $name.
 #
 # [*backend_availability_zone*]

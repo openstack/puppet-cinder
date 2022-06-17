@@ -22,7 +22,7 @@
 #   Each pool should be specified as a protection_domain_name:storage_pool_name value
 #
 # [*volume_backend_name*]
-#   (optional) The name of the cinder::backend::dellemc_powerflex ressource
+#   (optional) The name of the cinder::backend::dellemc_powerflex resource
 #   Defaults to $name.
 #
 # [*backend_availability_zone*]
@@ -65,7 +65,7 @@
 #   Defaults to $::os_service_default
 #
 # [*san_thin_provision*]
-#   (optional) (Boolean) Wheater to use thin provisioning or not.
+#   (optional) (Boolean) Whether to use thin provisioning or not.
 #   Defaults to $::os_service_default
 #
 # [*driver_ssl_cert_verify*]

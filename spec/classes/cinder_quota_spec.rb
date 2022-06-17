@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cinder::quota' do
   shared_examples 'cinder quota' do
 
-    context 'with defualt params' do
+    context 'with default params' do
       let :params do
         {}
       end
@@ -32,7 +32,7 @@ describe 'cinder::quota' do
         }
       end
 
-      it 'contains overrided values' do
+      it 'contains overridden values' do
         is_expected.to contain_cinder_config('DEFAULT/quota_volumes').with_value(2000)
         is_expected.to contain_cinder_config('DEFAULT/quota_snapshots').with_value(1000)
         is_expected.to contain_cinder_config('DEFAULT/quota_gigabytes').with_value(100000)

@@ -286,7 +286,7 @@ describe 'cinder' do
       end
     end
 
-    context 'with volume api paramaters' do
+    context 'with volume api parameters' do
       let :params do
         req_params.merge!({
           :enable_force_upload => true,
