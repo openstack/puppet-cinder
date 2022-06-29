@@ -18,6 +18,8 @@ describe 'cinder::wsgi::apache' do
         :wsgi_script_dir             => platform_params[:wsgi_script_path],
         :wsgi_script_file            => 'cinder-api',
         :wsgi_script_source          => platform_params[:wsgi_script_source],
+        :headers                     => nil,
+        :request_headers             => nil,
         :custom_wsgi_process_options => {},
         :access_log_file             => false,
         :access_log_pipe             => false,
@@ -29,7 +31,7 @@ describe 'cinder::wsgi::apache' do
       )}
     end
 
-    context 'when overriding parameters using different ports' do
+    context 'when overriding parameters' do
       let :params do
         {
           :servername                  => 'dummy.host',
@@ -42,6 +44,8 @@ describe 'cinder::wsgi::apache' do
           :custom_wsgi_process_options => {
             'python_path' => '/my/python/admin/path',
           },
+          :headers                     => ['set X-XSS-Protection "1; mode=block"'],
+          :request_headers             => ['set Content-Type "application/json"'],
         }
       end
       it { is_expected.to contain_class('cinder::params') }
@@ -62,6 +66,8 @@ describe 'cinder::wsgi::apache' do
         :wsgi_script_dir           => platform_params[:wsgi_script_path],
         :wsgi_script_file          => 'cinder-api',
         :wsgi_script_source        => platform_params[:wsgi_script_source],
+        :headers                   => ['set X-XSS-Protection "1; mode=block"'],
+        :request_headers           => ['set Content-Type "application/json"'],
         :custom_wsgi_process_options => {
           'python_path'  => '/my/python/admin/path',
         },

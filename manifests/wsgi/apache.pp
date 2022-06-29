@@ -102,6 +102,14 @@
 #     { python-path => '/my/python/virtualenv' }
 #     Defaults to {}
 #
+#   [*headers*]
+#     (optional) Headers for the vhost.
+#     Defaults to undef
+#
+#   [*request_headers*]
+#     (optional) Modifies collected request headers in various ways.
+#     Defaults to undef
+#
 #   [*vhost_custom_fragment*]
 #     (optional) Passes a string of custom configuration
 #     directives to be placed at the end of the vhost configuration.
@@ -142,6 +150,8 @@ class cinder::wsgi::apache (
   $error_log_pipe              = undef,
   $error_log_syslog            = undef,
   $custom_wsgi_process_options = {},
+  $headers                     = undef,
+  $request_headers             = undef,
   $vhost_custom_fragment       = undef,
 ) {
 
@@ -176,6 +186,8 @@ class cinder::wsgi::apache (
     wsgi_script_file            => 'cinder-api',
     wsgi_script_source          => $::cinder::params::cinder_wsgi_script_source,
     custom_wsgi_process_options => $custom_wsgi_process_options,
+    headers                     => $headers,
+    request_headers             => $request_headers,
     access_log_file             => $access_log_file,
     access_log_pipe             => $access_log_pipe,
     access_log_syslog           => $access_log_syslog,
