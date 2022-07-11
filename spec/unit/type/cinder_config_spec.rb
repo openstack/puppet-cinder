@@ -33,7 +33,7 @@ describe 'Puppet::Type.type(:cinder_config)' do
     expect(@cinder_config[:value]).to eq(['bar'])
   end
 
-  it 'should not accept a value with whitespace' do
+  it 'should accept a value with whitespace' do
     @cinder_config[:value] = 'b ar'
     expect(@cinder_config[:value]).to eq(['b ar'])
   end
