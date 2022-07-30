@@ -46,7 +46,7 @@
 #
 #   [*priority*]
 #     (optional) The priority for the vhost.
-#     Defaults to '10'
+#     Defaults to 10
 #
 #   [*threads*]
 #     (optional) The number of threads for the vhost.
@@ -68,19 +68,19 @@
 #
 #   [*access_log_file*]
 #     The log file name for the virtualhost.
-#     Optional. Defaults to false.
+#     Optional. Defaults to undef.
 #
 #   [*access_log_pipe*]
 #     Specifies a pipe where Apache sends access logs for the virtualhost.
-#     Optional. Defaults to false.
+#     Optional. Defaults to undef.
 #
 #   [*access_log_syslog*]
 #     Sends the virtualhost access log messages to syslog.
-#     Optional. Defaults to false.
+#     Optional. Defaults to undef.
 #
 #   [*access_log_format*]
 #     The log format for the virtualhost.
-#     Optional. Defaults to false.
+#     Optional. Defaults to undef.
 #
 #   [*error_log_file*]
 #     The error log file name for the virtualhost.
@@ -141,11 +141,11 @@ class cinder::wsgi::apache (
   $ssl_certs_dir               = undef,
   $wsgi_process_display_name   = undef,
   $threads                     = 1,
-  $priority                    = '10',
-  $access_log_file             = false,
-  $access_log_pipe             = false,
-  $access_log_syslog           = false,
-  $access_log_format           = false,
+  $priority                    = 10,
+  $access_log_file             = undef,
+  $access_log_pipe             = undef,
+  $access_log_syslog           = undef,
+  $access_log_format           = undef,
   $error_log_file              = undef,
   $error_log_pipe              = undef,
   $error_log_syslog            = undef,
