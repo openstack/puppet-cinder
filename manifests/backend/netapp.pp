@@ -145,43 +145,6 @@
 #   Example :
 #     { 'netapp_backend/param1' => { 'value' => value1 } }
 #
-# DEPRECATED PARAMETERS
-#
-# [*netapp_vfiler*]
-#   (optional) The vFiler unit on which provisioning of block storage volumes
-#   will be done. This parameter is only used by the driver when connecting to
-#   an instance with a storage family of Data ONTAP operating in 7-Mode. Only
-#   use this parameter when utilizing the MultiStore feature on the NetApp
-#   storage system.
-#   Defaults to undef
-#
-# [*netapp_partner_backend_name*]
-#   (optional) The name of the config.conf stanza for a Data ONTAP (7-mode)
-#   HA partner.  This option is only used by the driver when connecting to an
-#   instance with a storage family of Data ONTAP operating in 7-Mode, and it is
-#   required if the storage protocol selected is FC.
-#   Defaults to undef
-#
-# [*netapp_webservice_path*]
-#   (optional) This option is used to specify the path to the E-Series proxy
-#   application on a proxy server. The value is combined with the value of the
-#   netapp_transport_type, netapp_server_hostname, and netapp_server_port
-#   options to create the URL used by the driver to connect to the proxy
-#   application.
-#   Defaults to undef
-#
-# [*netapp_controller_ips*]
-#   (optional) This option is only utilized when the storage family is
-#   configured to eseries. This option is used to restrict provisioning to the
-#   specified controllers. Specify the value of this option to be a comma
-#   separated list of controller hostnames or IP addresses to be used for
-#   provisioning.
-#   Defaults to undef
-#
-# [*netapp_sa_password*]
-#   (optional) Password for the NetApp E-Series storage array.
-#   Defaults to undef
-#
 # === Examples
 #
 #  cinder::backend::netapp { 'myBackend':
@@ -226,27 +189,9 @@ define cinder::backend::netapp (
   $netapp_pool_name_search_pattern  = $::os_service_default,
   $nas_secure_file_operations       = $::os_service_default,
   $nas_secure_file_permissions      = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $netapp_vfiler                    = undef,
-  $netapp_partner_backend_name      = undef,
-  $netapp_webservice_path           = undef,
-  $netapp_controller_ips            = undef,
-  $netapp_sa_password               = undef,
 ) {
 
   include cinder::deps
-
-  [
-    'netapp_vfilter',
-    'netapp_partner_backend_name',
-    'netapp_webservice_path',
-    'netapp_controller_ips',
-    'netapp_sa_password'
-  ].each |String $dep_opt| {
-    if getvar($dep_opt) != undef {
-      warning("The ${dep_opt} parameter is deprecated and has no effect.")
-    }
-  }
 
   if $nfs_shares {
     validate_legacy(Array, 'validate_array', $nfs_shares)
@@ -281,14 +226,6 @@ define cinder::backend::netapp (
     "${name}/netapp_host_type":                 value => $netapp_host_type;
     "${name}/nas_secure_file_operations":       value => $nas_secure_file_operations;
     "${name}/nas_secure_file_permissions":      value => $nas_secure_file_permissions;
-  }
-
-  cinder_config {
-    "${name}/netapp_vfiler":               ensure => absent;
-    "${name}/netapp_partner_backend_name": ensure => absent;
-    "${name}/netapp_webservice_path":      ensure => absent;
-    "${name}/netapp_controller_ips":       ensure => absent;
-    "${name}/netapp_sa_password":          ensure => absent;
   }
 
   if $manage_volume_type {
