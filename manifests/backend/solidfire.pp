@@ -99,19 +99,6 @@
 #   Example :
 #     { 'solidfire_backend/param1' => { 'value' => value1 } }
 #
-# DEPRECATED PARAMETERS
-#
-# [*sf_template_account_name*]
-#   (optional) Account name on the SolidFire Cluster to use as owner of
-#   template/cache volumes (created if does not exist)
-#   Defaults to undef
-#
-# [*sf_allow_template_caching*]
-#   (optional) Create an internal cache of copy of images when a bootable
-#   volume is created to eliminate fetch from glance and qemu-
-#   conversion on subsequent calls.
-#   Defaults to undef
-#
 define cinder::backend::solidfire(
   $san_ip,
   $san_login,
@@ -134,23 +121,9 @@ define cinder::backend::solidfire(
   $sf_volume_create_timeout   = $::os_service_default,
   $manage_volume_type         = false,
   $extra_options              = {},
-  # DEPRECATED PARAMETERS
-  $sf_template_account_name   = undef,
-  $sf_allow_template_caching  = undef,
 ) {
 
   include cinder::deps
-
-  if $sf_template_account_name != undef {
-    warning('The sf_template_account_name parameter has been deprecated and has no effect.')
-  }
-  if $sf_allow_template_caching != undef {
-    warning('The sf_allow_template_caching parameter has been deprecated and has no effect.')
-  }
-  cinder_config {
-    "${name}/sf_template_account_name":  ensure => absent;
-    "${name}/sf_allow_template_caching": ensure => absent;
-  }
 
   cinder_config {
     "${name}/volume_backend_name":        value => $volume_backend_name;
