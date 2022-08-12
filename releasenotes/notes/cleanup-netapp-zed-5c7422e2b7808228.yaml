@@ -1,0 +1,11 @@
+---
+upgrade:
+  - |
+    The following parameters of the ``cinder::backend::netapp`` defined
+    resource type have been removed.
+
+    - ``netapp_vfiler``
+    - ``netapp_partner_backend_name``
+    - ``netapp_webservice_path``
+    - ``netapp_controller_ips``
+    - ``netapp_sa_password``
