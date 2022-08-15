@@ -38,6 +38,10 @@ describe 'cinder::backend::iscsi' do
         is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/var/lib/cinder/volumes')
         is_expected.to contain_cinder_config('hippo/target_protocol').with_value('<SERVICE DEFAULT>')
       }
+      it { is_expected.to contain_file_line('cinder include /var/lib/cinder/volumes').with(
+        :line => 'include /var/lib/cinder/volumes/*',
+        :path => '/etc/tgt/targets.conf'
+      )}
     end
 
     context 'with iser protocol' do
@@ -54,6 +58,10 @@ describe 'cinder::backend::iscsi' do
       end
 
       it { is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/etc/cinder/volumes') }
+      it { is_expected.to contain_file_line('cinder include /etc/cinder/volumes').with(
+        :line => 'include /etc/cinder/volumes/*',
+        :path => '/etc/tgt/targets.conf'
+      )}
     end
 
     context 'iscsi backend with cinder type' do
@@ -78,13 +86,6 @@ describe 'cinder::backend::iscsi' do
     end
   end
 
-  shared_examples 'cinder::backend::iscsi on RedHat' do
-    it { is_expected.to contain_file_line('cinder include /var/lib/cinder/volumes').with(
-      :line => 'include /var/lib/cinder/volumes/*',
-      :path => '/etc/tgt/targets.conf'
-    )}
-  end
-
   on_supported_os({
     :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
@@ -94,10 +95,6 @@ describe 'cinder::backend::iscsi' do
       end
 
       it_behaves_like 'cinder::backend::iscsi'
-
-      if facts[:osfamily] == 'RedHat'
-        it_behaves_like 'cinder::backend::iscsi on RedHat'
-      end
     end
   end
 end
