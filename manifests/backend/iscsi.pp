@@ -98,50 +98,42 @@ define cinder::backend::iscsi (
 
   case $target_helper {
     'tgtadm': {
-      if ! defined(Package['tgt']) {
-        package { 'tgt':
-          ensure => present,
-          name   => $::cinder::params::tgt_package_name,
-          tag    => 'cinder-support-package',
-        }
-      }
+      ensure_packages('tgt', {
+        'ensure' => present,
+        'name'   => $::cinder::params::tgt_package_name,
+        'tag'    => 'cinder-support-package',
+      })
 
       if($::osfamily == 'RedHat') {
-        file_line { 'cinder include':
-          path    => '/etc/tgt/targets.conf',
-          line    => "include ${volumes_dir}/*",
-          match   => '#?include /',
-          require => Anchor['cinder::install::end'],
-          notify  => Anchor['cinder::service::begin'],
-        }
+        ensure_resource('file_line', "cinder include ${volumes_dir}", {
+          'path'    => '/etc/tgt/targets.conf',
+          'line'    => "include ${volumes_dir}/*",
+          'match'   => '#?include /',
+          'require' => Anchor['cinder::install::end'],
+          'notify'  => Anchor['cinder::service::begin'],
+        })
       }
 
-      if ! defined(Service['tgtd']) {
-        service { 'tgtd':
-          ensure => running,
-          name   => $::cinder::params::tgt_service_name,
-          enable => true,
-          tag    => 'cinder-support-service',
-        }
-      }
+      ensure_resource('service', 'tgtd', {
+        'ensure' => running,
+        'name'   => $::cinder::params::tgt_service_name,
+        'enable' => true,
+        'tag'    => 'cinder-support-service',
+      })
     }
 
     'lioadm': {
-      if ! defined(Service['target']) {
-        service { 'target':
-          ensure => running,
-          enable => true,
-          tag    => 'cinder-support-service',
-        }
-      }
+      ensure_resource('service', 'target', {
+        'ensure' => running,
+        'enable' => true,
+        'tag'    => 'cinder-support-service',
+      })
 
-      if ! defined(Package['targetcli']) {
-        package { 'targetcli':
-          ensure => present,
-          name   => $::cinder::params::lio_package_name,
-          tag    => 'cinder-support-package',
-        }
-      }
+      ensure_packages('targetcli', {
+        'ensure' => present,
+        'name'   => $::cinder::params::lio_package_name,
+        'tag'    => 'cinder-support-package',
+      })
     }
 
     default: {
