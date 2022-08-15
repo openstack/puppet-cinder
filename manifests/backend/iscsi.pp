@@ -104,15 +104,13 @@ define cinder::backend::iscsi (
         'tag'    => 'cinder-support-package',
       })
 
-      if($::osfamily == 'RedHat') {
-        ensure_resource('file_line', "cinder include ${volumes_dir}", {
-          'path'    => '/etc/tgt/targets.conf',
-          'line'    => "include ${volumes_dir}/*",
-          'match'   => '#?include /',
-          'require' => Anchor['cinder::install::end'],
-          'notify'  => Anchor['cinder::service::begin'],
-        })
-      }
+      ensure_resource('file_line', "cinder include ${volumes_dir}", {
+        'path'    => '/etc/tgt/targets.conf',
+        'line'    => "include ${volumes_dir}/*",
+        'match'   => '#?include /',
+        'require' => Anchor['cinder::install::end'],
+        'notify'  => Anchor['cinder::service::begin'],
+      })
 
       ensure_resource('service', 'tgtd', {
         'ensure' => running,

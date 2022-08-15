@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    `Bug #1986518 <https://bugs.launchpad.net/puppet-cinder/+bug/1986518>`_:
+    The ``cinder::backend::iscsi`` defined resource type now modifies
+    the ``/etc/tgt/targets.conf`` file in Ubuntu and Debian, so that cinder can
+    set up iscsi targets correctly.
