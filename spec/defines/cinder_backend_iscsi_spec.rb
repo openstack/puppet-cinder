@@ -79,7 +79,7 @@ describe 'cinder::backend::iscsi' do
   end
 
   shared_examples 'cinder::backend::iscsi on RedHat' do
-    it { is_expected.to contain_file_line('cinder include').with(
+    it { is_expected.to contain_file_line('cinder include /var/lib/cinder/volumes').with(
       :line => 'include /var/lib/cinder/volumes/*',
       :path => '/etc/tgt/targets.conf'
     )}
