@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The following parameters of the ``cinder`` class have been removed.
+
+    - ``keymgr_backend``
+    - ``keymgr_encryption_api_url``
+    - ``keymgr_encryption_auth_url``

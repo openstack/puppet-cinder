@@ -14,9 +14,7 @@ class cinder::key_manager (
 
   include cinder::deps
 
-  $backend_real = pick($cinder::keymgr_backend, $backend)
-
   oslo::key_manager { 'cinder_config':
-    backend => $backend_real,
+    backend => $backend,
   }
 }
