@@ -240,21 +240,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*keymgr_backend*]
-#   (Optional) Key Manager service class.
-#   Example of valid value: barbican
-#   Defaults to undef.
-#
-# [*keymgr_encryption_api_url*]
-#   (Optional) Key Manager service URL
-#   Example of valid value: https://localhost:9311/v1
-#   Defaults to undef.
-#
-# [*keymgr_encryption_auth_url*]
-#   (Optional) Auth URL for keymgr authentication. Should be in format
-#   http://auth_url:5000/v3
-#   Defaults to undef.
-#
 # [*enable_v3_api*]
 #   (Optional) Whether to enable the v3 API (true/false).
 #   Defaults to undef.
@@ -310,9 +295,6 @@ class cinder (
   $cinder_internal_tenant_project_id  = $::os_service_default,
   $cinder_internal_tenant_user_id     = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $keymgr_backend                     = undef,
-  $keymgr_encryption_api_url          = undef,
-  $keymgr_encryption_auth_url         = undef,
   $enable_v3_api                      = undef,
 ) inherits cinder::params {
 
@@ -398,18 +380,6 @@ class cinder (
     'DEFAULT/enable_force_upload':               value => $enable_force_upload;
     'DEFAULT/cinder_internal_tenant_project_id': value => $cinder_internal_tenant_project_id;
     'DEFAULT/cinder_internal_tenant_user_id':    value => $cinder_internal_tenant_user_id;
-  }
-
-  if $keymgr_backend != undef {
-    warning('The keymgr_backend parameter is deprecated. Use the cinder::key_manager class')
-    include cinder::key_manager
-  }
-
-  ['keymgr_encryption_api_url', 'keymgr_encryption_auth_url'].each |String $barbican_opt| {
-    if getvar("${barbican_opt}") != undef {
-      warning("The ${barbican_opt} parameter is deprecated. Use the cinder::key_manager::barbican class")
-    }
-    include cinder::key_manager::barbican
   }
 
   oslo::concurrency { 'cinder_config':
