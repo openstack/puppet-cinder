@@ -76,6 +76,7 @@ describe 'cinder' do
         is_expected.to contain_cinder_config('DEFAULT/image_compress_on_upload').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/image_conversion_cpu_limit').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/image_conversion_address_space_limit').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/image_conversion_disable').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/enable_force_upload').with_value('<SERVICE DEFAULT>')
@@ -219,6 +220,7 @@ describe 'cinder' do
           :image_compress_on_upload             => true,
           :image_conversion_cpu_limit           => 60,
           :image_conversion_address_space_limit => 1,
+          :image_conversion_disable             => false,
         })
       end
 
@@ -226,6 +228,7 @@ describe 'cinder' do
       it { is_expected.to contain_cinder_config('DEFAULT/image_compress_on_upload').with_value(true) }
       it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_cpu_limit').with_value(60) }
       it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_address_space_limit').with_value(1) }
+      it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_disable').with_value(false) }
     end
 
     context 'with host and enable_new_services' do
