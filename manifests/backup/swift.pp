@@ -61,6 +61,10 @@
 #   Defaults to $::os_service_default
 #   set to None to disable compression
 #
+# [*backup_swift_service_auth*]
+#   (optional) Send a X-Service-Token header with service auth credentials.
+#   Defaults to $::os_service_default
+#
 # === Author(s)
 #
 # Emilien Macchi <emilien.macchi@enovance.com>
@@ -96,6 +100,7 @@ class cinder::backup::swift (
   $backup_swift_project_domain        = $::os_service_default,
   $backup_swift_project               = $::os_service_default,
   $backup_compression_algorithm       = $::os_service_default,
+  $backup_swift_service_auth          = $::os_service_default,
 ) {
 
   include cinder::deps
@@ -114,6 +119,7 @@ class cinder::backup::swift (
     'DEFAULT/backup_swift_project_domain':        value => $backup_swift_project_domain;
     'DEFAULT/backup_swift_project':               value => $backup_swift_project;
     'DEFAULT/backup_compression_algorithm':       value => $backup_compression_algorithm;
+    'DEFAULT/backup_swift_service_auth':          value => $backup_swift_service_auth;
   }
 
 }
