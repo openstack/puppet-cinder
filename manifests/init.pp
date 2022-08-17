@@ -204,8 +204,7 @@
 # [*image_conversion_dir*]
 #   (optional) Location to store temporary image files if the volume
 #   driver does not write them directly to the volume and the volume conversion
-#   needs to be performed. This parameter replaces the
-#   'cinder::backend::rdb::volume_tmp_dir' parameter.
+#   needs to be performed.
 #   Defaults to $::os_service_default
 #
 # [*host*]
