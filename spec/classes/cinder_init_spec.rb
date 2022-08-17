@@ -73,6 +73,9 @@ describe 'cinder' do
           :lock_path => '/var/lock/cinder'
         )
         is_expected.to contain_cinder_config('DEFAULT/image_conversion_dir').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/image_compress_on_upload').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/image_conversion_cpu_limit').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/image_conversion_address_space_limit').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/host').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/enable_new_services').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/enable_force_upload').with_value('<SERVICE DEFAULT>')
@@ -209,14 +212,20 @@ describe 'cinder' do
       ) }
     end
 
-    context 'with image_conversion_dir' do
+    context 'with image parameters ' do
       let :params do
         req_params.merge({
-          :image_conversion_dir => '/tmp/foo',
+          :image_conversion_dir                 => '/tmp/foo',
+          :image_compress_on_upload             => true,
+          :image_conversion_cpu_limit           => 60,
+          :image_conversion_address_space_limit => 1,
         })
       end
 
       it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_dir').with_value('/tmp/foo') }
+      it { is_expected.to contain_cinder_config('DEFAULT/image_compress_on_upload').with_value(true) }
+      it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_cpu_limit').with_value(60) }
+      it { is_expected.to contain_cinder_config('DEFAULT/image_conversion_address_space_limit').with_value(1) }
     end
 
     context 'with host and enable_new_services' do
