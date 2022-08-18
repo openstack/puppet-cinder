@@ -34,7 +34,8 @@ describe 'cinder::backup::swift' do
       :backup_swift_user_domain           => '<SERVICE DEFAULT>',
       :backup_swift_project_domain        => '<SERVICE DEFAULT>',
       :backup_swift_project               => '<SERVICE DEFAULT>',
-      :backup_compression_algorithm       => '<SERVICE DEFAULT>'
+      :backup_compression_algorithm       => '<SERVICE DEFAULT>',
+      :backup_swift_service_auth          => '<SERVICE DEFAULT>',
     }
   end
 
@@ -61,6 +62,7 @@ describe 'cinder::backup::swift' do
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_project_domain').with_value(p[:backup_swift_project_domain])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_project').with_value(p[:backup_swift_project])
       is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
+      is_expected.to contain_cinder_config('DEFAULT/backup_swift_service_auth').with_value(p[:backup_swift_service_auth])
     end
 
     context 'when overriding default parameters' do
@@ -74,6 +76,7 @@ describe 'cinder::backup::swift' do
         params.merge!(:backup_swift_retry_attempts => '99')
         params.merge!(:backup_swift_retry_backoff => '56')
         params.merge!(:backup_compression_algorithm => 'None')
+        params.merge!(:backup_swift_service_auth => true)
       end
       it 'should replace default parameters with new values' do
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_url').with_value(p[:backup_swift_url])
@@ -85,6 +88,7 @@ describe 'cinder::backup::swift' do
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_attempts').with_value(p[:backup_swift_retry_attempts])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_backoff').with_value(p[:backup_swift_retry_backoff])
         is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
+        is_expected.to contain_cinder_config('DEFAULT/backup_swift_service_auth').with_value(p[:backup_swift_service_auth])
       end
     end
   end

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The ``cinder::backup::swift`` class now supports
+    the ``backup_swift_service_auth`` parameter, which controls
+    the ``[DEFAULT] backup_swift_service_auth`` option in cinder.conf.
