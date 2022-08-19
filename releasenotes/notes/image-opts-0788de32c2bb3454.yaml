@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``cinder`` class now supports the following three new parameters.
+
+    - ``image_compress_on_upload``
+    - ``image_conversion_cpu_limit``
+    - ``image_conversion_address_space_limit``

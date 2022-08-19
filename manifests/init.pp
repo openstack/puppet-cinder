@@ -207,6 +207,18 @@
 #   needs to be performed.
 #   Defaults to $::os_service_default
 #
+# [*image_compress_on_upload*]
+#   (optional) When possible, compress images uploaded to the image service.
+#   Defaults to $::os_service_default
+#
+# [*image_conversion_cpu_limit*]
+#   (optional) CPU time limit in seconds to convert the image.
+#   Defaults to $::os_service_default
+#
+# [*image_conversion_address_space_limit*]
+#   (optional) Address space limit in gigabytes to convert the image.
+#   Defaults to $::os_service_default
+#
 # [*host*]
 #   (optional) Name of this node. This can be an opaque identifier. It is
 #   not necessarily a host name, FQDN, or IP address.
@@ -244,57 +256,60 @@
 #   Defaults to undef.
 #
 class cinder (
-  $default_transport_url              = $::os_service_default,
-  $rpc_response_timeout               = $::os_service_default,
-  $control_exchange                   = $::os_service_default,
-  $notification_transport_url         = $::os_service_default,
-  $notification_driver                = $::os_service_default,
-  $notification_topics                = $::os_service_default,
-  $rabbit_ha_queues                   = $::os_service_default,
-  $rabbit_heartbeat_timeout_threshold = $::os_service_default,
-  $rabbit_heartbeat_rate              = $::os_service_default,
-  $rabbit_heartbeat_in_pthread        = $::os_service_default,
-  $rabbit_use_ssl                     = $::os_service_default,
-  $service_down_time                  = $::os_service_default,
-  $report_interval                    = $::os_service_default,
-  $kombu_ssl_ca_certs                 = $::os_service_default,
-  $kombu_ssl_certfile                 = $::os_service_default,
-  $kombu_ssl_keyfile                  = $::os_service_default,
-  $kombu_ssl_version                  = $::os_service_default,
-  $kombu_reconnect_delay              = $::os_service_default,
-  $kombu_failover_strategy            = $::os_service_default,
-  $kombu_compression                  = $::os_service_default,
-  $amqp_durable_queues                = $::os_service_default,
-  $amqp_server_request_prefix         = $::os_service_default,
-  $amqp_broadcast_prefix              = $::os_service_default,
-  $amqp_group_request_prefix          = $::os_service_default,
-  $amqp_container_name                = $::os_service_default,
-  $amqp_idle_timeout                  = $::os_service_default,
-  $amqp_trace                         = $::os_service_default,
-  $amqp_ssl_ca_file                   = $::os_service_default,
-  $amqp_ssl_cert_file                 = $::os_service_default,
-  $amqp_ssl_key_file                  = $::os_service_default,
-  $amqp_ssl_key_password              = $::os_service_default,
-  $amqp_sasl_mechanisms               = $::os_service_default,
-  $amqp_sasl_config_dir               = $::os_service_default,
-  $amqp_sasl_config_name              = $::os_service_default,
-  $amqp_username                      = $::os_service_default,
-  $amqp_password                      = $::os_service_default,
-  $package_ensure                     = 'present',
-  $api_paste_config                   = '/etc/cinder/api-paste.ini',
-  $storage_availability_zone          = 'nova',
-  $default_availability_zone          = false,
-  $allow_availability_zone_fallback   = $::os_service_default,
-  $lock_path                          = $::cinder::params::lock_path,
-  $image_conversion_dir               = $::os_service_default,
-  $host                               = $::os_service_default,
-  $enable_new_services                = $::os_service_default,
-  $purge_config                       = false,
-  $enable_force_upload                = $::os_service_default,
-  $cinder_internal_tenant_project_id  = $::os_service_default,
-  $cinder_internal_tenant_user_id     = $::os_service_default,
+  $default_transport_url                = $::os_service_default,
+  $rpc_response_timeout                 = $::os_service_default,
+  $control_exchange                     = $::os_service_default,
+  $notification_transport_url           = $::os_service_default,
+  $notification_driver                  = $::os_service_default,
+  $notification_topics                  = $::os_service_default,
+  $rabbit_ha_queues                     = $::os_service_default,
+  $rabbit_heartbeat_timeout_threshold   = $::os_service_default,
+  $rabbit_heartbeat_rate                = $::os_service_default,
+  $rabbit_heartbeat_in_pthread          = $::os_service_default,
+  $rabbit_use_ssl                       = $::os_service_default,
+  $service_down_time                    = $::os_service_default,
+  $report_interval                      = $::os_service_default,
+  $kombu_ssl_ca_certs                   = $::os_service_default,
+  $kombu_ssl_certfile                   = $::os_service_default,
+  $kombu_ssl_keyfile                    = $::os_service_default,
+  $kombu_ssl_version                    = $::os_service_default,
+  $kombu_reconnect_delay                = $::os_service_default,
+  $kombu_failover_strategy              = $::os_service_default,
+  $kombu_compression                    = $::os_service_default,
+  $amqp_durable_queues                  = $::os_service_default,
+  $amqp_server_request_prefix           = $::os_service_default,
+  $amqp_broadcast_prefix                = $::os_service_default,
+  $amqp_group_request_prefix            = $::os_service_default,
+  $amqp_container_name                  = $::os_service_default,
+  $amqp_idle_timeout                    = $::os_service_default,
+  $amqp_trace                           = $::os_service_default,
+  $amqp_ssl_ca_file                     = $::os_service_default,
+  $amqp_ssl_cert_file                   = $::os_service_default,
+  $amqp_ssl_key_file                    = $::os_service_default,
+  $amqp_ssl_key_password                = $::os_service_default,
+  $amqp_sasl_mechanisms                 = $::os_service_default,
+  $amqp_sasl_config_dir                 = $::os_service_default,
+  $amqp_sasl_config_name                = $::os_service_default,
+  $amqp_username                        = $::os_service_default,
+  $amqp_password                        = $::os_service_default,
+  $package_ensure                       = 'present',
+  $api_paste_config                     = '/etc/cinder/api-paste.ini',
+  $storage_availability_zone            = 'nova',
+  $default_availability_zone            = false,
+  $allow_availability_zone_fallback     = $::os_service_default,
+  $lock_path                            = $::cinder::params::lock_path,
+  $image_conversion_dir                 = $::os_service_default,
+  $image_compress_on_upload             = $::os_service_default,
+  $image_conversion_cpu_limit           = $::os_service_default,
+  $image_conversion_address_space_limit = $::os_service_default,
+  $host                                 = $::os_service_default,
+  $enable_new_services                  = $::os_service_default,
+  $purge_config                         = false,
+  $enable_force_upload                  = $::os_service_default,
+  $cinder_internal_tenant_project_id    = $::os_service_default,
+  $cinder_internal_tenant_user_id       = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $enable_v3_api                      = undef,
+  $enable_v3_api                        = undef,
 ) inherits cinder::params {
 
   include cinder::deps
@@ -367,18 +382,21 @@ class cinder (
   }
 
   cinder_config {
-    'DEFAULT/report_interval':                   value => $report_interval;
-    'DEFAULT/service_down_time':                 value => $service_down_time;
-    'DEFAULT/api_paste_config':                  value => $api_paste_config;
-    'DEFAULT/storage_availability_zone':         value => $storage_availability_zone;
-    'DEFAULT/default_availability_zone':         value => $default_availability_zone_real;
-    'DEFAULT/allow_availability_zone_fallback':  value => $allow_availability_zone_fallback;
-    'DEFAULT/image_conversion_dir':              value => $image_conversion_dir;
-    'DEFAULT/host':                              value => $host;
-    'DEFAULT/enable_new_services':               value => $enable_new_services;
-    'DEFAULT/enable_force_upload':               value => $enable_force_upload;
-    'DEFAULT/cinder_internal_tenant_project_id': value => $cinder_internal_tenant_project_id;
-    'DEFAULT/cinder_internal_tenant_user_id':    value => $cinder_internal_tenant_user_id;
+    'DEFAULT/report_interval':                      value => $report_interval;
+    'DEFAULT/service_down_time':                    value => $service_down_time;
+    'DEFAULT/api_paste_config':                     value => $api_paste_config;
+    'DEFAULT/storage_availability_zone':            value => $storage_availability_zone;
+    'DEFAULT/default_availability_zone':            value => $default_availability_zone_real;
+    'DEFAULT/allow_availability_zone_fallback':     value => $allow_availability_zone_fallback;
+    'DEFAULT/image_conversion_dir':                 value => $image_conversion_dir;
+    'DEFAULT/image_compress_on_upload':             value => $image_compress_on_upload;
+    'DEFAULT/image_conversion_cpu_limit':           value => $image_conversion_cpu_limit;
+    'DEFAULT/image_conversion_address_space_limit': value => $image_conversion_address_space_limit;
+    'DEFAULT/host':                                 value => $host;
+    'DEFAULT/enable_new_services':                  value => $enable_new_services;
+    'DEFAULT/enable_force_upload':                  value => $enable_force_upload;
+    'DEFAULT/cinder_internal_tenant_project_id':    value => $cinder_internal_tenant_project_id;
+    'DEFAULT/cinder_internal_tenant_user_id':       value => $cinder_internal_tenant_user_id;
   }
 
   oslo::concurrency { 'cinder_config':
