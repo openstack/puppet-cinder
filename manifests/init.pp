@@ -219,6 +219,11 @@
 #   (optional) Address space limit in gigabytes to convert the image.
 #   Defaults to $::os_service_default
 #
+# [*image_conversion_disable*]
+#   (optional) Disallow image conversion when creating a volume from an image
+#   and when uploading a volume as an image.
+#   Defaults to $::os_service_default
+#
 # [*host*]
 #   (optional) Name of this node. This can be an opaque identifier. It is
 #   not necessarily a host name, FQDN, or IP address.
@@ -302,6 +307,7 @@ class cinder (
   $image_compress_on_upload             = $::os_service_default,
   $image_conversion_cpu_limit           = $::os_service_default,
   $image_conversion_address_space_limit = $::os_service_default,
+  $image_conversion_disable             = $::os_service_default,
   $host                                 = $::os_service_default,
   $enable_new_services                  = $::os_service_default,
   $purge_config                         = false,
@@ -392,6 +398,7 @@ class cinder (
     'DEFAULT/image_compress_on_upload':             value => $image_compress_on_upload;
     'DEFAULT/image_conversion_cpu_limit':           value => $image_conversion_cpu_limit;
     'DEFAULT/image_conversion_address_space_limit': value => $image_conversion_address_space_limit;
+    'DEFAULT/image_conversion_disable':             value => $image_conversion_disable;
     'DEFAULT/host':                                 value => $host;
     'DEFAULT/enable_new_services':                  value => $enable_new_services;
     'DEFAULT/enable_force_upload':                  value => $enable_force_upload;

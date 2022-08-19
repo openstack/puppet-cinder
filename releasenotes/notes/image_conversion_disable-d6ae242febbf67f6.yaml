@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``cinder::image_conversion_disable`` parameter has been added.
