@@ -28,35 +28,31 @@ class cinder::setup_test_volume(
     ensure => present,
     tag    => 'cinder-support-package',
   }
-
   ~> exec { "create_${volume_path}/${volume_name}":
     command => "dd if=/dev/zero of=\"${volume_path}/${volume_name}\" bs=1 count=0 seek=${size}",
     path    => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless  => "stat ${volume_path}/${volume_name}",
     require => Anchor['cinder::install::end'],
-    before  => Anchor['cinder::service::begin'],
+    tag     => 'cinder-test-volume-exec',
   }
-
   ~> file { "${volume_path}/${volume_name}":
     mode => '0640',
   }
-
   ~> exec { "losetup ${loopback_device} ${volume_path}/${volume_name}":
     command     => "losetup ${loopback_device} ${volume_path}/${volume_name} && udevadm settle",
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless      => "losetup ${loopback_device}",
     refreshonly => true,
   }
-
   ~> exec { "pvcreate ${loopback_device}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless      => "pvdisplay | grep ${volume_name}",
     refreshonly => true,
   }
-
   ~> exec { "vgcreate ${volume_name} ${loopback_device}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless      => "vgdisplay | grep ${volume_name}",
     refreshonly => true,
   }
+  -> Anchor['cinder::service::begin']
 }
