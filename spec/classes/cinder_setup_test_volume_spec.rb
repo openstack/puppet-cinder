@@ -20,12 +20,12 @@ describe 'cinder::setup_test_volume' do
       )
       is_expected.to contain_exec('pvcreate /dev/loop2').with(
         :path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        :unless      => 'pvdisplay | grep cinder-volumes',
+        :unless      => 'pvs /dev/loop2',
         :refreshonly => true,
       )
       is_expected.to contain_exec('vgcreate cinder-volumes /dev/loop2').with(
         :path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        :unless      => 'vgdisplay | grep cinder-volumes',
+        :unless      => 'vgs cinder-volumes',
         :refreshonly => true,
       )
     }

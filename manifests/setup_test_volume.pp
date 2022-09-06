@@ -46,12 +46,12 @@ class cinder::setup_test_volume(
   }
   ~> exec { "pvcreate ${loopback_device}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
-    unless      => "pvdisplay | grep ${volume_name}",
+    unless      => "pvs ${loopback_device}",
     refreshonly => true,
   }
   ~> exec { "vgcreate ${volume_name} ${loopback_device}":
     path        => ['/bin','/usr/bin','/sbin','/usr/sbin'],
-    unless      => "vgdisplay | grep ${volume_name}",
+    unless      => "vgs ${volume_name}",
     refreshonly => true,
   }
   -> Anchor['cinder::service::begin']
