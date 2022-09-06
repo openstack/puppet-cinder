@@ -5,16 +5,21 @@
 # === Parameters
 #
 # [*volume_name*]
-#   Volume group name. Defaults to 'cinder-volumes'.
+#   (Optional) Volume group name.
+#   Defaults to 'cinder-volumes'.
 #
 # [*size*]
-#   Volume group size. Defaults to '4G'.
+#   (Optional) Volume group size.
+#   Defaults to '4G'.
 #
 # [*loopback_device*]
-#   Loop device name. Defaults to '/dev/loop2'.
+#   (Optional) Loop device name.
+#   Defaults to '/dev/loop2'.
 #
 # [*volume_path*]
-#   Volume image location. Defaults to '/var/lib/cinder'.
+#   (Optional) Volume image location.
+#   Defaults to '/var/lib/cinder'.
+#
 class cinder::setup_test_volume(
   $volume_name     = 'cinder-volumes',
   $volume_path     = '/var/lib/cinder',
@@ -24,16 +29,17 @@ class cinder::setup_test_volume(
 
   include cinder::deps
 
-  package { 'lvm2':
+  ensure_packages ( 'lvm2', {
     ensure => present,
-    tag    => 'cinder-support-package',
-  }
-  ~> exec { "create_${volume_path}/${volume_name}":
-    command => "dd if=/dev/zero of=\"${volume_path}/${volume_name}\" bs=1 count=0 seek=${size}",
-    path    => ['/bin','/usr/bin','/sbin','/usr/sbin'],
-    unless  => "stat ${volume_path}/${volume_name}",
-    require => Anchor['cinder::install::end'],
-    tag     => 'cinder-test-volume-exec',
+  })
+  Package<| title == 'lvm2' |> { tag +> 'cinder-support-package' }
+
+  exec { "create_${volume_path}/${volume_name}":
+    command   => "dd if=/dev/zero of=\"${volume_path}/${volume_name}\" bs=1 count=0 seek=${size}",
+    path      => ['/bin','/usr/bin','/sbin','/usr/sbin'],
+    unless    => "stat ${volume_path}/${volume_name}",
+    require   => Anchor['cinder::install::end'],
+    subscribe => Package['lvm2']
   }
   ~> file { "${volume_path}/${volume_name}":
     mode => '0640',

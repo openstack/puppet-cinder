@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'cinder::setup_test_volume' do
   shared_examples 'cinder::setup_test_volume' do
     it { is_expected.to contain_package('lvm2').with(
-      :ensure => 'present',
+      :ensure => 'installed',
       :tag    => 'cinder-support-package'
     )}
 
