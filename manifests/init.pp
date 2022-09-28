@@ -254,12 +254,6 @@
 #   internal tenant.
 #   Defaults to $::os_service_default.
 #
-# DEPRECATED PARAMETERS
-#
-# [*enable_v3_api*]
-#   (Optional) Whether to enable the v3 API (true/false).
-#   Defaults to undef.
-#
 class cinder (
   $default_transport_url                = $::os_service_default,
   $rpc_response_timeout                 = $::os_service_default,
@@ -314,16 +308,10 @@ class cinder (
   $enable_force_upload                  = $::os_service_default,
   $cinder_internal_tenant_project_id    = $::os_service_default,
   $cinder_internal_tenant_user_id       = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $enable_v3_api                        = undef,
 ) inherits cinder::params {
 
   include cinder::deps
   include cinder::db
-
-  if $enable_v3_api != undef {
-    warning('The enable_v3_api parameter is deprecated and has no effect')
-  }
 
   package { 'cinder':
     ensure => $package_ensure,

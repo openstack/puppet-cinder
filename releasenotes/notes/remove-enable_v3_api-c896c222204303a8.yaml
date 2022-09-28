@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``cinder::enable_v3_api`` parameter has been removed.
