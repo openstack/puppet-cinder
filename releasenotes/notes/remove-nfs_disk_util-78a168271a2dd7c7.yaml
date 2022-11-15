@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``cinder::backend::nfs::nfs_disk_util`` parameter has been removed.

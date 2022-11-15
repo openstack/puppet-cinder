@@ -89,12 +89,6 @@
 #   Example :
 #     { 'nfs_backend/param1' => { 'value' => value1 } }
 #
-# DEPRECATED PARAMETERS
-#
-# [*nfs_disk_util*]
-#   (Optional) Use du or df for free space calculation.
-#   Defaults to undef
-#
 define cinder::backend::nfs (
   $volume_backend_name         = $name,
   $backend_availability_zone   = $::os_service_default,
@@ -112,17 +106,9 @@ define cinder::backend::nfs (
   $nfs_qcow2_volumes           = $::os_service_default,
   $manage_volume_type          = false,
   $extra_options               = {},
-  $nfs_disk_util               = undef,
 ) {
 
   include cinder::deps
-
-  if $nfs_disk_util != undef {
-    warning('The nfs_disk_util parameter is deprecated and has no effect.')
-  }
-  cinder_config {
-    "${name}/nfs_disk_util": ensure => absent
-  }
 
   file {$nfs_shares_config:
     content => join($nfs_servers, "\n"),
