@@ -105,13 +105,6 @@
 #   enable this if you have a sanitizing proxy.
 #   Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*validate*]
-#   (optional) Whether to validate the service is working after any service
-#   refreshes
-#   Defaults to undef
-#
 class cinder::api (
   $service_workers                = $::os_workers,
   $package_ensure                 = 'present',
@@ -136,17 +129,11 @@ class cinder::api (
   $auth_strategy                  = 'keystone',
   $osapi_volume_listen_port       = $::os_service_default,
   $use_forwarded_for              = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $validate                       = undef,
 ) inherits cinder::params {
 
   include cinder::deps
   include cinder::params
   include cinder::policy
-
-  if $validate != undef {
-    warning('The cinder::api::validate parameter is deprecated and has no effect')
-  }
 
   validate_legacy(Boolean, 'validate_bool', $manage_service)
   validate_legacy(Boolean, 'validate_bool', $enabled)
