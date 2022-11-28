@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``cinder::backend::netapp::netapp_copyoffload_tool_path`` parameter has
+    been deprecated and will be removed in a future release.

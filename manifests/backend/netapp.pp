@@ -95,12 +95,6 @@
 #   of the nfs man page for details.
 #   Defaults to $::os_service_default
 #
-# [*netapp_copyoffload_tool_path*]
-#   (optional) This option specifies the path of the NetApp Copy Offload tool
-#   binary. Ensure that the binary has execute permissions set which allow the
-#   effective user of the cinder-volume process to execute the file.
-#   Defaults to $::os_service_default.
-#
 # [*netapp_pool_name_search_pattern*]
 #   (optional) This option is only utilized when the Cinder driver is
 #   configured to use iSCSI or Fibre Channel. It is used to restrict
@@ -145,6 +139,14 @@
 #   Example :
 #     { 'netapp_backend/param1' => { 'value' => value1 } }
 #
+# DEPRECATED PARAMETERS
+#
+# [*netapp_copyoffload_tool_path*]
+#   (optional) This option specifies the path of the NetApp Copy Offload tool
+#   binary. Ensure that the binary has execute permissions set which allow the
+#   effective user of the cinder-volume process to execute the file.
+#   Defaults to undef
+#
 # === Examples
 #
 #  cinder::backend::netapp { 'myBackend':
@@ -182,16 +184,22 @@ define cinder::backend::netapp (
   $nfs_shares                       = undef,
   $nfs_shares_config                = '/etc/cinder/shares.conf',
   $nfs_mount_options                = $::os_service_default,
-  $netapp_copyoffload_tool_path     = $::os_service_default,
   $netapp_host_type                 = $::os_service_default,
   $manage_volume_type               = false,
   $extra_options                    = {},
   $netapp_pool_name_search_pattern  = $::os_service_default,
   $nas_secure_file_operations       = $::os_service_default,
   $nas_secure_file_permissions      = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $netapp_copyoffload_tool_path     = undef,
 ) {
 
   include cinder::deps
+
+  if $netapp_copyoffload_tool_path != undef {
+    warning("The netapp_copyoffload_tool_path parameter has been deprecated \
+and will be removed in a future release.")
+  }
 
   if $nfs_shares {
     validate_legacy(Array, 'validate_array', $nfs_shares)
@@ -221,7 +229,7 @@ define cinder::backend::netapp (
     "${name}/thres_avl_size_perc_start":        value => $thres_avl_size_perc_start;
     "${name}/thres_avl_size_perc_stop":         value => $thres_avl_size_perc_stop;
     "${name}/nfs_shares_config":                value => $nfs_shares_config;
-    "${name}/netapp_copyoffload_tool_path":     value => $netapp_copyoffload_tool_path;
+    "${name}/netapp_copyoffload_tool_path":     value => pick($netapp_copyoffload_tool_path, $::os_service_default);
     "${name}/netapp_pool_name_search_pattern":  value => $netapp_pool_name_search_pattern;
     "${name}/netapp_host_type":                 value => $netapp_host_type;
     "${name}/nas_secure_file_operations":       value => $nas_secure_file_operations;
