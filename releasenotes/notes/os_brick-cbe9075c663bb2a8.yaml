@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``cinder::os_brick`` class has been added. This class manages
+    the ``[os_brick]`` options.
