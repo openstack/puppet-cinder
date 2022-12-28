@@ -25,6 +25,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
         is_expected.to contain_cinder_config('pure/pure_eradicate_on_delete').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_iscsi_cidr').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/pure_iscsi_cidr_list').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('<SERVICE DEFAULT>')
       }
     end
@@ -47,6 +48,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('true')
         is_expected.to contain_cinder_config('pure/pure_eradicate_on_delete').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_iscsi_cidr').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/pure_iscsi_cidr_list').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('<SERVICE DEFAULT>')
       }
     end
@@ -64,6 +66,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
         is_expected.to contain_cinder_config('pure/pure_eradicate_on_delete').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_iscsi_cidr').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/pure_iscsi_cidr_list').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('<SERVICE DEFAULT>')
       }
     end
