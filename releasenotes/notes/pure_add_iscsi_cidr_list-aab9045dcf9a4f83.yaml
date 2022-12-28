@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Add new parameter ``cinder::backend::pure::pure_iscsi_cidr_list``
+    which allows setting of the pure_iscsi_cidr_list option on the managed
+    cinder backend for PureStorage.
