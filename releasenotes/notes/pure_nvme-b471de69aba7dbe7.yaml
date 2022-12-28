@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Add support for NVMe to ``cinder::backend::pure_storage_protocol``.
+    Add new parameter ``cinder::backend::pure::pure_nvme_transport``
+    which defines the NVMe transport layer used when the NVMe
+    driver is selected. This only supports ``roce`` at this time.
+    Add new parameter ``cinder::backend::pure::pure_nvme_cidr``
+    which allows setting of the pure_nvme_cidr option on the managed
+    cinder backend for PureStorage.
+    Add new parameter ``cinder::backend::pure::pure_nvme_cidr_list``
+    which allows setting of the pure_nvme_cidr_list option on the managed
+    cinder backend for PureStorage.
