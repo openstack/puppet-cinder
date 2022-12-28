@@ -22,8 +22,9 @@
 #   Defaults to $::os_service_default.
 #
 # [*pure_storage_protocol*]
-#   (optional) Must be either 'iSCSI' or 'FC'. This will determine
-#   which Volume Driver will be configured; PureISCSIDriver or PureFCDriver.
+#   (optional) Must be either 'iSCSI', 'FC' or 'NVMe'. This will determine
+#   which Volume Driver will be configured; PureISCSIDriver, PureFCDriver
+#   or PureNVMEDriver.
 #   Defaults to 'iSCSI'
 #
 # [*use_chap_auth*]
@@ -56,6 +57,23 @@
 #   in 24 hours
 #   Defaults to $::os_service_default
 #
+# [*pure_nvme_transport*]
+#   (Optional) Identifies which NVMe transport layer to be used with
+#   the NVMe driver.
+#   Defaults to $::os_service_default
+#
+# [*pure_nvme_cidr*]
+#   (Optional) Identifies which NVMe network CIDR should be used for
+#   NVMe connections to the FlashArray if the array is configured with
+#   multiple NVMe VLANs.
+#   Defaults to $::os_service_default
+#
+# [*pure_nvme_cidr_list*]
+#   (Optional) Identifies list of CIDR of FlashArray NVMe targets hosts
+#   are allowed to connect to. It supports IPv4 and IPv6 subnets. This
+#   parameter supercedes pure_nvme_cidr.
+#   Defaults to $::os_service_default
+#
 # [*pure_iscsi_cidr*]
 #   (Optional) Identifies which iSCSI network CIDR should be used for
 #   iscsi connections to the FlashArray if the array is configured with
@@ -86,6 +104,9 @@ define cinder::backend::pure(
   $image_volume_cache_enabled   = true,
   $pure_host_personality        = $::os_service_default,
   $pure_eradicate_on_delete     = $::os_service_default,
+  $pure_nvme_transport          = $::os_service_default,
+  $pure_nvme_cidr               = $::os_service_default,
+  $pure_nvme_cidr_list          = $::os_service_default,
   $pure_iscsi_cidr              = $::os_service_default,
   $pure_iscsi_cidr_list         = $::os_service_default,
   $extra_options                = {},
@@ -95,7 +116,8 @@ define cinder::backend::pure(
 
   $volume_driver = $pure_storage_protocol ? {
     'FC'    => 'cinder.volume.drivers.pure.PureFCDriver',
-    'iSCSI' => 'cinder.volume.drivers.pure.PureISCSIDriver'
+    'iSCSI' => 'cinder.volume.drivers.pure.PureISCSIDriver',
+    'NVMe'  => 'cinder.volume.drivers.pure.PureNVMEDriver'
   }
 
   cinder_config {
@@ -109,6 +131,9 @@ define cinder::backend::pure(
     "${name}/image_volume_cache_enabled":    value => $image_volume_cache_enabled;
     "${name}/pure_host_personality":         value => $pure_host_personality;
     "${name}/pure_eradicate_on_delete":      value => $pure_eradicate_on_delete;
+    "${name}/pure_nvme_transport":           value => $pure_nvme_transport;
+    "${name}/pure_nvme_cidr":                value => $pure_nvme_cidr;
+    "${name}/pure_nvme_cidr_list":           value => join(any2array($pure_nvme_cidr_list), ',');
     "${name}/pure_iscsi_cidr":               value => $pure_iscsi_cidr;
     "${name}/pure_iscsi_cidr_list":          value => $pure_iscsi_cidr_list;
   }

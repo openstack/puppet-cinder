@@ -65,8 +65,24 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
         is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
         is_expected.to contain_cinder_config('pure/pure_eradicate_on_delete').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('pure/pure_iscsi_cidr').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('pure/pure_iscsi_cidr_list').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('<SERVICE DEFAULT>')
+      }
+    end
+
+    context 'pure nvme volume driver' do
+      let :params do
+        req_params.merge({'pure_storage_protocol' => 'NVMe'})
+      end
+
+      it {
+        is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureNVMEDriver')
+        is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
+        is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
+        is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
+        is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
+        is_expected.to contain_cinder_config('pure/pure_eradicate_on_delete').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/pure_nvme_cidr').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/pure_nvme_transport').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_host_personality').with_value('<SERVICE DEFAULT>')
       }
     end
@@ -99,6 +115,16 @@ describe 'cinder::backend::pure' do
 
       it {
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('false')
+      }
+    end
+
+    context 'pure volume driver with pure_nvme_cidr_list set to an array' do
+      let :params do
+        req_params.merge({'pure_nvme_cidr_list' => ['192.0.3.1/24', '192.0.3.2/24']})
+      end
+
+      it {
+        is_expected.to contain_cinder_config('pure/pure_nvme_cidr_list').with_value('192.0.3.1/24,192.0.3.2/24')
       }
     end
 
