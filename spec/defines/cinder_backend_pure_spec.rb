@@ -118,6 +118,16 @@ describe 'cinder::backend::pure' do
       }
     end
 
+    context 'pure volume driver with pure_iscsi_cidr_list set to an array' do
+      let :params do
+        req_params.merge({'pure_iscsi_cidr_list' => ['192.0.2.1/24', '192.0.2.2/24']})
+      end
+
+      it {
+        is_expected.to contain_cinder_config('pure/pure_iscsi_cidr_list').with_value('192.0.2.1/24,192.0.2.2/24')
+      }
+    end
+
     context 'pure volume driver with pure_nvme_cidr_list set to an array' do
       let :params do
         req_params.merge({'pure_nvme_cidr_list' => ['192.0.3.1/24', '192.0.3.2/24']})
