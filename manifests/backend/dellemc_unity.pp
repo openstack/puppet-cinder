@@ -27,12 +27,12 @@
 #   Defaults to $::os_service_default.
 #
 # [*unity_io_ports*]
-#   (optional) A comma-separated list of iSCSI or FC ports to be used.
-#   Each port can be Unix-style glob expressions. The Unity Unisphere API port.
+#   (optional) A list of iSCSI or FC ports to be used. Each port can be
+#   Unix-style glob expressions. The Unity Unisphere API port.
 #   Defaults to $::os_service_default
 #
 # [*unity_storage_pool_names*]
-#   (optional) A comma-separated list of storage pool names to be used.
+#   (optional) A list of storage pool names to be used.
 #   Defaults to $::os_service_default
 #
 # [*extra_options*]
@@ -71,8 +71,8 @@ define cinder::backend::dellemc_unity (
     "${name}/san_login":                 value => $san_login;
     "${name}/san_password":              value => $san_password, secret => true;
     "${name}/storage_protocol":          value => $storage_protocol;
-    "${name}/unity_io_ports":            value => $unity_io_ports;
-    "${name}/unity_storage_pool_names":  value => $unity_storage_pool_names;
+    "${name}/unity_io_ports":            value => join(any2array($unity_io_ports), ',');
+    "${name}/unity_storage_pool_names":  value => join(any2array($unity_storage_pool_names), ',');
   }
 
   if $manage_volume_type {

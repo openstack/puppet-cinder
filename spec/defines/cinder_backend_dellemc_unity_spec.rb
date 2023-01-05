@@ -60,6 +60,20 @@ describe 'cinder::backend::dellemc_unity' do
       it_behaves_like 'dellemc_unity volume driver'
     end
 
+    context 'with array values' do
+      before do
+        params.merge!({
+          :unity_io_ports            => ['1', '42', '66'],
+          :unity_storage_pool_names  => ['pool_1', 'pool_2'],
+        })
+      end
+
+      it {
+        is_expected.to contain_cinder_config('dellemc_unity/unity_io_ports').with_value('1,42,66')
+        is_expected.to contain_cinder_config('dellemc_unity/unity_storage_pool_names').with_value('pool_1,pool_2')
+      }
+    end
+
     context 'dellemc_unity backend with additional configuration' do
       before do
         params.merge!( :extra_options => {'dellemc_unity/param1' => { 'value' => 'value1' }} )
