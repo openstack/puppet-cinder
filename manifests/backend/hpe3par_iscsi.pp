@@ -39,16 +39,15 @@
 #
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use HPE 3par volume driver.
-#   Defaults to 'cinder.volume.drivers.hpe.hpe_3par_fc.HPE3PARFCDriver'
+#   Defaults to 'cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver'.
 #
 # [*hpe3par_iscsi_chap_enabled*]
-#   (required) setting to false by default
-#
-# [*hpe3par_iscsi_chap_enabled
-#   (required) setting to false by default
+#   (optional) setting to false by default
+#   Defaults to false.
 #
 # [*hpe3par_cpg_snap*]
 #   (optional) set to hpe3par_cfg by default in the cinder driver
+#   Defaults to 'userCPG'.
 #
 # [*hpe3par_snapshot_retention*]
 #   (required) Time in hours for snapshot retention. Must be less
