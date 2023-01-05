@@ -63,9 +63,9 @@
 #   Defaults to $::os_service_default
 #
 # [*pure_iscsi_cidr_list*]
-#   (Optional) Identifies comma-separated list of CIDR of FlashArray
-#   iSCSI targets hosts are allowed to connect to. It supports IPv4
-#   and IPv6 subnets. This parameter supersedes pure_iscsi_cidr.
+#   (Optional) Identifies list of CIDR of FlashArray iSCSI targets hosts are
+#   allowed to connect to. It supports IPv4 and IPv6 subnets. This parameter
+#   supersedes pure_iscsi_cidr.
 #   Defaults to $::os_service_default
 #
 # [*extra_options*]
@@ -110,7 +110,7 @@ define cinder::backend::pure(
     "${name}/pure_host_personality":         value => $pure_host_personality;
     "${name}/pure_eradicate_on_delete":      value => $pure_eradicate_on_delete;
     "${name}/pure_iscsi_cidr":               value => $pure_iscsi_cidr;
-    "${name}/pure_iscsi_cidr_list":          value => $pure_iscsi_cidr_list;
+    "${name}/pure_iscsi_cidr_list":          value => join(any2array($pure_iscsi_cidr_list), ',');
   }
 
   if $manage_volume_type {
