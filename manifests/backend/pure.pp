@@ -117,7 +117,12 @@ define cinder::backend::pure(
   $volume_driver = $pure_storage_protocol ? {
     'FC'    => 'cinder.volume.drivers.pure.PureFCDriver',
     'iSCSI' => 'cinder.volume.drivers.pure.PureISCSIDriver',
-    'NVMe'  => 'cinder.volume.drivers.pure.PureNVMEDriver'
+    'NVMe'  => 'cinder.volume.drivers.pure.PureNVMEDriver',
+    default => undef,
+  }
+
+  if ! $volume_driver {
+    fail('Invalid pure_storage_protocol. It should be FC, iSCSI or NVMe')
   }
 
   cinder_config {
