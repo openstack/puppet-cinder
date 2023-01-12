@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``cinder::backend::dellsc_iscsi`` defined resource type has been
+    removed.
