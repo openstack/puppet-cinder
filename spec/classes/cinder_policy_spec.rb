@@ -9,6 +9,7 @@ describe 'cinder::policy' do
           :enforce_scope        => false,
           :enforce_new_defaults => false,
           :policy_path          => '/etc/cinder/policy.yaml',
+          :policy_default_rule  => 'default',
           :policy_dirs          => '/etc/cinder/policy.d',
           :policies             => {
             'context_is_admin' => {
@@ -37,6 +38,7 @@ describe 'cinder::policy' do
           :enforce_scope        => false,
           :enforce_new_defaults => false,
           :policy_file          => '/etc/cinder/policy.yaml',
+          :policy_default_rule  => 'default',
           :policy_dirs          => '/etc/cinder/policy.d',
         )
       end
