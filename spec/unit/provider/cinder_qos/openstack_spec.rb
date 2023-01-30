@@ -38,9 +38,9 @@ describe provider_class do
     describe 'managing qos' do
       describe '#create' do
         it 'creates a qos' do
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume qos', 'create', '--format', 'shell', ['--property', 'key1=value1', '--property', 'key2=value2', 'QoS_1'])
-            .returns('id="e0df397a-72d5-4494-9e26-4ac37632ff04"
+            .and_return('id="e0df397a-72d5-4494-9e26-4ac37632ff04"
 name="QoS_1"
 properties="key1=\'value1\', key2=\'value2\'"
 ')
@@ -51,7 +51,7 @@ properties="key1=\'value1\', key2=\'value2\'"
 
       describe '#destroy' do
         it 'destroys a qos' do
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume qos', 'delete', 'QoS_1')
           provider.destroy
           expect(provider.exists?).to be_falsey
@@ -60,9 +60,9 @@ properties="key1=\'value1\', key2=\'value2\'"
 
       describe '#instances' do
         it 'finds qos' do
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume qos', 'list', '--quiet', '--format', 'csv', [])
-            .returns('"ID","Name","Consumer","Associations","Specs"
+            .and_return('"ID","Name","Consumer","Associations","Specs"
 "28b632e8-6694-4bba-bf68-67b19f619019","qos-1","front-end","my_type1, my_type2","read_iops=\'value1\', write_iops=\'value2\'"
 "4f992f69-14ec-4132-9313-55cc06a6f1f6","qos-2","both","",""
 ')
@@ -82,9 +82,9 @@ properties="key1=\'value1\', key2=\'value2\'"
       #Test with python-openstackclient => 3.8.0 output (column header change from 'Specs' to 'Properties')
       describe '#instances' do
         it 'finds qos' do
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume qos', 'list', '--quiet', '--format', 'csv', [])
-            .returns('"ID","Name","Consumer","Associations","Properties"
+            .and_return('"ID","Name","Consumer","Associations","Properties"
 "28b632e8-6694-4bba-bf68-67b19f619019","qos-1","front-end","my_type1","read_iops=\'value1\'"
 ')
           instances = provider_class.instances

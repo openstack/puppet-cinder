@@ -15,8 +15,8 @@ describe Puppet::Provider::Cinder do
 
     it 'should fail if no auth params are passed and the cinder config file does not have the expected contents' do
       mock = {}
-      Puppet::Util::IniConfig::File.expects(:new).returns(mock)
-      mock.expects(:read).with('/etc/cinder/cinder.conf')
+      expect(Puppet::Util::IniConfig::File).to receive(:new).and_return(mock)
+      expect(mock).to receive(:read).with('/etc/cinder/cinder.conf')
       expect do
         klass.cinder_credentials
       end.to raise_error(Puppet::Error, /Cinder types will not work/)
@@ -39,8 +39,8 @@ describe Puppet::Provider::Cinder do
           'password'     => 'password',
         }
       }
-      Puppet::Util::IniConfig::File.expects(:new).returns(mock)
-      mock.expects(:read).with('/etc/cinder/cinder.conf')
+      expect(Puppet::Util::IniConfig::File).to receive(:new).and_return(mock)
+      expect(mock).to receive(:read).with('/etc/cinder/cinder.conf')
       expect(klass.cinder_credentials).to eq(creds_hash)
     end
 
