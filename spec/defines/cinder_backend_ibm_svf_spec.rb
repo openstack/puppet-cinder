@@ -25,6 +25,10 @@ describe 'cinder::backend::ibm_svf' do
         is_expected.to contain_cinder_config("#{title}/san_login").with_value('Admin')
         is_expected.to contain_cinder_config("#{title}/san_password").with_value('12345')
         is_expected.to contain_cinder_config("#{title}/storwize_svc_volpool_name").with_value('svfpool')
+        is_expected.to contain_cinder_config("#{title}/storwize_svc_allow_tenant_qos").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/storwize_svc_iscsi_chap_enabled").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/storwize_svc_retain_aux_volume").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/storwize_portset").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('<SERVICE DEFAULT>')
       end
     end

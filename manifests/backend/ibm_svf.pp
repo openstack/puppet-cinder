@@ -38,6 +38,11 @@
 #   it to a non-mirror relationship.
 #   Defaults to $::os_service_default.
 #
+# [*storwize_portset*]
+#   (optional) Specifies the name of the portset in which host is to be
+#   created.
+#   Defaults to $::os_service_default.
+#
 # [*volume_backend_name*]
 #   (optional) The storage backend name.
 #   Defaults to the name of the backend
@@ -69,6 +74,7 @@ define cinder::backend::ibm_svf (
   $storwize_svc_connection_protocol  = 'iSCSI',
   $storwize_svc_iscsi_chap_enabled   = $::os_service_default,
   $storwize_svc_retain_aux_volume    = $::os_service_default,
+  $storwize_portset                  = $::os_service_default,
   $volume_backend_name               = $name,
   $backend_availability_zone         = $::os_service_default,
   $extra_options                     = {},
@@ -99,6 +105,7 @@ define cinder::backend::ibm_svf (
     "${name}/storwize_svc_allow_tenant_qos":   value => $storwize_svc_allow_tenant_qos;
     "${name}/storwize_svc_iscsi_chap_enabled": value => $storwize_svc_iscsi_chap_enabled;
     "${name}/storwize_svc_retain_aux_volume":  value => $storwize_svc_retain_aux_volume;
+    "${name}/storwize_portset":                value => $storwize_portset;
   }
 
   if $manage_volume_type {
