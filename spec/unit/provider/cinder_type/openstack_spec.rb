@@ -40,9 +40,9 @@ describe provider_class do
     describe 'managing type' do
       describe '#create' do
         it 'creates a type' do
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume type', 'create', '--format', 'shell', ['--property', 'key=value', '--property', 'new_key=a-new_value', '--property', 'multiattach="<is> True"', '--public', 'Backend_1'])
-            .returns('id="90e19aff-1b35-4d60-9ee3-383c530275ab"
+            .and_return('id="90e19aff-1b35-4d60-9ee3-383c530275ab"
 name="Backend_1"
 properties="key=\'value\', new_key=\'a-new_value\', multiattach=\'<is> True\'"
 is_public="True"
@@ -55,7 +55,7 @@ access_project_ids=""
 
       describe '#destroy' do
         it 'destroys a type' do
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume type', 'delete', 'Backend_1')
           provider.destroy
           expect(provider.exists?).to be_falsey
@@ -64,15 +64,15 @@ access_project_ids=""
 
       describe '#instances' do
         it 'finds types' do
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume type', 'list', '--quiet', '--format', 'csv', '--long')
-            .returns('"ID","Name","Is Public","Properties"
+            .and_return('"ID","Name","Is Public","Properties"
 "28b632e8-6694-4bba-bf68-67b19f619019","type-1","True","key1=\'value1\'"
 "4f992f69-14ec-4132-9313-55cc06a6f1f6","type-2","False","key2=\'value2\'"
 ')
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume type', 'show', '--format', 'shell', '4f992f69-14ec-4132-9313-55cc06a6f1f6')
-            .returns('
+            .and_return('
 id="4f992f69-14ec-4132-9313-55cc06a6f1f6"
 name="type-2"
 properties="key2=\'value2\'"
@@ -91,15 +91,15 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
         end
 
         it 'finds types with a Properties hash' do
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume type', 'list', '--quiet', '--format', 'csv', '--long')
-            .returns('"ID","Name","Is Public","Properties"
+            .and_return('"ID","Name","Is Public","Properties"
 "28b632e8-6694-4bba-bf68-67b19f619019","type-1","True","{\'key1\': \'value1\'}"
 "4f992f69-14ec-4132-9313-55cc06a6f1f6","type-2","False","{\'key2\': \'value2\'}"
 ')
-          provider_class.expects(:openstack)
+          expect(provider_class).to receive(:openstack)
             .with('volume type', 'show', '--format', 'shell', '4f992f69-14ec-4132-9313-55cc06a6f1f6')
-            .returns('
+            .and_return('
 id="4f992f69-14ec-4132-9313-55cc06a6f1f6"
 name="type-2"
 properties="key2=\'value2\'"
