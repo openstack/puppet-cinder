@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Add ``storwize_portset`` parameter to Cinder IBM Spectrum virtualize
+    family (Svf) driver.
