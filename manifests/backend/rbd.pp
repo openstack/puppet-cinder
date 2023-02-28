@@ -107,6 +107,8 @@ define cinder::backend::rbd (
   include cinder::deps
   include cinder::params
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   $rbd_cluster_name = basename($rbd_ceph_conf, '.conf')
   if $rbd_cluster_name == 'ceph' {
     # Do not pass a parameter value in order to avoid service restarts

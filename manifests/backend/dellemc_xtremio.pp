@@ -80,6 +80,8 @@ define cinder::backend::dellemc_xtremio (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   if $xtremio_storage_protocol == 'iSCSI' {
     $driver = 'dell_emc.xtremio.XtremIOISCSIDriver'
   }

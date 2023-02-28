@@ -110,6 +110,8 @@ define cinder::backend::nfs (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   file {$nfs_shares_config:
     content => join($nfs_servers, "\n"),
     require => Anchor['cinder::install::end'],

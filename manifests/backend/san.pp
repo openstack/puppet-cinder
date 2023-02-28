@@ -101,6 +101,8 @@ define cinder::backend::san (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   cinder_config {
     "${name}/volume_backend_name":       value => $volume_backend_name;
     "${name}/backend_availability_zone": value => $backend_availability_zone;

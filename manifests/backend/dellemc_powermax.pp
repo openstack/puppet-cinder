@@ -68,6 +68,8 @@ define cinder::backend::dellemc_powermax (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   if $powermax_storage_protocol == 'iSCSI' {
     $volume_driver = 'cinder.volume.drivers.dell_emc.powermax.iscsi.PowerMaxISCSIDriver'
   }

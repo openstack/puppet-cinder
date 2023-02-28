@@ -82,6 +82,9 @@ define cinder::backend::ibm_svf (
 ) {
 
   include cinder::deps
+
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   # NOTE: Svf was earlier called as storwize/svc driver, so the cinder
   # configuration parameters were named accordingly.
   if $storwize_svc_connection_protocol == 'iSCSI' {

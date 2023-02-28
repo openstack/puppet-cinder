@@ -137,6 +137,8 @@ class cinder::api (
 
   validate_legacy(Boolean, 'validate_bool', $manage_service)
   validate_legacy(Boolean, 'validate_bool', $enabled)
+  validate_legacy(Boolean, 'validate_bool', $sync_db)
+  validate_legacy(Boolean, 'validate_bool', $use_ssl)
 
   if $use_ssl {
     if is_service_default($cert_file) {

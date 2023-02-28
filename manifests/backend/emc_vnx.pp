@@ -141,6 +141,8 @@ define cinder::backend::emc_vnx (
   include cinder::deps
   include cinder::params
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   cinder_config {
     "${name}/default_timeout":                  value => $default_timeout;
     "${name}/max_luns_per_storage_group":       value => $max_luns_per_storage_group;

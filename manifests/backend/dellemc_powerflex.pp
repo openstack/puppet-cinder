@@ -120,6 +120,8 @@ define cinder::backend::dellemc_powerflex(
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   cinder_config {
     "${name}/volume_driver":                            value => 'cinder.volume.drivers.dell_emc.powerflex.driver.PowerFlexDriver';
     "${name}/san_login":                                value => $san_login;

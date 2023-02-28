@@ -62,6 +62,8 @@ define cinder::backend::dellemc_unity (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   $driver = 'dell_emc.unity.Driver'
   cinder_config {
     "${name}/volume_backend_name":       value => $volume_backend_name;

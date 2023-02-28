@@ -82,6 +82,8 @@ define cinder::backend::vstorage (
   include cinder::deps
   include cinder::params
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   $mount_user_real = pick($mount_user, $::cinder::params::user)
 
   cinder_config {

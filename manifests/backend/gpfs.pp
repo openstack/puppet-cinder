@@ -109,6 +109,8 @@ define cinder::backend::gpfs (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   if ! ($gpfs_images_share_mode in ['copy', 'copy_on_write', $::os_service_default]) {
     fail('gpfs_images_share_mode only support `copy` or `copy_on_write`')
   }

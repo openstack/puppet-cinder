@@ -56,6 +56,8 @@ define cinder::backend::dellemc_powerstore (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   if $storage_protocol == 'iSCSI' {
     $driver = 'dell_emc.powerstore.driver.PowerStoreDriver'
   }

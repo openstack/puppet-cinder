@@ -196,6 +196,8 @@ define cinder::backend::netapp (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   if $netapp_copyoffload_tool_path != undef {
     warning("The netapp_copyoffload_tool_path parameter has been deprecated \
 and will be removed in a future release.")

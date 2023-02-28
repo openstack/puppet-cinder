@@ -119,6 +119,8 @@ define cinder::backend::dellemc_sc (
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   if $sc_storage_protocol == 'iSCSI' {
     $volume_driver = 'cinder.volume.drivers.dell_emc.sc.storagecenter_iscsi.SCISCSIDriver'
   }

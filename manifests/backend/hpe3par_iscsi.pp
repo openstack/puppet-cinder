@@ -92,6 +92,8 @@ define cinder::backend::hpe3par_iscsi(
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   if ($hpe3par_snapshot_expiration <= $hpe3par_snapshot_retention) {
     fail ('hpe3par_snapshot_expiration must be greater than hpe3par_snapshot_retention')
   }

@@ -114,6 +114,8 @@ define cinder::backend::pure(
 
   include cinder::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   $volume_driver = $pure_storage_protocol ? {
     'FC'    => 'cinder.volume.drivers.pure.PureFCDriver',
     'iSCSI' => 'cinder.volume.drivers.pure.PureISCSIDriver',

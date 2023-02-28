@@ -83,9 +83,11 @@ define cinder::backend::vmdk (
   $wsdl_location               = $::os_service_default,
   $manage_volume_type          = false,
   $extra_options               = {},
-  ) {
+) {
 
   include cinder::deps
+
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   cinder_config {
     "${name}/volume_backend_name":                value => $volume_backend_name;

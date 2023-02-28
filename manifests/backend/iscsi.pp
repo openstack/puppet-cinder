@@ -65,6 +65,8 @@ define cinder::backend::iscsi (
   include cinder::deps
   include cinder::params
 
+  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
+
   # NOTE(mnaser): Cinder requires /usr/sbin/thin_check to create volumes which
   #               does not get installed with Cinder (see LP#1615134).
   if $::osfamily == 'Debian' {
