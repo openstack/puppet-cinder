@@ -7,10 +7,10 @@
 # [*use_multipath_for_image_xfer*]
 #   (Optional) Whether to use multipath during create-volume-from-image and
 #   copy-volume-to-image operations.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class cinder::backend::defaults (
-  $use_multipath_for_image_xfer = $::os_service_default,
+  $use_multipath_for_image_xfer = $facts['os_service_default'],
 ) {
 
   include cinder::deps

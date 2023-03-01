@@ -19,7 +19,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*pure_storage_protocol*]
 #   (optional) Must be either 'iSCSI', 'FC' or 'NVMe'. This will determine
@@ -49,42 +49,42 @@
 # [*pure_host_personality*]
 #   (Optional) Determines how the Purity system tunes the protocol used between
 #   the array and the initiator.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*pure_eradicate_on_delete*]
 #   (Optional) Determines how the Purity system treats deleted volumes.
 #   Whether to immediately eradicate on delete or leave for auto-eradication
 #   in 24 hours
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*pure_nvme_transport*]
 #   (Optional) Identifies which NVMe transport layer to be used with
 #   the NVMe driver.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*pure_nvme_cidr*]
 #   (Optional) Identifies which NVMe network CIDR should be used for
 #   NVMe connections to the FlashArray if the array is configured with
 #   multiple NVMe VLANs.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*pure_nvme_cidr_list*]
 #   (Optional) Identifies list of CIDR of FlashArray NVMe targets hosts
 #   are allowed to connect to. It supports IPv4 and IPv6 subnets. This
 #   parameter supercedes pure_nvme_cidr.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*pure_iscsi_cidr*]
 #   (Optional) Identifies which iSCSI network CIDR should be used for
 #   iscsi connections to the FlashArray if the array is configured with
 #   multiple iSCSI VLANs.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*pure_iscsi_cidr_list*]
 #   (Optional) Identifies list of CIDR of FlashArray iSCSI targets hosts are
 #   allowed to connect to. It supports IPv4 and IPv6 subnets. This parameter
 #   supersedes pure_iscsi_cidr.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
@@ -96,19 +96,19 @@ define cinder::backend::pure(
   $san_ip,
   $pure_api_token,
   $volume_backend_name          = $name,
-  $backend_availability_zone    = $::os_service_default,
+  $backend_availability_zone    = $facts['os_service_default'],
   $pure_storage_protocol        = 'iSCSI',
   $use_chap_auth                = false,
   $use_multipath_for_image_xfer = true,
   $manage_volume_type           = false,
   $image_volume_cache_enabled   = true,
-  $pure_host_personality        = $::os_service_default,
-  $pure_eradicate_on_delete     = $::os_service_default,
-  $pure_nvme_transport          = $::os_service_default,
-  $pure_nvme_cidr               = $::os_service_default,
-  $pure_nvme_cidr_list          = $::os_service_default,
-  $pure_iscsi_cidr              = $::os_service_default,
-  $pure_iscsi_cidr_list         = $::os_service_default,
+  $pure_host_personality        = $facts['os_service_default'],
+  $pure_eradicate_on_delete     = $facts['os_service_default'],
+  $pure_nvme_transport          = $facts['os_service_default'],
+  $pure_nvme_cidr               = $facts['os_service_default'],
+  $pure_nvme_cidr_list          = $facts['os_service_default'],
+  $pure_iscsi_cidr              = $facts['os_service_default'],
+  $pure_iscsi_cidr_list         = $facts['os_service_default'],
   $extra_options                = {},
 ) {
 

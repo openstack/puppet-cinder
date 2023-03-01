@@ -14,7 +14,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*san_ip*]
 #   (required) IP address of SAN controller.
@@ -57,53 +57,53 @@
 #
 # [*destroy_empty_storage_group*]
 #   (optional) Destroy storage group when the last LUN is removed from it.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*iscsi_initiators*]
 #   (optional) Mapping between hostname and its iSCSI initiator IP addresses.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*io_port_list*]
 #   (optional) List of iSCSI or FC ports to be used in Nova or Cinder.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*initiator_auto_registration*]
 #   (optional) Automatically register initiators.
 #   Boolean value.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*initiator_auto_deregistration*]
 #   (optional) Automatically deregister initiators after the related storage
 #   group is destroyed.
 #   Boolean value.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*force_delete_lun_in_storagegroup*]
 #   (optional) Delete a LUN even if it is in Storage Groups.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*ignore_pool_full_threshold*]
 #   (optional) Force LUN creation even if the full threshold of pool is
 #   reached.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*vnx_async_migrate*]
 #   (optional) Always use asynchronous migration during volume cloning and
 #   creating from snapshot.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*storage_vnx_auth_type*]
 #   (optional) VNX authentication scope type.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*storage_vnx_security_file_dir*]
 #   (optional) Directory path that contains the VNX security file.
 #   Make sure the security file is generated first.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*naviseccli_path*]
 #   (optional) Naviseccli Path.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -120,21 +120,21 @@ define cinder::backend::emc_vnx (
   $package_ensure                   = 'present',
   $san_login                        = 'admin',
   $volume_backend_name              = $name,
-  $backend_availability_zone        = $::os_service_default,
+  $backend_availability_zone        = $facts['os_service_default'],
   $extra_options                    = {},
   $volume_driver                    = 'cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver',
   $storage_protocol                 = 'iscsi',
-  $destroy_empty_storage_group      = $::os_service_default,
-  $iscsi_initiators                 = $::os_service_default,
-  $io_port_list                     = $::os_service_default,
-  $initiator_auto_registration      = $::os_service_default,
-  $initiator_auto_deregistration    = $::os_service_default,
-  $force_delete_lun_in_storagegroup = $::os_service_default,
-  $ignore_pool_full_threshold       = $::os_service_default,
-  $vnx_async_migrate                = $::os_service_default,
-  $storage_vnx_auth_type            = $::os_service_default,
-  $storage_vnx_security_file_dir    = $::os_service_default,
-  $naviseccli_path                  = $::os_service_default,
+  $destroy_empty_storage_group      = $facts['os_service_default'],
+  $iscsi_initiators                 = $facts['os_service_default'],
+  $io_port_list                     = $facts['os_service_default'],
+  $initiator_auto_registration      = $facts['os_service_default'],
+  $initiator_auto_deregistration    = $facts['os_service_default'],
+  $force_delete_lun_in_storagegroup = $facts['os_service_default'],
+  $ignore_pool_full_threshold       = $facts['os_service_default'],
+  $vnx_async_migrate                = $facts['os_service_default'],
+  $storage_vnx_auth_type            = $facts['os_service_default'],
+  $storage_vnx_security_file_dir    = $facts['os_service_default'],
+  $naviseccli_path                  = $facts['os_service_default'],
   $manage_volume_type               = false,
 ) {
 

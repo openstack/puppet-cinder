@@ -17,7 +17,7 @@
 #
 # [*target_prefix*]
 #   (Optional) Prefix for LVM volumes.
-#   Defaults to '$::os_service_default'.
+#   Defaults to '$facts['os_service_default']'.
 #
 # [*nvmet_port_id*]
 #   (Optional) Port id of the NVMe target.
@@ -35,7 +35,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
@@ -43,20 +43,20 @@
 #
 # [*volume_group*]
 #   (Optional) Name for the VG that will contain exported volumes
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 define cinder::backend::nvmeof (
   $target_ip_address,
   $target_port,
   $target_helper,
   $target_protocol,
-  $target_prefix             = $::os_service_default,
+  $target_prefix             = $facts['os_service_default'],
   $nvmet_port_id             = '1',
   $nvmet_ns_id               = '10',
   $volume_backend_name       = $name,
-  $backend_availability_zone = $::os_service_default,
+  $backend_availability_zone = $facts['os_service_default'],
   $volume_driver             = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
-  $volume_group              = $::os_service_default,
+  $volume_group              = $facts['os_service_default'],
 ) {
 
   include cinder::deps

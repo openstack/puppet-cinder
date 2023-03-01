@@ -74,7 +74,7 @@ describe 'cinder::scheduler' do
         facts.merge!(OSDefaults.get_facts())
       end
 
-      it_behaves_like "cinder::scheduler on #{facts[:osfamily]}"
+      it_behaves_like "cinder::scheduler on #{facts[:os]['family']}"
     end
   end
 end

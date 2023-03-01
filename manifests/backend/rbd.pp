@@ -25,7 +25,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*rbd_ceph_conf*]
 #   (optional) Path to the ceph configuration file to use
@@ -37,40 +37,40 @@
 #
 # [*rbd_secret_uuid*]
 #   (optional) A required parameter to use cephx.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rbd_max_clone_depth*]
 #   (optional) Maximum number of nested clones that can be taken of a
 #   volume before enforcing a flatten prior to next clone.
 #   A value of zero disables cloning
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rados_connect_timeout*]
 #   (optional) Timeout value (in seconds) used when connecting to ceph cluster.
 #   If value < 0, no timeout is set and default librados value is used.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rados_connection_interval*]
 #   (optional) Interval value (in seconds) between connection retries to ceph
 #   cluster.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rados_connection_retries*]
 #   (optional) Number of retries if connection to ceph cluster failed.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rbd_store_chunk_size*]
 #   (optional) Volumes will be chunked into objects of this size (in megabytes).
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*report_dynamic_total_capacity*]
 #   (optional) Set to True for driver to report total capacity as a dynamic
 #   value
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*rbd_exclusive_cinder_pool*]
 #   (optional) Set to True if the pool is used exclusively by Cinder.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -89,17 +89,17 @@ define cinder::backend::rbd (
   $rbd_user,
   $backend_host                     = undef,
   $volume_backend_name              = $name,
-  $backend_availability_zone        = $::os_service_default,
+  $backend_availability_zone        = $facts['os_service_default'],
   $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
-  $rbd_flatten_volume_from_snapshot = $::os_service_default,
-  $rbd_secret_uuid                  = $::os_service_default,
-  $rbd_max_clone_depth              = $::os_service_default,
-  $rados_connect_timeout            = $::os_service_default,
-  $rados_connection_interval        = $::os_service_default,
-  $rados_connection_retries         = $::os_service_default,
-  $rbd_store_chunk_size             = $::os_service_default,
-  $report_dynamic_total_capacity    = $::os_service_default,
-  $rbd_exclusive_cinder_pool        = $::os_service_default,
+  $rbd_flatten_volume_from_snapshot = $facts['os_service_default'],
+  $rbd_secret_uuid                  = $facts['os_service_default'],
+  $rbd_max_clone_depth              = $facts['os_service_default'],
+  $rados_connect_timeout            = $facts['os_service_default'],
+  $rados_connection_interval        = $facts['os_service_default'],
+  $rados_connection_retries         = $facts['os_service_default'],
+  $rbd_store_chunk_size             = $facts['os_service_default'],
+  $report_dynamic_total_capacity    = $facts['os_service_default'],
+  $rbd_exclusive_cinder_pool        = $facts['os_service_default'],
   $manage_volume_type               = false,
   $extra_options                    = {},
 ) {
@@ -164,7 +164,7 @@ define cinder::backend::rbd (
 
   create_resources('cinder_config', $extra_options)
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': {
       $override_line    = "CEPH_ARGS=\"--id ${rbd_user}\""
       $override_match   = '^CEPH_ARGS='
@@ -174,7 +174,7 @@ define cinder::backend::rbd (
       $override_match   = '^export CEPH_ARGS='
     }
     default: {
-      fail("unsupported osfamily ${::osfamily}, currently Debian and Redhat are the only supported platforms")
+      fail("unsupported osfamily ${facts['os']['family']}")
     }
   }
 

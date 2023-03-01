@@ -24,25 +24,25 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*xtremio_array_busy_retry_count*]
 #   (optional) Number of retries in case array is busy.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*xtremio_array_busy_retry_interval*]
 #   (optional) Interval between retries in case array is busy.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*xtremio_volumes_per_glance_cache*]
 #   (optional) Number of volumes created from each cached glance image.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*xtremio_ports*]
 #   (optional) Allowed ports. Comma separated list of XtremIO iSCSI IPs or
 #   FC WWNs (ex. 58:cc:f0:98:49:22:07:02) to be used. If is not set all ports
 #   are allowed.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
@@ -68,13 +68,13 @@ define cinder::backend::dellemc_xtremio (
   $san_password,
   $xtremio_cluster_name,
   $volume_backend_name               = $name,
-  $backend_availability_zone         = $::os_service_default,
-  $xtremio_array_busy_retry_count    = $::os_service_default,
-  $xtremio_array_busy_retry_interval = $::os_service_default,
-  $xtremio_volumes_per_glance_cache  = $::os_service_default,
+  $backend_availability_zone         = $facts['os_service_default'],
+  $xtremio_array_busy_retry_count    = $facts['os_service_default'],
+  $xtremio_array_busy_retry_interval = $facts['os_service_default'],
+  $xtremio_volumes_per_glance_cache  = $facts['os_service_default'],
   $manage_volume_type                = false,
   $xtremio_storage_protocol          = 'iSCSI',
-  $xtremio_ports                     = $::os_service_default,
+  $xtremio_ports                     = $facts['os_service_default'],
   $extra_options                     = {},
 ) {
 

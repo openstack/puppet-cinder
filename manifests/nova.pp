@@ -6,58 +6,58 @@
 #
 # [*region_name*]
 #   (Optional) Name of nova region to use.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*interface*]
 #   (Optional) Type of the nova endpoint to use.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*token_auth_url*]
 #   (Optional) The authentication URL for the nova
 #   connection when using the current users token.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*cafile*]
 #   (Optional) PEM encoded Certificate Authority to use
 #   when verifying HTTPs connections.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*certfile*]
 #   (Optional) PEM encoded client certificate cert file.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*keyfile*]
 #   (Optional) PEM encoded client certificate key file.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*insecure*]
 #   (Optional) Verify HTTPS connections.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*timeout*]
 #   (Optional) Timeout value for http requests.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*collect_timing*]
 #   (Optional) Collect per-API call timing information.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*split_loggers*]
 #   (Optional) Log requests to multiple loggers.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*auth_type*]
 #   (Optional) Authentication type to load.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*auth_section*]
 #   (Optional) Config Section from which to load plugin
 #   specific options.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*auth_url*]
 #   (Optional) Identity service url.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*username*]
 #   (Optional) Nova admin username.
@@ -69,7 +69,7 @@
 #
 # [*password*]
 #   (Optional) Nova admin password.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*project_name*]
 #   (Optional) Nova admin project name.
@@ -81,28 +81,28 @@
 #
 # [*system_scope*]
 #   (Optional) Scope for system operations
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class cinder::nova (
-  $region_name         = $::os_service_default,
-  $interface           = $::os_service_default,
-  $token_auth_url      = $::os_service_default,
-  $cafile              = $::os_service_default,
-  $certfile            = $::os_service_default,
-  $keyfile             = $::os_service_default,
-  $insecure            = $::os_service_default,
-  $timeout             = $::os_service_default,
-  $collect_timing      = $::os_service_default,
-  $split_loggers       = $::os_service_default,
-  $auth_type           = $::os_service_default,
-  $auth_section        = $::os_service_default,
-  $auth_url            = $::os_service_default,
+  $region_name         = $facts['os_service_default'],
+  $interface           = $facts['os_service_default'],
+  $token_auth_url      = $facts['os_service_default'],
+  $cafile              = $facts['os_service_default'],
+  $certfile            = $facts['os_service_default'],
+  $keyfile             = $facts['os_service_default'],
+  $insecure            = $facts['os_service_default'],
+  $timeout             = $facts['os_service_default'],
+  $collect_timing      = $facts['os_service_default'],
+  $split_loggers       = $facts['os_service_default'],
+  $auth_type           = $facts['os_service_default'],
+  $auth_section        = $facts['os_service_default'],
+  $auth_url            = $facts['os_service_default'],
   $username            = 'nova',
   $user_domain_name    = 'Default',
-  $password            = $::os_service_default,
+  $password            = $facts['os_service_default'],
   $project_name        = 'services',
   $project_domain_name = 'Default',
-  $system_scope        = $::os_service_default,
+  $system_scope        = $facts['os_service_default'],
 ) {
 
   include cinder::deps
@@ -111,8 +111,8 @@ class cinder::nova (
     $project_name_real = $project_name
     $project_domain_name_real = $project_domain_name
   } else {
-    $project_name_real = $::os_service_default
-    $project_domain_name_real = $::os_service_default
+    $project_name_real = $facts['os_service_default']
+    $project_domain_name_real = $facts['os_service_default']
   }
 
   cinder_config {

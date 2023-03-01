@@ -21,7 +21,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*nexenta_volume*]
 #   (optional) Pool on SA that will hold all volumes.
@@ -68,7 +68,7 @@ define cinder::backend::nexenta (
   $nexenta_password,
   $nexenta_host,
   $volume_backend_name          = $name,
-  $backend_availability_zone    = $::os_service_default,
+  $backend_availability_zone    = $facts['os_service_default'],
   $nexenta_volume               = 'cinder',
   $nexenta_target_prefix        = 'iqn:',
   $nexenta_target_group_prefix  = 'cinder/',

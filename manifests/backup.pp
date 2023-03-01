@@ -18,24 +18,24 @@
 #
 # [*backup_manager*]
 #   (optional) Full class name for the Manager for volume backup.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_api_class*]
 #   (optional) The full class name of the volume backup API class.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_name_template*]
 #   (optional) Template string to be used to generate backup names.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_workers*]
 #   (optional) Number of backup processes to launch.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_max_operations*]
 #   (optional) Maximum number of concurrent memory heavy operations: backup
 #   and restore. Value of 0 means unlimited.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # === Author(s)
 #
@@ -61,11 +61,11 @@ class cinder::backup (
   $enabled               = true,
   $manage_service        = true,
   $package_ensure        = 'present',
-  $backup_manager        = $::os_service_default,
-  $backup_api_class      = $::os_service_default,
-  $backup_name_template  = $::os_service_default,
-  $backup_workers        = $::os_service_default,
-  $backup_max_operations = $::os_service_default,
+  $backup_manager        = $facts['os_service_default'],
+  $backup_api_class      = $facts['os_service_default'],
+  $backup_name_template  = $facts['os_service_default'],
+  $backup_workers        = $facts['os_service_default'],
+  $backup_max_operations = $facts['os_service_default'],
 ) {
 
   include cinder::deps

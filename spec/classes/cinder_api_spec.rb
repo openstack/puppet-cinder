@@ -226,9 +226,7 @@ describe 'cinder::api' do
     context "on #{os}" do
       let (:facts) do
         facts.merge(OSDefaults.get_facts({
-          :os_workers     => 8,
-          :fqdn           => 'some.host.tld',
-          :concat_basedir => '/var/lib/puppet/concat',
+          :os_workers => 8,
         }))
       end
 

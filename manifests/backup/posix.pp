@@ -13,26 +13,26 @@
 #   If the volume being backed up exceeds this size, then it will be backed
 #   up into multiple files. backup_file_size must be a multiple of
 #   backup_sha_block_size_bytes.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_sha_block_size_bytes*]
 #   (optional) The size in bytes that changes are tracked for incremental
 #   backups. backup_file_size has to be a multiple of backup_sha_block_size_bytes.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_enable_progress_timer*]
 #   (optional) Enable or Disable the timer to send the periodic progress
 #   notifications to Ceilometer when backing up the volume to the backend
 #   storage.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_posix_path*]
 #   (optional) Path specifying where to store backups.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_container*]
 #   (optional) Custom directory to use for backups.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # === Author(s)
 #
@@ -57,11 +57,11 @@
 #
 class cinder::backup::posix (
   $backup_driver                = 'cinder.backup.drivers.posix.PosixBackupDriver',
-  $backup_file_size             = $::os_service_default,
-  $backup_sha_block_size_bytes  = $::os_service_default,
-  $backup_enable_progress_timer = $::os_service_default,
-  $backup_posix_path            = $::os_service_default,
-  $backup_container             = $::os_service_default,
+  $backup_file_size             = $facts['os_service_default'],
+  $backup_sha_block_size_bytes  = $facts['os_service_default'],
+  $backup_enable_progress_timer = $facts['os_service_default'],
+  $backup_posix_path            = $facts['os_service_default'],
+  $backup_container             = $facts['os_service_default'],
 ) {
 
   include cinder::deps

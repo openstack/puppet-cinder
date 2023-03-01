@@ -18,7 +18,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*shares_config_path*]
 #   (optional) Shares config file path.
@@ -26,19 +26,19 @@
 #
 # [*use_sparsed_volumes*]
 #   (optional) Whether or not to use sparsed volumes.
-#   Defaults to: $::os_service_default
+#   Defaults to: $facts['os_service_default']
 #
 # [*used_ratio*]
 #   (optional) Used ratio.
-#   Defaults to: $::os_service_default
+#   Defaults to: $facts['os_service_default']
 #
 # [*mount_point_base*]
 #   (optional) Mount point base path.
-#   Defaults to: $::os_service_default
+#   Defaults to: $facts['os_service_default']
 #
 # [*default_volume_format*]
 #   (optional) Default volume format.
-#   Defaults to: $::os_service_default
+#   Defaults to: $facts['os_service_default']
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -66,12 +66,12 @@ define cinder::backend::vstorage (
   $cluster_name,
   $cluster_password,
   $volume_backend_name       = $name,
-  $backend_availability_zone = $::os_service_default,
+  $backend_availability_zone = $facts['os_service_default'],
   $shares_config_path        = '/etc/cinder/vzstorage_shares',
-  $use_sparsed_volumes       = $::os_service_default,
-  $used_ratio                = $::os_service_default,
-  $mount_point_base          = $::os_service_default,
-  $default_volume_format     = $::os_service_default,
+  $use_sparsed_volumes       = $facts['os_service_default'],
+  $used_ratio                = $facts['os_service_default'],
+  $mount_point_base          = $facts['os_service_default'],
+  $default_volume_format     = $facts['os_service_default'],
   $manage_volume_type        = false,
   $mount_user                = undef,
   $mount_group               = 'root',

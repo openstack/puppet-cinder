@@ -20,72 +20,72 @@
 # [*backup_compression_algorithm*]
 #   (optional) Compression algorithm to use for volume backups.
 #   Supported options are: None (to disable), zlib, bz2 and zstd.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_store_bucket*]
 #   (optional) The S3 bucket to be used to store the Cinder backup data.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_object_size*]
 #   (optional) The size in bytes of S3 backup objects.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_block_size*]
 #   (optional) The size in bytes that changes are tracked for incremental
 #   backups. backup_s3_object_size has to be multiple of backup_s3_block_size.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_enable_progress_timer*]
 #   (optional) Enable or Disable the timer to send the periodic progress
 #   notifications to Ceilometer when backing up the volume to the S3
 #   backend storage.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_http_proxy*]
 #   (optional) Address or host for the http proxy server.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_https_proxy*]
 #   (optional) Address or host for the https proxy server.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_timeout*]
 #   (optional) The time in seconds till a timeout exception is thrown.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_max_pool_connections*]
 #   (optional) The maximum number of connections to keep in a connection pool.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_retry_max_attempts*]
 #   (optional) An integer representing the maximum number of
 #   retry attempts that will be made on a single request.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_retry_mode*]
 #   (optional) A string representing the type of retry mode.
 #    e.g: legacy, standard, adaptive.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_verify_ssl*]
 #   (optional) Enable or Disable ssl verify.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_ca_cert_file*]
 #   (optional) A filename of the CA cert bundle to use.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_md5_validation*]
 #   (optional) Enable or Disable md5 validation in the s3 backend.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_sse_customer_key*]
 #   (optional) The SSECustomerKey.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_sse_customer_algorithm*]
 #   (optional) The SSECustomerAlgorithm.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # === Author(s)
 #
@@ -113,22 +113,22 @@ class cinder::backup::s3 (
   $backup_s3_store_access_key,
   $backup_s3_store_secret_key,
   $backup_driver                    = 'cinder.backup.drivers.s3.S3BackupDriver',
-  $backup_compression_algorithm     = $::os_service_default,
-  $backup_s3_store_bucket           = $::os_service_default,
-  $backup_s3_object_size            = $::os_service_default,
-  $backup_s3_block_size             = $::os_service_default,
-  $backup_s3_enable_progress_timer  = $::os_service_default,
-  $backup_s3_http_proxy             = $::os_service_default,
-  $backup_s3_https_proxy            = $::os_service_default,
-  $backup_s3_timeout                = $::os_service_default,
-  $backup_s3_max_pool_connections   = $::os_service_default,
-  $backup_s3_retry_max_attempts     = $::os_service_default,
-  $backup_s3_retry_mode             = $::os_service_default,
-  $backup_s3_verify_ssl             = $::os_service_default,
-  $backup_s3_ca_cert_file           = $::os_service_default,
-  $backup_s3_md5_validation         = $::os_service_default,
-  $backup_s3_sse_customer_key       = $::os_service_default,
-  $backup_s3_sse_customer_algorithm = $::os_service_default,
+  $backup_compression_algorithm     = $facts['os_service_default'],
+  $backup_s3_store_bucket           = $facts['os_service_default'],
+  $backup_s3_object_size            = $facts['os_service_default'],
+  $backup_s3_block_size             = $facts['os_service_default'],
+  $backup_s3_enable_progress_timer  = $facts['os_service_default'],
+  $backup_s3_http_proxy             = $facts['os_service_default'],
+  $backup_s3_https_proxy            = $facts['os_service_default'],
+  $backup_s3_timeout                = $facts['os_service_default'],
+  $backup_s3_max_pool_connections   = $facts['os_service_default'],
+  $backup_s3_retry_max_attempts     = $facts['os_service_default'],
+  $backup_s3_retry_mode             = $facts['os_service_default'],
+  $backup_s3_verify_ssl             = $facts['os_service_default'],
+  $backup_s3_ca_cert_file           = $facts['os_service_default'],
+  $backup_s3_md5_validation         = $facts['os_service_default'],
+  $backup_s3_sse_customer_key       = $facts['os_service_default'],
+  $backup_s3_sse_customer_algorithm = $facts['os_service_default'],
 ) {
 
   include cinder::deps

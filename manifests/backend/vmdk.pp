@@ -21,17 +21,17 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*api_retry_count*]
 #   (optional) The number of times we retry on failures,
 #   e.g., socket error, etc.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_folder*]
 #   (optional) The name for the folder in the VC datacenter that will contain
 #   cinder volumes.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*max_object_retrieval*]
 #   (optional) The maximum number of ObjectContent data objects that should
@@ -40,22 +40,22 @@
 #   objects reaches the specified maximum. The server may still
 #   limit the count to something less than the configured value.
 #   Any remaining objects may be retrieved with additional requests.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*task_poll_interval*]
 #   (optional) The interval in seconds used for polling of remote tasks.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*image_transfer_timeout_secs*]
 #   (optional) The timeout in seconds for VMDK volume transfer between Cinder
 #   and Glance.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*wsdl_location*]
 #   (optional) VIM Service WSDL Location e.g
 #   http://<server>/vimService.wsdl. Optional over-ride to
 #   default location for bug work-arounds.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -74,13 +74,13 @@ define cinder::backend::vmdk (
   $host_username,
   $host_password,
   $volume_backend_name         = $name,
-  $backend_availability_zone   = $::os_service_default,
-  $volume_folder               = $::os_service_default,
-  $api_retry_count             = $::os_service_default,
-  $max_object_retrieval        = $::os_service_default,
-  $task_poll_interval          = $::os_service_default,
-  $image_transfer_timeout_secs = $::os_service_default,
-  $wsdl_location               = $::os_service_default,
+  $backend_availability_zone   = $facts['os_service_default'],
+  $volume_folder               = $facts['os_service_default'],
+  $api_retry_count             = $facts['os_service_default'],
+  $max_object_retrieval        = $facts['os_service_default'],
+  $task_poll_interval          = $facts['os_service_default'],
+  $image_transfer_timeout_secs = $facts['os_service_default'],
+  $wsdl_location               = $facts['os_service_default'],
   $manage_volume_type          = false,
   $extra_options               = {},
 ) {

@@ -6,10 +6,10 @@
 #
 # [*backend_url*]
 #   (Optional) Coordination backend URL.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class cinder::coordination (
-  $backend_url = $::os_service_default,
+  $backend_url = $facts['os_service_default'],
 ) {
 
   include cinder::deps

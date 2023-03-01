@@ -74,7 +74,7 @@ describe 'cinder::scheduler::filter' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge(OSDefaults.get_facts({:os_workers => 8}))
+        facts.merge(OSDefaults.get_facts())
       end
 
       it_behaves_like 'cinder scheduler filter'

@@ -11,15 +11,15 @@
 # [*backup_swift_url*]
 #   (optional) The URL of the Swift endpoint.
 #   Should be a valid Swift URL
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_swift_auth_url*]
 #   (optional) The URL of the Keystone endpoint for authentication.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*swift_catalog_info*]
 #   (optional) Info to match when looking for swift in the service catalog
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_swift_container*]
 #   (optional) The default Swift container to use.
@@ -27,43 +27,43 @@
 #
 # [*backup_swift_create_storage_policy*]
 #   (optional) The storage policy to use when creating the Swift container.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_swift_object_size*]
 #   (optional) The size in bytes of Swift backup objects.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_swift_retry_attempts*]
 #   (optional) The number of retries to make for Swift operations.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_swift_retry_backoff*]
 #   (optional) The backoff time in seconds between Swift retries.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_swift_user_domain*]
 #  (optional) Swift user domain name. Required when connecting to an
 #  auth 3.0 system.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*backup_swift_project_domain*]
 #  (optional) Swift project domain name. Required when connecting to an
 #  auth 3.0 system.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*backup_swift_project*]
 #  (optional) Swift project/account name. Required when connection to an
 #  auth 3.0 system.
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*backup_compression_algorithm*]
 #   (optional) The compression algorithm for the chunks sent to swift
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #   set to None to disable compression
 #
 # [*backup_swift_service_auth*]
 #   (optional) Send a X-Service-Token header with service auth credentials.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # === Author(s)
 #
@@ -88,19 +88,19 @@
 #
 class cinder::backup::swift (
   $backup_driver                      = 'cinder.backup.drivers.swift.SwiftBackupDriver',
-  $backup_swift_url                   = $::os_service_default,
-  $backup_swift_auth_url              = $::os_service_default,
-  $swift_catalog_info                 = $::os_service_default,
+  $backup_swift_url                   = $facts['os_service_default'],
+  $backup_swift_auth_url              = $facts['os_service_default'],
+  $swift_catalog_info                 = $facts['os_service_default'],
   $backup_swift_container             = 'volumebackups',
-  $backup_swift_create_storage_policy = $::os_service_default,
-  $backup_swift_object_size           = $::os_service_default,
-  $backup_swift_retry_attempts        = $::os_service_default,
-  $backup_swift_retry_backoff         = $::os_service_default,
-  $backup_swift_user_domain           = $::os_service_default,
-  $backup_swift_project_domain        = $::os_service_default,
-  $backup_swift_project               = $::os_service_default,
-  $backup_compression_algorithm       = $::os_service_default,
-  $backup_swift_service_auth          = $::os_service_default,
+  $backup_swift_create_storage_policy = $facts['os_service_default'],
+  $backup_swift_object_size           = $facts['os_service_default'],
+  $backup_swift_retry_attempts        = $facts['os_service_default'],
+  $backup_swift_retry_backoff         = $facts['os_service_default'],
+  $backup_swift_user_domain           = $facts['os_service_default'],
+  $backup_swift_project_domain        = $facts['os_service_default'],
+  $backup_swift_project               = $facts['os_service_default'],
+  $backup_compression_algorithm       = $facts['os_service_default'],
+  $backup_swift_service_auth          = $facts['os_service_default'],
 ) {
 
   include cinder::deps

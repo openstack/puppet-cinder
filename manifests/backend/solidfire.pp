@@ -13,7 +13,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use SolidFire volume driver.
@@ -30,62 +30,62 @@
 #
 # [*sf_emulate_512*]
 #   (optional) Use 512 byte emulation for volumes.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_allow_tenant_qos*]
 #   (optional) Allow tenants to specify QoS via volume metadata.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_account_prefix*]
 #   (optional) Prefix to use when creating tenant accounts on SolidFire Cluster.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_api_port*]
 #   (optional) Port ID to use to connect to SolidFire API.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_volume_prefix*]
 #   (optional) Create SolidFire volumes with this prefix. Volume names
 #   are of the form <sf_volume_prefix><cinder-volume-id>.
-#   Defaults to $::os_service_default-
+#   Defaults to $facts['os_service_default']-
 #
 # [*sf_svip*]
 #   (optional) Overrides default cluster SVIP with the one specified.
 #   This is required or deployments that have implemented the use of
 #   VLANs for iSCSI networks in their cloud.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_enable_vag*]
 #   (optional) Utilize volume access groups on a per-tenant basis.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_provisioning_calc*]
 #   (optional) Change how SolidFire reports used space and provisioning
 #   calculations.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_cluster_pairing_timeout*]
 #   (optional) Sets time in seconds to wait for cluster to complete paring.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_volume_pairing_timeout*]
 #   (optional) Sets time in seconds to wait for a migrating volume to complete
 #   paring and sync.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_api_request_timeout*]
 #   (optional) Sets time in seconds to wait for an api request to complete.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_volume_clone_timeout*]
 #   (optional) Sets time in seconds to wait for a clone of a volume or snapshot
 #   to complete.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*sf_volume_create_timeout*]
 #   (optional) Sets time in seconds to wait for a create volume operation to
 #   complete.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -104,21 +104,21 @@ define cinder::backend::solidfire(
   $san_login,
   $san_password,
   $volume_backend_name        = $name,
-  $backend_availability_zone  = $::os_service_default,
+  $backend_availability_zone  = $facts['os_service_default'],
   $volume_driver              = 'cinder.volume.drivers.solidfire.SolidFireDriver',
-  $sf_emulate_512             = $::os_service_default,
-  $sf_allow_tenant_qos        = $::os_service_default,
-  $sf_account_prefix          = $::os_service_default,
-  $sf_api_port                = $::os_service_default,
-  $sf_volume_prefix           = $::os_service_default,
-  $sf_svip                    = $::os_service_default,
-  $sf_enable_vag              = $::os_service_default,
-  $sf_provisioning_calc       = $::os_service_default,
-  $sf_cluster_pairing_timeout = $::os_service_default,
-  $sf_volume_pairing_timeout  = $::os_service_default,
-  $sf_api_request_timeout     = $::os_service_default,
-  $sf_volume_clone_timeout    = $::os_service_default,
-  $sf_volume_create_timeout   = $::os_service_default,
+  $sf_emulate_512             = $facts['os_service_default'],
+  $sf_allow_tenant_qos        = $facts['os_service_default'],
+  $sf_account_prefix          = $facts['os_service_default'],
+  $sf_api_port                = $facts['os_service_default'],
+  $sf_volume_prefix           = $facts['os_service_default'],
+  $sf_svip                    = $facts['os_service_default'],
+  $sf_enable_vag              = $facts['os_service_default'],
+  $sf_provisioning_calc       = $facts['os_service_default'],
+  $sf_cluster_pairing_timeout = $facts['os_service_default'],
+  $sf_volume_pairing_timeout  = $facts['os_service_default'],
+  $sf_api_request_timeout     = $facts['os_service_default'],
+  $sf_volume_clone_timeout    = $facts['os_service_default'],
+  $sf_volume_create_timeout   = $facts['os_service_default'],
   $manage_volume_type         = false,
   $extra_options              = {},
 ) {

@@ -16,60 +16,60 @@
 #
 # [*cluster*]
 #   (Optional) Cluster name when running in active/active mode.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_clear*]
 #   (Optional) Method used to wipe old volumes.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_clear_size*]
 #   (Optional) Size in MiB to wipe at start of old volumes.
 #   Set to '0' means all.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_clear_ionice*]
 #   (Optional) The flag to pass to ionice to alter the i/o priority
 #   of the process used to zero a volume after deletion,
 #   for example "-c3" for idle only priority.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*migration_create_volume_timeout_secs*]
 #   (Optional) Timeout for creating the volume to migrate to when performing
 #   volume migration (seconds).
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_service_inithost_offload*]
 #   (Optional) Offload pending volume delete during volume service startup.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*reinit_driver_count*]
 #   (Optional) Maximum times to reinitialize the driver if volume
 #   initialization fails.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*init_host_max_objects_retrieval*]
 #   (Optional) Max number of volumes and snapshots to be retrieved per batch
 #   during volume manager host initialization.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*backend_stats_polling_interval*]
 #   (Optional) Time in seconds between requests for usage statistics from
 #   the backend.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 class cinder::volume (
   $package_ensure                       = 'present',
   $enabled                              = true,
   $manage_service                       = true,
-  $cluster                              = $::os_service_default,
-  $volume_clear                         = $::os_service_default,
-  $volume_clear_size                    = $::os_service_default,
-  $volume_clear_ionice                  = $::os_service_default,
-  $migration_create_volume_timeout_secs = $::os_service_default,
-  $volume_service_inithost_offload      = $::os_service_default,
-  $reinit_driver_count                  = $::os_service_default,
-  $init_host_max_objects_retrieval      = $::os_service_default,
-  $backend_stats_polling_interval       = $::os_service_default,
+  $cluster                              = $facts['os_service_default'],
+  $volume_clear                         = $facts['os_service_default'],
+  $volume_clear_size                    = $facts['os_service_default'],
+  $volume_clear_ionice                  = $facts['os_service_default'],
+  $migration_create_volume_timeout_secs = $facts['os_service_default'],
+  $volume_service_inithost_offload      = $facts['os_service_default'],
+  $reinit_driver_count                  = $facts['os_service_default'],
+  $init_host_max_objects_retrieval      = $facts['os_service_default'],
+  $backend_stats_polling_interval       = $facts['os_service_default'],
 ) {
 
   include cinder::deps

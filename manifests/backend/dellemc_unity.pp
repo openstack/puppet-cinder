@@ -24,16 +24,16 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*unity_io_ports*]
 #   (optional) A list of iSCSI or FC ports to be used. Each port can be
 #   Unix-style glob expressions. The Unity Unisphere API port.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*unity_storage_pool_names*]
 #   (optional) A list of storage pool names to be used.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
@@ -53,9 +53,9 @@ define cinder::backend::dellemc_unity (
   $san_password,
   $storage_protocol,
   $volume_backend_name       = $name,
-  $backend_availability_zone = $::os_service_default,
-  $unity_io_ports            = $::os_service_default,
-  $unity_storage_pool_names  = $::os_service_default,
+  $backend_availability_zone = $facts['os_service_default'],
+  $unity_io_ports            = $facts['os_service_default'],
+  $unity_storage_pool_names  = $facts['os_service_default'],
   $manage_volume_type        = false,
   $extra_options             = {},
 ) {

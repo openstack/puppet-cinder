@@ -10,12 +10,12 @@
 #
 # [*glusterfs_backup_mount_point*]
 #   (optional) Base dir container mount point for gluster share.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*glusterfs_backup_share*]
 #   (optional) GlusterFS share in <homename|ipv4addr|ipv6addr>:<gluster_vol_name> format.
 #   Eg: 1.2.3.4:backup_vol
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # === Author(s)
 #
@@ -40,8 +40,8 @@
 #
 class cinder::backup::glusterfs (
   $backup_driver                = 'cinder.backup.drivers.glusterfs.GlusterfsBackupDriver',
-  $glusterfs_backup_mount_point = $::os_service_default,
-  $glusterfs_backup_share       = $::os_service_default,
+  $glusterfs_backup_mount_point = $facts['os_service_default'],
+  $glusterfs_backup_share       = $facts['os_service_default'],
 ) {
 
   include cinder::deps

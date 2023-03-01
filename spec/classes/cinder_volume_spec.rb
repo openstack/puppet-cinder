@@ -78,7 +78,7 @@ describe 'cinder::volume' do
 
       it_behaves_like 'cinder::volume'
 
-      if facts[:osfamily] == 'Debian'
+      if facts[:os]['family'] == 'Debian'
         it_behaves_like 'cinder::volume on Debian'
       end
     end

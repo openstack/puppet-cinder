@@ -28,11 +28,11 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*dell_sc_api_port*]
 #   (optional) The Enterprise Manager API port.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*dell_sc_server_folder*]
 #   (optional) Name of the server folder to use on the Storage Center.
@@ -40,7 +40,7 @@
 #
 # [*dell_sc_verify_cert*]
 #   (optional) Enable HTTPS SC certificate verification
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*dell_sc_volume_folder*]
 #   (optional) Name of the volume folder to use on the Storage Center.
@@ -48,28 +48,28 @@
 #
 # [*target_port*]
 #   (optional) The ISCSI IP Port of the Storage Center.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*excluded_domain_ips*]
 #   (optional)Comma separated list of domain IPs to be excluded from
 #   iSCSI returns of Storage Center.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*secondary_san_ip*]
 #   (optional) IP address of secondary DSM controller.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*secondary_san_login*]
 #   (optional) Secondary DSM user name.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*secondary_san_password*]
 #   (optional) Secondary DSM user password.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*secondary_sc_api_port*]
 #   (optional) Secondary Dell API port.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
@@ -100,17 +100,17 @@ define cinder::backend::dellemc_sc (
   $dell_sc_ssn,
   $target_ip_address            = undef,
   $volume_backend_name          = $name,
-  $backend_availability_zone    = $::os_service_default,
-  $dell_sc_api_port             = $::os_service_default,
+  $backend_availability_zone    = $facts['os_service_default'],
+  $dell_sc_api_port             = $facts['os_service_default'],
   $dell_sc_server_folder        = 'srv',
-  $dell_sc_verify_cert          = $::os_service_default,
+  $dell_sc_verify_cert          = $facts['os_service_default'],
   $dell_sc_volume_folder        = 'vol',
-  $target_port                  = $::os_service_default,
-  $excluded_domain_ips          = $::os_service_default,
-  $secondary_san_ip             = $::os_service_default,
-  $secondary_san_login          = $::os_service_default,
-  $secondary_san_password       = $::os_service_default,
-  $secondary_sc_api_port        = $::os_service_default,
+  $target_port                  = $facts['os_service_default'],
+  $excluded_domain_ips          = $facts['os_service_default'],
+  $secondary_san_ip             = $facts['os_service_default'],
+  $secondary_san_login          = $facts['os_service_default'],
+  $secondary_san_password       = $facts['os_service_default'],
+  $secondary_sc_api_port        = $facts['os_service_default'],
   $manage_volume_type           = false,
   $use_multipath_for_image_xfer = true,
   $sc_storage_protocol          = 'iSCSI',

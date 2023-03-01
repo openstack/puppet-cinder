@@ -22,7 +22,7 @@
 #
 # [*servername*]
 #   (Optional) The servername for the virtualhost.
-#   Defaults to $::fqdn
+#   Defaults to $facts['networking']['fqdn']
 #
 # [*port*]
 #   (Optional) The port.
@@ -42,7 +42,7 @@
 #
 # [*workers*]
 #   (Optional) Number of WSGI workers to spawn.
-#   Defaults to $::os_workers
+#   Defaults to $facts['os_workers']
 #
 # [*priority*]
 #   (Optional) The priority for the vhost.
@@ -128,12 +128,12 @@
 #   class { 'cinder::wsgi::apache': }
 #
 class cinder::wsgi::apache (
-  $servername                  = $::fqdn,
+  $servername                  = $facts['networking']['fqdn'],
   $port                        = 8776,
   $bind_host                   = undef,
   $path                        = '/',
   $ssl                         = false,
-  $workers                     = $::os_workers,
+  $workers                     = $facts['os_workers'],
   $ssl_cert                    = undef,
   $ssl_key                     = undef,
   $ssl_chain                   = undef,

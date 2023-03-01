@@ -6,41 +6,41 @@
 #
 # [*quota_volumes*]
 #   (Optional) Number of volumes allowed per project.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_snapshots*]
 #   (Optional) Number of volume snapshots allowed per project.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_gigabytes*]
 #   (Optional) Number of volume gigabytes (snapshots are also included)
 #   allowed per project.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*quota_backups*]
 #   (Optional) Number of volume backups allowed per project.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*quota_backup_gigabytes*]
 #   (Optional) Number of backup gigabytes allowed per project.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*quota_driver*]
 #   (Optional) Default driver to use for quota checks.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*per_volume_size_limit*]
 #   (Optional) Max size allowed per volume, in gigabytes
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 class cinder::quota (
-  $quota_volumes          = $::os_service_default,
-  $quota_snapshots        = $::os_service_default,
-  $quota_gigabytes        = $::os_service_default,
-  $quota_backups          = $::os_service_default,
-  $quota_backup_gigabytes = $::os_service_default,
-  $quota_driver           = $::os_service_default,
-  $per_volume_size_limit  = $::os_service_default,
+  $quota_volumes          = $facts['os_service_default'],
+  $quota_snapshots        = $facts['os_service_default'],
+  $quota_gigabytes        = $facts['os_service_default'],
+  $quota_backups          = $facts['os_service_default'],
+  $quota_backup_gigabytes = $facts['os_service_default'],
+  $quota_driver           = $facts['os_service_default'],
+  $per_volume_size_limit  = $facts['os_service_default'],
 ) {
 
   include cinder::deps

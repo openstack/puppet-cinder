@@ -20,7 +20,7 @@
 #
 # [*storwize_svc_allow_tenant_qos*]
 #   (optional) Allow tenants to specify QoS on create.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*storwize_svc_connection_protocol*]
 #   (optional) The Storage protocol, iSCSI or FC.
@@ -30,18 +30,18 @@
 #
 # [*storwize_svc_iscsi_chap_enabled*]
 #   (optional) Configure CHAP authentication for iSCSI connections.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*storwize_svc_retain_aux_volume*]
 #   (optional) Defines an optional parameter to retain an auxiliary volume
 #   in a mirror relationship upon deletion of the primary volume or moving
 #   it to a non-mirror relationship.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*storwize_portset*]
 #   (optional) Specifies the name of the portset in which host is to be
 #   created.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_backend_name*]
 #   (optional) The storage backend name.
@@ -51,7 +51,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -70,13 +70,13 @@ define cinder::backend::ibm_svf (
   $san_login,
   $san_password,
   $storwize_svc_volpool_name,
-  $storwize_svc_allow_tenant_qos     = $::os_service_default,
+  $storwize_svc_allow_tenant_qos     = $facts['os_service_default'],
   $storwize_svc_connection_protocol  = 'iSCSI',
-  $storwize_svc_iscsi_chap_enabled   = $::os_service_default,
-  $storwize_svc_retain_aux_volume    = $::os_service_default,
-  $storwize_portset                  = $::os_service_default,
+  $storwize_svc_iscsi_chap_enabled   = $facts['os_service_default'],
+  $storwize_svc_retain_aux_volume    = $facts['os_service_default'],
+  $storwize_portset                  = $facts['os_service_default'],
   $volume_backend_name               = $name,
-  $backend_availability_zone         = $::os_service_default,
+  $backend_availability_zone         = $facts['os_service_default'],
   $extra_options                     = {},
   $manage_volume_type                = false,
 ) {

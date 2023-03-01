@@ -161,7 +161,7 @@ describe 'cinder::backend::rbd' do
       end
 
       it_behaves_like 'cinder::backend::rbd'
-      it_behaves_like "cinder::backend::rbd on #{facts[:osfamily]}"
+      it_behaves_like "cinder::backend::rbd on #{facts[:os]['family']}"
     end
   end
 end

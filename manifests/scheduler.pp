@@ -6,7 +6,7 @@
 #
 # [*scheduler_driver*]
 #   (Optional) Default scheduler driver to use
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*package_ensure*]
 #   (Optional) The state of the package.
@@ -22,7 +22,7 @@
 #
 #
 class cinder::scheduler (
-  $scheduler_driver = $::os_service_default,
+  $scheduler_driver = $facts['os_service_default'],
   $package_ensure   = 'present',
   $enabled          = true,
   $manage_service   = true

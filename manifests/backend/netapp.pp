@@ -25,24 +25,24 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*netapp_server_port*]
 #   (optional) The TCP port to use for communication with the storage
 #   system or proxy. If not specified, Data ONTAP drivers will use 80
 #   for HTTP and 443 for HTTPS;
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*netapp_size_multiplier*]
 #   (optional) The quantity to be multiplied by the requested volume size to
 #   ensure enough space is available on the virtual storage server (Vserver) to
 #   fulfill the volume creation request.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*netapp_storage_family*]
 #   (optional) The storage family type used on the storage system; valid value
 #   is ontap_cluster for using clustered Data ONTAP.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*netapp_storage_protocol*]
 #   (optional) The storage protocol to be used on the data path with the storage
@@ -52,13 +52,13 @@
 # [*netapp_transport_type*]
 #   (optional) The transport protocol used when communicating with the storage
 #   system or proxy server. Valid values are http or https.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*netapp_vserver*]
 #   (optional) This option specifies the virtual storage server (Vserver)
 #   name on the storage cluster on which provisioning of block storage volumes
 #   should occur.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*expiry_thres_minutes*]
 #   (optional) This parameter specifies the threshold for last access time for
@@ -66,20 +66,20 @@
 #   in the cache that have not been accessed in the last M minutes, where M is
 #   the value of this parameter, will be deleted from the cache to create free
 #   space on the NFS share.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*thres_avl_size_perc_start*]
 #   (optional) If the percentage of available space for an NFS share has
 #   dropped below the value specified by this parameter, the NFS image cache
 #   will be cleaned.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*thres_avl_size_perc_stop*]
 #   (optional) When the percentage of available space on an NFS share has
 #   reached the percentage specified by this parameter, the driver will stop
 #   clearing files from the NFS image cache that have not been accessed in the
 #   last M minutes, where M is the value of the expiry_thres_minutes parameter.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*nfs_shares*]
 #   (optional) Array of NFS exports in the form of host:/share; will be written into
@@ -93,7 +93,7 @@
 # [*nfs_mount_options*]
 #   (optional) Mount options passed to the nfs client. See section
 #   of the nfs man page for details.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*netapp_pool_name_search_pattern*]
 #   (optional) This option is only utilized when the Cinder driver is
@@ -103,12 +103,12 @@
 #   FlexVol volumes from the storage backend which represent pools in Cinder.
 #   ^ (beginning of string) and $ (end of string) are implicitly wrapped around
 #   the regular expression specified before filtering.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*netapp_host_type*]
 #   (optional) This option is used to define how the controllers will work with
 #   the particular operating system on the hosts that are connected to it.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*nas_secure_file_operations*]
 #   (Optional) Allow network-attached storage systems to operate in a secure
@@ -116,7 +116,7 @@
 #   access is as the root user and insecure. If set to True, access is not as
 #   root. If set to auto, a check is done to determine if this is a new
 #   installation: True is used if so, otherwise False. Default is auto.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*nas_secure_file_permissions*]
 #   (Optional) Set more secure file permissions on network-attached storage
@@ -125,7 +125,7 @@
 #   created with permissions for the cinder user and group (660). If set to
 #   auto, a check is done to determine if this is a new installation: True is
 #   used if so, otherwise False. Default is auto.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -171,25 +171,25 @@ define cinder::backend::netapp (
   $netapp_password,
   $netapp_server_hostname,
   $volume_backend_name              = $name,
-  $backend_availability_zone        = $::os_service_default,
-  $netapp_server_port               = $::os_service_default,
-  $netapp_size_multiplier           = $::os_service_default,
-  $netapp_storage_family            = $::os_service_default,
+  $backend_availability_zone        = $facts['os_service_default'],
+  $netapp_server_port               = $facts['os_service_default'],
+  $netapp_size_multiplier           = $facts['os_service_default'],
+  $netapp_storage_family            = $facts['os_service_default'],
   $netapp_storage_protocol          = 'nfs',
-  $netapp_transport_type            = $::os_service_default,
-  $netapp_vserver                   = $::os_service_default,
-  $expiry_thres_minutes             = $::os_service_default,
-  $thres_avl_size_perc_start        = $::os_service_default,
-  $thres_avl_size_perc_stop         = $::os_service_default,
+  $netapp_transport_type            = $facts['os_service_default'],
+  $netapp_vserver                   = $facts['os_service_default'],
+  $expiry_thres_minutes             = $facts['os_service_default'],
+  $thres_avl_size_perc_start        = $facts['os_service_default'],
+  $thres_avl_size_perc_stop         = $facts['os_service_default'],
   $nfs_shares                       = undef,
   $nfs_shares_config                = '/etc/cinder/shares.conf',
-  $nfs_mount_options                = $::os_service_default,
-  $netapp_host_type                 = $::os_service_default,
+  $nfs_mount_options                = $facts['os_service_default'],
+  $netapp_host_type                 = $facts['os_service_default'],
   $manage_volume_type               = false,
   $extra_options                    = {},
-  $netapp_pool_name_search_pattern  = $::os_service_default,
-  $nas_secure_file_operations       = $::os_service_default,
-  $nas_secure_file_permissions      = $::os_service_default,
+  $netapp_pool_name_search_pattern  = $facts['os_service_default'],
+  $nas_secure_file_operations       = $facts['os_service_default'],
+  $nas_secure_file_permissions      = $facts['os_service_default'],
   # DEPRECATED PARAMETERS
   $netapp_copyoffload_tool_path     = undef,
 ) {
@@ -231,7 +231,7 @@ and will be removed in a future release.")
     "${name}/thres_avl_size_perc_start":        value => $thres_avl_size_perc_start;
     "${name}/thres_avl_size_perc_stop":         value => $thres_avl_size_perc_stop;
     "${name}/nfs_shares_config":                value => $nfs_shares_config;
-    "${name}/netapp_copyoffload_tool_path":     value => pick($netapp_copyoffload_tool_path, $::os_service_default);
+    "${name}/netapp_copyoffload_tool_path":     value => pick($netapp_copyoffload_tool_path, $facts['os_service_default']);
     "${name}/netapp_pool_name_search_pattern":  value => $netapp_pool_name_search_pattern;
     "${name}/netapp_host_type":                 value => $netapp_host_type;
     "${name}/nas_secure_file_operations":       value => $nas_secure_file_operations;

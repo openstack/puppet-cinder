@@ -15,7 +15,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
@@ -23,7 +23,7 @@
 #
 # [*volume_group*]
 #   (Optional) Name for the VG that will contain exported volumes
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*volumes_dir*]
 #   (Optional) Volume configuration file storage directory
@@ -35,7 +35,7 @@
 #
 # [*target_protocol*]
 #   (Optional) Protocol to use as iSCSI driver
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -52,12 +52,12 @@
 define cinder::backend::iscsi (
   $target_ip_address         = undef,
   $volume_backend_name       = $name,
-  $backend_availability_zone = $::os_service_default,
+  $backend_availability_zone = $facts['os_service_default'],
   $volume_driver             = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
-  $volume_group              = $::os_service_default,
+  $volume_group              = $facts['os_service_default'],
   $volumes_dir               = '/var/lib/cinder/volumes',
   $target_helper             = $::cinder::params::target_helper,
-  $target_protocol           = $::os_service_default,
+  $target_protocol           = $facts['os_service_default'],
   $manage_volume_type        = false,
   $extra_options             = {},
 ) {
@@ -69,7 +69,7 @@ define cinder::backend::iscsi (
 
   # NOTE(mnaser): Cinder requires /usr/sbin/thin_check to create volumes which
   #               does not get installed with Cinder (see LP#1615134).
-  if $::osfamily == 'Debian' {
+  if $facts['os']['family'] == 'Debian' {
     if ! defined(Package['thin-provisioning-tools']) {
       package { 'thin-provisioning-tools':
         ensure => present,

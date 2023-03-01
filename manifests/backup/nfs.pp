@@ -17,35 +17,35 @@
 #   backups. If the volume being backed up exceeds this size, then
 #   it will be backed up into multiple files. This must be a multiple
 #   of the backup_sha_block_size_bytes parameter.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_sha_block_size_bytes*]
 #   (optional) The size in bytes that changes are tracked for
 #   incremental backups.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_enable_progress_timer*]
 #   (optional) Enable or Disable the timer to send the periodic
 #   progress notifications to Ceilometer when backing up the volume
 #   to the backend storage.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_mount_point_base*]
 #   (optional) The base directory containing the mount point for the
 #   NFS share.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_mount_options*]
 #   (optional) The mount options that are passed to the NFS client.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_container*]
 #   (optional) Custom container to use for backups.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_compression_algorithm*]
 #   (optional) Compression algorithm to use when writing backup data.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # === Author(s)
 #
@@ -71,13 +71,13 @@
 class cinder::backup::nfs (
   $backup_share,
   $backup_driver                = 'cinder.backup.drivers.nfs.NFSBackupDriver',
-  $backup_file_size             = $::os_service_default,
-  $backup_sha_block_size_bytes  = $::os_service_default,
-  $backup_enable_progress_timer = $::os_service_default,
-  $backup_mount_point_base      = $::os_service_default,
-  $backup_mount_options         = $::os_service_default,
-  $backup_container             = $::os_service_default,
-  $backup_compression_algorithm = $::os_service_default,
+  $backup_file_size             = $facts['os_service_default'],
+  $backup_sha_block_size_bytes  = $facts['os_service_default'],
+  $backup_enable_progress_timer = $facts['os_service_default'],
+  $backup_mount_point_base      = $facts['os_service_default'],
+  $backup_mount_options         = $facts['os_service_default'],
+  $backup_container             = $facts['os_service_default'],
+  $backup_compression_algorithm = $facts['os_service_default'],
 ) {
 
   include cinder::deps

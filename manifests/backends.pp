@@ -12,12 +12,12 @@
 #
 # [*backend_host*]
 #   (optional) Backend override of host value.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # Author: Andrew Woodward <awoodward@mirantis.com>
 class cinder::backends (
   $enabled_backends = undef,
-  $backend_host     = $::os_service_default,
+  $backend_host     = $facts['os_service_default'],
 ) {
 
   include cinder::deps

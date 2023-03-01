@@ -29,32 +29,32 @@
 #   (optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*powerflex_allow_migration_during_rebuild*]
 #   (optional) (Boolean) Allow volume migration during rebuild.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*powerflex_allow_non_padded_volumes*]
 #   (optional) (Boolean) Allow volumes to be created in Storage Pools
 #   when zero padding is disabled.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*powerflex_max_over_subscription_ratio*]
 #   (optional) (Floating point) max_over_subscription_ratio setting for the driver.
 #   Maximum value allowed is 10.0.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*powerflex_rest_server_port*]
 #   (optional) (String) The TCP port to use for communication with the storage
 #   system or proxy.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*powerflex_round_volume_capacity*]
 #  (optional) (Boolean) Round volume sizes up to 8GB boundaries. PowerFlex/ScaleIO
 #  requires volumes to be sized in multiples of 8GB. If set to False,
 #  volume creation will fail for volumes not sized properly
-#  Defaults to $::os_service_default
+#  Defaults to $facts['os_service_default']
 #
 # [*powerflex_server_api_version*]
 #   (optional) (String) PowerFlex/ScaleIO API version. This value should be left as the
@@ -62,19 +62,19 @@
 #
 # [*powerflex_unmap_volume_before_deletion*]
 #   (optional) (Boolean) Unmap volumes before deletion.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*san_thin_provision*]
 #   (optional) (Boolean) Whether to use thin provisioning or not.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*driver_ssl_cert_verify*]
 #   (optional) Verify the server certificate
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*driver_ssl_cert_path*]
 #   (optional) Server certificate path.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*manage_volume_type*]
 #   (optional) Whether or not manage Cinder Volume type.
@@ -103,17 +103,17 @@ define cinder::backend::dellemc_powerflex(
   $san_ip,
   $powerflex_storage_pools,
   $volume_backend_name                      = $name,
-  $backend_availability_zone                = $::os_service_default,
-  $powerflex_allow_migration_during_rebuild = $::os_service_default,
-  $powerflex_allow_non_padded_volumes       = $::os_service_default,
-  $powerflex_max_over_subscription_ratio    = $::os_service_default,
-  $powerflex_rest_server_port               = $::os_service_default,
-  $powerflex_round_volume_capacity          = $::os_service_default,
-  $powerflex_server_api_version             = $::os_service_default,
-  $powerflex_unmap_volume_before_deletion   = $::os_service_default,
-  $san_thin_provision                       = $::os_service_default,
-  $driver_ssl_cert_verify                   = $::os_service_default,
-  $driver_ssl_cert_path                     = $::os_service_default,
+  $backend_availability_zone                = $facts['os_service_default'],
+  $powerflex_allow_migration_during_rebuild = $facts['os_service_default'],
+  $powerflex_allow_non_padded_volumes       = $facts['os_service_default'],
+  $powerflex_max_over_subscription_ratio    = $facts['os_service_default'],
+  $powerflex_rest_server_port               = $facts['os_service_default'],
+  $powerflex_round_volume_capacity          = $facts['os_service_default'],
+  $powerflex_server_api_version             = $facts['os_service_default'],
+  $powerflex_unmap_volume_before_deletion   = $facts['os_service_default'],
+  $san_thin_provision                       = $facts['os_service_default'],
+  $driver_ssl_cert_verify                   = $facts['os_service_default'],
+  $driver_ssl_cert_path                     = $facts['os_service_default'],
   $manage_volume_type                       = false,
   $extra_options                            = {},
 ) {

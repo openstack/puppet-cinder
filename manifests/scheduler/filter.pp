@@ -6,25 +6,25 @@
 #
 # [*scheduler_default_filters*]
 #   (Optional) A comma separated list of filters to be used by default
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*capacity_weight_multiplier*]
 #   (Optional) Multiplier used for weighing free capacity.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*allocated_capacity_weight_multiplier*]
 #   (Optional) Multiplier used for weighing allocated capacity.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*volume_number_multiplier*]
 #   (Optional) Multiplier used for weighing volume number..
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class cinder::scheduler::filter (
-  $scheduler_default_filters            = $::os_service_default,
-  $capacity_weight_multiplier           = $::os_service_default,
-  $allocated_capacity_weight_multiplier = $::os_service_default,
-  $volume_number_multiplier             = $::os_service_default,
+  $scheduler_default_filters            = $facts['os_service_default'],
+  $capacity_weight_multiplier           = $facts['os_service_default'],
+  $allocated_capacity_weight_multiplier = $facts['os_service_default'],
+  $volume_number_multiplier             = $facts['os_service_default'],
 ) {
 
   include cinder::deps

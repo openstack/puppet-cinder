@@ -35,7 +35,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use HPE 3par volume driver.
@@ -80,7 +80,7 @@ define cinder::backend::hpe3par_iscsi(
   $san_password,
   $hpe3par_iscsi_ips,
   $volume_backend_name         = $name,
-  $backend_availability_zone   = $::os_service_default,
+  $backend_availability_zone   = $facts['os_service_default'],
   $volume_driver               = 'cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver',
   $hpe3par_iscsi_chap_enabled  = false,
   $hpe3par_cpg_snap            = 'userCPG',

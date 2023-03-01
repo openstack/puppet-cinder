@@ -38,7 +38,7 @@
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
-#   Defaults to $::os_service_default.
+#   Defaults to $facts['os_service_default'].
 #
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
@@ -61,7 +61,7 @@ define cinder::backend::dellemc_powermax (
   $powermax_port_groups,
   $powermax_storage_protocol     = 'iSCSI',
   $volume_backend_name           = $name,
-  $backend_availability_zone     = $::os_service_default,
+  $backend_availability_zone     = $facts['os_service_default'],
   $extra_options                 = {},
   $manage_volume_type            = false,
 ) {
