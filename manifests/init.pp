@@ -22,6 +22,10 @@
 #   (Optional)
 #   Defaults to $facts['os_service_default']
 #
+# [*executor_thread_pool_size*]
+#   (Optional) Size of executor thread pool when executor is threading or eventlet.
+#   Defaults to $facts['os_service_default'].
+#
 # [*notification_transport_url*]
 #   (Optional) A URL representing the messaging driver to use for notifications
 #   and its full configuration. Transport URLs take the form:
@@ -258,6 +262,7 @@ class cinder (
   $default_transport_url                = $facts['os_service_default'],
   $rpc_response_timeout                 = $facts['os_service_default'],
   $control_exchange                     = $facts['os_service_default'],
+  $executor_thread_pool_size            = $facts['os_service_default'],
   $notification_transport_url           = $facts['os_service_default'],
   $notification_driver                  = $facts['os_service_default'],
   $notification_topics                  = $facts['os_service_default'],
@@ -358,9 +363,10 @@ class cinder (
   }
 
   oslo::messaging::default { 'cinder_config':
-    transport_url        => $default_transport_url,
-    rpc_response_timeout => $rpc_response_timeout,
-    control_exchange     => $control_exchange,
+    executor_thread_pool_size => $executor_thread_pool_size,
+    transport_url             => $default_transport_url,
+    rpc_response_timeout      => $rpc_response_timeout,
+    control_exchange          => $control_exchange,
   }
 
   oslo::messaging::notifications { 'cinder_config':

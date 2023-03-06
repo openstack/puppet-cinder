@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``cinder::executor_thread_pool_size`` parameter has been added.
