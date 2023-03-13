@@ -18,6 +18,7 @@ describe 'cinder::cron::db_purge' do
   shared_examples 'cinder::cron::db_purge' do
     context 'with required parameters' do
       it { is_expected.to contain_cron('cinder-manage db purge').with(
+        :ensure      => :present,
         :command     => "cinder-manage db purge #{params[:age]} >>#{params[:destination]} 2>&1",
         :environment => 'PATH=/bin:/usr/bin:/usr/sbin SHELL=/bin/sh',
         :user        => params[:user],
@@ -30,6 +31,16 @@ describe 'cinder::cron::db_purge' do
       )}
     end
 
+    context 'with ensure set to absent' do
+      before :each do
+        params.merge!(
+          :ensure => :absent
+        )
+      end
+
+      it { should contain_cron('cinder-manage db purge').with_ensure(:absent) }
+    end
+
     context 'with required parameters with max delay enabled' do
       before :each do
         params.merge!(
@@ -38,6 +49,7 @@ describe 'cinder::cron::db_purge' do
       end
 
       it { should contain_cron('cinder-manage db purge').with(
+        :ensure      => :present,
         :command     => "sleep `expr ${RANDOM} \\% #{params[:maxdelay]}`; cinder-manage db purge #{params[:age]} >>#{params[:destination]} 2>&1",
         :environment => 'PATH=/bin:/usr/bin:/usr/sbin SHELL=/bin/sh',
         :user        => params[:user],
