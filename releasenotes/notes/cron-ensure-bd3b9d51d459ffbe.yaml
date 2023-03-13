@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``cinder::cron::db_purge::ensure`` parameter has been added, so
+    that status of the cron job can be customized.

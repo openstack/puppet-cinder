@@ -57,6 +57,10 @@
 #    all cron jobs at the same time on all hosts this job is configured.
 #    Defaults to 0.
 #
+#  [*ensure*]
+#    (optional) Ensure cron jobs present or absent
+#    Defaults to present.
+#
 class cinder::cron::db_purge (
   $minute      = 1,
   $hour        = 0,
@@ -66,7 +70,8 @@ class cinder::cron::db_purge (
   $user        = 'cinder',
   $age         = 30,
   $destination = '/var/log/cinder/cinder-rowsflush.log',
-  $maxdelay    = 0
+  $maxdelay    = 0,
+  Enum['present', 'absent'] $ensure = 'present',
 ) {
 
   include cinder::deps
@@ -78,6 +83,7 @@ class cinder::cron::db_purge (
   }
 
   cron { 'cinder-manage db purge':
+    ensure      => $ensure,
     command     => "${sleep}cinder-manage db purge ${age} >>${destination} 2>&1",
     environment => 'PATH=/bin:/usr/bin:/usr/sbin SHELL=/bin/sh',
     user        => $user,
