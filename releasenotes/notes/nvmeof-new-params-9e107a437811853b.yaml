@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Add new parameters ``nvmeof_conn_info_version``, ``lvm_share_target``, and
+    ``target_secondary_ip_addresses`` to ``cinder::backend::nvmeof``.
+  - |
+    Default ``cinder::backend::nvmeof::target_port`` to ``4420``, making it an
+    optional parameter now.
