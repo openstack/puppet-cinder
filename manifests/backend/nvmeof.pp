@@ -22,11 +22,11 @@
 #
 # [*nvmet_port_id*]
 #   (Optional) Port id of the NVMe target.
-#   Defaults to '1'.
+#   Defaults to $facts['os_service_default'].
 #
 # [*nvmet_ns_id*]
 #   (Optional) The namespace id associated with the subsystem.
-#   Defaults to '10'.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_backend_name*]
 #   (optional) Allows for the volume_backend_name to be separate of $name.
@@ -64,8 +64,8 @@ define cinder::backend::nvmeof (
   $target_protocol,
   $target_port                   = '4420',
   $target_prefix                 = $facts['os_service_default'],
-  $nvmet_port_id                 = '1',
-  $nvmet_ns_id                   = '10',
+  $nvmet_port_id                 = $facts['os_service_default'],
+  $nvmet_ns_id                   = $facts['os_service_default'],
   $volume_backend_name           = $name,
   $backend_availability_zone     = $facts['os_service_default'],
   $volume_driver                 = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
