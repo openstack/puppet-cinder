@@ -112,11 +112,6 @@ define cinder::backend::vmdk (
     }
   }
 
-  package { 'python-suds':
-    ensure => present,
-    tag    => 'cinder-support-package',
-  }
-
   create_resources('cinder_config', $extra_options)
 
 }

@@ -39,8 +39,6 @@ describe 'cinder::backend::vmdk' do
       is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
     }
 
-    it { is_expected.to contain_package('python-suds').with_ensure('present') }
-
     context 'with optional parameters' do
       before :each do
         params.merge!(optional_params)
