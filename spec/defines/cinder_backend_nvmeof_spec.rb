@@ -32,13 +32,13 @@ describe 'cinder::backend::nvmeof' do
 
       it { is_expected.to contain_package('nvmetcli').with(
         :name   => 'nvmetcli',
-        :ensure => 'present',
+        :ensure => 'installed',
         :tag    => 'cinder-support-package',
       )}
 
       it { is_expected.to contain_package('nvme-cli').with(
         :name   => 'nvme-cli',
-        :ensure => 'present',
+        :ensure => 'installed',
         :tag    => 'cinder-support-package',
       )}
     end

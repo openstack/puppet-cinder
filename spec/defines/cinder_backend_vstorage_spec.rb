@@ -38,7 +38,10 @@ describe 'cinder::backend::vstorage' do
       :value => 'cinder.volume.drivers.vzstorage.VZStorageDriver'
     )}
 
-    it { is_expected.to contain_package('vstorage-client').with_ensure('present') }
+    it { is_expected.to contain_package('vstorage-client').with(
+      :ensure => 'installed',
+      :tag    => 'cinder-support-package',
+    ) }
 
     it { is_expected.to contain_file('/etc/cinder/vstorage_shares.conf').with(
       :content => "stor1:passw0rd [\"-u\", \"cinder\", \"-g\", \"root\", \"-m\", \"0770\"]"

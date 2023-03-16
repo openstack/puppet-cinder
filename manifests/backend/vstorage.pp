@@ -109,10 +109,10 @@ define cinder::backend::vstorage (
   }
 
   if $manage_package {
-    package { 'vstorage-client':
+    ensure_packages( 'vstorage-client', {
       ensure => present,
       tag    => 'cinder-support-package',
-    }
+    })
   }
 
   $mount_opts = ['-u', $mount_user_real, '-g', $mount_group, '-m', $mount_permissions]
