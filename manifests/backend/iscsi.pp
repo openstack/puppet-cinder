@@ -70,12 +70,10 @@ define cinder::backend::iscsi (
   # NOTE(mnaser): Cinder requires /usr/sbin/thin_check to create volumes which
   #               does not get installed with Cinder (see LP#1615134).
   if $facts['os']['family'] == 'Debian' {
-    if ! defined(Package['thin-provisioning-tools']) {
-      package { 'thin-provisioning-tools':
-        ensure => present,
-        tag    => 'cinder-support-package',
-      }
-    }
+    ensure_packages( 'thin-provisioning-tools', {
+      ensure => present,
+      tag    => 'cinder-support-package',
+    })
   }
 
   cinder_config {

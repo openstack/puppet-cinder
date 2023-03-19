@@ -95,16 +95,16 @@ define cinder::backend::nvmeof (
     "${name}/target_secondary_ip_addresses": value => join(any2array($target_secondary_ip_addresses), ',');
   }
 
-  package { 'nvmetcli':
+  ensure_packages ( 'nvmetcli', {
     ensure => present,
     name   => 'nvmetcli',
     tag    => 'cinder-support-package',
-  }
+  })
 
-  package { 'nvme-cli':
+  ensure_packages ( 'nvme-cli', {
     ensure => present,
     name   => 'nvme-cli',
     tag    => 'cinder-support-package',
-  }
+  })
 
 }
