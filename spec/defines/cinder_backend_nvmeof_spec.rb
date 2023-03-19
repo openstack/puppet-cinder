@@ -6,7 +6,6 @@ describe 'cinder::backend::nvmeof' do
   let :req_params do
     {
       :target_ip_address => '127.0.0.2',
-      :target_port       => '4420',
       :target_helper     => 'nvmet',
       :target_protocol   => 'nvmet_rdma',
     }
@@ -28,6 +27,9 @@ describe 'cinder::backend::nvmeof' do
         is_expected.to contain_cinder_config('nvme-backend/volume_backend_name').with_value('nvme-backend')
         is_expected.to contain_cinder_config('nvme-backend/backend_availability_zone').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
+        is_expected.to contain_cinder_config('nvme-backend/nvmeof_conn_info_version').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nvme-backend/lvm_share_target').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nvme-backend/target_secondary_ip_addresses').with_value('<SERVICE DEFAULT>')
       }
 
       it { is_expected.to contain_package('nvmetcli').with(
