@@ -39,7 +39,7 @@
 #
 #  [*user*]
 #    (optional) User with access to cinder files.
-#    Defaults to 'cinder'.
+#    Defaults to $::cinder::params::user.
 #
 #  [*age*]
 #    (optional) Number of days prior to today for deletion,
@@ -67,12 +67,12 @@ class cinder::cron::db_purge (
   $monthday    = '*',
   $month       = '*',
   $weekday     = '*',
-  $user        = 'cinder',
+  $user        = $::cinder::params::user,
   $age         = 30,
   $destination = '/var/log/cinder/cinder-rowsflush.log',
   $maxdelay    = 0,
   Enum['present', 'absent'] $ensure = 'present',
-) {
+) inherits cinder::params {
 
   include cinder::deps
 
