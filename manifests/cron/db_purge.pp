@@ -17,8 +17,7 @@
 #
 # == Class: cinder::cron::db_purge
 #
-# Move deleted instances to another table that you don't have to backup
-# unless you have data retention policies.
+# Remove deleted records from database
 #
 # === Parameters
 #
