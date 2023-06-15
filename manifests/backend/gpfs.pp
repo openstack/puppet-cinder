@@ -92,24 +92,22 @@
 #
 define cinder::backend::gpfs (
   $gpfs_mount_point_base,
-  $gpfs_images_dir           = $facts['os_service_default'],
-  $gpfs_images_share_mode    = $facts['os_service_default'],
-  $gpfs_max_clone_depth      = $facts['os_service_default'],
-  $gpfs_sparse_volumes       = $facts['os_service_default'],
-  $gpfs_storage_pool         = $facts['os_service_default'],
-  $nas_host                  = $facts['os_service_default'],
-  $nas_login                 = $facts['os_service_default'],
-  $nas_password              = $facts['os_service_default'],
-  $nas_private_key           = $facts['os_service_default'],
-  $nas_ssh_port              = $facts['os_service_default'],
-  $backend_availability_zone = $facts['os_service_default'],
-  $manage_volume_type        = false,
-  $extra_options             = {},
+  $gpfs_images_dir            = $facts['os_service_default'],
+  $gpfs_images_share_mode     = $facts['os_service_default'],
+  $gpfs_max_clone_depth       = $facts['os_service_default'],
+  $gpfs_sparse_volumes        = $facts['os_service_default'],
+  $gpfs_storage_pool          = $facts['os_service_default'],
+  $nas_host                   = $facts['os_service_default'],
+  $nas_login                  = $facts['os_service_default'],
+  $nas_password               = $facts['os_service_default'],
+  $nas_private_key            = $facts['os_service_default'],
+  $nas_ssh_port               = $facts['os_service_default'],
+  $backend_availability_zone  = $facts['os_service_default'],
+  Boolean $manage_volume_type = false,
+  Hash $extra_options         = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   if ! ($gpfs_images_share_mode in ['copy', 'copy_on_write', $facts['os_service_default']]) {
     fail('gpfs_images_share_mode only support `copy` or `copy_on_write`')

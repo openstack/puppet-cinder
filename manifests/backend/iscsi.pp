@@ -50,22 +50,20 @@
 #     { 'iscsi_backend/param1' => { 'value' => value1 } }
 #
 define cinder::backend::iscsi (
-  $target_ip_address         = undef,
-  $volume_backend_name       = $name,
-  $backend_availability_zone = $facts['os_service_default'],
-  $volume_driver             = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
-  $volume_group              = $facts['os_service_default'],
-  $volumes_dir               = '/var/lib/cinder/volumes',
-  $target_helper             = $::cinder::params::target_helper,
-  $target_protocol           = $facts['os_service_default'],
-  $manage_volume_type        = false,
-  $extra_options             = {},
+  $target_ip_address          = undef,
+  $volume_backend_name        = $name,
+  $backend_availability_zone  = $facts['os_service_default'],
+  $volume_driver              = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
+  $volume_group               = $facts['os_service_default'],
+  $volumes_dir                = '/var/lib/cinder/volumes',
+  $target_helper              = $::cinder::params::target_helper,
+  $target_protocol            = $facts['os_service_default'],
+  Boolean $manage_volume_type = false,
+  Hash $extra_options         = {},
 ) {
 
   include cinder::deps
   include cinder::params
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   # NOTE(mnaser): Cinder requires /usr/sbin/thin_check to create volumes which
   #               does not get installed with Cinder (see LP#1615134).

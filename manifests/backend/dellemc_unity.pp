@@ -52,17 +52,15 @@ define cinder::backend::dellemc_unity (
   $san_login,
   $san_password,
   $storage_protocol,
-  $volume_backend_name       = $name,
-  $backend_availability_zone = $facts['os_service_default'],
-  $unity_io_ports            = $facts['os_service_default'],
-  $unity_storage_pool_names  = $facts['os_service_default'],
-  $manage_volume_type        = false,
-  $extra_options             = {},
+  $volume_backend_name        = $name,
+  $backend_availability_zone  = $facts['os_service_default'],
+  $unity_io_ports             = $facts['os_service_default'],
+  $unity_storage_pool_names   = $facts['os_service_default'],
+  Boolean $manage_volume_type = false,
+  Hash $extra_options         = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   $driver = 'dell_emc.unity.Driver'
   cinder_config {

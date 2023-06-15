@@ -76,13 +76,11 @@ define cinder::backend::nexenta (
   $nexenta_sparse               = true,
   $nexenta_rest_port            = '8457',
   $volume_driver                = 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver',
-  $manage_volume_type           = false,
-  $extra_options                = {},
+  Boolean $manage_volume_type   = false,
+  Hash $extra_options           = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;

@@ -81,13 +81,11 @@ define cinder::backend::vmdk (
   $task_poll_interval          = $facts['os_service_default'],
   $image_transfer_timeout_secs = $facts['os_service_default'],
   $wsdl_location               = $facts['os_service_default'],
-  $manage_volume_type          = false,
-  $extra_options               = {},
+  Boolean $manage_volume_type  = false,
+  Hash $extra_options          = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   cinder_config {
     "${name}/volume_backend_name":                value => $volume_backend_name;

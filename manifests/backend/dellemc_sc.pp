@@ -111,15 +111,13 @@ define cinder::backend::dellemc_sc (
   $secondary_san_login          = $facts['os_service_default'],
   $secondary_san_password       = $facts['os_service_default'],
   $secondary_sc_api_port        = $facts['os_service_default'],
-  $manage_volume_type           = false,
+  Boolean $manage_volume_type   = false,
   $use_multipath_for_image_xfer = true,
   $sc_storage_protocol          = 'iSCSI',
-  $extra_options                = {},
+  Hash $extra_options           = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   if $sc_storage_protocol == 'iSCSI' {
     $volume_driver = 'cinder.volume.drivers.dell_emc.sc.storagecenter_iscsi.SCISCSIDriver'

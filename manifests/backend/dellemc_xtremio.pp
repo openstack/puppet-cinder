@@ -72,15 +72,13 @@ define cinder::backend::dellemc_xtremio (
   $xtremio_array_busy_retry_count    = $facts['os_service_default'],
   $xtremio_array_busy_retry_interval = $facts['os_service_default'],
   $xtremio_volumes_per_glance_cache  = $facts['os_service_default'],
-  $manage_volume_type                = false,
+  Boolean $manage_volume_type        = false,
   $xtremio_storage_protocol          = 'iSCSI',
   $xtremio_ports                     = $facts['os_service_default'],
-  $extra_options                     = {},
+  Hash $extra_options                = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   if $xtremio_storage_protocol == 'iSCSI' {
     $driver = 'dell_emc.xtremio.XtremIOISCSIDriver'

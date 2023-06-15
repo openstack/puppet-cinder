@@ -22,17 +22,14 @@
 #
 #
 class cinder::scheduler (
-  $scheduler_driver = $facts['os_service_default'],
-  $package_ensure   = 'present',
-  $enabled          = true,
-  $manage_service   = true
+  $scheduler_driver       = $facts['os_service_default'],
+  $package_ensure         = 'present',
+  Boolean $enabled        = true,
+  Boolean $manage_service = true
 ) {
 
   include cinder::deps
   include cinder::params
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   cinder_config { 'DEFAULT/scheduler_driver': value => $scheduler_driver; }
 

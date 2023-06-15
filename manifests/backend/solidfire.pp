@@ -119,13 +119,11 @@ define cinder::backend::solidfire(
   $sf_api_request_timeout     = $facts['os_service_default'],
   $sf_volume_clone_timeout    = $facts['os_service_default'],
   $sf_volume_create_timeout   = $facts['os_service_default'],
-  $manage_volume_type         = false,
-  $extra_options              = {},
+  Boolean $manage_volume_type = false,
+  Hash $extra_options         = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   cinder_config {
     "${name}/volume_backend_name":        value => $volume_backend_name;

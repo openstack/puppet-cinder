@@ -100,14 +100,12 @@ define cinder::backend::rbd (
   $rbd_store_chunk_size             = $facts['os_service_default'],
   $report_dynamic_total_capacity    = $facts['os_service_default'],
   $rbd_exclusive_cinder_pool        = $facts['os_service_default'],
-  $manage_volume_type               = false,
-  $extra_options                    = {},
+  Boolean $manage_volume_type       = false,
+  Hash $extra_options               = {},
 ) {
 
   include cinder::deps
   include cinder::params
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   $rbd_cluster_name = basename($rbd_ceph_conf, '.conf')
   if $rbd_cluster_name == 'ceph' {

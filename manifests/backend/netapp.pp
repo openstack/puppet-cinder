@@ -170,33 +170,31 @@ define cinder::backend::netapp (
   $netapp_login,
   $netapp_password,
   $netapp_server_hostname,
-  $volume_backend_name              = $name,
-  $backend_availability_zone        = $facts['os_service_default'],
-  $netapp_server_port               = $facts['os_service_default'],
-  $netapp_size_multiplier           = $facts['os_service_default'],
-  $netapp_storage_family            = $facts['os_service_default'],
-  $netapp_storage_protocol          = 'nfs',
-  $netapp_transport_type            = $facts['os_service_default'],
-  $netapp_vserver                   = $facts['os_service_default'],
-  $expiry_thres_minutes             = $facts['os_service_default'],
-  $thres_avl_size_perc_start        = $facts['os_service_default'],
-  $thres_avl_size_perc_stop         = $facts['os_service_default'],
-  $nfs_shares                       = undef,
-  $nfs_shares_config                = '/etc/cinder/shares.conf',
-  $nfs_mount_options                = $facts['os_service_default'],
-  $netapp_host_type                 = $facts['os_service_default'],
-  $manage_volume_type               = false,
-  $extra_options                    = {},
-  $netapp_pool_name_search_pattern  = $facts['os_service_default'],
-  $nas_secure_file_operations       = $facts['os_service_default'],
-  $nas_secure_file_permissions      = $facts['os_service_default'],
+  $volume_backend_name                = $name,
+  $backend_availability_zone          = $facts['os_service_default'],
+  $netapp_server_port                 = $facts['os_service_default'],
+  $netapp_size_multiplier             = $facts['os_service_default'],
+  $netapp_storage_family              = $facts['os_service_default'],
+  $netapp_storage_protocol            = 'nfs',
+  $netapp_transport_type              = $facts['os_service_default'],
+  $netapp_vserver                     = $facts['os_service_default'],
+  $expiry_thres_minutes               = $facts['os_service_default'],
+  $thres_avl_size_perc_start          = $facts['os_service_default'],
+  $thres_avl_size_perc_stop           = $facts['os_service_default'],
+  Optional[Array[String]] $nfs_shares = undef,
+  $nfs_shares_config                  = '/etc/cinder/shares.conf',
+  $nfs_mount_options                  = $facts['os_service_default'],
+  $netapp_host_type                   = $facts['os_service_default'],
+  Boolean $manage_volume_type         = false,
+  Hash $extra_options                 = {},
+  $netapp_pool_name_search_pattern    = $facts['os_service_default'],
+  $nas_secure_file_operations         = $facts['os_service_default'],
+  $nas_secure_file_permissions        = $facts['os_service_default'],
   # DEPRECATED PARAMETERS
-  $netapp_copyoffload_tool_path     = undef,
+  $netapp_copyoffload_tool_path       = undef,
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   if $netapp_copyoffload_tool_path != undef {
     warning("The netapp_copyoffload_tool_path parameter has been deprecated \
@@ -204,8 +202,6 @@ and will be removed in a future release.")
   }
 
   if $nfs_shares {
-    validate_legacy(Array, 'validate_array', $nfs_shares)
-
     file {$nfs_shares_config:
       content => join($nfs_shares, "\n"),
       require => Anchor['cinder::install::end'],

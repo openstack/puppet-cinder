@@ -109,20 +109,20 @@ class cinder::api (
   $service_workers                = $facts['os_workers'],
   $package_ensure                 = 'present',
   $bind_host                      = $facts['os_service_default'],
-  $enabled                        = true,
-  $manage_service                 = true,
+  Boolean $enabled                = true,
+  Boolean $manage_service         = true,
   $ratelimits                     = $facts['os_service_default'],
   $default_volume_type            = $facts['os_service_default'],
   $ratelimits_factory =
     'cinder.api.v2.limits:RateLimitingMiddleware.factory',
-  $sync_db                        = true,
+  Boolean $sync_db                = true,
   $public_endpoint                = $facts['os_service_default'],
   $osapi_volume_base_url          = $facts['os_service_default'],
   $osapi_max_limit                = $facts['os_service_default'],
   $service_name                   = $::cinder::params::api_service,
   $enable_proxy_headers_parsing   = $facts['os_service_default'],
   $max_request_body_size          = $facts['os_service_default'],
-  $use_ssl                        = false,
+  Boolean $use_ssl                = false,
   $cert_file                      = $facts['os_service_default'],
   $key_file                       = $facts['os_service_default'],
   $ca_file                        = $facts['os_service_default'],
@@ -134,11 +134,6 @@ class cinder::api (
   include cinder::deps
   include cinder::params
   include cinder::policy
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
-  validate_legacy(Boolean, 'validate_bool', $sync_db)
-  validate_legacy(Boolean, 'validate_bool', $use_ssl)
 
   if $use_ssl {
     if is_service_default($cert_file) {

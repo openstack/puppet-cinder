@@ -69,7 +69,7 @@
 #
 #
 class cinder::backup::nfs (
-  $backup_share,
+  String[1] $backup_share,
   $backup_driver                = 'cinder.backup.drivers.nfs.NFSBackupDriver',
   $backup_file_size             = $facts['os_service_default'],
   $backup_sha_block_size_bytes  = $facts['os_service_default'],
@@ -81,8 +81,6 @@ class cinder::backup::nfs (
 ) {
 
   include cinder::deps
-
-  validate_legacy(String, 'validate_string', $backup_share)
 
   cinder_config {
     'DEFAULT/backup_mount_options':         value => $backup_mount_options;
