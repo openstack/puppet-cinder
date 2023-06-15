@@ -114,13 +114,11 @@ define cinder::backend::dellemc_powerflex(
   $san_thin_provision                       = $facts['os_service_default'],
   $driver_ssl_cert_verify                   = $facts['os_service_default'],
   $driver_ssl_cert_path                     = $facts['os_service_default'],
-  $manage_volume_type                       = false,
-  $extra_options                            = {},
+  Boolean $manage_volume_type               = false,
+  Hash $extra_options                       = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   cinder_config {
     "${name}/volume_driver":                            value => 'cinder.volume.drivers.dell_emc.powerflex.driver.PowerFlexDriver';

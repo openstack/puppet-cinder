@@ -32,16 +32,12 @@
 #   or Puppet catalog compilation will fail with duplicate resources.
 #
 class cinder::config (
-  $cinder_config          = {},
-  $api_paste_ini_config   = {},
-  $cinder_rootwrap_config = {},
+  Hash $cinder_config          = {},
+  Hash $api_paste_ini_config   = {},
+  Hash $cinder_rootwrap_config = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Hash, 'validate_hash', $cinder_config)
-  validate_legacy(Hash, 'validate_hash', $api_paste_ini_config)
-  validate_legacy(Hash, 'validate_hash', $cinder_rootwrap_config)
 
   create_resources('cinder_config', $cinder_config)
   create_resources('cinder_api_paste_ini', $api_paste_ini_config)

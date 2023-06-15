@@ -59,8 +59,8 @@
 #
 class cinder::volume (
   $package_ensure                       = 'present',
-  $enabled                              = true,
-  $manage_service                       = true,
+  Boolean $enabled                      = true,
+  Boolean $manage_service               = true,
   $cluster                              = $facts['os_service_default'],
   $volume_clear                         = $facts['os_service_default'],
   $volume_clear_size                    = $facts['os_service_default'],
@@ -74,9 +74,6 @@ class cinder::volume (
 
   include cinder::deps
   include cinder::params
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   if $::cinder::params::volume_package {
     package { 'cinder-volume':

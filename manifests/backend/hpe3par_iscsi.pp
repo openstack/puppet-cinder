@@ -86,13 +86,11 @@ define cinder::backend::hpe3par_iscsi(
   $hpe3par_cpg_snap            = 'userCPG',
   $hpe3par_snapshot_retention  = 48,
   $hpe3par_snapshot_expiration = 72,
-  $manage_volume_type          = false,
-  $extra_options               = {},
+  Boolean $manage_volume_type  = false,
+  Hash $extra_options          = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   if ($hpe3par_snapshot_expiration <= $hpe3par_snapshot_retention) {
     fail ('hpe3par_snapshot_expiration must be greater than hpe3par_snapshot_retention')

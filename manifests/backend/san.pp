@@ -81,27 +81,25 @@
 #
 define cinder::backend::san (
   $volume_driver,
-  $volume_backend_name       = $name,
-  $backend_availability_zone = $facts['os_service_default'],
-  $san_thin_provision        = $facts['os_service_default'],
-  $san_ip                    = $facts['os_service_default'],
-  $san_login                 = $facts['os_service_default'],
-  $san_password              = $facts['os_service_default'],
-  $san_private_key           = $facts['os_service_default'],
-  $san_clustername           = $facts['os_service_default'],
-  $san_ssh_port              = $facts['os_service_default'],
-  $san_api_port              = $facts['os_service_default'],
-  $san_is_local              = $facts['os_service_default'],
-  $ssh_conn_timeout          = $facts['os_service_default'],
-  $ssh_min_pool_conn         = $facts['os_service_default'],
-  $ssh_max_pool_conn         = $facts['os_service_default'],
-  $manage_volume_type        = false,
-  $extra_options             = {},
+  $volume_backend_name        = $name,
+  $backend_availability_zone  = $facts['os_service_default'],
+  $san_thin_provision         = $facts['os_service_default'],
+  $san_ip                     = $facts['os_service_default'],
+  $san_login                  = $facts['os_service_default'],
+  $san_password               = $facts['os_service_default'],
+  $san_private_key            = $facts['os_service_default'],
+  $san_clustername            = $facts['os_service_default'],
+  $san_ssh_port               = $facts['os_service_default'],
+  $san_api_port               = $facts['os_service_default'],
+  $san_is_local               = $facts['os_service_default'],
+  $ssh_conn_timeout           = $facts['os_service_default'],
+  $ssh_min_pool_conn          = $facts['os_service_default'],
+  $ssh_max_pool_conn          = $facts['os_service_default'],
+  Boolean $manage_volume_type = false,
+  Hash $extra_options         = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   cinder_config {
     "${name}/volume_backend_name":       value => $volume_backend_name;

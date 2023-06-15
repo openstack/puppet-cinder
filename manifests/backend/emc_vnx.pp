@@ -121,7 +121,7 @@ define cinder::backend::emc_vnx (
   $san_login                        = 'admin',
   $volume_backend_name              = $name,
   $backend_availability_zone        = $facts['os_service_default'],
-  $extra_options                    = {},
+  Hash $extra_options               = {},
   $volume_driver                    = 'cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver',
   $storage_protocol                 = 'iscsi',
   $destroy_empty_storage_group      = $facts['os_service_default'],
@@ -135,13 +135,11 @@ define cinder::backend::emc_vnx (
   $storage_vnx_auth_type            = $facts['os_service_default'],
   $storage_vnx_security_file_dir    = $facts['os_service_default'],
   $naviseccli_path                  = $facts['os_service_default'],
-  $manage_volume_type               = false,
+  Boolean $manage_volume_type       = false,
 ) {
 
   include cinder::deps
   include cinder::params
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   cinder_config {
     "${name}/default_timeout":                  value => $default_timeout;

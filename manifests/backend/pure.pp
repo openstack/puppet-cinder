@@ -100,7 +100,7 @@ define cinder::backend::pure(
   $pure_storage_protocol        = 'iSCSI',
   $use_chap_auth                = false,
   $use_multipath_for_image_xfer = true,
-  $manage_volume_type           = false,
+  Boolean $manage_volume_type   = false,
   $image_volume_cache_enabled   = true,
   $pure_host_personality        = $facts['os_service_default'],
   $pure_eradicate_on_delete     = $facts['os_service_default'],
@@ -109,12 +109,10 @@ define cinder::backend::pure(
   $pure_nvme_cidr_list          = $facts['os_service_default'],
   $pure_iscsi_cidr              = $facts['os_service_default'],
   $pure_iscsi_cidr_list         = $facts['os_service_default'],
-  $extra_options                = {},
+  Hash $extra_options           = {},
 ) {
 
   include cinder::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
   $volume_driver = $pure_storage_protocol ? {
     'FC'    => 'cinder.volume.drivers.pure.PureFCDriver',

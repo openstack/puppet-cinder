@@ -33,7 +33,7 @@
 #   Defaults to 'utf8_general_ci'
 #
 class cinder::db::mysql (
-  $password,
+  String[1] $password,
   $dbname        = 'cinder',
   $user          = 'cinder',
   $host          = '127.0.0.1',
@@ -43,8 +43,6 @@ class cinder::db::mysql (
 ) {
 
   include cinder::deps
-
-  validate_legacy(String, 'validate_string', $password)
 
   ::openstacklib::db::mysql { 'cinder':
     user          => $user,

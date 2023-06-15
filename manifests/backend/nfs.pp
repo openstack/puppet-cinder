@@ -92,7 +92,7 @@
 define cinder::backend::nfs (
   $volume_backend_name         = $name,
   $backend_availability_zone   = $facts['os_service_default'],
-  $nfs_servers                 = [],
+  Array[String] $nfs_servers   = [],
   $nfs_mount_attempts          = $facts['os_service_default'],
   $nfs_mount_options           = $facts['os_service_default'],
   $nfs_sparsed_volumes         = $facts['os_service_default'],
@@ -104,15 +104,13 @@ define cinder::backend::nfs (
   $nas_secure_file_permissions = $facts['os_service_default'],
   $nfs_snapshot_support        = $facts['os_service_default'],
   $nfs_qcow2_volumes           = $facts['os_service_default'],
-  $manage_volume_type          = false,
-  $extra_options               = {},
+  Boolean $manage_volume_type  = false,
+  Hash $extra_options          = {},
 ) {
 
   include cinder::deps
 
-  validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
-
-  file {$nfs_shares_config:
+  file { $nfs_shares_config:
     content => join($nfs_servers, "\n"),
     require => Anchor['cinder::install::end'],
     notify  => Anchor['cinder::service::begin'],
