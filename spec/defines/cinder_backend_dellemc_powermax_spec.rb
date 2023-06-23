@@ -30,6 +30,12 @@ describe 'cinder::backend::dellemc_powermax' do
         is_expected.to contain_cinder_config("#{title}/powermax_srp").with_value('SRP_1')
         is_expected.to contain_cinder_config("#{title}/powermax_port_groups").with_value('[OS-ISCSI-PG]')
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('<SERVICE DEFAULT>')
+
+        is_expected.to contain_package('pywbem').with(
+          :ensure => 'installed',
+          :name   => platform_params[:pywbem_package_name],
+          :tag    => 'cinder-support-package',
+        )
       end
     end
 
@@ -93,6 +99,19 @@ describe 'cinder::backend::dellemc_powermax' do
     context "on #{os}" do
       let (:facts) do
         facts.merge!(OSDefaults.get_facts())
+      end
+
+      let :platform_params do
+        case facts[:os]['family']
+        when 'Debian'
+          {
+            :pywbem_package_name => 'python-pywbem'
+          }
+        when 'RedHat'
+          {
+            :pywbem_package_name => 'pywbem'
+          }
+        end
       end
 
       it_behaves_like 'cinder::backend::dellemc_powermax'
