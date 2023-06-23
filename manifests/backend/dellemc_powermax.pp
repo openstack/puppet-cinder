@@ -67,6 +67,7 @@ define cinder::backend::dellemc_powermax (
 ) {
 
   include cinder::deps
+  include cinder::params
 
   validate_legacy(Boolean, 'validate_bool', $manage_volume_type)
 
