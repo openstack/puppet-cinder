@@ -67,6 +67,7 @@ class cinder::policy (
     file_group   => $::cinder::params::group,
     file_format  => 'yaml',
     purge_config => $purge_config,
+    tag          => 'cinder',
   }
 
   create_resources('openstacklib::policy', { $policy_path => $policy_parameters })
