@@ -190,7 +190,7 @@
 #   (optional) Default availability zone for new volumes.
 #   If not set, the storage_availability_zone option value is used as
 #   the default for new volumes.
-#   Defaults to false
+#   Defaults to undef
 #
 # [*allow_availability_zone_fallback*]
 #   (optional) Allow availability zone fallback if preferred availability zone cannot be deployed to.
@@ -299,7 +299,7 @@ class cinder (
   $package_ensure                       = 'present',
   $api_paste_config                     = '/etc/cinder/api-paste.ini',
   $storage_availability_zone            = 'nova',
-  $default_availability_zone            = false,
+  $default_availability_zone            = undef,
   $allow_availability_zone_fallback     = $facts['os_service_default'],
   $lock_path                            = $::cinder::params::lock_path,
   $image_conversion_dir                 = $facts['os_service_default'],
@@ -376,6 +376,10 @@ class cinder (
   }
 
   if ! $default_availability_zone {
+    if $default_availability_zone != undef {
+      warning("Usage of a false value for the default_availability_zone parameter \
+is deprecated. Use undef instead.")
+    }
     $default_availability_zone_real = $storage_availability_zone
   } else {
     $default_availability_zone_real = $default_availability_zone
