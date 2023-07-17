@@ -309,7 +309,7 @@ class cinder (
   $image_conversion_disable             = $facts['os_service_default'],
   $host                                 = $facts['os_service_default'],
   $enable_new_services                  = $facts['os_service_default'],
-  $purge_config                         = false,
+  Boolean $purge_config                 = false,
   $enable_force_upload                  = $facts['os_service_default'],
   $cinder_internal_tenant_project_id    = $facts['os_service_default'],
   $cinder_internal_tenant_user_id       = $facts['os_service_default'],
