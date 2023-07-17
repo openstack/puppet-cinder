@@ -51,9 +51,7 @@ describe 'cinder::backend::ibm_svf' do
       end
 
       it 'should raise an error' do
-        is_expected.to compile.and_raise_error(
-          /The cinder::backend::ibm_svf storwize_svc_connection_protocol specified is not valid. It should be iSCSI or FC/
-        )
+        is_expected.to compile.and_raise_error(/Evaluation Error/)
       end
     end
 

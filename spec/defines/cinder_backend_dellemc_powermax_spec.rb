@@ -75,9 +75,7 @@ describe 'cinder::backend::dellemc_powermax' do
       end
 
       it 'should raise an error' do
-        is_expected.to compile.and_raise_error(
-          /The cinder::backend::dellemc_powermax powermax_storage_protocol specified is not valid. It should be iSCSI or FC/
-        )
+        is_expected.to compile.and_raise_error(/Evaluation Error/)
       end
     end
 

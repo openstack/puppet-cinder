@@ -95,34 +95,29 @@
 define cinder::backend::pure(
   $san_ip,
   $pure_api_token,
-  $volume_backend_name          = $name,
-  $backend_availability_zone    = $facts['os_service_default'],
-  $pure_storage_protocol        = 'iSCSI',
-  $use_chap_auth                = false,
-  $use_multipath_for_image_xfer = true,
-  Boolean $manage_volume_type   = false,
-  $image_volume_cache_enabled   = true,
-  $pure_host_personality        = $facts['os_service_default'],
-  $pure_eradicate_on_delete     = $facts['os_service_default'],
-  $pure_nvme_transport          = $facts['os_service_default'],
-  $pure_nvme_cidr               = $facts['os_service_default'],
-  $pure_nvme_cidr_list          = $facts['os_service_default'],
-  $pure_iscsi_cidr              = $facts['os_service_default'],
-  $pure_iscsi_cidr_list         = $facts['os_service_default'],
-  Hash $extra_options           = {},
+  $volume_backend_name                               = $name,
+  $backend_availability_zone                         = $facts['os_service_default'],
+  Enum['iSCSI', 'FC', 'NVMe'] $pure_storage_protocol = 'iSCSI',
+  $use_chap_auth                                     = false,
+  $use_multipath_for_image_xfer                      = true,
+  Boolean $manage_volume_type                        = false,
+  $image_volume_cache_enabled                        = true,
+  $pure_host_personality                             = $facts['os_service_default'],
+  $pure_eradicate_on_delete                          = $facts['os_service_default'],
+  $pure_nvme_transport                               = $facts['os_service_default'],
+  $pure_nvme_cidr                                    = $facts['os_service_default'],
+  $pure_nvme_cidr_list                               = $facts['os_service_default'],
+  $pure_iscsi_cidr                                   = $facts['os_service_default'],
+  $pure_iscsi_cidr_list                              = $facts['os_service_default'],
+  Hash $extra_options                                = {},
 ) {
 
   include cinder::deps
 
   $volume_driver = $pure_storage_protocol ? {
     'FC'    => 'cinder.volume.drivers.pure.PureFCDriver',
-    'iSCSI' => 'cinder.volume.drivers.pure.PureISCSIDriver',
     'NVMe'  => 'cinder.volume.drivers.pure.PureNVMEDriver',
-    default => undef,
-  }
-
-  if ! $volume_driver {
-    fail('Invalid pure_storage_protocol. It should be FC, iSCSI or NVMe')
+    default => 'cinder.volume.drivers.pure.PureISCSIDriver',
   }
 
   cinder_config {
