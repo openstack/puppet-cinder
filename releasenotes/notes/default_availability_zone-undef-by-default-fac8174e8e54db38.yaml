@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    Usage of `false` for the ``cinder::default_availability_zone`` parameter
+    has been deprecated and will be removed in a future release. Use ``undef``
+    (which is the new default value) instead.
