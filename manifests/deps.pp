@@ -81,10 +81,6 @@ class cinder::deps {
   Package<| tag == 'openstack'|>
   ~> Anchor['cinder::service::end']
 
-  # The following resources need to be provisioned after the service is up.
-  Anchor['cinder::service::end']
-  -> Cinder_type<||>
-
   # Installation or config changes will always restart services.
   Anchor['cinder::install::end'] ~> Anchor['cinder::service::begin']
   Anchor['cinder::config::end']  ~> Anchor['cinder::service::begin']
