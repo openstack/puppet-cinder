@@ -90,22 +90,22 @@
 #     { 'nfs_backend/param1' => { 'value' => value1 } }
 #
 define cinder::backend::nfs (
-  $volume_backend_name         = $name,
-  $backend_availability_zone   = $facts['os_service_default'],
-  Array[String] $nfs_servers   = [],
-  $nfs_mount_attempts          = $facts['os_service_default'],
-  $nfs_mount_options           = $facts['os_service_default'],
-  $nfs_sparsed_volumes         = $facts['os_service_default'],
-  $nfs_mount_point_base        = $facts['os_service_default'],
-  $nfs_shares_config           = '/etc/cinder/shares.conf',
-  $nfs_used_ratio              = $facts['os_service_default'],
-  $nfs_oversub_ratio           = $facts['os_service_default'],
-  $nas_secure_file_operations  = $facts['os_service_default'],
-  $nas_secure_file_permissions = $facts['os_service_default'],
-  $nfs_snapshot_support        = $facts['os_service_default'],
-  $nfs_qcow2_volumes           = $facts['os_service_default'],
-  Boolean $manage_volume_type  = false,
-  Hash $extra_options          = {},
+  $volume_backend_name                    = $name,
+  $backend_availability_zone              = $facts['os_service_default'],
+  Array[String] $nfs_servers              = [],
+  $nfs_mount_attempts                     = $facts['os_service_default'],
+  $nfs_mount_options                      = $facts['os_service_default'],
+  $nfs_sparsed_volumes                    = $facts['os_service_default'],
+  $nfs_mount_point_base                   = $facts['os_service_default'],
+  Stdlib::Absolutepath $nfs_shares_config = '/etc/cinder/shares.conf',
+  $nfs_used_ratio                         = $facts['os_service_default'],
+  $nfs_oversub_ratio                      = $facts['os_service_default'],
+  $nas_secure_file_operations             = $facts['os_service_default'],
+  $nas_secure_file_permissions            = $facts['os_service_default'],
+  $nfs_snapshot_support                   = $facts['os_service_default'],
+  $nfs_qcow2_volumes                      = $facts['os_service_default'],
+  Boolean $manage_volume_type             = false,
+  Hash $extra_options                     = {},
 ) {
 
   include cinder::deps
