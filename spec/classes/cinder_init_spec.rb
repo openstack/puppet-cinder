@@ -25,20 +25,24 @@ describe 'cinder' do
           :control_exchange          => '<SERVICE DEFAULT>'
         )
         is_expected.to contain_oslo__messaging__rabbit('cinder_config').with(
-          :rabbit_use_ssl              => '<SERVICE DEFAULT>',
-          :heartbeat_timeout_threshold => '<SERVICE DEFAULT>',
-          :heartbeat_rate              => '<SERVICE DEFAULT>',
-          :heartbeat_in_pthread        => '<SERVICE DEFAULT>',
-          :kombu_reconnect_delay       => '<SERVICE DEFAULT>',
-          :kombu_failover_strategy     => '<SERVICE DEFAULT>',
-          :amqp_durable_queues         => '<SERVICE DEFAULT>',
-          :kombu_compression           => '<SERVICE DEFAULT>',
-          :kombu_ssl_ca_certs          => '<SERVICE DEFAULT>',
-          :kombu_ssl_certfile          => '<SERVICE DEFAULT>',
-          :kombu_ssl_keyfile           => '<SERVICE DEFAULT>',
-          :kombu_ssl_version           => '<SERVICE DEFAULT>',
-          :rabbit_ha_queues            => '<SERVICE DEFAULT>',
-          :rabbit_retry_interval       => '<SERVICE DEFAULT>',
+          :rabbit_use_ssl                  => '<SERVICE DEFAULT>',
+          :heartbeat_timeout_threshold     => '<SERVICE DEFAULT>',
+          :heartbeat_rate                  => '<SERVICE DEFAULT>',
+          :heartbeat_in_pthread            => '<SERVICE DEFAULT>',
+          :kombu_reconnect_delay           => '<SERVICE DEFAULT>',
+          :kombu_failover_strategy         => '<SERVICE DEFAULT>',
+          :amqp_durable_queues             => '<SERVICE DEFAULT>',
+          :kombu_compression               => '<SERVICE DEFAULT>',
+          :kombu_ssl_ca_certs              => '<SERVICE DEFAULT>',
+          :kombu_ssl_certfile              => '<SERVICE DEFAULT>',
+          :kombu_ssl_keyfile               => '<SERVICE DEFAULT>',
+          :kombu_ssl_version               => '<SERVICE DEFAULT>',
+          :rabbit_ha_queues                => '<SERVICE DEFAULT>',
+          :rabbit_retry_interval           => '<SERVICE DEFAULT>',
+          :rabbit_quorum_queue             => '<SERVICE DEFAULT>',
+          :rabbit_quorum_delivery_limit    => '<SERVICE DEFAULT>',
+          :rabbit_quorum_max_memory_length => '<SERVICE DEFAULT>',
+          :rabbit_quorum_max_memory_bytes  => '<SERVICE DEFAULT>',
         )
         is_expected.to contain_oslo__messaging__amqp('cinder_config').with(
           :server_request_prefix => '<SERVICE DEFAULT>',
@@ -101,19 +105,27 @@ describe 'cinder' do
       ) }
     end
 
-    context 'with rabbitmq heartbeats' do
+    context 'with rabbitmq options' do
       let :params do
         req_params.merge(
           :rabbit_heartbeat_timeout_threshold => '60',
           :rabbit_heartbeat_rate              => '10',
-          :rabbit_heartbeat_in_pthread        => true
+          :rabbit_heartbeat_in_pthread        => true,
+          :rabbit_quorum_queue                => true,
+          :rabbit_quorum_delivery_limit       => 3,
+          :rabbit_quorum_max_memory_length    => 5,
+          :rabbit_quorum_max_memory_bytes     => 1073741824,
         )
       end
 
       it { is_expected.to contain_oslo__messaging__rabbit('cinder_config').with(
-        :heartbeat_timeout_threshold => '60',
-        :heartbeat_rate              => '10',
-        :heartbeat_in_pthread        => true,
+        :heartbeat_timeout_threshold     => '60',
+        :heartbeat_rate                  => '10',
+        :heartbeat_in_pthread            => true,
+        :rabbit_quorum_queue             => true,
+        :rabbit_quorum_delivery_limit    => 3,
+        :rabbit_quorum_max_memory_length => 5,
+        :rabbit_quorum_max_memory_bytes  => 1073741824,
       ) }
     end
 
