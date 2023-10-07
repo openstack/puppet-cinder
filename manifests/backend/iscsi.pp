@@ -4,11 +4,11 @@
 # === Parameters:
 #
 # [*target_ip_address*]
-#   (optional) The IP address that the iSCSI daemon is listening on.
-#   Defaults to undef.
+#   (Optional) The IP address that the iSCSI daemon is listening on.
+#   Defaults to $facts['os_service_default'].
 #
 # [*volume_backend_name*]
-#   (optional) Allows for the volume_backend_name to be separate of $name.
+#   (Optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
 #
 # [*backend_availability_zone*]
@@ -31,7 +31,7 @@
 #
 # [*target_helper*]
 #   (Optional) iSCSI target user-land tool to use.
-#   Defaults to '$::cinder::params::target_helper'.
+#   Defaults to $::cinder::params::target_helper.
 #
 # [*target_protocol*]
 #   (Optional) Protocol to use as iSCSI driver
@@ -44,19 +44,19 @@
 #   Defaults to false.
 #
 # [*extra_options*]
-#   (optional) Hash of extra options to pass to the backend stanza
+#   (Optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
 #   Example :
 #     { 'iscsi_backend/param1' => { 'value' => value1 } }
 #
 define cinder::backend::iscsi (
-  $target_ip_address          = undef,
+  $target_ip_address          = $facts['os_service_default'],
   $volume_backend_name        = $name,
   $backend_availability_zone  = $facts['os_service_default'],
   $volume_driver              = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
   $volume_group               = $facts['os_service_default'],
   $volumes_dir                = '/var/lib/cinder/volumes',
-  $target_helper              = $::cinder::params::target_helper,
+  $target_helper              = undef,
   $target_protocol            = $facts['os_service_default'],
   Boolean $manage_volume_type = false,
   Hash $extra_options         = {},
@@ -64,6 +64,11 @@ define cinder::backend::iscsi (
 
   include cinder::deps
   include cinder::params
+
+  $target_helper_real = $target_helper ? {
+    undef   => $::cinder::params::target_helper,
+    default => $target_helper,
+  }
 
   # NOTE(mnaser): Cinder requires /usr/sbin/thin_check to create volumes which
   #               does not get installed with Cinder (see LP#1615134).
@@ -79,7 +84,7 @@ define cinder::backend::iscsi (
     "${name}/backend_availability_zone":  value => $backend_availability_zone;
     "${name}/volume_driver":              value => $volume_driver;
     "${name}/target_ip_address":          value => $target_ip_address;
-    "${name}/target_helper":              value => $target_helper;
+    "${name}/target_helper":              value => $target_helper_real;
     "${name}/volume_group":               value => $volume_group;
     "${name}/volumes_dir":                value => $volumes_dir;
     "${name}/target_protocol":            value => $target_protocol;
@@ -94,7 +99,7 @@ define cinder::backend::iscsi (
 
   create_resources('cinder_config', $extra_options)
 
-  case $target_helper {
+  case $target_helper_real {
     'tgtadm': {
       ensure_packages('tgt', {
         'ensure' => present,
@@ -133,7 +138,7 @@ define cinder::backend::iscsi (
     }
 
     default: {
-      fail("Unsupported target helper: ${target_helper}.")
+      fail("Unsupported target helper: ${target_helper_real}.")
     }
   }
 
