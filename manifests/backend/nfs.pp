@@ -2,6 +2,9 @@
 #
 # === Parameters
 #
+# [*nfs_servers*]
+#   (Required) List of available NFS shares.
+#
 # [*volume_backend_name*]
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
@@ -11,10 +14,6 @@
 #   If not set, the storage_availability_zone option value
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
-#
-# [*nfs_servers*]
-#   (Required) Description
-#   Defaults to '[]'
 #
 # [*nfs_mount_attempts*]
 #   (optional) The number of attempts to mount nfs shares before raising an
@@ -90,9 +89,9 @@
 #     { 'nfs_backend/param1' => { 'value' => value1 } }
 #
 define cinder::backend::nfs (
+  Array[String[1], 1] $nfs_servers,
   $volume_backend_name                    = $name,
   $backend_availability_zone              = $facts['os_service_default'],
-  Array[String] $nfs_servers              = [],
   $nfs_mount_attempts                     = $facts['os_service_default'],
   $nfs_mount_options                      = $facts['os_service_default'],
   $nfs_sparsed_volumes                    = $facts['os_service_default'],

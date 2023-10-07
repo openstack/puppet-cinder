@@ -5,24 +5,54 @@ describe 'cinder::backend::nfs' do
 
   let :params do
     {
-      :backend_availability_zone   => 'my_zone',
-      :nfs_servers                 => ['10.10.10.10:/shares', '10.10.10.10:/shares2'],
-      :nfs_mount_attempts          => '4',
-      :nfs_mount_options           => 'vers=3',
-      :nfs_shares_config           => '/etc/cinder/other_shares.conf',
-      :nfs_sparsed_volumes         => true,
-      :nfs_mount_point_base        => '/cinder_mount_point',
-      :nfs_used_ratio              => '0.7',
-      :nfs_oversub_ratio           => '0.9',
-      :nas_secure_file_operations  => 'auto',
-      :nas_secure_file_permissions => 'false',
-      :nfs_snapshot_support        => 'true',
-      :nfs_qcow2_volumes           => 'true',
+      :nfs_servers => ['10.10.10.10:/shares', '10.10.10.10:/shares2'],
     }
   end
 
   shared_examples 'cinder::backend::nfs' do
-    context 'nfs volume driver' do
+    context 'with defaults' do
+      it {
+        is_expected.to contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
+        is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.nfs.NfsDriver')
+        is_expected.to contain_cinder_config('hippo/nfs_shares_config').with_value('/etc/cinder/shares.conf')
+        is_expected.to contain_cinder_config('hippo/nfs_mount_attempts').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nfs_mount_options').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nfs_sparsed_volumes').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nfs_mount_point_base').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nfs_used_ratio').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nfs_oversub_ratio').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nas_secure_file_operations').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nas_secure_file_permissions').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nfs_snapshot_support').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/nfs_qcow2_volumes').with_value('<SERVICE DEFAULT>')
+      }
+
+      it { is_expected.to contain_file('/etc/cinder/shares.conf').with(
+        :content => "10.10.10.10:/shares\n10.10.10.10:/shares2",
+        :require => 'Anchor[cinder::install::end]',
+        :notify  => 'Anchor[cinder::service::begin]'
+      )}
+    end
+
+    context 'with parameters' do
+      before :each do
+        params.merge!({
+          :backend_availability_zone   => 'my_zone',
+          :nfs_mount_attempts          => '4',
+          :nfs_mount_options           => 'vers=3',
+          :nfs_shares_config           => '/etc/cinder/other_shares.conf',
+          :nfs_sparsed_volumes         => true,
+          :nfs_mount_point_base        => '/cinder_mount_point',
+          :nfs_used_ratio              => '0.7',
+          :nfs_oversub_ratio           => '0.9',
+          :nas_secure_file_operations  => 'auto',
+          :nas_secure_file_permissions => 'false',
+          :nfs_snapshot_support        => 'true',
+          :nfs_qcow2_volumes           => 'true',
+        })
+      end
+
       it {
         is_expected.to contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
         is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('my_zone')
