@@ -79,6 +79,12 @@ define cinder::backend::dellemc_powermax (
     fail('The cinder::backend::dellemc_powermax powermax_storage_protocol specified is not valid. It should be iSCSI or FC')
   }
 
+  $_powermax_port_groups = join(any2array($powermax_port_groups), ',')
+  $powermax_port_groups_real = $_powermax_port_groups ? {
+    /^\[.*\]$/ => $_powermax_port_groups,
+    default    => "[${_powermax_port_groups}]"
+  }
+
   cinder_config {
     "${name}/volume_backend_name":       value => $volume_backend_name;
     "${name}/backend_availability_zone": value => $backend_availability_zone;
@@ -88,7 +94,7 @@ define cinder::backend::dellemc_powermax (
     "${name}/san_password":              value => $san_password, secret => true;
     "${name}/powermax_array":            value => $powermax_array;
     "${name}/powermax_srp":              value => $powermax_srp;
-    "${name}/powermax_port_groups":      value => $powermax_port_groups;
+    "${name}/powermax_port_groups":      value => $powermax_port_groups_real;
   }
 
   if $manage_volume_type {

@@ -39,6 +39,24 @@ describe 'cinder::backend::dellemc_powermax' do
       end
     end
 
+    context 'with powermax_port_groups without bounds' do
+      before do
+        params.merge!(:powermax_port_groups => 'OS-ISCSI-PG')
+      end
+      it 'should add bounds' do
+        is_expected.to contain_cinder_config("#{title}/powermax_port_groups").with_value('[OS-ISCSI-PG]')
+      end
+    end
+
+    context 'with powermax_port_groups set by a list' do
+      before do
+        params.merge!(:powermax_port_groups => ['OS-ISCSI-PG1', 'OS-ISCSI-PG2'])
+      end
+      it 'should render a comma-separated list with bounds' do
+        is_expected.to contain_cinder_config("#{title}/powermax_port_groups").with_value('[OS-ISCSI-PG1,OS-ISCSI-PG2]')
+      end
+    end
+
     context 'with powermax_storage_protocol set to FC' do
       before do
         params.merge!(:powermax_storage_protocol => 'FC',)
