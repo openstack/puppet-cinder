@@ -98,35 +98,30 @@ define cinder::backend::dellemc_sc (
   $san_login,
   $san_password,
   $dell_sc_ssn,
-  $target_ip_address            = undef,
-  $volume_backend_name          = $name,
-  $backend_availability_zone    = $facts['os_service_default'],
-  $dell_sc_api_port             = $facts['os_service_default'],
-  $dell_sc_server_folder        = 'srv',
-  $dell_sc_verify_cert          = $facts['os_service_default'],
-  $dell_sc_volume_folder        = 'vol',
-  $target_port                  = $facts['os_service_default'],
-  $excluded_domain_ips          = $facts['os_service_default'],
-  $secondary_san_ip             = $facts['os_service_default'],
-  $secondary_san_login          = $facts['os_service_default'],
-  $secondary_san_password       = $facts['os_service_default'],
-  $secondary_sc_api_port        = $facts['os_service_default'],
-  Boolean $manage_volume_type   = false,
-  $use_multipath_for_image_xfer = true,
-  $sc_storage_protocol          = 'iSCSI',
-  Hash $extra_options           = {},
+  $target_ip_address                       = undef,
+  $volume_backend_name                     = $name,
+  $backend_availability_zone               = $facts['os_service_default'],
+  $dell_sc_api_port                        = $facts['os_service_default'],
+  $dell_sc_server_folder                   = 'srv',
+  $dell_sc_verify_cert                     = $facts['os_service_default'],
+  $dell_sc_volume_folder                   = 'vol',
+  $target_port                             = $facts['os_service_default'],
+  $excluded_domain_ips                     = $facts['os_service_default'],
+  $secondary_san_ip                        = $facts['os_service_default'],
+  $secondary_san_login                     = $facts['os_service_default'],
+  $secondary_san_password                  = $facts['os_service_default'],
+  $secondary_sc_api_port                   = $facts['os_service_default'],
+  Boolean $manage_volume_type              = false,
+  $use_multipath_for_image_xfer            = true,
+  Enum['iSCSI', 'FC'] $sc_storage_protocol = 'iSCSI',
+  Hash $extra_options                      = {},
 ) {
 
   include cinder::deps
 
-  if $sc_storage_protocol == 'iSCSI' {
-    $volume_driver = 'cinder.volume.drivers.dell_emc.sc.storagecenter_iscsi.SCISCSIDriver'
-  }
-  elsif $sc_storage_protocol == 'FC' {
-    $volume_driver = 'cinder.volume.drivers.dell_emc.sc.storagecenter_fc.SCFCDriver'
-  }
-  else {
-    fail('The cinder::backend::dellemc_sc sc_storage_protocol specified is not valid. It should be iSCSI or FC')
+  $volume_driver = $sc_storage_protocol ? {
+    'FC'    => 'cinder.volume.drivers.dell_emc.sc.storagecenter_fc.SCFCDriver',
+    default => 'cinder.volume.drivers.dell_emc.sc.storagecenter_iscsi.SCISCSIDriver',
   }
 
   cinder_config {

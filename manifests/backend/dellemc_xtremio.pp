@@ -67,27 +67,22 @@ define cinder::backend::dellemc_xtremio (
   $san_login,
   $san_password,
   $xtremio_cluster_name,
-  $volume_backend_name               = $name,
-  $backend_availability_zone         = $facts['os_service_default'],
-  $xtremio_array_busy_retry_count    = $facts['os_service_default'],
-  $xtremio_array_busy_retry_interval = $facts['os_service_default'],
-  $xtremio_volumes_per_glance_cache  = $facts['os_service_default'],
-  Boolean $manage_volume_type        = false,
-  $xtremio_storage_protocol          = 'iSCSI',
-  $xtremio_ports                     = $facts['os_service_default'],
-  Hash $extra_options                = {},
+  $volume_backend_name                          = $name,
+  $backend_availability_zone                    = $facts['os_service_default'],
+  $xtremio_array_busy_retry_count               = $facts['os_service_default'],
+  $xtremio_array_busy_retry_interval            = $facts['os_service_default'],
+  $xtremio_volumes_per_glance_cache             = $facts['os_service_default'],
+  Boolean $manage_volume_type                   = false,
+  Enum['iSCSI', 'FC'] $xtremio_storage_protocol = 'iSCSI',
+  $xtremio_ports                                = $facts['os_service_default'],
+  Hash $extra_options                           = {},
 ) {
 
   include cinder::deps
 
-  if $xtremio_storage_protocol == 'iSCSI' {
-    $driver = 'dell_emc.xtremio.XtremIOISCSIDriver'
-  }
-  elsif $xtremio_storage_protocol == 'FC' {
-    $driver = 'dell_emc.xtremio.XtremIOFCDriver'
-  }
-  else {
-    fail('The cinder::backend::dellemc_xtremio xtremio_storage_protocol specified is not valid. It should be iSCSI or FC')
+  $driver = $xtremio_storage_protocol ? {
+    'FC'    => 'dell_emc.xtremio.XtremIOFCDriver',
+    default => 'dell_emc.xtremio.XtremIOISCSIDriver',
   }
 
   cinder_config {

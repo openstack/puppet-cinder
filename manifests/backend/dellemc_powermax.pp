@@ -59,24 +59,19 @@ define cinder::backend::dellemc_powermax (
   $powermax_array,
   $powermax_srp,
   $powermax_port_groups,
-  $powermax_storage_protocol     = 'iSCSI',
-  $volume_backend_name           = $name,
-  $backend_availability_zone     = $facts['os_service_default'],
-  Hash $extra_options            = {},
-  Boolean $manage_volume_type    = false,
+  Enum['iSCSI', 'FC'] $powermax_storage_protocol = 'iSCSI',
+  $volume_backend_name                           = $name,
+  $backend_availability_zone                     = $facts['os_service_default'],
+  Hash $extra_options                            = {},
+  Boolean $manage_volume_type                    = false,
 ) {
 
   include cinder::deps
   include cinder::params
 
-  if $powermax_storage_protocol == 'iSCSI' {
-    $volume_driver = 'cinder.volume.drivers.dell_emc.powermax.iscsi.PowerMaxISCSIDriver'
-  }
-  elsif $powermax_storage_protocol == 'FC' {
-    $volume_driver = 'cinder.volume.drivers.dell_emc.powermax.fc.PowerMaxFCDriver'
-  }
-  else {
-    fail('The cinder::backend::dellemc_powermax powermax_storage_protocol specified is not valid. It should be iSCSI or FC')
+  $volume_driver = $powermax_storage_protocol ? {
+    'FC'    => 'cinder.volume.drivers.dell_emc.powermax.fc.PowerMaxFCDriver',
+    default => 'cinder.volume.drivers.dell_emc.powermax.iscsi.PowerMaxISCSIDriver',
   }
 
   $_powermax_port_groups = join(any2array($powermax_port_groups), ',')

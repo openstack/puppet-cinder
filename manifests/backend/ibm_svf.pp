@@ -70,29 +70,24 @@ define cinder::backend::ibm_svf (
   $san_login,
   $san_password,
   $storwize_svc_volpool_name,
-  $storwize_svc_allow_tenant_qos     = $facts['os_service_default'],
-  $storwize_svc_connection_protocol  = 'iSCSI',
-  $storwize_svc_iscsi_chap_enabled   = $facts['os_service_default'],
-  $storwize_svc_retain_aux_volume    = $facts['os_service_default'],
-  $storwize_portset                  = $facts['os_service_default'],
-  $volume_backend_name               = $name,
-  $backend_availability_zone         = $facts['os_service_default'],
-  Hash $extra_options                = {},
-  Boolean $manage_volume_type        = false,
+  $storwize_svc_allow_tenant_qos                        = $facts['os_service_default'],
+  Enum['iSCSI', 'FC'] $storwize_svc_connection_protocol = 'iSCSI',
+  $storwize_svc_iscsi_chap_enabled                      = $facts['os_service_default'],
+  $storwize_svc_retain_aux_volume                       = $facts['os_service_default'],
+  $storwize_portset                                     = $facts['os_service_default'],
+  $volume_backend_name                                  = $name,
+  $backend_availability_zone                            = $facts['os_service_default'],
+  Hash $extra_options                                   = {},
+  Boolean $manage_volume_type                           = false,
 ) {
 
   include cinder::deps
 
   # NOTE: Svf was earlier called as storwize/svc driver, so the cinder
   # configuration parameters were named accordingly.
-  if $storwize_svc_connection_protocol == 'iSCSI' {
-    $volume_driver = 'cinder.volume.drivers.ibm.storwize_svc.storwize_svc_iscsi.StorwizeSVCISCSIDriver'
-  }
-  elsif $storwize_svc_connection_protocol == 'FC' {
-    $volume_driver = 'cinder.volume.drivers.ibm.storwize_svc.storwize_svc_fc.StorwizeSVCFCDriver'
-  }
-  else {
-    fail('The cinder::backend::ibm_svf storwize_svc_connection_protocol specified is not valid. It should be iSCSI or FC')
+  $volume_driver = $storwize_svc_connection_protocol ? {
+    'FC'    => 'cinder.volume.drivers.ibm.storwize_svc.storwize_svc_fc.StorwizeSVCFCDriver',
+    default => 'cinder.volume.drivers.ibm.storwize_svc.storwize_svc_iscsi.StorwizeSVCISCSIDriver',
   }
 
   cinder_config {

@@ -46,25 +46,17 @@ define cinder::backend::dellemc_powerstore (
   $san_ip,
   $san_login,
   $san_password,
-  $powerstore_ports            = $facts['os_service_default'],
-  $storage_protocol            = 'iSCSI',
-  $volume_backend_name         = $name,
-  $backend_availability_zone   = $facts['os_service_default'],
-  Boolean $manage_volume_type  = false,
-  Hash $extra_options          = {},
+  $powerstore_ports                     = $facts['os_service_default'],
+  Enum['iSCSI', 'FC'] $storage_protocol = 'iSCSI',
+  $volume_backend_name                  = $name,
+  $backend_availability_zone            = $facts['os_service_default'],
+  Boolean $manage_volume_type           = false,
+  Hash $extra_options                   = {},
 ) {
 
   include cinder::deps
 
-  if $storage_protocol == 'iSCSI' {
-    $driver = 'dell_emc.powerstore.driver.PowerStoreDriver'
-  }
-  elsif $storage_protocol == 'FC' {
-    $driver = 'dell_emc.powerstore.driver.PowerStoreDriver'
-  }
-  else {
-    fail('The cinder::backend::dellemc_powerstore storage_protocol specified is not valid. It should be iSCSI or FC')
-  }
+  $driver = 'dell_emc.powerstore.driver.PowerStoreDriver'
 
   cinder_config {
     "${name}/volume_backend_name":       value => $volume_backend_name;
