@@ -53,6 +53,10 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*reserved_percentage*]
+#   (Optional) The percentage of backend capacity is reserved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -77,6 +81,7 @@ define cinder::backend::ibm_svf (
   $storwize_portset                                     = $facts['os_service_default'],
   $volume_backend_name                                  = $name,
   $backend_availability_zone                            = $facts['os_service_default'],
+  $reserved_percentage                                  = $facts['os_service_default'],
   Hash $extra_options                                   = {},
   Boolean $manage_volume_type                           = false,
 ) {
@@ -93,6 +98,7 @@ define cinder::backend::ibm_svf (
   cinder_config {
     "${name}/volume_backend_name":             value => $volume_backend_name;
     "${name}/backend_availability_zone":       value => $backend_availability_zone;
+    "${name}/reserved_percentage":             value => $reserved_percentage;
     "${name}/volume_driver":                   value => $volume_driver;
     "${name}/san_ip":                          value => $san_ip;
     "${name}/san_login":                       value => $san_login;

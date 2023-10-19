@@ -30,6 +30,7 @@ describe 'cinder::backend::ibm_svf' do
         is_expected.to contain_cinder_config("#{title}/storwize_svc_retain_aux_volume").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/storwize_portset").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/reserved_percentage").with_value('<SERVICE DEFAULT>')
       end
     end
 
@@ -55,13 +56,17 @@ describe 'cinder::backend::ibm_svf' do
       end
     end
 
-    context 'with custom backend_availability_zone' do
+    context 'with parameters' do
       before do
-        params.merge!(:backend_availability_zone => 'my_zone')
+        params.merge!(
+          :backend_availability_zone => 'my_zone',
+          :reserved_percentage       => 10,
+        )
       end
 
-      it 'should configure the backend_availability_zone' do
+      it 'should configure the customized values' do
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('my_zone')
+        is_expected.to contain_cinder_config("#{title}/reserved_percentage").with_value(10)
       end
     end
 

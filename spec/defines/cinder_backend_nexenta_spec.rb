@@ -24,6 +24,7 @@ describe 'cinder::backend::nexenta' do
       :nexenta_rest_port           => '8457',
       :volume_driver               => 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver',
       :backend_availability_zone   => '<SERVICE DEFAULT>',
+      :reserved_percentage         => '<SERVICE DEFAULT>',
     }
   end
 

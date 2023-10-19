@@ -23,6 +23,10 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*reserved_percentage*]
+#   (Optional) The percentage of backend capacity is reserved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*nexenta_volume*]
 #   (optional) Pool on SA that will hold all volumes.
 #   Defaults to 'cinder'.
@@ -69,6 +73,7 @@ define cinder::backend::nexenta (
   $nexenta_host,
   $volume_backend_name          = $name,
   $backend_availability_zone    = $facts['os_service_default'],
+  $reserved_percentage          = $facts['os_service_default'],
   $nexenta_volume               = 'cinder',
   $nexenta_target_prefix        = 'iqn:',
   $nexenta_target_group_prefix  = 'cinder/',
@@ -85,6 +90,7 @@ define cinder::backend::nexenta (
   cinder_config {
     "${name}/volume_backend_name":         value => $volume_backend_name;
     "${name}/backend_availability_zone":   value => $backend_availability_zone;
+    "${name}/reserved_percentage":         value => $reserved_percentage;
     "${name}/nexenta_user":                value => $nexenta_user;
     "${name}/nexenta_password":            value => $nexenta_password, secret => true;
     "${name}/nexenta_host":                value => $nexenta_host;

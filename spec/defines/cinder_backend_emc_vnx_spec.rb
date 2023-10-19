@@ -37,6 +37,7 @@ describe 'cinder::backend::emc_vnx' do
         is_expected.to contain_cinder_config('emc/storage_vnx_security_file_dir').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/naviseccli_path').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/reserved_percentage').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -58,6 +59,7 @@ describe 'cinder::backend::emc_vnx' do
           :manage_volume_type               => true,
           :storage_protocol                 => 'fc',
           :backend_availability_zone        => 'my_zone',
+          :reserved_percentage              => 10,
         })
       end
 
@@ -76,6 +78,7 @@ describe 'cinder::backend::emc_vnx' do
         is_expected.to contain_cinder_config('emc/naviseccli_path').with_value(params[:naviseccli_path])
         is_expected.to contain_cinder_config('emc/storage_protocol').with_value(params[:storage_protocol])
         is_expected.to contain_cinder_config('emc/backend_availability_zone').with_value(params[:backend_availability_zone])
+        is_expected.to contain_cinder_config('emc/reserved_percentage').with_value(params[:reserved_percentage])
       }
 
       it { is_expected.to contain_cinder_type('emc').with(

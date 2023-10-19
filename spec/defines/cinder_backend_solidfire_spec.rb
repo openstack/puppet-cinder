@@ -16,6 +16,7 @@ describe 'cinder::backend::solidfire' do
   let :default_params do
     {
       :backend_availability_zone  => '<SERVICE DEFAULT>',
+      :reserved_percentage        => '<SERVICE DEFAULT>',
       :sf_emulate_512             => '<SERVICE DEFAULT>',
       :sf_allow_tenant_qos        => '<SERVICE DEFAULT>',
       :sf_account_prefix          => '<SERVICE DEFAULT>',
@@ -35,6 +36,7 @@ describe 'cinder::backend::solidfire' do
   let :other_params do
     {
       :backend_availability_zone  => 'az1',
+      :reserved_percentage        => 10,
       :sf_emulate_512             => true,
       :sf_allow_tenant_qos        => false,
       :sf_account_prefix          => 'acc_prefix',

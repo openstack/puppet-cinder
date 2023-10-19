@@ -21,6 +21,10 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*reserved_percentage*]
+#   (Optional) The percentage of backend capacity is reserved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*pure_storage_protocol*]
 #   (optional) Must be either 'iSCSI', 'FC' or 'NVMe'. This will determine
 #   which Volume Driver will be configured; PureISCSIDriver, PureFCDriver
@@ -97,6 +101,7 @@ define cinder::backend::pure(
   $pure_api_token,
   $volume_backend_name                               = $name,
   $backend_availability_zone                         = $facts['os_service_default'],
+  $reserved_percentage                               = $facts['os_service_default'],
   Enum['iSCSI', 'FC', 'NVMe'] $pure_storage_protocol = 'iSCSI',
   $use_chap_auth                                     = false,
   $use_multipath_for_image_xfer                      = true,
@@ -123,6 +128,7 @@ define cinder::backend::pure(
   cinder_config {
     "${name}/volume_backend_name":           value => $volume_backend_name;
     "${name}/backend_availability_zone":     value => $backend_availability_zone;
+    "${name}/reserved_percentage":           value => $reserved_percentage;
     "${name}/volume_driver":                 value => $volume_driver;
     "${name}/san_ip":                        value => $san_ip;
     "${name}/pure_api_token":                value => $pure_api_token, secret => true;

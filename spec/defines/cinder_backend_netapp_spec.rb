@@ -6,7 +6,6 @@ describe 'cinder::backend::netapp' do
   let :params do
     {
       :volume_backend_name          => 'netapp-cdot-nfs',
-      :backend_availability_zone    => 'my_zone',
       :netapp_login                 => 'netapp',
       :netapp_password              => 'password',
       :netapp_server_hostname       => '127.0.0.2',
@@ -18,6 +17,7 @@ describe 'cinder::backend::netapp' do
   let :default_params do
     {
       :backend_availability_zone    => '<SERVICE DEFAULT>',
+      :reserved_percentage          => '<SERVICE DEFAULT>',
       :netapp_server_port           => '<SERVICE DEFAULT>',
       :netapp_size_multiplier       => '<SERVICE DEFAULT>',
       :netapp_storage_family        => '<SERVICE DEFAULT>',
@@ -55,14 +55,6 @@ describe 'cinder::backend::netapp' do
 
   shared_examples 'cinder::backend::netapp' do
     context 'with default parameters' do
-      before do
-        params = {}
-      end
-
-      it_behaves_like 'netapp volume driver'
-    end
-
-    context 'with provided parameters' do
       it_behaves_like 'netapp volume driver'
     end
 

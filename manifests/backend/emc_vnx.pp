@@ -16,6 +16,10 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*reserved_percentage*]
+#   (Optional) The percentage of backend capacity is reserved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*san_ip*]
 #   (required) IP address of SAN controller.
 #
@@ -121,6 +125,7 @@ define cinder::backend::emc_vnx (
   $san_login                        = 'admin',
   $volume_backend_name              = $name,
   $backend_availability_zone        = $facts['os_service_default'],
+  $reserved_percentage              = $facts['os_service_default'],
   Hash $extra_options               = {},
   $volume_driver                    = 'cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver',
   $storage_protocol                 = 'iscsi',
@@ -151,6 +156,7 @@ define cinder::backend::emc_vnx (
     "${name}/storage_vnx_pool_names":           value => join(any2array($storage_vnx_pool_names), ',');
     "${name}/volume_backend_name":              value => $volume_backend_name;
     "${name}/backend_availability_zone":        value => $backend_availability_zone;
+    "${name}/reserved_percentage":              value => $reserved_percentage;
     "${name}/volume_driver":                    value => $volume_driver;
     "${name}/storage_protocol":                 value => $storage_protocol;
     "${name}/destroy_empty_storage_group":      value => $destroy_empty_storage_group;

@@ -17,6 +17,10 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*reserved_percentage*]
+#   (Optional) The percentage of backend capacity is reserved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
 #   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
@@ -53,6 +57,7 @@ define cinder::backend::iscsi (
   $target_ip_address          = $facts['os_service_default'],
   $volume_backend_name        = $name,
   $backend_availability_zone  = $facts['os_service_default'],
+  $reserved_percentage        = $facts['os_service_default'],
   $volume_driver              = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
   $volume_group               = $facts['os_service_default'],
   $volumes_dir                = '/var/lib/cinder/volumes',
@@ -82,6 +87,7 @@ define cinder::backend::iscsi (
   cinder_config {
     "${name}/volume_backend_name":        value => $volume_backend_name;
     "${name}/backend_availability_zone":  value => $backend_availability_zone;
+    "${name}/reserved_percentage":        value => $reserved_percentage;
     "${name}/volume_driver":              value => $volume_driver;
     "${name}/target_ip_address":          value => $target_ip_address;
     "${name}/target_helper":              value => $target_helper_real;

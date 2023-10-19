@@ -8,6 +8,7 @@ describe 'cinder::backend::iscsi' do
       it {
         is_expected.to contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
         is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
         is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/target_helper').with_value(platform_params[:target_helper])
@@ -21,6 +22,7 @@ describe 'cinder::backend::iscsi' do
       let :params do
         {
           :backend_availability_zone => 'nova',
+          :reserved_percentage       => 10,
           :target_ip_address         => '192.0.2.1',
           :volume_group              => 'volumegroup',
           :volumes_dir               => '/etc/cinder/volumes',
@@ -29,6 +31,7 @@ describe 'cinder::backend::iscsi' do
       end
       it {
         is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('nova')
+        is_expected.to contain_cinder_config('hippo/reserved_percentage').with_value(10)
         is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('192.0.2.1')
         is_expected.to contain_cinder_config('hippo/volume_group').with_value('volumegroup')
         is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/etc/cinder/volumes')

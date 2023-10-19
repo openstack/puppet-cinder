@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    The ``reserved_percentage`` parameter has been added. Note that
+    the parameter is available in the defined resource types for the volume
+    drivers which actually uses the option.

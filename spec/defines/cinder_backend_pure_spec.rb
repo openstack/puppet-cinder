@@ -18,6 +18,8 @@ describe 'cinder::backend::pure' do
 
       it {
         is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureISCSIDriver')
+        is_expected.to contain_cinder_config('pure/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
@@ -34,6 +36,7 @@ describe 'cinder::backend::pure' do
       let :params do
         req_params.merge({
           :backend_availability_zone => 'my_zone',
+          :reserved_percentage       => 10,
           :pure_storage_protocol     => 'iSCSI',
           :use_chap_auth             => 'true',
         })
@@ -42,6 +45,7 @@ describe 'cinder::backend::pure' do
       it {
         is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureISCSIDriver')
         is_expected.to contain_cinder_config('pure/backend_availability_zone').with_value('my_zone')
+        is_expected.to contain_cinder_config('pure/reserved_percentage').with_value(10)
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')

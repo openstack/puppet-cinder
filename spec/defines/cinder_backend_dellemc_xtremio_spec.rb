@@ -17,6 +17,7 @@ describe 'cinder::backend::dellemc_xtremio' do
   let :default_params do
     {
       :backend_availability_zone         => '<SERVICE DEFAULT>',
+      :reserved_percentage               => '<SERVICE DEFAULT>',
       :xtremio_array_busy_retry_count    => '<SERVICE DEFAULT>',
       :xtremio_array_busy_retry_interval => '<SERVICE DEFAULT>',
       :xtremio_volumes_per_glance_cache  => '<SERVICE DEFAULT>',
@@ -27,6 +28,7 @@ describe 'cinder::backend::dellemc_xtremio' do
   let :custom_params do
     {
       :backend_availability_zone         => 'my_zone',
+      :reserved_percentage               => 10,
       :xtremio_array_busy_retry_count    => 15,
       :xtremio_array_busy_retry_interval => 6,
       :xtremio_volumes_per_glance_cache  => 100,

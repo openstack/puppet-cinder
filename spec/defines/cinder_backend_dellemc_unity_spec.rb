@@ -17,6 +17,7 @@ describe 'cinder::backend::dellemc_unity' do
   let :default_params do
     {
       :backend_availability_zone => '<SERVICE DEFAULT>',
+      :reserved_percentage       => '<SERVICE DEFAULT>',
       :unity_io_ports            => '<SERVICE DEFAULT>',
       :unity_storage_pool_names  => '<SERVICE DEFAULT>',
     }
@@ -25,6 +26,7 @@ describe 'cinder::backend::dellemc_unity' do
   let :custom_params do
     {
       :backend_availability_zone => 'my_zone',
+      :reserved_percentage       => 10,
       :unity_io_ports            => '1,42,66',
       :unity_storage_pool_names  => 'pool_1,pool_2',
     }
