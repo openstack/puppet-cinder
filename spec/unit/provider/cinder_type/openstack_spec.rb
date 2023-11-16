@@ -32,11 +32,6 @@ describe provider_class do
 
     before(:each) { set_creds_env }
 
-    after(:each) do
-      Puppet::Type.type(:cinder_type).provider(:openstack).reset
-      provider_class.reset
-    end
-
     describe 'managing type' do
       describe '#create' do
         it 'creates a type' do

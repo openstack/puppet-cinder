@@ -30,11 +30,6 @@ describe provider_class do
 
     before(:each) { set_creds_env }
 
-    after(:each) do
-      Puppet::Type.type(:cinder_qos).provider(:openstack).reset
-      provider_class.reset
-    end
-
     describe 'managing qos' do
       describe '#create' do
         it 'creates a qos' do

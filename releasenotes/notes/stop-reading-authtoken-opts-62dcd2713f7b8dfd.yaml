@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The following resource types no longer attempts to load user credentials
+    from the ``[keystone_authtoken]`` section in ``cinder.conf``.
+
+    - ``cinder_type``
+    - ``cinder_qos``
