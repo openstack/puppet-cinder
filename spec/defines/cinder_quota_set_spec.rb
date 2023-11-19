@@ -29,7 +29,7 @@ describe 'cinder::quota_set' do
           'OS_AUTH_URL=http://127.127.127.1:5000/v3/',
         ],
         :onlyif      => 'openstack quota show --class default | grep -qP -- -1',
-        :require     => 'Anchor[cinder::install::end]',
+        :require     => 'Anchor[cinder::service::end]',
       )}
     end
 
@@ -48,7 +48,7 @@ describe 'cinder::quota_set' do
           'OS_REGION_NAME=test',
         ],
         :onlyif      => 'openstack quota show --class default | grep -qP -- -1',
-        :require     => 'Anchor[cinder::install::end]',
+        :require     => 'Anchor[cinder::service::end]',
       )}
     end
   end
