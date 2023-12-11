@@ -34,13 +34,13 @@ class cinder::params {
     }
     'RedHat': {
       $package_name              = 'openstack-cinder'
-      $api_package               = false
+      $api_package               = undef
       $api_service               = 'openstack-cinder-api'
-      $backup_package            = false
+      $backup_package            = undef
       $backup_service            = 'openstack-cinder-backup'
-      $scheduler_package         = false
+      $scheduler_package         = undef
       $scheduler_service         = 'openstack-cinder-scheduler'
-      $volume_package            = false
+      $volume_package            = undef
       $volume_service            = 'openstack-cinder-volume'
       $db_sync_command           = 'cinder-manage db sync'
       $tgt_package_name          = 'scsi-target-utils'
