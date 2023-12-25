@@ -44,8 +44,8 @@ describe 'cinder::backend::gpfs' do
       default_params.merge(params)
     end
 
-    it { is_expected.to contain_cinder_config('gpfs/volume_driver').with(
-      :value => 'cinder.volume.drivers.ibm.gpfs.GPFSDriver'
+    it { is_expected.to contain_cinder_config('gpfs/volume_driver').with_value(
+      'cinder.volume.drivers.ibm.gpfs.GPFSDriver'
     )}
 
     it {
