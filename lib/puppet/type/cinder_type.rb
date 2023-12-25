@@ -9,14 +9,14 @@ Puppet::Type.newtype(:cinder_type) do
   end
 
   newproperty(:properties, :array_matching => :all) do
-    desc 'The properties of the cinder type. Should be an array, all items should match pattern <key=value1[,value2 ...]>'
+    desc 'The properties of the cinder type. Should be an array, all items should match pattern <key=value>'
     defaultto []
     def insync?(is)
       return false unless is.is_a? Array
       is.sort == should.sort
     end
     validate do |value|
-      raise ArgumentError, "Properties doesn't match" unless value.match(/^\s*[^=\s]+=\S(([^=,])+((?<=\S),(?=\S))?)+([^\s=,])+$/)
+      raise ArgumentError, "Properties doesn't match" unless value.match(/^[^=\s]+=[^=]+$/)
     end
   end
 
