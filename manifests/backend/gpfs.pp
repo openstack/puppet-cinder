@@ -8,6 +8,10 @@
 #   (required) Specifies the path of the GPFS directory where Block Storage
 #   volume and snapshot files are stored.
 #
+# [*volume_backend_name*]
+#   (optional) The name of the cinder::backend::gpfs resource
+#   Defaults to $name.
+#
 # [*gpfs_images_dir*]
 #   (optional) Specifies the path of the Image service repository in GPFS.
 #   Leave undefined if not storing images in GPFS. Defaults to "None" via
@@ -92,6 +96,7 @@
 #
 define cinder::backend::gpfs (
   $gpfs_mount_point_base,
+  $volume_backend_name        = $name,
   $gpfs_images_dir            = $facts['os_service_default'],
   $gpfs_images_share_mode     = $facts['os_service_default'],
   $gpfs_max_clone_depth       = $facts['os_service_default'],
@@ -118,6 +123,7 @@ define cinder::backend::gpfs (
 
   cinder_config {
     "${name}/volume_driver":             value => 'cinder.volume.drivers.ibm.gpfs.GPFSDriver';
+    "${name}/volume_backend_name":       value => $volume_backend_name;
     "${name}/gpfs_max_clone_depth":      value => $gpfs_max_clone_depth;
     "${name}/gpfs_mount_point_base":     value => $gpfs_mount_point_base;
     "${name}/gpfs_sparse_volumes":       value => $gpfs_sparse_volumes;
@@ -133,9 +139,9 @@ define cinder::backend::gpfs (
   }
 
   if $manage_volume_type {
-    cinder_type { $name:
+    cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => ["volume_backend_name=${name}"],
+      properties => ["volume_backend_name=${volume_backend_name}"],
     }
   }
 

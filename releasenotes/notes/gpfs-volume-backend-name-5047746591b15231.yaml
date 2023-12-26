@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``cinder::backend::gpfs::volume_backend_name`` parameter has been
+    added.
