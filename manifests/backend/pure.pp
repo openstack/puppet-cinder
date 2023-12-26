@@ -33,17 +33,11 @@
 #
 # [*use_chap_auth*]
 #   (optional) Use authentication for iSCSI. Only affects the PureISCSIDriver.
-#   Defaults to False
+#   Defaults to $facts['os_service_default']
 #
 # [*use_multipath_for_image_xfer*]
 #   (optional) Use multipath when attaching the volume for image transfer.
 #   Defaults to True
-#
-# [*manage_volume_type*]
-#   (Optional) Whether or not manage Cinder Volume type.
-#   If set to true, a Cinder Volume type will be created
-#   with volume_backend_name=$volume_backend_name key/value.
-#   Defaults to false.
 #
 # [*image_volume_cache_enabled*]
 #   (Optional) Enable Cinder's image cache function for this backend.
@@ -97,6 +91,12 @@
 #   supersedes pure_iscsi_cidr.
 #   Defaults to $facts['os_service_default']
 #
+# [*manage_volume_type*]
+#   (Optional) Whether or not manage Cinder Volume type.
+#   If set to true, a Cinder Volume type will be created
+#   with volume_backend_name=$volume_backend_name key/value.
+#   Defaults to false.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza.
 #   Defaults to: {}
@@ -110,9 +110,8 @@ define cinder::backend::pure(
   $backend_availability_zone                         = $facts['os_service_default'],
   $reserved_percentage                               = $facts['os_service_default'],
   Enum['iSCSI', 'FC', 'NVMe'] $pure_storage_protocol = 'iSCSI',
-  $use_chap_auth                                     = false,
+  $use_chap_auth                                     = $facts['os_service_default'],
   $use_multipath_for_image_xfer                      = true,
-  Boolean $manage_volume_type                        = false,
   $image_volume_cache_enabled                        = true,
   $image_volume_cache_max_size_gb                    = $facts['os_service_default'],
   $image_volume_cache_max_count                      = $facts['os_service_default'],
@@ -123,6 +122,7 @@ define cinder::backend::pure(
   $pure_nvme_cidr_list                               = $facts['os_service_default'],
   $pure_iscsi_cidr                                   = $facts['os_service_default'],
   $pure_iscsi_cidr_list                              = $facts['os_service_default'],
+  Boolean $manage_volume_type                        = false,
   Hash $extra_options                                = {},
 ) {
 
