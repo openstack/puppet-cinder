@@ -31,6 +31,9 @@ describe 'cinder::backend::dellemc_powermax' do
         is_expected.to contain_cinder_config("#{title}/powermax_port_groups").with_value('[OS-ISCSI-PG]')
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/reserved_percentage").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/image_volume_cache_enabled").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_size_gb").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_count").with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_package('pywbem').with(
           :ensure => 'installed',

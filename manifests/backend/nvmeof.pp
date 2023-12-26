@@ -38,6 +38,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
 #   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
@@ -62,37 +74,43 @@ define cinder::backend::nvmeof (
   $target_ip_address,
   $target_helper,
   $target_protocol,
-  $target_port                   = '4420',
-  $target_prefix                 = $facts['os_service_default'],
-  $nvmet_port_id                 = $facts['os_service_default'],
-  $nvmet_ns_id                   = $facts['os_service_default'],
-  $volume_backend_name           = $name,
-  $backend_availability_zone     = $facts['os_service_default'],
-  $volume_driver                 = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
-  $volume_group                  = $facts['os_service_default'],
-  $nvmeof_conn_info_version      = $facts['os_service_default'],
-  $lvm_share_target              = $facts['os_service_default'],
-  $target_secondary_ip_addresses = $facts['os_service_default'],
+  $target_port                    = '4420',
+  $target_prefix                  = $facts['os_service_default'],
+  $nvmet_port_id                  = $facts['os_service_default'],
+  $nvmet_ns_id                    = $facts['os_service_default'],
+  $volume_backend_name            = $name,
+  $backend_availability_zone      = $facts['os_service_default'],
+  $image_volume_cache_enabled     = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb = $facts['os_service_default'],
+  $image_volume_cache_max_count   = $facts['os_service_default'],
+  $volume_driver                  = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
+  $volume_group                   = $facts['os_service_default'],
+  $nvmeof_conn_info_version       = $facts['os_service_default'],
+  $lvm_share_target               = $facts['os_service_default'],
+  $target_secondary_ip_addresses  = $facts['os_service_default'],
 ) {
 
   include cinder::deps
   include cinder::params
 
   cinder_config {
-    "${name}/target_ip_address":             value => $target_ip_address;
-    "${name}/target_port":                   value => $target_port;
-    "${name}/target_helper":                 value => $target_helper;
-    "${name}/target_protocol":               value => $target_protocol;
-    "${name}/target_prefix":                 value => $target_prefix;
-    "${name}/nvmet_port_id":                 value => $nvmet_port_id;
-    "${name}/nvmet_ns_id":                   value => $nvmet_ns_id;
-    "${name}/volume_backend_name":           value => $volume_backend_name;
-    "${name}/backend_availability_zone":     value => $backend_availability_zone;
-    "${name}/volume_driver":                 value => $volume_driver;
-    "${name}/volume_group":                  value => $volume_group;
-    "${name}/nvmeof_conn_info_version":      value => $nvmeof_conn_info_version;
-    "${name}/lvm_share_target":              value => $lvm_share_target;
-    "${name}/target_secondary_ip_addresses": value => join(any2array($target_secondary_ip_addresses), ',');
+    "${name}/target_ip_address":              value => $target_ip_address;
+    "${name}/target_port":                    value => $target_port;
+    "${name}/target_helper":                  value => $target_helper;
+    "${name}/target_protocol":                value => $target_protocol;
+    "${name}/target_prefix":                  value => $target_prefix;
+    "${name}/nvmet_port_id":                  value => $nvmet_port_id;
+    "${name}/nvmet_ns_id":                    value => $nvmet_ns_id;
+    "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/volume_driver":                  value => $volume_driver;
+    "${name}/volume_group":                   value => $volume_group;
+    "${name}/nvmeof_conn_info_version":       value => $nvmeof_conn_info_version;
+    "${name}/lvm_share_target":               value => $lvm_share_target;
+    "${name}/target_secondary_ip_addresses":  value => join(any2array($target_secondary_ip_addresses), ',');
   }
 
   ensure_packages ( 'nvmetcli', {

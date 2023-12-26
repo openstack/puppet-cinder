@@ -17,6 +17,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*reserved_percentage*]
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
@@ -54,17 +66,20 @@
 #     { 'iscsi_backend/param1' => { 'value' => value1 } }
 #
 define cinder::backend::iscsi (
-  $target_ip_address          = $facts['os_service_default'],
-  $volume_backend_name        = $name,
-  $backend_availability_zone  = $facts['os_service_default'],
-  $reserved_percentage        = $facts['os_service_default'],
-  $volume_driver              = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
-  $volume_group               = $facts['os_service_default'],
-  $volumes_dir                = '/var/lib/cinder/volumes',
-  $target_helper              = undef,
-  $target_protocol            = $facts['os_service_default'],
-  Boolean $manage_volume_type = false,
-  Hash $extra_options         = {},
+  $target_ip_address              = $facts['os_service_default'],
+  $volume_backend_name            = $name,
+  $backend_availability_zone      = $facts['os_service_default'],
+  $image_volume_cache_enabled     = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb = $facts['os_service_default'],
+  $image_volume_cache_max_count   = $facts['os_service_default'],
+  $reserved_percentage            = $facts['os_service_default'],
+  $volume_driver                  = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
+  $volume_group                   = $facts['os_service_default'],
+  $volumes_dir                    = '/var/lib/cinder/volumes',
+  $target_helper                  = undef,
+  $target_protocol                = $facts['os_service_default'],
+  Boolean $manage_volume_type     = false,
+  Hash $extra_options             = {},
 ) {
 
   include cinder::deps
@@ -85,15 +100,18 @@ define cinder::backend::iscsi (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":        value => $volume_backend_name;
-    "${name}/backend_availability_zone":  value => $backend_availability_zone;
-    "${name}/reserved_percentage":        value => $reserved_percentage;
-    "${name}/volume_driver":              value => $volume_driver;
-    "${name}/target_ip_address":          value => $target_ip_address;
-    "${name}/target_helper":              value => $target_helper_real;
-    "${name}/volume_group":               value => $volume_group;
-    "${name}/volumes_dir":                value => $volumes_dir;
-    "${name}/target_protocol":            value => $target_protocol;
+    "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/volume_driver":                  value => $volume_driver;
+    "${name}/target_ip_address":              value => $target_ip_address;
+    "${name}/target_helper":                  value => $target_helper_real;
+    "${name}/volume_group":                   value => $volume_group;
+    "${name}/volumes_dir":                    value => $volumes_dir;
+    "${name}/target_protocol":                value => $target_protocol;
   }
 
   if $manage_volume_type {

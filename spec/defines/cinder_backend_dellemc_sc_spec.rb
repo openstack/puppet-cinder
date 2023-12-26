@@ -17,33 +17,39 @@ describe 'cinder::backend::dellemc_sc' do
 
   let :default_params do
     {
-      :backend_availability_zone    => '<SERVICE DEFAULT>',
-      :dell_sc_api_port             => '<SERVICE DEFAULT>',
-      :dell_sc_server_folder        => 'srv',
-      :dell_sc_verify_cert          => '<SERVICE DEFAULT>',
-      :dell_sc_volume_folder        => 'vol',
-      :target_port                  => '<SERVICE DEFAULT>',
-      :excluded_domain_ips          => '<SERVICE DEFAULT>',
-      :secondary_san_ip             => '<SERVICE DEFAULT>',
-      :secondary_san_login          => '<SERVICE DEFAULT>',
-      :secondary_san_password       => '<SERVICE DEFAULT>',
-      :secondary_sc_api_port        => '<SERVICE DEFAULT>',
-      :use_multipath_for_image_xfer => 'true',
+      :backend_availability_zone      => '<SERVICE DEFAULT>',
+      :image_volume_cache_enabled     => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_count   => '<SERVICE DEFAULT>',
+      :dell_sc_api_port               => '<SERVICE DEFAULT>',
+      :dell_sc_server_folder          => 'srv',
+      :dell_sc_verify_cert            => '<SERVICE DEFAULT>',
+      :dell_sc_volume_folder          => 'vol',
+      :target_port                    => '<SERVICE DEFAULT>',
+      :excluded_domain_ips            => '<SERVICE DEFAULT>',
+      :secondary_san_ip               => '<SERVICE DEFAULT>',
+      :secondary_san_login            => '<SERVICE DEFAULT>',
+      :secondary_san_password         => '<SERVICE DEFAULT>',
+      :secondary_sc_api_port          => '<SERVICE DEFAULT>',
+      :use_multipath_for_image_xfer   => 'true',
     }
   end
 
   let :custom_params do
     {
-      :backend_availability_zone => 'my_zone',
-      :dell_sc_api_port          => 111,
-      :dell_sc_server_folder     => 'other_srv',
-      :dell_sc_verify_cert       => true,
-      :dell_sc_volume_folder     => 'other_vol',
-      :target_port               => 222,
-      :secondary_san_ip          => '127.0.0.3',
-      :secondary_san_login       => 'Foo',
-      :secondary_san_password    => 'Bar',
-      :secondary_sc_api_port     => 333,
+      :backend_availability_zone      => 'my_zone',
+      :image_volume_cache_enabled     => true,
+      :image_volume_cache_max_size_gb => 100,
+      :image_volume_cache_max_count   => 101,
+      :dell_sc_api_port               => 111,
+      :dell_sc_server_folder          => 'other_srv',
+      :dell_sc_verify_cert            => true,
+      :dell_sc_volume_folder          => 'other_vol',
+      :target_port                    => 222,
+      :secondary_san_ip               => '127.0.0.3',
+      :secondary_san_login            => 'Foo',
+      :secondary_san_password         => 'Bar',
+      :secondary_sc_api_port          => 333,
     }
   end
 

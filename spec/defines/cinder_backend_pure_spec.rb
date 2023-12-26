@@ -19,12 +19,14 @@ describe 'cinder::backend::pure' do
       it {
         is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureISCSIDriver')
         is_expected.to contain_cinder_config('pure/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
         is_expected.to contain_cinder_config('pure/use_chap_auth').with_value('false')
-        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
         is_expected.to contain_cinder_config('pure/pure_eradicate_on_delete').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_iscsi_cidr').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/pure_iscsi_cidr_list').with_value('<SERVICE DEFAULT>')
@@ -45,6 +47,9 @@ describe 'cinder::backend::pure' do
       it {
         is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureISCSIDriver')
         is_expected.to contain_cinder_config('pure/backend_availability_zone').with_value('my_zone')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/reserved_percentage').with_value(10)
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
@@ -64,6 +69,11 @@ describe 'cinder::backend::pure' do
 
       it {
         is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureFCDriver')
+        is_expected.to contain_cinder_config('pure/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
@@ -80,6 +90,11 @@ describe 'cinder::backend::pure' do
 
       it {
         is_expected.to contain_cinder_config('pure/volume_driver').with_value('cinder.volume.drivers.pure.PureNVMEDriver')
+        is_expected.to contain_cinder_config('pure/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
@@ -112,13 +127,19 @@ describe 'cinder::backend::pure' do
       )}
     end
 
-    context 'pure volume driver with image_volume_cache_enabled disabled' do
+    context 'pure volume driver with image volume cache options' do
       let :params do
-        req_params.merge({'image_volume_cache_enabled' => false})
+        req_params.merge({
+          :image_volume_cache_enabled     => false,
+          :image_volume_cache_max_size_gb => 100,
+          :image_volume_cache_max_count   => 101,
+        })
       end
 
       it {
-        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('false')
+        is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value(false)
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value(100)
+        is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value(101)
       }
     end
 

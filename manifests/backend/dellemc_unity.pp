@@ -26,6 +26,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*reserved_percentage*]
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
@@ -56,29 +68,35 @@ define cinder::backend::dellemc_unity (
   $san_login,
   $san_password,
   $storage_protocol,
-  $volume_backend_name        = $name,
-  $backend_availability_zone  = $facts['os_service_default'],
-  $reserved_percentage        = $facts['os_service_default'],
-  $unity_io_ports             = $facts['os_service_default'],
-  $unity_storage_pool_names   = $facts['os_service_default'],
-  Boolean $manage_volume_type = false,
-  Hash $extra_options         = {},
+  $volume_backend_name            = $name,
+  $backend_availability_zone      = $facts['os_service_default'],
+  $image_volume_cache_enabled     = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb = $facts['os_service_default'],
+  $image_volume_cache_max_count   = $facts['os_service_default'],
+  $reserved_percentage            = $facts['os_service_default'],
+  $unity_io_ports                 = $facts['os_service_default'],
+  $unity_storage_pool_names       = $facts['os_service_default'],
+  Boolean $manage_volume_type     = false,
+  Hash $extra_options             = {},
 ) {
 
   include cinder::deps
 
   $driver = 'dell_emc.unity.Driver'
   cinder_config {
-    "${name}/volume_backend_name":       value => $volume_backend_name;
-    "${name}/backend_availability_zone": value => $backend_availability_zone;
-    "${name}/reserved_percentage":       value => $reserved_percentage;
-    "${name}/volume_driver":             value => "cinder.volume.drivers.${driver}";
-    "${name}/san_ip":                    value => $san_ip;
-    "${name}/san_login":                 value => $san_login;
-    "${name}/san_password":              value => $san_password, secret => true;
-    "${name}/storage_protocol":          value => $storage_protocol;
-    "${name}/unity_io_ports":            value => join(any2array($unity_io_ports), ',');
-    "${name}/unity_storage_pool_names":  value => join(any2array($unity_storage_pool_names), ',');
+    "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/volume_driver":                  value => "cinder.volume.drivers.${driver}";
+    "${name}/san_ip":                         value => $san_ip;
+    "${name}/san_login":                      value => $san_login;
+    "${name}/san_password":                   value => $san_password, secret => true;
+    "${name}/storage_protocol":               value => $storage_protocol;
+    "${name}/unity_io_ports":                 value => join(any2array($unity_io_ports), ',');
+    "${name}/unity_storage_pool_names":       value => join(any2array($unity_storage_pool_names), ',');
   }
 
   if $manage_volume_type {

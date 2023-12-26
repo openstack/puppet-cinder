@@ -16,15 +16,18 @@ describe 'cinder::backend::nexenta' do
 
   let :default_params do
     {
-      :nexenta_volume              => 'cinder',
-      :nexenta_target_prefix       => 'iqn:',
-      :nexenta_target_group_prefix => 'cinder/',
-      :nexenta_blocksize           => '8192',
-      :nexenta_sparse              => true,
-      :nexenta_rest_port           => '8457',
-      :volume_driver               => 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver',
-      :backend_availability_zone   => '<SERVICE DEFAULT>',
-      :reserved_percentage         => '<SERVICE DEFAULT>',
+      :nexenta_volume                 => 'cinder',
+      :nexenta_target_prefix          => 'iqn:',
+      :nexenta_target_group_prefix    => 'cinder/',
+      :nexenta_blocksize              => '8192',
+      :nexenta_sparse                 => true,
+      :nexenta_rest_port              => '8457',
+      :volume_driver                  => 'cinder.volume.drivers.nexenta.iscsi.NexentaISCSIDriver',
+      :backend_availability_zone      => '<SERVICE DEFAULT>',
+      :image_volume_cache_enabled     => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_count   => '<SERVICE DEFAULT>',
+      :reserved_percentage            => '<SERVICE DEFAULT>',
     }
   end
 

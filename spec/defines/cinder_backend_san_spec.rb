@@ -11,19 +11,22 @@ describe 'cinder::backend::san' do
 
   let :default_params do
     {
-      :backend_availability_zone => '<SERVICE DEFAULT>',
-      :san_thin_provision        => '<SERVICE DEFAULT>',
-      :san_ip                    => '<SERVICE DEFAULT>',
-      :san_login                 => '<SERVICE DEFAULT>',
-      :san_password              => '<SERVICE DEFAULT>',
-      :san_private_key           => '<SERVICE DEFAULT>',
-      :san_clustername           => '<SERVICE DEFAULT>',
-      :san_ssh_port              => '<SERVICE DEFAULT>',
-      :san_api_port              => '<SERVICE DEFAULT>',
-      :san_is_local              => '<SERVICE DEFAULT>',
-      :ssh_conn_timeout          => '<SERVICE DEFAULT>',
-      :ssh_min_pool_conn         => '<SERVICE DEFAULT>',
-      :ssh_max_pool_conn         => '<SERVICE DEFAULT>',
+      :backend_availability_zone      => '<SERVICE DEFAULT>',
+      :image_volume_cache_enabled     => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_count   => '<SERVICE DEFAULT>',
+      :san_thin_provision             => '<SERVICE DEFAULT>',
+      :san_ip                         => '<SERVICE DEFAULT>',
+      :san_login                      => '<SERVICE DEFAULT>',
+      :san_password                   => '<SERVICE DEFAULT>',
+      :san_private_key                => '<SERVICE DEFAULT>',
+      :san_clustername                => '<SERVICE DEFAULT>',
+      :san_ssh_port                   => '<SERVICE DEFAULT>',
+      :san_api_port                   => '<SERVICE DEFAULT>',
+      :san_is_local                   => '<SERVICE DEFAULT>',
+      :ssh_conn_timeout               => '<SERVICE DEFAULT>',
+      :ssh_min_pool_conn              => '<SERVICE DEFAULT>',
+      :ssh_max_pool_conn              => '<SERVICE DEFAULT>',
     }
   end
 
