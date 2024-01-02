@@ -71,9 +71,9 @@ describe 'cinder::backend::netapp' do
         params.merge!( :manage_volume_type => true )
       end
 
-      it { is_expected.to contain_cinder_type('netapp').with(
+      it { is_expected.to contain_cinder_type('netapp-cdot-nfs').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=netapp']
+        :properties => ['volume_backend_name=netapp-cdot-nfs']
       )}
     end
 

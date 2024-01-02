@@ -140,9 +140,9 @@ define cinder::backend::dellemc_powerflex(
     "${name}/driver_ssl_cert_path":                     value => $driver_ssl_cert_path;
   }
   if $manage_volume_type {
-    cinder_type { $name:
+    cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => ["volume_backend_name=${name}"],
+      properties => ["volume_backend_name=${volume_backend_name}"],
     }
   }
 

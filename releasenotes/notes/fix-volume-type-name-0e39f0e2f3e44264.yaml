@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    The following defined resource types now create volume types according to
+    the ``volume_backend_name`` parameter, instead of resource names.
+
+    - ``cinder::backend::dellemc_powerflex``
+    - ``cinder::backend::netapp``
