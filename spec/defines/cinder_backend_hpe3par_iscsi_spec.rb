@@ -24,6 +24,9 @@ describe 'cinder::backend::hpe3par_iscsi' do
       it {
         is_expected.to contain_cinder_config('hpe3par_iscsi/volume_driver').with_value('cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver')
         is_expected.to contain_cinder_config('hpe3par_iscsi/backend_availability_zone').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/image_volume_cache_enabled').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_username').with_value('3paradm')

@@ -46,9 +46,16 @@
 #   Defaults to false.
 #
 # [*image_volume_cache_enabled*]
-#   (Optional) Enable Cinder's image cache function for the PureStorage
-#   backend.
+#   (Optional) Enable Cinder's image cache function for this backend.
 #   Defaults to True
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
 #
 # [*pure_host_personality*]
 #   (Optional) Determines how the Purity system tunes the protocol used between
@@ -107,6 +114,8 @@ define cinder::backend::pure(
   $use_multipath_for_image_xfer                      = true,
   Boolean $manage_volume_type                        = false,
   $image_volume_cache_enabled                        = true,
+  $image_volume_cache_max_size_gb                    = $facts['os_service_default'],
+  $image_volume_cache_max_count                      = $facts['os_service_default'],
   $pure_host_personality                             = $facts['os_service_default'],
   $pure_eradicate_on_delete                          = $facts['os_service_default'],
   $pure_nvme_transport                               = $facts['os_service_default'],
@@ -126,22 +135,24 @@ define cinder::backend::pure(
   }
 
   cinder_config {
-    "${name}/volume_backend_name":           value => $volume_backend_name;
-    "${name}/backend_availability_zone":     value => $backend_availability_zone;
-    "${name}/reserved_percentage":           value => $reserved_percentage;
-    "${name}/volume_driver":                 value => $volume_driver;
-    "${name}/san_ip":                        value => $san_ip;
-    "${name}/pure_api_token":                value => $pure_api_token, secret => true;
-    "${name}/use_chap_auth":                 value => $use_chap_auth;
-    "${name}/use_multipath_for_image_xfer":  value => $use_multipath_for_image_xfer;
-    "${name}/image_volume_cache_enabled":    value => $image_volume_cache_enabled;
-    "${name}/pure_host_personality":         value => $pure_host_personality;
-    "${name}/pure_eradicate_on_delete":      value => $pure_eradicate_on_delete;
-    "${name}/pure_nvme_transport":           value => $pure_nvme_transport;
-    "${name}/pure_nvme_cidr":                value => $pure_nvme_cidr;
-    "${name}/pure_nvme_cidr_list":           value => join(any2array($pure_nvme_cidr_list), ',');
-    "${name}/pure_iscsi_cidr":               value => $pure_iscsi_cidr;
-    "${name}/pure_iscsi_cidr_list":          value => join(any2array($pure_iscsi_cidr_list), ',');
+    "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/volume_driver":                  value => $volume_driver;
+    "${name}/san_ip":                         value => $san_ip;
+    "${name}/pure_api_token":                 value => $pure_api_token, secret => true;
+    "${name}/use_chap_auth":                  value => $use_chap_auth;
+    "${name}/use_multipath_for_image_xfer":   value => $use_multipath_for_image_xfer;
+    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/pure_host_personality":          value => $pure_host_personality;
+    "${name}/pure_eradicate_on_delete":       value => $pure_eradicate_on_delete;
+    "${name}/pure_nvme_transport":            value => $pure_nvme_transport;
+    "${name}/pure_nvme_cidr":                 value => $pure_nvme_cidr;
+    "${name}/pure_nvme_cidr_list":            value => join(any2array($pure_nvme_cidr_list), ',');
+    "${name}/pure_iscsi_cidr":                value => $pure_iscsi_cidr;
+    "${name}/pure_iscsi_cidr_list":           value => join(any2array($pure_iscsi_cidr_list), ',');
   }
 
   if $manage_volume_type {

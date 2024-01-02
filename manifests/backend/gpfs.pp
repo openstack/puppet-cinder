@@ -74,6 +74,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -96,20 +108,23 @@
 #
 define cinder::backend::gpfs (
   $gpfs_mount_point_base,
-  $volume_backend_name        = $name,
-  $gpfs_images_dir            = $facts['os_service_default'],
-  $gpfs_images_share_mode     = $facts['os_service_default'],
-  $gpfs_max_clone_depth       = $facts['os_service_default'],
-  $gpfs_sparse_volumes        = $facts['os_service_default'],
-  $gpfs_storage_pool          = $facts['os_service_default'],
-  $nas_host                   = $facts['os_service_default'],
-  $nas_login                  = $facts['os_service_default'],
-  $nas_password               = $facts['os_service_default'],
-  $nas_private_key            = $facts['os_service_default'],
-  $nas_ssh_port               = $facts['os_service_default'],
-  $backend_availability_zone  = $facts['os_service_default'],
-  Boolean $manage_volume_type = false,
-  Hash $extra_options         = {},
+  $volume_backend_name            = $name,
+  $gpfs_images_dir                = $facts['os_service_default'],
+  $gpfs_images_share_mode         = $facts['os_service_default'],
+  $gpfs_max_clone_depth           = $facts['os_service_default'],
+  $gpfs_sparse_volumes            = $facts['os_service_default'],
+  $gpfs_storage_pool              = $facts['os_service_default'],
+  $nas_host                       = $facts['os_service_default'],
+  $nas_login                      = $facts['os_service_default'],
+  $nas_password                   = $facts['os_service_default'],
+  $nas_private_key                = $facts['os_service_default'],
+  $nas_ssh_port                   = $facts['os_service_default'],
+  $backend_availability_zone      = $facts['os_service_default'],
+  $image_volume_cache_enabled     = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb = $facts['os_service_default'],
+  $image_volume_cache_max_count   = $facts['os_service_default'],
+  Boolean $manage_volume_type     = false,
+  Hash $extra_options             = {},
 ) {
 
   include cinder::deps
@@ -122,20 +137,23 @@ define cinder::backend::gpfs (
   }
 
   cinder_config {
-    "${name}/volume_driver":             value => 'cinder.volume.drivers.ibm.gpfs.GPFSDriver';
-    "${name}/volume_backend_name":       value => $volume_backend_name;
-    "${name}/gpfs_max_clone_depth":      value => $gpfs_max_clone_depth;
-    "${name}/gpfs_mount_point_base":     value => $gpfs_mount_point_base;
-    "${name}/gpfs_sparse_volumes":       value => $gpfs_sparse_volumes;
-    "${name}/gpfs_storage_pool":         value => $gpfs_storage_pool;
-    "${name}/gpfs_images_share_mode":    value => $gpfs_images_share_mode;
-    "${name}/gpfs_images_dir":           value => $gpfs_images_dir;
-    "${name}/nas_host":                  value => $nas_host;
-    "${name}/nas_login":                 value => $nas_login;
-    "${name}/nas_password":              value => $nas_password, secret => true;
-    "${name}/nas_private_key":           value => $nas_private_key;
-    "${name}/nas_ssh_port":              value => $nas_ssh_port;
-    "${name}/backend_availability_zone": value => $backend_availability_zone;
+    "${name}/volume_driver":                  value => 'cinder.volume.drivers.ibm.gpfs.GPFSDriver';
+    "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/gpfs_max_clone_depth":           value => $gpfs_max_clone_depth;
+    "${name}/gpfs_mount_point_base":          value => $gpfs_mount_point_base;
+    "${name}/gpfs_sparse_volumes":            value => $gpfs_sparse_volumes;
+    "${name}/gpfs_storage_pool":              value => $gpfs_storage_pool;
+    "${name}/gpfs_images_share_mode":         value => $gpfs_images_share_mode;
+    "${name}/gpfs_images_dir":                value => $gpfs_images_dir;
+    "${name}/nas_host":                       value => $nas_host;
+    "${name}/nas_login":                      value => $nas_login;
+    "${name}/nas_password":                   value => $nas_password, secret => true;
+    "${name}/nas_private_key":                value => $nas_private_key;
+    "${name}/nas_ssh_port":                   value => $nas_ssh_port;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
   }
 
   if $manage_volume_type {

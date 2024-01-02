@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    Support for the image volume cache options has been added.

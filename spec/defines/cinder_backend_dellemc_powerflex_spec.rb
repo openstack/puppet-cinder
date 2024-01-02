@@ -17,6 +17,9 @@ describe 'cinder::backend::dellemc_powerflex' do
   let :params2 do
     {
       :backend_availability_zone                => 'my_zone',
+      :image_volume_cache_enabled               => true,
+      :image_volume_cache_max_size_gb           => 100,
+      :image_volume_cache_max_count             => 101,
       :powerflex_allow_migration_during_rebuild => 'true',
       :powerflex_allow_non_padded_volumes       => 'false',
       :powerflex_max_over_subscription_ratio    => '6.0',

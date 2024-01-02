@@ -7,6 +7,9 @@ describe 'cinder::backend::iscsi' do
     context 'with default params' do
       it {
         is_expected.to contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
+        is_expected.to contain_cinder_config('hippo/image_volume_cache_enabled').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
@@ -21,16 +24,22 @@ describe 'cinder::backend::iscsi' do
     context 'with parameters' do
       let :params do
         {
-          :backend_availability_zone => 'nova',
-          :reserved_percentage       => 10,
-          :target_ip_address         => '192.0.2.1',
-          :volume_group              => 'volumegroup',
-          :volumes_dir               => '/etc/cinder/volumes',
-          :target_protocol           => 'iser'
+          :backend_availability_zone      => 'nova',
+          :image_volume_cache_enabled     => true,
+          :image_volume_cache_max_size_gb => 100,
+          :image_volume_cache_max_count   => 101,
+          :reserved_percentage            => 10,
+          :target_ip_address              => '192.0.2.1',
+          :volume_group                   => 'volumegroup',
+          :volumes_dir                    => '/etc/cinder/volumes',
+          :target_protocol                => 'iser'
         }
       end
       it {
         is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('nova')
+        is_expected.to contain_cinder_config('hippo/image_volume_cache_enabled').with_value(true)
+        is_expected.to contain_cinder_config('hippo/image_volume_cache_max_size_gb').with_value(100)
+        is_expected.to contain_cinder_config('hippo/image_volume_cache_max_count').with_value(101)
         is_expected.to contain_cinder_config('hippo/reserved_percentage').with_value(10)
         is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('192.0.2.1')
         is_expected.to contain_cinder_config('hippo/volume_group').with_value('volumegroup')

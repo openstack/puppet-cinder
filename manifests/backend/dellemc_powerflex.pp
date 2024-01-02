@@ -31,6 +31,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*powerflex_allow_migration_during_rebuild*]
 #   (optional) (Boolean) Allow volume migration during rebuild.
 #   Defaults to $facts['os_service_default']
@@ -104,6 +116,9 @@ define cinder::backend::dellemc_powerflex(
   $powerflex_storage_pools,
   $volume_backend_name                      = $name,
   $backend_availability_zone                = $facts['os_service_default'],
+  $image_volume_cache_enabled               = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb           = $facts['os_service_default'],
+  $image_volume_cache_max_count             = $facts['os_service_default'],
   $powerflex_allow_migration_during_rebuild = $facts['os_service_default'],
   $powerflex_allow_non_padded_volumes       = $facts['os_service_default'],
   $powerflex_max_over_subscription_ratio    = $facts['os_service_default'],
@@ -128,6 +143,9 @@ define cinder::backend::dellemc_powerflex(
     "${name}/powerflex_storage_pools":                  value => $powerflex_storage_pools;
     "${name}/volume_backend_name":                      value => $volume_backend_name;
     "${name}/backend_availability_zone":                value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":               value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb":           value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":             value => $image_volume_cache_max_count;
     "${name}/powerflex_allow_migration_during_rebuild": value => $powerflex_allow_migration_during_rebuild;
     "${name}/powerflex_allow_non_padded_volumes":       value => $powerflex_allow_non_padded_volumes;
     "${name}/powerflex_max_over_subscription_ratio":    value => $powerflex_max_over_subscription_ratio;

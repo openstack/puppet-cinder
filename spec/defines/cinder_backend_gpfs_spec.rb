@@ -11,31 +11,37 @@ describe 'cinder::backend::gpfs' do
 
   let :default_params do
     {
-      :backend_availability_zone => '<SERVICE DEFAULT>',
-      :gpfs_max_clone_depth      => '<SERVICE DEFAULT>',
-      :gpfs_sparse_volumes       => '<SERVICE DEFAULT>',
-      :gpfs_storage_pool         => '<SERVICE DEFAULT>',
-      :gpfs_images_dir           => '<SERVICE DEFAULT>',
-      :gpfs_images_share_mode    => '<SERVICE DEFAULT>',
-      :nas_host                  => '<SERVICE DEFAULT>',
-      :nas_login                 => '<SERVICE DEFAULT>',
-      :nas_password              => '<SERVICE DEFAULT>',
-      :nas_private_key           => '<SERVICE DEFAULT>',
-      :nas_ssh_port              => '<SERVICE DEFAULT>',
+      :backend_availability_zone      => '<SERVICE DEFAULT>',
+      :image_volume_cache_enabled     => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_count   => '<SERVICE DEFAULT>',
+      :gpfs_max_clone_depth           => '<SERVICE DEFAULT>',
+      :gpfs_sparse_volumes            => '<SERVICE DEFAULT>',
+      :gpfs_storage_pool              => '<SERVICE DEFAULT>',
+      :gpfs_images_dir                => '<SERVICE DEFAULT>',
+      :gpfs_images_share_mode         => '<SERVICE DEFAULT>',
+      :nas_host                       => '<SERVICE DEFAULT>',
+      :nas_login                      => '<SERVICE DEFAULT>',
+      :nas_password                   => '<SERVICE DEFAULT>',
+      :nas_private_key                => '<SERVICE DEFAULT>',
+      :nas_ssh_port                   => '<SERVICE DEFAULT>',
     }
   end
 
   let :custom_params do
     {
-      :backend_availability_zone => 'my_zone',
-      :gpfs_max_clone_depth      => 1,
-      :gpfs_sparse_volumes       => false,
-      :gpfs_storage_pool         => 'foo',
-      :nas_host                  => 'nas_host',
-      :nas_login                 => 'admin',
-      :nas_password              => 'nas_password',
-      :nas_private_key           => '/path/to/private_key',
-      :nas_ssh_port              => '22',
+      :backend_availability_zone      => 'my_zone',
+      :image_volume_cache_enabled     => true,
+      :image_volume_cache_max_size_gb => 100,
+      :image_volume_cache_max_count   => 101,
+      :gpfs_max_clone_depth           => 1,
+      :gpfs_sparse_volumes            => false,
+      :gpfs_storage_pool              => 'foo',
+      :nas_host                       => 'nas_host',
+      :nas_login                      => 'admin',
+      :nas_password                   => 'nas_password',
+      :nas_private_key                => '/path/to/private_key',
+      :nas_ssh_port                   => '22',
     }
   end
 

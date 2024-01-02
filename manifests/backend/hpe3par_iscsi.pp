@@ -37,6 +37,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*reserved_percentage*]
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
@@ -83,16 +95,19 @@ define cinder::backend::hpe3par_iscsi(
   $san_login,
   $san_password,
   $hpe3par_iscsi_ips,
-  $volume_backend_name         = $name,
-  $backend_availability_zone   = $facts['os_service_default'],
-  $reserved_percentage         = $facts['os_service_default'],
-  $volume_driver               = 'cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver',
-  $hpe3par_iscsi_chap_enabled  = false,
-  $hpe3par_cpg_snap            = 'userCPG',
-  $hpe3par_snapshot_retention  = 48,
-  $hpe3par_snapshot_expiration = 72,
-  Boolean $manage_volume_type  = false,
-  Hash $extra_options          = {},
+  $volume_backend_name            = $name,
+  $backend_availability_zone      = $facts['os_service_default'],
+  $image_volume_cache_enabled     = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb = $facts['os_service_default'],
+  $image_volume_cache_max_count   = $facts['os_service_default'],
+  $reserved_percentage            = $facts['os_service_default'],
+  $volume_driver                  = 'cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver',
+  $hpe3par_iscsi_chap_enabled     = false,
+  $hpe3par_cpg_snap               = 'userCPG',
+  $hpe3par_snapshot_retention     = 48,
+  $hpe3par_snapshot_expiration    = 72,
+  Boolean $manage_volume_type     = false,
+  Hash $extra_options             = {},
 ) {
 
   include cinder::deps
@@ -102,21 +117,24 @@ define cinder::backend::hpe3par_iscsi(
   }
 
   cinder_config {
-    "${name}/volume_backend_name":         value => $volume_backend_name;
-    "${name}/backend_availability_zone":   value => $backend_availability_zone;
-    "${name}/reserved_percentage":         value => $reserved_percentage;
-    "${name}/volume_driver":               value => $volume_driver;
-    "${name}/hpe3par_username":            value => $hpe3par_username;
-    "${name}/hpe3par_password":            value => $hpe3par_password, secret => true;
-    "${name}/san_ip":                      value => $san_ip;
-    "${name}/san_login":                   value => $san_login;
-    "${name}/san_password":                value => $san_password, secret => true;
-    "${name}/hpe3par_iscsi_ips":           value => $hpe3par_iscsi_ips;
-    "${name}/hpe3par_api_url":             value => $hpe3par_api_url;
-    "${name}/hpe3par_iscsi_chap_enabled":  value => $hpe3par_iscsi_chap_enabled;
-    "${name}/hpe3par_snap_cpg":            value => $hpe3par_cpg_snap;
-    "${name}/hpe3par_snapshot_retention":  value => $hpe3par_snapshot_retention;
-    "${name}/hpe3par_snapshot_expiration": value => $hpe3par_snapshot_expiration;
+    "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/volume_driver":                  value => $volume_driver;
+    "${name}/hpe3par_username":               value => $hpe3par_username;
+    "${name}/hpe3par_password":               value => $hpe3par_password, secret => true;
+    "${name}/san_ip":                         value => $san_ip;
+    "${name}/san_login":                      value => $san_login;
+    "${name}/san_password":                   value => $san_password, secret => true;
+    "${name}/hpe3par_iscsi_ips":              value => $hpe3par_iscsi_ips;
+    "${name}/hpe3par_api_url":                value => $hpe3par_api_url;
+    "${name}/hpe3par_iscsi_chap_enabled":     value => $hpe3par_iscsi_chap_enabled;
+    "${name}/hpe3par_snap_cpg":               value => $hpe3par_cpg_snap;
+    "${name}/hpe3par_snapshot_retention":     value => $hpe3par_snapshot_retention;
+    "${name}/hpe3par_snapshot_expiration":    value => $hpe3par_snapshot_expiration;
   }
 
   if $manage_volume_type {

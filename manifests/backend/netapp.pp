@@ -27,6 +27,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*reserved_percentage*]
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
@@ -176,6 +188,9 @@ define cinder::backend::netapp (
   $netapp_server_hostname,
   $volume_backend_name                    = $name,
   $backend_availability_zone              = $facts['os_service_default'],
+  $image_volume_cache_enabled             = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb         = $facts['os_service_default'],
+  $image_volume_cache_max_count           = $facts['os_service_default'],
   $reserved_percentage                    = $facts['os_service_default'],
   $netapp_server_port                     = $facts['os_service_default'],
   $netapp_size_multiplier                 = $facts['os_service_default'],
@@ -218,6 +233,9 @@ and will be removed in a future release.")
     "${name}/nfs_mount_options":                value => $nfs_mount_options;
     "${name}/volume_backend_name":              value => $volume_backend_name;
     "${name}/backend_availability_zone":        value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":       value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb":   value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":     value => $image_volume_cache_max_count;
     "${name}/reserved_percentage":              value => $reserved_percentage;
     "${name}/volume_driver":                    value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
     "${name}/netapp_login":                     value => $netapp_login;

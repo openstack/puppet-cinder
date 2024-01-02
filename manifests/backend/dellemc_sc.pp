@@ -30,6 +30,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*dell_sc_api_port*]
 #   (optional) The Enterprise Manager API port.
 #   Defaults to $facts['os_service_default']
@@ -101,6 +113,9 @@ define cinder::backend::dellemc_sc (
   $target_ip_address                       = undef,
   $volume_backend_name                     = $name,
   $backend_availability_zone               = $facts['os_service_default'],
+  $image_volume_cache_enabled              = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb          = $facts['os_service_default'],
+  $image_volume_cache_max_count            = $facts['os_service_default'],
   $dell_sc_api_port                        = $facts['os_service_default'],
   $dell_sc_server_folder                   = 'srv',
   $dell_sc_verify_cert                     = $facts['os_service_default'],
@@ -125,25 +140,28 @@ define cinder::backend::dellemc_sc (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":          value => $volume_backend_name;
-    "${name}/backend_availability_zone":    value => $backend_availability_zone;
-    "${name}/volume_driver":                value => $volume_driver;
-    "${name}/san_ip":                       value => $san_ip;
-    "${name}/san_login":                    value => $san_login;
-    "${name}/san_password":                 value => $san_password, secret => true;
-    "${name}/target_ip_address":            value => $target_ip_address;
-    "${name}/dell_sc_ssn":                  value => $dell_sc_ssn;
-    "${name}/dell_sc_api_port":             value => $dell_sc_api_port;
-    "${name}/dell_sc_server_folder":        value => $dell_sc_server_folder;
-    "${name}/dell_sc_verify_cert":          value => $dell_sc_verify_cert;
-    "${name}/dell_sc_volume_folder":        value => $dell_sc_volume_folder;
-    "${name}/target_port":                  value => $target_port;
-    "${name}/excluded_domain_ips":          value => $excluded_domain_ips;
-    "${name}/secondary_san_ip":             value => $secondary_san_ip;
-    "${name}/secondary_san_login":          value => $secondary_san_login;
-    "${name}/secondary_san_password":       value => $secondary_san_password, secret => true;
-    "${name}/secondary_sc_api_port":        value => $secondary_sc_api_port;
-    "${name}/use_multipath_for_image_xfer": value => $use_multipath_for_image_xfer;
+    "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/volume_driver":                  value => $volume_driver;
+    "${name}/san_ip":                         value => $san_ip;
+    "${name}/san_login":                      value => $san_login;
+    "${name}/san_password":                   value => $san_password, secret => true;
+    "${name}/target_ip_address":              value => $target_ip_address;
+    "${name}/dell_sc_ssn":                    value => $dell_sc_ssn;
+    "${name}/dell_sc_api_port":               value => $dell_sc_api_port;
+    "${name}/dell_sc_server_folder":          value => $dell_sc_server_folder;
+    "${name}/dell_sc_verify_cert":            value => $dell_sc_verify_cert;
+    "${name}/dell_sc_volume_folder":          value => $dell_sc_volume_folder;
+    "${name}/target_port":                    value => $target_port;
+    "${name}/excluded_domain_ips":            value => $excluded_domain_ips;
+    "${name}/secondary_san_ip":               value => $secondary_san_ip;
+    "${name}/secondary_san_login":            value => $secondary_san_login;
+    "${name}/secondary_san_password":         value => $secondary_san_password, secret => true;
+    "${name}/secondary_sc_api_port":          value => $secondary_sc_api_port;
+    "${name}/use_multipath_for_image_xfer":   value => $use_multipath_for_image_xfer;
   }
 
   if $manage_volume_type {

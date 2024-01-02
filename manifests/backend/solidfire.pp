@@ -15,6 +15,18 @@
 #   is used as the default for all backends.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_volume_cache_enabled*]
+#   (Optional) Enable Cinder's image cache function for this backend.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_size_gb*]
+#   (Optional) Max size of the image volume cache for this backend in GB.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_volume_cache_max_count*]
+#   (Optional) Max number of entries allowed in the image volume cache.
+#   Defaults to $facts['os_service_default'],
+#
 # [*reserved_percentage*]
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
@@ -107,50 +119,56 @@ define cinder::backend::solidfire(
   $san_ip,
   $san_login,
   $san_password,
-  $volume_backend_name        = $name,
-  $backend_availability_zone  = $facts['os_service_default'],
-  $reserved_percentage        = $facts['os_service_default'],
-  $volume_driver              = 'cinder.volume.drivers.solidfire.SolidFireDriver',
-  $sf_emulate_512             = $facts['os_service_default'],
-  $sf_allow_tenant_qos        = $facts['os_service_default'],
-  $sf_account_prefix          = $facts['os_service_default'],
-  $sf_api_port                = $facts['os_service_default'],
-  $sf_volume_prefix           = $facts['os_service_default'],
-  $sf_svip                    = $facts['os_service_default'],
-  $sf_enable_vag              = $facts['os_service_default'],
-  $sf_provisioning_calc       = $facts['os_service_default'],
-  $sf_cluster_pairing_timeout = $facts['os_service_default'],
-  $sf_volume_pairing_timeout  = $facts['os_service_default'],
-  $sf_api_request_timeout     = $facts['os_service_default'],
-  $sf_volume_clone_timeout    = $facts['os_service_default'],
-  $sf_volume_create_timeout   = $facts['os_service_default'],
-  Boolean $manage_volume_type = false,
-  Hash $extra_options         = {},
+  $volume_backend_name            = $name,
+  $backend_availability_zone      = $facts['os_service_default'],
+  $image_volume_cache_enabled     = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb = $facts['os_service_default'],
+  $image_volume_cache_max_count   = $facts['os_service_default'],
+  $reserved_percentage            = $facts['os_service_default'],
+  $volume_driver                  = 'cinder.volume.drivers.solidfire.SolidFireDriver',
+  $sf_emulate_512                 = $facts['os_service_default'],
+  $sf_allow_tenant_qos            = $facts['os_service_default'],
+  $sf_account_prefix              = $facts['os_service_default'],
+  $sf_api_port                    = $facts['os_service_default'],
+  $sf_volume_prefix               = $facts['os_service_default'],
+  $sf_svip                        = $facts['os_service_default'],
+  $sf_enable_vag                  = $facts['os_service_default'],
+  $sf_provisioning_calc           = $facts['os_service_default'],
+  $sf_cluster_pairing_timeout     = $facts['os_service_default'],
+  $sf_volume_pairing_timeout      = $facts['os_service_default'],
+  $sf_api_request_timeout         = $facts['os_service_default'],
+  $sf_volume_clone_timeout        = $facts['os_service_default'],
+  $sf_volume_create_timeout       = $facts['os_service_default'],
+  Boolean $manage_volume_type     = false,
+  Hash $extra_options             = {},
 ) {
 
   include cinder::deps
 
   cinder_config {
-    "${name}/volume_backend_name":        value => $volume_backend_name;
-    "${name}/backend_availability_zone":  value => $backend_availability_zone;
-    "${name}/reserved_percentage":        value => $reserved_percentage;
-    "${name}/volume_driver":              value => $volume_driver;
-    "${name}/san_ip":                     value => $san_ip;
-    "${name}/san_login":                  value => $san_login;
-    "${name}/san_password":               value => $san_password, secret => true;
-    "${name}/sf_emulate_512":             value => $sf_emulate_512;
-    "${name}/sf_allow_tenant_qos":        value => $sf_allow_tenant_qos;
-    "${name}/sf_account_prefix":          value => $sf_account_prefix;
-    "${name}/sf_api_port":                value => $sf_api_port;
-    "${name}/sf_volume_prefix":           value => $sf_volume_prefix;
-    "${name}/sf_svip":                    value => $sf_svip;
-    "${name}/sf_enable_vag":              value => $sf_enable_vag;
-    "${name}/sf_provisioning_calc":       value => $sf_provisioning_calc;
-    "${name}/sf_cluster_pairing_timeout": value => $sf_cluster_pairing_timeout;
-    "${name}/sf_volume_pairing_timeout":  value => $sf_volume_pairing_timeout;
-    "${name}/sf_api_request_timeout":     value => $sf_api_request_timeout;
-    "${name}/sf_volume_clone_timeout":    value => $sf_volume_clone_timeout;
-    "${name}/sf_volume_create_timeout":   value => $sf_volume_create_timeout;
+    "${name}/volume_backend_name":            value => $volume_backend_name;
+    "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/volume_driver":                  value => $volume_driver;
+    "${name}/san_ip":                         value => $san_ip;
+    "${name}/san_login":                      value => $san_login;
+    "${name}/san_password":                   value => $san_password, secret => true;
+    "${name}/sf_emulate_512":                 value => $sf_emulate_512;
+    "${name}/sf_allow_tenant_qos":            value => $sf_allow_tenant_qos;
+    "${name}/sf_account_prefix":              value => $sf_account_prefix;
+    "${name}/sf_api_port":                    value => $sf_api_port;
+    "${name}/sf_volume_prefix":               value => $sf_volume_prefix;
+    "${name}/sf_svip":                        value => $sf_svip;
+    "${name}/sf_enable_vag":                  value => $sf_enable_vag;
+    "${name}/sf_provisioning_calc":           value => $sf_provisioning_calc;
+    "${name}/sf_cluster_pairing_timeout":     value => $sf_cluster_pairing_timeout;
+    "${name}/sf_volume_pairing_timeout":      value => $sf_volume_pairing_timeout;
+    "${name}/sf_api_request_timeout":         value => $sf_api_request_timeout;
+    "${name}/sf_volume_clone_timeout":        value => $sf_volume_clone_timeout;
+    "${name}/sf_volume_create_timeout":       value => $sf_volume_create_timeout;
   }
 
   if $manage_volume_type {
