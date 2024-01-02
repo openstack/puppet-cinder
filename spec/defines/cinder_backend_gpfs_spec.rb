@@ -47,6 +47,7 @@ describe 'cinder::backend::gpfs' do
     it { is_expected.to contain_cinder_config('gpfs/volume_driver').with_value(
       'cinder.volume.drivers.ibm.gpfs.GPFSDriver'
     )}
+    it { is_expected.to contain_cinder_config('gpfs/volume_backend_name').with_value('gpfs') }
 
     it {
       params_hash.each_pair do |config,value|
