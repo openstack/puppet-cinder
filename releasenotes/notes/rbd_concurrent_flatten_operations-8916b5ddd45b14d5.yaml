@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``cinder::backends::rbd::rbd_concurrent_flatten_operations`` option
+    has been added.

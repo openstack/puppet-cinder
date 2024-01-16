@@ -91,6 +91,11 @@
 #   volumes tagged for deletion.
 #   Defaults to $facts['os_service_default']
 #
+# [*rbd_concurrent_flatten_operations*]
+#   (optional) Number of flatten operations that will run concurrently on
+#   this volume service.
+#   Defaults to $facts['os_service_default']
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -106,25 +111,26 @@
 define cinder::backend::rbd (
   $rbd_pool,
   $rbd_user,
-  $backend_host                     = undef,
-  $volume_backend_name              = $name,
-  $backend_availability_zone        = $facts['os_service_default'],
-  $reserved_percentage              = $facts['os_service_default'],
-  $rbd_ceph_conf                    = '/etc/ceph/ceph.conf',
-  $rbd_flatten_volume_from_snapshot = $facts['os_service_default'],
-  $rbd_secret_uuid                  = $facts['os_service_default'],
-  $rbd_max_clone_depth              = $facts['os_service_default'],
-  $rados_connect_timeout            = $facts['os_service_default'],
-  $rados_connection_interval        = $facts['os_service_default'],
-  $rados_connection_retries         = $facts['os_service_default'],
-  $rbd_store_chunk_size             = $facts['os_service_default'],
-  $report_dynamic_total_capacity    = $facts['os_service_default'],
-  $rbd_exclusive_cinder_pool        = $facts['os_service_default'],
-  $enable_deferred_deletion         = $facts['os_service_default'],
-  $deferred_deletion_delay          = $facts['os_service_default'],
-  $deferred_deletion_purge_interval = $facts['os_service_default'],
-  Boolean $manage_volume_type       = false,
-  Hash $extra_options               = {},
+  $backend_host                      = undef,
+  $volume_backend_name               = $name,
+  $backend_availability_zone         = $facts['os_service_default'],
+  $reserved_percentage               = $facts['os_service_default'],
+  $rbd_ceph_conf                     = '/etc/ceph/ceph.conf',
+  $rbd_flatten_volume_from_snapshot  = $facts['os_service_default'],
+  $rbd_secret_uuid                   = $facts['os_service_default'],
+  $rbd_max_clone_depth               = $facts['os_service_default'],
+  $rados_connect_timeout             = $facts['os_service_default'],
+  $rados_connection_interval         = $facts['os_service_default'],
+  $rados_connection_retries          = $facts['os_service_default'],
+  $rbd_store_chunk_size              = $facts['os_service_default'],
+  $report_dynamic_total_capacity     = $facts['os_service_default'],
+  $rbd_exclusive_cinder_pool         = $facts['os_service_default'],
+  $enable_deferred_deletion          = $facts['os_service_default'],
+  $deferred_deletion_delay           = $facts['os_service_default'],
+  $deferred_deletion_purge_interval  = $facts['os_service_default'],
+  $rbd_concurrent_flatten_operations = $facts['os_service_default'],
+  Boolean $manage_volume_type        = false,
+  Hash $extra_options                = {},
 ) {
 
   include cinder::deps
@@ -139,27 +145,28 @@ define cinder::backend::rbd (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":              value => $volume_backend_name;
-    "${name}/backend_availability_zone":        value => $backend_availability_zone;
-    "${name}/reserved_percentage":              value => $reserved_percentage;
-    "${name}/volume_driver":                    value => 'cinder.volume.drivers.rbd.RBDDriver';
-    "${name}/rbd_ceph_conf":                    value => $rbd_ceph_conf;
-    "${name}/rbd_user":                         value => $rbd_user;
-    "${name}/rbd_pool":                         value => $rbd_pool;
-    "${name}/rbd_max_clone_depth":              value => $rbd_max_clone_depth;
-    "${name}/rbd_flatten_volume_from_snapshot": value => $rbd_flatten_volume_from_snapshot;
-    "${name}/rbd_secret_uuid":                  value => $rbd_secret_uuid;
-    "${name}/rados_connect_timeout":            value => $rados_connect_timeout;
-    "${name}/rados_connection_interval":        value => $rados_connection_interval;
-    "${name}/rados_connection_retries":         value => $rados_connection_retries;
-    "${name}/rbd_store_chunk_size":             value => $rbd_store_chunk_size;
-    "${name}/rbd_cluster_name":                 value => $rbd_cluster_name_real;
-    "${name}/report_dynamic_total_capacity":    value => $report_dynamic_total_capacity;
-    "${name}/rbd_exclusive_cinder_pool":        value => $rbd_exclusive_cinder_pool;
-    "${name}/enable_deferred_deletion":         value => $enable_deferred_deletion;
-    "${name}/deferred_deletion_delay":          value => $deferred_deletion_delay;
-    "${name}/deferred_deletion_purge_interval": value => $deferred_deletion_purge_interval;
-    "${name}/report_discard_supported":         value => true;
+    "${name}/volume_backend_name":               value => $volume_backend_name;
+    "${name}/backend_availability_zone":         value => $backend_availability_zone;
+    "${name}/reserved_percentage":               value => $reserved_percentage;
+    "${name}/volume_driver":                     value => 'cinder.volume.drivers.rbd.RBDDriver';
+    "${name}/rbd_ceph_conf":                     value => $rbd_ceph_conf;
+    "${name}/rbd_user":                          value => $rbd_user;
+    "${name}/rbd_pool":                          value => $rbd_pool;
+    "${name}/rbd_max_clone_depth":               value => $rbd_max_clone_depth;
+    "${name}/rbd_flatten_volume_from_snapshot":  value => $rbd_flatten_volume_from_snapshot;
+    "${name}/rbd_secret_uuid":                   value => $rbd_secret_uuid;
+    "${name}/rados_connect_timeout":             value => $rados_connect_timeout;
+    "${name}/rados_connection_interval":         value => $rados_connection_interval;
+    "${name}/rados_connection_retries":          value => $rados_connection_retries;
+    "${name}/rbd_store_chunk_size":              value => $rbd_store_chunk_size;
+    "${name}/rbd_cluster_name":                  value => $rbd_cluster_name_real;
+    "${name}/report_dynamic_total_capacity":     value => $report_dynamic_total_capacity;
+    "${name}/rbd_exclusive_cinder_pool":         value => $rbd_exclusive_cinder_pool;
+    "${name}/enable_deferred_deletion":          value => $enable_deferred_deletion;
+    "${name}/deferred_deletion_delay":           value => $deferred_deletion_delay;
+    "${name}/deferred_deletion_purge_interval":  value => $deferred_deletion_purge_interval;
+    "${name}/rbd_concurrent_flatten_operations": value => $rbd_concurrent_flatten_operations;
+    "${name}/report_discard_supported":          value => true;
   }
 
   if $manage_volume_type {
