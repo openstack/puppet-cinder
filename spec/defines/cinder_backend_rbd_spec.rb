@@ -41,28 +41,30 @@ describe 'cinder::backend::rbd' do
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/enable_deferred_deletion").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/deferred_deletion_delay").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/deferred_deletion_purge_interval").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_concurrent_flatten_operations").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
       }
 
       context 'with parameters' do
         let :params do
           req_params.merge!({
-            :backend_host                     => 'test_host.fqdn.com',
-            :backend_availability_zone        => 'my_zone',
-            :reserved_percentage              => 10,
-            :rbd_ceph_conf                    => '/opt/ceph.conf',
-            :rbd_flatten_volume_from_snapshot => true,
-            :rbd_secret_uuid                  => 'b129523a-61a5-4653-86d1-2b055f970801',
-            :rbd_max_clone_depth              => 5,
-            :rados_connect_timeout            => 10,
-            :rados_connection_interval        => 5,
-            :rados_connection_retries         => 3,
-            :rbd_store_chunk_size             => 4,
-            :report_dynamic_total_capacity    => true,
-            :rbd_exclusive_cinder_pool        => false,
-            :enable_deferred_deletion         => false,
-            :deferred_deletion_delay          => 0,
-            :deferred_deletion_purge_interval => 60,
+            :backend_host                      => 'test_host.fqdn.com',
+            :backend_availability_zone         => 'my_zone',
+            :reserved_percentage               => 10,
+            :rbd_ceph_conf                     => '/opt/ceph.conf',
+            :rbd_flatten_volume_from_snapshot  => true,
+            :rbd_secret_uuid                   => 'b129523a-61a5-4653-86d1-2b055f970801',
+            :rbd_max_clone_depth               => 5,
+            :rados_connect_timeout             => 10,
+            :rados_connection_interval         => 5,
+            :rados_connection_retries          => 3,
+            :rbd_store_chunk_size              => 4,
+            :report_dynamic_total_capacity     => true,
+            :rbd_exclusive_cinder_pool         => false,
+            :enable_deferred_deletion          => false,
+            :deferred_deletion_delay           => 0,
+            :deferred_deletion_purge_interval  => 60,
+            :rbd_concurrent_flatten_operations => 3,
           })
         end
 
@@ -88,6 +90,7 @@ describe 'cinder::backend::rbd' do
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/enable_deferred_deletion").with_value(params[:enable_deferred_deletion])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/deferred_deletion_delay").with_value(params[:deferred_deletion_delay])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/deferred_deletion_purge_interval").with_value(params[:deferred_deletion_purge_interval])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_concurrent_flatten_operations").with_value(params[:rbd_concurrent_flatten_operations])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
         }
       end
