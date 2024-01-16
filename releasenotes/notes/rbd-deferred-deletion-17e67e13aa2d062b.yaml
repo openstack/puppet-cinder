@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``cinder::backends::rbd`` defined resource type now supports options
+    used by the deferred deletion feature.
