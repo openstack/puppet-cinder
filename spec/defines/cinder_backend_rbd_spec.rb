@@ -38,6 +38,9 @@ describe 'cinder::backend::rbd' do
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_dynamic_total_capacity").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_exclusive_cinder_pool").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/enable_deferred_deletion").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/deferred_deletion_delay").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/deferred_deletion_purge_interval").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
       }
 
@@ -57,6 +60,9 @@ describe 'cinder::backend::rbd' do
             :rbd_store_chunk_size             => 4,
             :report_dynamic_total_capacity    => true,
             :rbd_exclusive_cinder_pool        => false,
+            :enable_deferred_deletion         => false,
+            :deferred_deletion_delay          => 0,
+            :deferred_deletion_purge_interval => 60,
           })
         end
 
@@ -79,6 +85,9 @@ describe 'cinder::backend::rbd' do
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value(params[:rbd_store_chunk_size])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_dynamic_total_capacity").with_value(params[:report_dynamic_total_capacity])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_exclusive_cinder_pool").with_value(params[:rbd_exclusive_cinder_pool])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/enable_deferred_deletion").with_value(params[:enable_deferred_deletion])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/deferred_deletion_delay").with_value(params[:deferred_deletion_delay])
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/deferred_deletion_purge_interval").with_value(params[:deferred_deletion_purge_interval])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_discard_supported").with_value(true)
         }
       end

@@ -76,6 +76,21 @@
 #   (optional) Set to True if the pool is used exclusively by Cinder.
 #   Defaults to $facts['os_service_default']
 #
+# [*enable_deferred_deletion*]
+#   (optional) Enable deferred deletion. Upon deletion, volumes are tagged for
+#   deletion but will only be removed asynchronously at a later time.
+#   Defaults to $facts['os_service_default']
+#
+# [*deferred_deletion_delay*]
+#   (optional) Time delay in seconds before a volume is eligible for permanent
+#   removal after being tagged for deferred deletion.
+#   Defaults to $facts['os_service_default']
+#
+# [*deferred_deletion_purge_interval*]
+#   (optional) Number of seconds between runs of the periodic task to purge
+#   volumes tagged for deletion.
+#   Defaults to $facts['os_service_default']
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -105,6 +120,9 @@ define cinder::backend::rbd (
   $rbd_store_chunk_size             = $facts['os_service_default'],
   $report_dynamic_total_capacity    = $facts['os_service_default'],
   $rbd_exclusive_cinder_pool        = $facts['os_service_default'],
+  $enable_deferred_deletion         = $facts['os_service_default'],
+  $deferred_deletion_delay          = $facts['os_service_default'],
+  $deferred_deletion_purge_interval = $facts['os_service_default'],
   Boolean $manage_volume_type       = false,
   Hash $extra_options               = {},
 ) {
@@ -138,6 +156,9 @@ define cinder::backend::rbd (
     "${name}/rbd_cluster_name":                 value => $rbd_cluster_name_real;
     "${name}/report_dynamic_total_capacity":    value => $report_dynamic_total_capacity;
     "${name}/rbd_exclusive_cinder_pool":        value => $rbd_exclusive_cinder_pool;
+    "${name}/enable_deferred_deletion":         value => $enable_deferred_deletion;
+    "${name}/deferred_deletion_delay":          value => $deferred_deletion_delay;
+    "${name}/deferred_deletion_purge_interval": value => $deferred_deletion_purge_interval;
     "${name}/report_discard_supported":         value => true;
   }
 
