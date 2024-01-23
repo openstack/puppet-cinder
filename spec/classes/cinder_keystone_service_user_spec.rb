@@ -21,7 +21,7 @@ describe 'cinder::keystone::service_user' do
           :user_domain_name        => 'Default',
           :project_domain_name     => 'Default',
           :insecure                => '<SERVICE DEFAULT>',
-          :send_service_user_token => false,
+          :send_service_user_token => '<SERVICE DEFAULT>',
           :auth_type               => 'password',
           :auth_version            => '<SERVICE DEFAULT>',
           :cafile                  => '<SERVICE DEFAULT>',
