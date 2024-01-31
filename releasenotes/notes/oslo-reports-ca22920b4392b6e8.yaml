@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``cinder::reports`` class has been added.
