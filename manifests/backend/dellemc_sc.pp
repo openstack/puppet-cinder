@@ -1,5 +1,6 @@
 # == define: cinder::backend::dellemc_sc
 #
+# DEPRECATED !!
 # Configure the Dell Storage Center Driver for cinder.
 #
 # === Parameters
@@ -133,6 +134,8 @@ define cinder::backend::dellemc_sc (
 ) {
 
   include cinder::deps
+
+  warning('Support for Dell SC Series storage driver options has been deprecated.')
 
   $volume_driver = $sc_storage_protocol ? {
     'FC'    => 'cinder.volume.drivers.dell_emc.sc.storagecenter_fc.SCFCDriver',

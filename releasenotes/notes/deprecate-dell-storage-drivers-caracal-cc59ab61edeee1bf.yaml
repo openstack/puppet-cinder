@@ -1,0 +1,10 @@
+---
+deprecations:
+  - |
+    The following defined resource types have been deprecated and will be
+    removed in a future release. These support options for the storage drivers
+    which are no longer supported because of product EOL.
+
+    - ``cinder::backends::delemc_sc``
+    - ``cinder::backends::delemc_xtremio``
+    - ``cinder::backends::emc_vnx``

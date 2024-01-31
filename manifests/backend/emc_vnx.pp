@@ -1,8 +1,8 @@
 #
 # == Define: cinder::backend::emc_vnx
 #
+# DEPRECATED !!
 # Setup Cinder to use the EMC VNX driver.
-# Compatible for multiple backends
 #
 # == Parameters
 #
@@ -159,7 +159,8 @@ define cinder::backend::emc_vnx (
 ) {
 
   include cinder::deps
-  include cinder::params
+
+  warning('Support for Dell VNX storage driver options has been deprecated.')
 
   cinder_config {
     "${name}/default_timeout":                  value => $default_timeout;
