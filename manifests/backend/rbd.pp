@@ -195,28 +195,4 @@ define cinder::backend::rbd (
     tag    => 'cinder-support-package'})
 
   create_resources('cinder_config', $extra_options)
-
-  case $facts['os']['family'] {
-    'Debian': {
-      $override_line    = "CEPH_ARGS=\"--id ${rbd_user}\""
-      $override_match   = '^CEPH_ARGS='
-    }
-    'RedHat': {
-      $override_line    = "export CEPH_ARGS=\"--id ${rbd_user}\""
-      $override_match   = '^export CEPH_ARGS='
-    }
-    default: {
-      fail("unsupported osfamily ${facts['os']['family']}")
-    }
-  }
-
-  # Creates an empty file if it doesn't yet exist
-  ensure_resource('file', $::cinder::params::ceph_init_override, {'ensure' => 'present'})
-
-  file_line { "set initscript env ${name}":
-    line   => $override_line,
-    path   => $::cinder::params::ceph_init_override,
-    notify => Anchor['cinder::service::begin'],
-  }
-
 }
