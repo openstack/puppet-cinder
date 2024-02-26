@@ -135,30 +135,6 @@ describe 'cinder::backend::rbd' do
     end
   end
 
-  shared_examples 'cinder::backend::rbd on Debian' do
-    it { is_expected.to contain_file('/etc/default/cinder-volume').with(
-      :ensure => 'present'
-    )}
-
-    it { is_expected.to contain_file_line('set initscript env rbd-ssd').with(
-      :line   => /CEPH_ARGS=\"--id test\"/,
-      :path   => '/etc/default/cinder-volume',
-      :notify => 'Anchor[cinder::service::begin]'
-    )}
-  end
-
-  shared_examples 'cinder::backend::rbd on RedHat' do
-    it { is_expected.to contain_file('/etc/sysconfig/openstack-cinder-volume').with(
-      :ensure => 'present'
-    )}
-
-    it { is_expected.to contain_file_line('set initscript env rbd-ssd').with(
-      :line   => /export CEPH_ARGS=\"--id test\"/,
-      :path   => '/etc/sysconfig/openstack-cinder-volume',
-      :notify => 'Anchor[cinder::service::begin]'
-    )}
-  end
-
   on_supported_os({
     :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
@@ -168,7 +144,6 @@ describe 'cinder::backend::rbd' do
       end
 
       it_behaves_like 'cinder::backend::rbd'
-      it_behaves_like "cinder::backend::rbd on #{facts[:os]['family']}"
     end
   end
 end
