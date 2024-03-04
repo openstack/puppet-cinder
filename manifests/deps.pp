@@ -24,33 +24,17 @@ class cinder::deps {
   ~> Service<| tag == 'cinder-service' |>
   ~> anchor { 'cinder::service::end': }
 
-  # paste-api.ini config should occur in the config block also.
   Anchor['cinder::config::begin']
   -> Cinder_api_paste_ini<||>
-  ~> Anchor['cinder::config::end']
+  -> Anchor['cinder::config::end']
 
-  # rootwrap config should occur in the config block also.
   Anchor['cinder::config::begin']
   -> Cinder_rootwrap_config<||>
   ~> Anchor['cinder::config::end']
 
-  # all coordination settings should be applied and all packages should be
-  # installed before service startup
-  Oslo::Coordination<||> -> Anchor['cinder::service::begin']
-
-  # all db settings should be applied and all packages should be installed
-  # before dbsync starts
-  Oslo::Db<||> -> Anchor['cinder::dbsync::begin']
-
-  # policy config should occur in the config block also.
-  Anchor['cinder::config::begin']
-  -> Openstacklib::Policy<| tag == 'cinder' |>
-  -> Anchor['cinder::config::end']
-
-  # On any uwsgi config change, we must restart Cinder API.
   Anchor['cinder::config::begin']
   -> Cinder_api_uwsgi_config<||>
-  ~> Anchor['cinder::config::end']
+  -> Anchor['cinder::config::end']
 
   # Support packages need to be installed in the install phase, but we don't
   # put them in the chain above because we don't want any false dependencies

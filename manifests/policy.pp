@@ -70,6 +70,11 @@ class cinder::policy (
 
   create_resources('openstacklib::policy', { $policy_path => $policy_parameters })
 
+  # policy config should occur in the config block also.
+  Anchor['cinder::config::begin']
+  -> Openstacklib::Policy[$policy_path]
+  -> Anchor['cinder::config::end']
+
   oslo::policy { 'cinder_config':
     enforce_scope        => $enforce_scope,
     enforce_new_defaults => $enforce_new_defaults,

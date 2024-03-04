@@ -172,6 +172,11 @@ class cinder::api (
         tag       => 'cinder-service',
       }
 
+      # On any api-paste.ini config change, we must restart Cinder API.
+      Cinder_api_paste_ini<||> ~> Service['cinder-api']
+      # On any uwsgi config change, we must restart Cinder API.
+      Cinder_api_uwsgi_config<||> ~> Service['cinder-api']
+
     } elsif $service_name == 'httpd' {
       service { 'cinder-api':
         ensure => 'stopped',
@@ -183,6 +188,10 @@ class cinder::api (
 
       # we need to make sure cinder-api/eventlet is stopped before trying to start apache
       Service['cinder-api'] -> Service[$service_name]
+
+      # On any api-paste.ini config change, we must restart Cinder API.
+      Cinder_api_paste_ini<||> ~> Service[$service_name]
+
     } else {
       fail("Invalid service_name. Either cinder-api/openstack-cinder-api for \
 running as a standalone service, or httpd for being run by a httpd server")

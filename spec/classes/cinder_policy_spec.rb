@@ -33,7 +33,6 @@ describe 'cinder::policy' do
           :file_group   => 'cinder',
           :file_format  => 'yaml',
           :purge_config => false,
-          :tag          => 'cinder',
         )
         is_expected.to contain_oslo__policy('cinder_config').with(
           :enforce_scope        => false,
@@ -64,7 +63,6 @@ describe 'cinder::policy' do
           :file_group   => 'cinder',
           :file_format  => 'yaml',
           :purge_config => true,
-          :tag          => 'cinder',
         )
         is_expected.to contain_oslo__policy('cinder_config').with(
           :enforce_scope        => false,

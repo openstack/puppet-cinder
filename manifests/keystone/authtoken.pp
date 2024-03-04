@@ -284,4 +284,6 @@ class cinder::keystone::authtoken(
       service_type                   => $service_type,
       interface                      => $interface;
   }
+
+  Keystone::Resource::Authtoken['cinder_config'] -> Anchor['cinder::config::end']
 }
