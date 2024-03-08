@@ -1,10 +1,13 @@
 # == Class: cinder::vmware
 #
+# DEPRECATED !!
 # Creates vmdk specific disk file type & clone type.
 #
 class cinder::vmware {
 
   include cinder::deps
+
+  warning('Support for VMWare storage driver has been deprecated')
 
   cinder_type { 'vmware-thin':
     ensure     => present,
