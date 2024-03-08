@@ -1,5 +1,6 @@
 # == define: cinder::backend::vmdk
 #
+# DEPRECATED !!
 # Configure the VMware VMDK driver for cinder.
 #
 # === Parameters
@@ -86,6 +87,8 @@ define cinder::backend::vmdk (
 ) {
 
   include cinder::deps
+
+  warning('Support for VMWare storage driver has been deprecated')
 
   cinder_config {
     "${name}/volume_backend_name":                value => $volume_backend_name;

@@ -1,0 +1,8 @@
+---
+deprecations:
+  - |
+    The following implementations have been deprecated and will be removed
+    in a future release.
+
+    - ``cinder::vmware`` class
+    - ``cinder::backend::vmdk`` defined resource type
