@@ -1,5 +1,6 @@
 # == define: cinder::backend::dellemc_xtremio
 #
+# DEPRECATED !!
 # Configure the Dell EMC XtremIO Driver for cinder.
 #
 # === Parameters
@@ -99,6 +100,8 @@ define cinder::backend::dellemc_xtremio (
 ) {
 
   include cinder::deps
+
+  warning('Support for Dell XtremeIO storage driver options has been deprecated.')
 
   $driver = $xtremio_storage_protocol ? {
     'FC'    => 'dell_emc.xtremio.XtremIOFCDriver',
