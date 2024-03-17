@@ -30,20 +30,41 @@ describe 'cinder::backend::nvmeof' do
         is_expected.to contain_cinder_config('nvme-backend/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/reserved_percentage').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nvme-backend/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
         is_expected.to contain_cinder_config('nvme-backend/nvmeof_conn_info_version').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/lvm_share_target').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/target_secondary_ip_addresses').with_value('<SERVICE DEFAULT>')
       }
+    end
+  end
 
+  shared_examples 'cinder::backend::nvmeof in RedHat' do
+    context 'with default params' do
       it { is_expected.to contain_package('nvmetcli').with(
-        :name   => 'nvmetcli',
+        :name   => platform_params[:nvmetcli_package_name],
         :ensure => 'installed',
         :tag    => 'cinder-support-package',
       )}
 
       it { is_expected.to contain_package('nvme-cli').with(
-        :name   => 'nvme-cli',
+        :name   => platform_params[:nvme_cli_package_name],
+        :ensure => 'installed',
+        :tag    => 'cinder-support-package',
+      )}
+    end
+  end
+
+  shared_examples 'cinder::backend::nvmeof in Debian' do
+    context 'with default params' do
+      it { is_expected.to contain_package('nvmetcli').with(
+        :name   => platform_params[:nvmetcli_package_name],
+        :ensure => 'installed',
+        :tag    => 'cinder-support-package',
+      )}
+
+      it { is_expected.to contain_package('nvme-cli').with(
+        :name   => platform_params[:nvme_cli_package_name],
         :ensure => 'installed',
         :tag    => 'cinder-support-package',
       )}
@@ -56,6 +77,20 @@ describe 'cinder::backend::nvmeof' do
     context "on #{os}" do
       let (:facts) do
         facts.merge!(OSDefaults.get_facts())
+      end
+
+      let :platform_params do
+        case facts[:os]['family']
+        when 'Debian'
+          {
+            :nvme_cli_package_name => 'nvme-cli',
+          }
+        when 'RedHat'
+          {
+            :nvme_cli_package_name => 'nvme-cli',
+            :nvmetcli_package_name => 'nvmetcli',
+          }
+        end
       end
 
       it_behaves_like 'cinder::backend::nvmeof'

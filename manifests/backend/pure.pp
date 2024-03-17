@@ -25,6 +25,11 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*pure_storage_protocol*]
 #   (optional) Must be either 'iSCSI', 'FC' or 'NVMe'. This will determine
 #   which Volume Driver will be configured; PureISCSIDriver, PureFCDriver
@@ -109,6 +114,7 @@ define cinder::backend::pure(
   $volume_backend_name                               = $name,
   $backend_availability_zone                         = $facts['os_service_default'],
   $reserved_percentage                               = $facts['os_service_default'],
+  $max_over_subscription_ratio                       = $facts['os_service_default'],
   Enum['iSCSI', 'FC', 'NVMe'] $pure_storage_protocol = 'iSCSI',
   $use_chap_auth                                     = $facts['os_service_default'],
   $use_multipath_for_image_xfer                      = true,
@@ -138,6 +144,7 @@ define cinder::backend::pure(
     "${name}/volume_backend_name":            value => $volume_backend_name;
     "${name}/backend_availability_zone":      value => $backend_availability_zone;
     "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
     "${name}/volume_driver":                  value => $volume_driver;
     "${name}/san_ip":                         value => $san_ip;
     "${name}/pure_api_token":                 value => $pure_api_token, secret => true;

@@ -31,6 +31,7 @@ describe 'cinder::backend::dellemc_powermax' do
         is_expected.to contain_cinder_config("#{title}/powermax_port_groups").with_value('[OS-ISCSI-PG]')
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/reserved_percentage").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/max_over_subscription_ratio").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_enabled").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_size_gb").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_count").with_value('<SERVICE DEFAULT>')
@@ -86,14 +87,16 @@ describe 'cinder::backend::dellemc_powermax' do
     context 'with parameters' do
       before do
         params.merge!({
-          :backend_availability_zone => 'my_zone',
-          :reserved_percentage       => 10,
+          :backend_availability_zone   => 'my_zone',
+          :reserved_percentage         => 10,
+          :max_over_subscription_ratio => 1.5,
         })
       end
 
       it 'should configure the customized values' do
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('my_zone')
         is_expected.to contain_cinder_config("#{title}/reserved_percentage").with_value(10)
+        is_expected.to contain_cinder_config("#{title}/max_over_subscription_ratio").with_value(1.5)
       end
     end
 

@@ -12,6 +12,7 @@ describe 'cinder::backend::iscsi' do
         is_expected.to contain_cinder_config('hippo/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/reserved_percentage').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')
         is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/target_helper').with_value(platform_params[:target_helper])
@@ -29,6 +30,7 @@ describe 'cinder::backend::iscsi' do
           :image_volume_cache_max_size_gb => 100,
           :image_volume_cache_max_count   => 101,
           :reserved_percentage            => 10,
+          :max_over_subscription_ratio    => 1.5,
           :target_ip_address              => '192.0.2.1',
           :volume_group                   => 'volumegroup',
           :volumes_dir                    => '/etc/cinder/volumes',
@@ -41,6 +43,7 @@ describe 'cinder::backend::iscsi' do
         is_expected.to contain_cinder_config('hippo/image_volume_cache_max_size_gb').with_value(100)
         is_expected.to contain_cinder_config('hippo/image_volume_cache_max_count').with_value(101)
         is_expected.to contain_cinder_config('hippo/reserved_percentage').with_value(10)
+        is_expected.to contain_cinder_config('hippo/max_over_subscription_ratio').with_value(1.5)
         is_expected.to contain_cinder_config('hippo/target_ip_address').with_value('192.0.2.1')
         is_expected.to contain_cinder_config('hippo/volume_group').with_value('volumegroup')
         is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/etc/cinder/volumes')

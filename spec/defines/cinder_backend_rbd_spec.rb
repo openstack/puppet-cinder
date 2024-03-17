@@ -32,6 +32,7 @@ describe 'cinder::backend::rbd' do
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/backend_host").with_value('rbd:'"#{req_params[:rbd_pool]}")
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/backend_availability_zone").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/reserved_percentage").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/max_over_subscription_ratio").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connect_timeout").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value('<SERVICE DEFAULT>')
@@ -51,6 +52,7 @@ describe 'cinder::backend::rbd' do
             :backend_host                      => 'test_host.fqdn.com',
             :backend_availability_zone         => 'my_zone',
             :reserved_percentage               => 10,
+            :max_over_subscription_ratio       => 1.5,
             :rbd_ceph_conf                     => '/opt/ceph.conf',
             :rbd_flatten_volume_from_snapshot  => true,
             :rbd_secret_uuid                   => 'b129523a-61a5-4653-86d1-2b055f970801',
@@ -81,6 +83,7 @@ describe 'cinder::backend::rbd' do
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/backend_host").with_value('test_host.fqdn.com')
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/backend_availability_zone").with_value('my_zone')
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/reserved_percentage").with_value(10)
+          is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/max_over_subscription_ratio").with_value(1.5)
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connect_timeout").with_value(params[:rados_connect_timeout])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value(params[:rados_connection_interval])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value(params[:rados_connection_retries])

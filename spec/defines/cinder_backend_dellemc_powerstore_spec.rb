@@ -20,6 +20,7 @@ describe 'cinder::backend::dellemc_powerstore' do
       :image_volume_cache_enabled     => '<SERVICE DEFAULT>',
       :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
       :image_volume_cache_max_count   => '<SERVICE DEFAULT>',
+      :max_over_subscription_ratio    => '<SERVICE DEFAULT>',
       :storage_protocol               => 'iSCSI' ,
     }
   end
@@ -31,6 +32,7 @@ describe 'cinder::backend::dellemc_powerstore' do
       :image_volume_cache_enabled     => true,
       :image_volume_cache_max_size_gb => 100,
       :image_volume_cache_max_count   => 101,
+      :max_over_subscription_ratio    => 1.5,
       :storage_protocol               => 'iSCSI' ,
     }
   end

@@ -6,6 +6,15 @@
 #
 # == Parameters
 #
+# [*san_ip*]
+#   (required) IP address of SAN controller.
+#
+# [*san_password*]
+#   (required) Password of SAN controller.
+#
+# [*storage_vnx_pool_names*]
+#   (required) Storage pool names.
+#
 # [*volume_backend_name*]
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
@@ -32,18 +41,14 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
-# [*san_ip*]
-#   (required) IP address of SAN controller.
-#
-# [*san_password*]
-#   (required) Password of SAN controller.
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
 #
 # [*san_login*]
 #   (optional) Login of SAN controller.
 #   Defaults to : 'admin'
-#
-# [*storage_vnx_pool_names*]
-#   (required) Storage pool names.
 #
 # [*default_timeout*]
 #   (optional) Default timeout for CLI operations in minutes.
@@ -141,6 +146,7 @@ define cinder::backend::emc_vnx (
   $image_volume_cache_max_size_gb   = $facts['os_service_default'],
   $image_volume_cache_max_count     = $facts['os_service_default'],
   $reserved_percentage              = $facts['os_service_default'],
+  $max_over_subscription_ratio      = $facts['os_service_default'],
   Hash $extra_options               = {},
   $volume_driver                    = 'cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver',
   $storage_protocol                 = 'iscsi',
@@ -176,6 +182,7 @@ define cinder::backend::emc_vnx (
     "${name}/image_volume_cache_max_size_gb":   value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":     value => $image_volume_cache_max_count;
     "${name}/reserved_percentage":              value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":      value => $max_over_subscription_ratio;
     "${name}/volume_driver":                    value => $volume_driver;
     "${name}/storage_protocol":                 value => $storage_protocol;
     "${name}/destroy_empty_storage_group":      value => $destroy_empty_storage_group;

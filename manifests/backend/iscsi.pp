@@ -33,6 +33,11 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
 #   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
@@ -73,6 +78,7 @@ define cinder::backend::iscsi (
   $image_volume_cache_max_size_gb = $facts['os_service_default'],
   $image_volume_cache_max_count   = $facts['os_service_default'],
   $reserved_percentage            = $facts['os_service_default'],
+  $max_over_subscription_ratio    = $facts['os_service_default'],
   $volume_driver                  = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
   $volume_group                   = $facts['os_service_default'],
   $volumes_dir                    = '/var/lib/cinder/volumes',
@@ -106,6 +112,7 @@ define cinder::backend::iscsi (
     "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
     "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
     "${name}/volume_driver":                  value => $volume_driver;
     "${name}/target_ip_address":              value => $target_ip_address;
     "${name}/target_helper":                  value => $target_helper_real;

@@ -31,6 +31,11 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*rbd_ceph_conf*]
 #   (optional) Path to the ceph configuration file to use
 #   Defaults to '/etc/ceph/ceph.conf'
@@ -115,6 +120,7 @@ define cinder::backend::rbd (
   $volume_backend_name               = $name,
   $backend_availability_zone         = $facts['os_service_default'],
   $reserved_percentage               = $facts['os_service_default'],
+  $max_over_subscription_ratio       = $facts['os_service_default'],
   $rbd_ceph_conf                     = '/etc/ceph/ceph.conf',
   $rbd_flatten_volume_from_snapshot  = $facts['os_service_default'],
   $rbd_secret_uuid                   = $facts['os_service_default'],
@@ -148,6 +154,7 @@ define cinder::backend::rbd (
     "${name}/volume_backend_name":               value => $volume_backend_name;
     "${name}/backend_availability_zone":         value => $backend_availability_zone;
     "${name}/reserved_percentage":               value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":       value => $max_over_subscription_ratio;
     "${name}/volume_driver":                     value => 'cinder.volume.drivers.rbd.RBDDriver';
     "${name}/rbd_ceph_conf":                     value => $rbd_ceph_conf;
     "${name}/rbd_user":                          value => $rbd_user;

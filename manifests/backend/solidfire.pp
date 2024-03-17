@@ -31,6 +31,11 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use SolidFire volume driver.
 #   Defaults to 'cinder.volume.drivers.solidfire.SolidFireDriver'
@@ -125,6 +130,7 @@ define cinder::backend::solidfire(
   $image_volume_cache_max_size_gb = $facts['os_service_default'],
   $image_volume_cache_max_count   = $facts['os_service_default'],
   $reserved_percentage            = $facts['os_service_default'],
+  $max_over_subscription_ratio    = $facts['os_service_default'],
   $volume_driver                  = 'cinder.volume.drivers.solidfire.SolidFireDriver',
   $sf_emulate_512                 = $facts['os_service_default'],
   $sf_allow_tenant_qos            = $facts['os_service_default'],
@@ -152,6 +158,7 @@ define cinder::backend::solidfire(
     "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
     "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
     "${name}/volume_driver":                  value => $volume_driver;
     "${name}/san_ip":                         value => $san_ip;
     "${name}/san_login":                      value => $san_login;

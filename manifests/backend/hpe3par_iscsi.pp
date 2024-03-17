@@ -53,6 +53,11 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_over_subscription_ratio*]
+#   (optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*volume_driver*]
 #   (optional) Setup cinder-volume to use HPE 3par volume driver.
 #   Defaults to 'cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver'.
@@ -101,6 +106,7 @@ define cinder::backend::hpe3par_iscsi(
   $image_volume_cache_max_size_gb = $facts['os_service_default'],
   $image_volume_cache_max_count   = $facts['os_service_default'],
   $reserved_percentage            = $facts['os_service_default'],
+  $max_over_subscription_ratio    = $facts['os_service_default'],
   $volume_driver                  = 'cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver',
   $hpe3par_iscsi_chap_enabled     = false,
   $hpe3par_cpg_snap               = 'userCPG',
@@ -123,6 +129,7 @@ define cinder::backend::hpe3par_iscsi(
     "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
     "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
     "${name}/volume_driver":                  value => $volume_driver;
     "${name}/hpe3par_username":               value => $hpe3par_username;
     "${name}/hpe3par_password":               value => $hpe3par_password, secret => true;

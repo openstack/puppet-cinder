@@ -27,6 +27,11 @@
 #   (Optional) Max number of entries allowed in the image volume cache.
 #   Defaults to $facts['os_service_default'],
 #
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*nfs_mount_attempts*]
 #   (optional) The number of attempts to mount nfs shares before raising an
 #   error. At least one attempt will be made to mount an nfs share, regardless
@@ -107,6 +112,7 @@ define cinder::backend::nfs (
   $image_volume_cache_enabled             = $facts['os_service_default'],
   $image_volume_cache_max_size_gb         = $facts['os_service_default'],
   $image_volume_cache_max_count           = $facts['os_service_default'],
+  $max_over_subscription_ratio            = $facts['os_service_default'],
   $nfs_mount_attempts                     = $facts['os_service_default'],
   $nfs_mount_options                      = $facts['os_service_default'],
   $nfs_sparsed_volumes                    = $facts['os_service_default'],
@@ -136,6 +142,7 @@ define cinder::backend::nfs (
     "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
     "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
     "${name}/volume_driver":                  value => 'cinder.volume.drivers.nfs.NfsDriver';
     "${name}/nfs_shares_config":              value => $nfs_shares_config;
     "${name}/nfs_mount_attempts":             value => $nfs_mount_attempts;

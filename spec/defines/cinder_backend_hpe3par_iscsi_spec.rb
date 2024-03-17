@@ -28,6 +28,7 @@ describe 'cinder::backend::hpe3par_iscsi' do
         is_expected.to contain_cinder_config('hpe3par_iscsi/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/reserved_percentage').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_username').with_value('3paradm')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_password').with_value('password')
@@ -41,13 +42,15 @@ describe 'cinder::backend::hpe3par_iscsi' do
     context 'with parameters' do
       before :each do
         params.merge!({
-          :backend_availability_zone => 'my_zone',
-          :reserved_percentage       => 10,
+          :backend_availability_zone   => 'my_zone',
+          :reserved_percentage         => 10,
+          :max_over_subscription_ratio => 1.5,
         })
       end
       it {
         is_expected.to contain_cinder_config('hpe3par_iscsi/backend_availability_zone').with_value('my_zone')
         is_expected.to contain_cinder_config('hpe3par_iscsi/reserved_percentage').with_value(10)
+        is_expected.to contain_cinder_config('hpe3par_iscsi/max_over_subscription_ratio').with_value(1.5)
       }
     end
 

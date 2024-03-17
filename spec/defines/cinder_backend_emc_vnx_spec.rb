@@ -41,6 +41,7 @@ describe 'cinder::backend::emc_vnx' do
         is_expected.to contain_cinder_config('emc/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/reserved_percentage').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -66,6 +67,7 @@ describe 'cinder::backend::emc_vnx' do
           :image_volume_cache_max_size_gb   => 100,
           :image_volume_cache_max_count     => 101,
           :reserved_percentage              => 10,
+          :max_over_subscription_ratio      => 1.5,
         })
       end
 
@@ -88,6 +90,7 @@ describe 'cinder::backend::emc_vnx' do
         is_expected.to contain_cinder_config('emc/image_volume_cache_max_size_gb').with_value(params[:image_volume_cache_max_size_gb])
         is_expected.to contain_cinder_config('emc/image_volume_cache_max_count').with_value(params[:image_volume_cache_max_count])
         is_expected.to contain_cinder_config('emc/reserved_percentage').with_value(params[:reserved_percentage])
+        is_expected.to contain_cinder_config('emc/max_over_subscription_ratio').with_value(1.5)
       }
 
       it { is_expected.to contain_cinder_type('emc').with(

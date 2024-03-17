@@ -29,7 +29,7 @@
 #   This will determine
 #   which Volume Driver will be configured; PowerMaxISCSIDriver or PowerMaxFCDriver.
 #   Defaults to 'iSCSI'
-
+#
 # [*volume_backend_name*]
 #   (optional) Allows for the volume_backend_name to be separate of $name.
 #   Defaults to: $name
@@ -54,6 +54,11 @@
 #
 # [*reserved_percentage*]
 #   (Optional) The percentage of backend capacity is reserved.
+#   Defaults to $facts['os_service_default'].
+#
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
 #   Defaults to $facts['os_service_default'].
 #
 # [*manage_volume_type*]
@@ -82,6 +87,7 @@ define cinder::backend::dellemc_powermax (
   $image_volume_cache_max_size_gb                = $facts['os_service_default'],
   $image_volume_cache_max_count                  = $facts['os_service_default'],
   $reserved_percentage                           = $facts['os_service_default'],
+  $max_over_subscription_ratio                   = $facts['os_service_default'],
   Hash $extra_options                            = {},
   Boolean $manage_volume_type                    = false,
 ) {
@@ -107,6 +113,7 @@ define cinder::backend::dellemc_powermax (
     "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
     "${name}/reserved_percentage":            value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
     "${name}/volume_driver":                  value => $volume_driver;
     "${name}/san_ip":                         value => $san_ip;
     "${name}/san_login":                      value => $san_login;

@@ -43,6 +43,11 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_over_subscription_ratio*]
+#   (optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*xtremio_array_busy_retry_count*]
 #   (optional) Number of retries in case array is busy.
 #   Defaults to $facts['os_service_default']
@@ -90,6 +95,7 @@ define cinder::backend::dellemc_xtremio (
   $image_volume_cache_max_size_gb               = $facts['os_service_default'],
   $image_volume_cache_max_count                 = $facts['os_service_default'],
   $reserved_percentage                          = $facts['os_service_default'],
+  $max_over_subscription_ratio                  = $facts['os_service_default'],
   $xtremio_array_busy_retry_count               = $facts['os_service_default'],
   $xtremio_array_busy_retry_interval            = $facts['os_service_default'],
   $xtremio_volumes_per_glance_cache             = $facts['os_service_default'],
@@ -115,6 +121,7 @@ define cinder::backend::dellemc_xtremio (
     "${name}/image_volume_cache_max_size_gb":    value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":      value => $image_volume_cache_max_count;
     "${name}/reserved_percentage":               value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":       value => $max_over_subscription_ratio;
     "${name}/volume_driver":                     value => "cinder.volume.drivers.${driver}";
     "${name}/san_ip":                            value => $san_ip;
     "${name}/san_login":                         value => $san_login;

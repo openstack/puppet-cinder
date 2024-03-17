@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    The ``max_over_subscription_ratio`` parameter has been added to
+    the following defined resource types.
+
+    - ``cinder::backend::dellemc_powermax``
+    - ``cinder::backend::dellemc_powerstore``
+    - ``cinder::backend::dellemc_unity``
+    - ``cinder::backend::dellemc_xtremio``
+    - ``cinder::backend::emc_vnx``
+    - ``cinder::backend::hpe3par_iscsi``
+    - ``cinder::backend::ibm_svf``
+    - ``cinder::backend::iscsi``
+    - ``cinder::backend::netapp``
+    - ``cinder::backend::nvmeof``
+    - ``cinder::backend::nfs``
+    - ``cinder::backend::pure``
+    - ``cinder::backend::rbd``
+    - ``cinder::backend::solidfire``

@@ -21,6 +21,7 @@ describe 'cinder::backend::netapp' do
       :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
       :image_volume_cache_max_count   => '<SERVICE DEFAULT>',
       :reserved_percentage            => '<SERVICE DEFAULT>',
+      :max_over_subscription_ratio    => '<SERVICE DEFAULT>',
       :netapp_server_port             => '<SERVICE DEFAULT>',
       :netapp_size_multiplier         => '<SERVICE DEFAULT>',
       :netapp_storage_family          => '<SERVICE DEFAULT>',

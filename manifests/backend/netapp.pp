@@ -43,6 +43,11 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*netapp_server_port*]
 #   (optional) The TCP port to use for communication with the storage
 #   system or proxy. If not specified, Data ONTAP drivers will use 80
@@ -192,6 +197,7 @@ define cinder::backend::netapp (
   $image_volume_cache_max_size_gb         = $facts['os_service_default'],
   $image_volume_cache_max_count           = $facts['os_service_default'],
   $reserved_percentage                    = $facts['os_service_default'],
+  $max_over_subscription_ratio            = $facts['os_service_default'],
   $netapp_server_port                     = $facts['os_service_default'],
   $netapp_size_multiplier                 = $facts['os_service_default'],
   $netapp_storage_family                  = $facts['os_service_default'],
@@ -237,6 +243,7 @@ and will be removed in a future release.")
     "${name}/image_volume_cache_max_size_gb":   value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":     value => $image_volume_cache_max_count;
     "${name}/reserved_percentage":              value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":      value => $max_over_subscription_ratio;
     "${name}/volume_driver":                    value => 'cinder.volume.drivers.netapp.common.NetAppDriver';
     "${name}/netapp_login":                     value => $netapp_login;
     "${name}/netapp_password":                  value => $netapp_password, secret => true;

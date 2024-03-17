@@ -15,6 +15,7 @@ describe 'cinder::backend::nfs' do
         is_expected.to contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
         is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.nfs.NfsDriver')
+        is_expected.to contain_cinder_config('hippo/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/nfs_shares_config').with_value('/etc/cinder/shares.conf')
         is_expected.to contain_cinder_config('hippo/nfs_mount_attempts').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/nfs_mount_options').with_value('<SERVICE DEFAULT>')
@@ -39,6 +40,7 @@ describe 'cinder::backend::nfs' do
       before :each do
         params.merge!({
           :backend_availability_zone   => 'my_zone',
+          :max_over_subscription_ratio => 1.5,
           :nfs_mount_attempts          => '4',
           :nfs_mount_options           => 'vers=3',
           :nfs_shares_config           => '/etc/cinder/other_shares.conf',
@@ -57,6 +59,7 @@ describe 'cinder::backend::nfs' do
         is_expected.to contain_cinder_config('hippo/volume_backend_name').with_value('hippo')
         is_expected.to contain_cinder_config('hippo/backend_availability_zone').with_value('my_zone')
         is_expected.to contain_cinder_config('hippo/volume_driver').with_value('cinder.volume.drivers.nfs.NfsDriver')
+        is_expected.to contain_cinder_config('hippo/max_over_subscription_ratio').with_value(1.5)
         is_expected.to contain_cinder_config('hippo/nfs_shares_config').with_value('/etc/cinder/other_shares.conf')
         is_expected.to contain_cinder_config('hippo/nfs_mount_attempts').with_value('4')
         is_expected.to contain_cinder_config('hippo/nfs_mount_options').with_value('vers=3')

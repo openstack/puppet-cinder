@@ -42,6 +42,11 @@
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*max_over_subscription_ratio*]
+#   (Optional) Representation of the over subscription ratio when thin
+#   provisionig is involved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*unity_io_ports*]
 #   (optional) A list of iSCSI or FC ports to be used. Each port can be
 #   Unix-style glob expressions. The Unity Unisphere API port.
@@ -74,6 +79,7 @@ define cinder::backend::dellemc_unity (
   $image_volume_cache_max_size_gb = $facts['os_service_default'],
   $image_volume_cache_max_count   = $facts['os_service_default'],
   $reserved_percentage            = $facts['os_service_default'],
+  $max_over_subscription_ratio    = $facts['os_service_default'],
   $unity_io_ports                 = $facts['os_service_default'],
   $unity_storage_pool_names       = $facts['os_service_default'],
   Boolean $manage_volume_type     = false,
@@ -86,6 +92,7 @@ define cinder::backend::dellemc_unity (
   cinder_config {
     "${name}/volume_backend_name":            value => $volume_backend_name;
     "${name}/backend_availability_zone":      value => $backend_availability_zone;
+    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
     "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
     "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;

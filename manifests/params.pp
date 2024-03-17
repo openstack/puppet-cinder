@@ -31,6 +31,8 @@ class cinder::params {
       $lock_path                 = '/var/lock/cinder'
       $cinder_wsgi_script_path   = '/usr/lib/cgi-bin/cinder'
       $pywbem_package_name       = 'python-pywbem'
+      $nvme_cli_package_name     = 'nvme-cli'
+      $nvmetcli_package_name     = undef
     }
     'RedHat': {
       $package_name              = 'openstack-cinder'
@@ -52,6 +54,8 @@ class cinder::params {
       $lock_path                 = '/var/lib/cinder/tmp'
       $cinder_wsgi_script_path   = '/var/www/cgi-bin/cinder'
       $pywbem_package_name       = 'pywbem'
+      $nvme_cli_package_name     = 'nvme-cli'
+      $nvmetcli_package_name     = 'nvmetcli'
     }
     default: {
       fail("Unsupported osfamily: ${facts['os']['family']}")

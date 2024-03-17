@@ -23,6 +23,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/reserved_percentage').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')
@@ -37,10 +38,11 @@ describe 'cinder::backend::pure' do
     context 'pure iscsi volume driver' do
       let :params do
         req_params.merge({
-          :backend_availability_zone => 'my_zone',
-          :reserved_percentage       => 10,
-          :pure_storage_protocol     => 'iSCSI',
-          :use_chap_auth             => 'true',
+          :backend_availability_zone   => 'my_zone',
+          :reserved_percentage         => 10,
+          :max_over_subscription_ratio => 1.5,
+          :pure_storage_protocol       => 'iSCSI',
+          :use_chap_auth               => 'true',
         })
       end
 
@@ -51,6 +53,7 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/reserved_percentage').with_value(10)
+        is_expected.to contain_cinder_config('pure/max_over_subscription_ratio').with_value(1.5)
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
         is_expected.to contain_cinder_config('pure/use_multipath_for_image_xfer').with_value('true')

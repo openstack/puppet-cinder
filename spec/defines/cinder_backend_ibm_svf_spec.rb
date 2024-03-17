@@ -34,6 +34,7 @@ describe 'cinder::backend::ibm_svf' do
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_size_gb").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_count").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/reserved_percentage").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/max_over_subscription_ratio").with_value('<SERVICE DEFAULT>')
       end
     end
 
@@ -62,14 +63,16 @@ describe 'cinder::backend::ibm_svf' do
     context 'with parameters' do
       before do
         params.merge!(
-          :backend_availability_zone => 'my_zone',
-          :reserved_percentage       => 10,
+          :backend_availability_zone   => 'my_zone',
+          :reserved_percentage         => 10,
+          :max_over_subscription_ratio => 1.5,
         )
       end
 
       it 'should configure the customized values' do
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('my_zone')
         is_expected.to contain_cinder_config("#{title}/reserved_percentage").with_value(10)
+        is_expected.to contain_cinder_config("#{title}/max_over_subscription_ratio").with_value(1.5)
       end
     end
 
