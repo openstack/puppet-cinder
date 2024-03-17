@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``cinder::backend::nvmeof::reserved_percentage`` parameter has been
+    added.

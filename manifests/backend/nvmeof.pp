@@ -50,6 +50,10 @@
 #   (Optional) Max number of entries allowed in the image volume cache.
 #   Defaults to $facts['os_service_default'],
 #
+# [*reserved_percentage*]
+#   (Optional) The percentage of backend capacity is reserved.
+#   Defaults to $facts['os_service_default'].
+#
 # [*volume_driver*]
 #   (Optional) Driver to use for volume creation
 #   Defaults to 'cinder.volume.drivers.lvm.LVMVolumeDriver'.
@@ -83,6 +87,7 @@ define cinder::backend::nvmeof (
   $image_volume_cache_enabled     = $facts['os_service_default'],
   $image_volume_cache_max_size_gb = $facts['os_service_default'],
   $image_volume_cache_max_count   = $facts['os_service_default'],
+  $reserved_percentage            = $facts['os_service_default'],
   $volume_driver                  = 'cinder.volume.drivers.lvm.LVMVolumeDriver',
   $volume_group                   = $facts['os_service_default'],
   $nvmeof_conn_info_version       = $facts['os_service_default'],
@@ -106,6 +111,7 @@ define cinder::backend::nvmeof (
     "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
     "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
+    "${name}/reserved_percentage":            value => $reserved_percentage;
     "${name}/volume_driver":                  value => $volume_driver;
     "${name}/volume_group":                   value => $volume_group;
     "${name}/nvmeof_conn_info_version":       value => $nvmeof_conn_info_version;
