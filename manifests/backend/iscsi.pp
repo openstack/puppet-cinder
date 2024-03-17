@@ -58,6 +58,10 @@
 #   (Optional) Protocol to use as iSCSI driver
 #   Defaults to $facts['os_service_default'].
 #
+# [*lvm_type*]
+#   (Optional) Type of LVM volumes to deploy
+#   Defaults to $facts['os_service_default'].
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -84,6 +88,7 @@ define cinder::backend::iscsi (
   $volumes_dir                    = '/var/lib/cinder/volumes',
   $target_helper                  = undef,
   $target_protocol                = $facts['os_service_default'],
+  $lvm_type                       = $facts['os_service_default'],
   Boolean $manage_volume_type     = false,
   Hash $extra_options             = {},
 ) {
@@ -119,6 +124,7 @@ define cinder::backend::iscsi (
     "${name}/volume_group":                   value => $volume_group;
     "${name}/volumes_dir":                    value => $volumes_dir;
     "${name}/target_protocol":                value => $target_protocol;
+    "${name}/lvm_type":                       value => $lvm_type;
   }
 
   if $manage_volume_type {

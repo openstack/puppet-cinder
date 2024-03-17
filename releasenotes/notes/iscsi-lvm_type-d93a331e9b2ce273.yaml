@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The ``cinder::backend::iscsi::lvm_type`` parameter has been added.

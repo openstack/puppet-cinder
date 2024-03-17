@@ -35,6 +35,7 @@ describe 'cinder::backend::nvmeof' do
         is_expected.to contain_cinder_config('nvme-backend/nvmeof_conn_info_version').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/lvm_share_target').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/target_secondary_ip_addresses').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nvme-backend/lvm_type').with_value('<SERVICE DEFAULT>')
       }
     end
   end

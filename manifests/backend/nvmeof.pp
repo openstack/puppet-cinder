@@ -79,6 +79,10 @@
 #   (Optional) Additional, list or comma separated string, ip addresses to map the NVMe-oF volume
 #   Defaults to $facts['os_service_default']
 #
+# [*lvm_type*]
+#   (Optional) Type of LVM volumes to deploy
+#   Defaults to $facts['os_service_default'].
+#
 define cinder::backend::nvmeof (
   $target_ip_address,
   $target_helper,
@@ -99,6 +103,7 @@ define cinder::backend::nvmeof (
   $nvmeof_conn_info_version       = $facts['os_service_default'],
   $lvm_share_target               = $facts['os_service_default'],
   $target_secondary_ip_addresses  = $facts['os_service_default'],
+  $lvm_type                       = $facts['os_service_default'],
 ) {
 
   include cinder::deps
@@ -124,6 +129,7 @@ define cinder::backend::nvmeof (
     "${name}/nvmeof_conn_info_version":       value => $nvmeof_conn_info_version;
     "${name}/lvm_share_target":               value => $lvm_share_target;
     "${name}/target_secondary_ip_addresses":  value => join(any2array($target_secondary_ip_addresses), ',');
+    "${name}/lvm_type":                       value => $lvm_type;
   }
 
   if $::cinder::params::nvmetcli_package_name {

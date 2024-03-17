@@ -19,6 +19,7 @@ describe 'cinder::backend::iscsi' do
         is_expected.to contain_cinder_config('hippo/volume_group').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/var/lib/cinder/volumes')
         is_expected.to contain_cinder_config('hippo/target_protocol').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hippo/lvm_type').with_value('<SERVICE DEFAULT>')
       }
     end
 
@@ -34,7 +35,8 @@ describe 'cinder::backend::iscsi' do
           :target_ip_address              => '192.0.2.1',
           :volume_group                   => 'volumegroup',
           :volumes_dir                    => '/etc/cinder/volumes',
-          :target_protocol                => 'iser'
+          :target_protocol                => 'iser',
+          :lvm_type                       => 'auto',
         }
       end
       it {
@@ -48,6 +50,7 @@ describe 'cinder::backend::iscsi' do
         is_expected.to contain_cinder_config('hippo/volume_group').with_value('volumegroup')
         is_expected.to contain_cinder_config('hippo/volumes_dir').with_value('/etc/cinder/volumes')
         is_expected.to contain_cinder_config('hippo/target_protocol').with_value('iser')
+        is_expected.to contain_cinder_config('hippo/lvm_type').with_value('auto')
       }
     end
 
