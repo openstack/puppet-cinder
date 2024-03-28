@@ -16,28 +16,22 @@
 #
 # Author: Andrew Woodward <awoodward@mirantis.com>
 class cinder::backends (
-  $enabled_backends = undef,
+  Array[String[1], 1] $enabled_backends,
   $backend_host     = $facts['os_service_default'],
 ) {
 
   include cinder::deps
 
-  if $enabled_backends == undef {
-    warning("Configurations that are setting backend config in ``[DEFAULT]`` \
-section are now not supported. You should use ``enabled_backends``option to  \
-set up backends. No volume service(s) started successfully otherwise.")
-  } else {
-    # Maybe this could be extended to dynamically find the enabled names
-    cinder_config {
-      'DEFAULT/enabled_backends': value => join($enabled_backends, ',');
-    }
+  # Maybe this could be extended to dynamically find the enabled names
+  cinder_config {
+    'DEFAULT/enabled_backends': value => join($enabled_backends, ',');
+  }
 
-    $enabled_backends.each |$backend| {
-      # Avoid colliding with code in backend/rbd.pp
-      unless defined(Cinder_config["${backend}/backend_host"]) {
-        cinder_config {
-          "${backend}/backend_host": value => $backend_host;
-        }
+  $enabled_backends.each |$backend| {
+    # Avoid colliding with code in backend/rbd.pp
+    unless defined(Cinder_config["${backend}/backend_host"]) {
+      cinder_config {
+        "${backend}/backend_host": value => $backend_host;
       }
     }
   }
