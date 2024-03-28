@@ -121,7 +121,7 @@ define cinder::backend::rbd (
   $backend_availability_zone         = $facts['os_service_default'],
   $reserved_percentage               = $facts['os_service_default'],
   $max_over_subscription_ratio       = $facts['os_service_default'],
-  $rbd_ceph_conf                     = '/etc/ceph/ceph.conf',
+  Cinder::CephConf $rbd_ceph_conf    = '/etc/ceph/ceph.conf',
   $rbd_flatten_volume_from_snapshot  = $facts['os_service_default'],
   $rbd_secret_uuid                   = $facts['os_service_default'],
   $rbd_max_clone_depth               = $facts['os_service_default'],
