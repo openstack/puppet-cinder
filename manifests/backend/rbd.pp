@@ -145,7 +145,7 @@ define cinder::backend::rbd (
   $rbd_cluster_name = basename($rbd_ceph_conf, '.conf')
   if $rbd_cluster_name == 'ceph' {
     # Do not pass a parameter value in order to avoid service restarts
-    $rbd_cluster_name_real = undef
+    $rbd_cluster_name_real = $facts['os_service_default']
   } else {
     $rbd_cluster_name_real = $rbd_cluster_name
   }
