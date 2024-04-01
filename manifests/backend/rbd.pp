@@ -143,12 +143,6 @@ define cinder::backend::rbd (
   include cinder::params
 
   $rbd_cluster_name = basename($rbd_ceph_conf, '.conf')
-  if $rbd_cluster_name == 'ceph' {
-    # Do not pass a parameter value in order to avoid service restarts
-    $rbd_cluster_name_real = $facts['os_service_default']
-  } else {
-    $rbd_cluster_name_real = $rbd_cluster_name
-  }
 
   cinder_config {
     "${name}/volume_backend_name":               value => $volume_backend_name;
@@ -166,7 +160,7 @@ define cinder::backend::rbd (
     "${name}/rados_connection_interval":         value => $rados_connection_interval;
     "${name}/rados_connection_retries":          value => $rados_connection_retries;
     "${name}/rbd_store_chunk_size":              value => $rbd_store_chunk_size;
-    "${name}/rbd_cluster_name":                  value => $rbd_cluster_name_real;
+    "${name}/rbd_cluster_name":                  value => $rbd_cluster_name;
     "${name}/report_dynamic_total_capacity":     value => $report_dynamic_total_capacity;
     "${name}/rbd_exclusive_cinder_pool":         value => $rbd_exclusive_cinder_pool;
     "${name}/enable_deferred_deletion":          value => $enable_deferred_deletion;

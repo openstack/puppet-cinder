@@ -37,7 +37,7 @@ describe 'cinder::backend::rbd' do
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_interval").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rados_connection_retries").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_store_chunk_size").with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_cluster_name").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_cluster_name").with_value('ceph')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/report_dynamic_total_capacity").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_exclusive_cinder_pool").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/enable_deferred_deletion").with_value('<SERVICE DEFAULT>')
