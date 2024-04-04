@@ -61,6 +61,14 @@
 #   provisionig is involved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*rest_api_connect_timeout*]
+#   (Optional) Connection timeout value (in seconds) for rest call.
+#   Defaults to $facts['os_service_default'].
+#
+# [*rest_api_read_timeout*]
+#   (Optional) Read timeout value (in seconds) for rest call.
+#   Defaults to $facts['os_service_default'].
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -88,6 +96,8 @@ define cinder::backend::dellemc_powermax (
   $image_volume_cache_max_count                  = $facts['os_service_default'],
   $reserved_percentage                           = $facts['os_service_default'],
   $max_over_subscription_ratio                   = $facts['os_service_default'],
+  $rest_api_connect_timeout                      = $facts['os_service_default'],
+  $rest_api_read_timeout                         = $facts['os_service_default'],
   Hash $extra_options                            = {},
   Boolean $manage_volume_type                    = false,
 ) {
@@ -121,6 +131,8 @@ define cinder::backend::dellemc_powermax (
     "${name}/powermax_array":                 value => $powermax_array;
     "${name}/powermax_srp":                   value => $powermax_srp;
     "${name}/powermax_port_groups":           value => $powermax_port_groups_real;
+    "${name}/rest_api_connect_timeout":       value => $rest_api_connect_timeout;
+    "${name}/rest_api_read_timeout":          value => $rest_api_read_timeout;
   }
 
   if $manage_volume_type {

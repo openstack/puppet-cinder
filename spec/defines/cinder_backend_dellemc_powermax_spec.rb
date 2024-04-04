@@ -35,6 +35,8 @@ describe 'cinder::backend::dellemc_powermax' do
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_enabled").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_size_gb").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_count").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/rest_api_connect_timeout").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/rest_api_read_timeout").with_value('<SERVICE DEFAULT>')
 
         is_expected.to contain_package('pywbem').with(
           :ensure => 'installed',
@@ -90,6 +92,8 @@ describe 'cinder::backend::dellemc_powermax' do
           :backend_availability_zone   => 'my_zone',
           :reserved_percentage         => 10,
           :max_over_subscription_ratio => 1.5,
+          :rest_api_connect_timeout    => 30,
+          :rest_api_read_timeout       => 31,
         })
       end
 
@@ -97,6 +101,8 @@ describe 'cinder::backend::dellemc_powermax' do
         is_expected.to contain_cinder_config("#{title}/backend_availability_zone").with_value('my_zone')
         is_expected.to contain_cinder_config("#{title}/reserved_percentage").with_value(10)
         is_expected.to contain_cinder_config("#{title}/max_over_subscription_ratio").with_value(1.5)
+        is_expected.to contain_cinder_config("#{title}/rest_api_connect_timeout").with_value(30)
+        is_expected.to contain_cinder_config("#{title}/rest_api_read_timeout").with_value(31)
       end
     end
 
