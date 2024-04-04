@@ -29,6 +29,8 @@ describe 'cinder::backend::dellemc_powerflex' do
       :powerflex_unmap_volume_before_deletion   => false,
       :driver_ssl_cert_path                     => '/path/cert.pem',
       :driver_ssl_cert_verify                   => true,
+      :rest_api_connect_timeout                 => 30,
+      :rest_api_read_timeout                    => 31,
     }
   end
 

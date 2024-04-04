@@ -76,6 +76,14 @@
 #   (optional) (Boolean) Unmap volumes before deletion.
 #   Defaults to $facts['os_service_default']
 #
+# [*rest_api_connect_timeout*]
+#   (Optional) Connection timeout value (in seconds) for rest call.
+#   Defaults to $facts['os_service_default'].
+#
+# [*rest_api_read_timeout*]
+#   (Optional) Read timeout value (in seconds) for rest call.
+#   Defaults to $facts['os_service_default'].
+#
 # [*san_thin_provision*]
 #   (optional) (Boolean) Whether to use thin provisioning or not.
 #   Defaults to $facts['os_service_default']
@@ -126,6 +134,8 @@ define cinder::backend::dellemc_powerflex(
   $powerflex_round_volume_capacity          = $facts['os_service_default'],
   $powerflex_server_api_version             = $facts['os_service_default'],
   $powerflex_unmap_volume_before_deletion   = $facts['os_service_default'],
+  $rest_api_connect_timeout                 = $facts['os_service_default'],
+  $rest_api_read_timeout                    = $facts['os_service_default'],
   $san_thin_provision                       = $facts['os_service_default'],
   $driver_ssl_cert_verify                   = $facts['os_service_default'],
   $driver_ssl_cert_path                     = $facts['os_service_default'],
@@ -153,6 +163,8 @@ define cinder::backend::dellemc_powerflex(
     "${name}/powerflex_round_volume_capacity":          value => $powerflex_round_volume_capacity;
     "${name}/powerflex_server_api_version":             value => $powerflex_server_api_version;
     "${name}/powerflex_unmap_volume_before_deletion":   value => $powerflex_unmap_volume_before_deletion;
+    "${name}/rest_api_connect_timeout":                 value => $rest_api_connect_timeout;
+    "${name}/rest_api_read_timeout":                    value => $rest_api_read_timeout;
     "${name}/san_thin_provision":                       value => $san_thin_provision;
     "${name}/driver_ssl_cert_verify":                   value => $driver_ssl_cert_verify;
     "${name}/driver_ssl_cert_path":                     value => $driver_ssl_cert_path;

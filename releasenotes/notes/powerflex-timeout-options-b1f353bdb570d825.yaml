@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The following parameters have been added to
+    the ``cinder::backend::dellemc_powerflex`` defined resource type.
+
+    - ``rest_api_connect_timeout``
+    - ``rest_api_read_timeout``
