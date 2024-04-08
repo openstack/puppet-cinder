@@ -61,15 +61,15 @@
 #    Defaults to present.
 #
 class cinder::cron::db_purge (
-  $minute      = 1,
-  $hour        = 0,
-  $monthday    = '*',
-  $month       = '*',
-  $weekday     = '*',
-  $user        = $::cinder::params::user,
-  $age         = 30,
-  $destination = '/var/log/cinder/cinder-rowsflush.log',
-  $maxdelay    = 0,
+  $minute                           = 1,
+  $hour                             = 0,
+  $monthday                         = '*',
+  $month                            = '*',
+  $weekday                          = '*',
+  $user                             = $::cinder::params::user,
+  $age                              = 30,
+  $destination                      = '/var/log/cinder/cinder-rowsflush.log',
+  Integer[0] $maxdelay              = 0,
   Enum['present', 'absent'] $ensure = 'present',
 ) inherits cinder::params {
 
