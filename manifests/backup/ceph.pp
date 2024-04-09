@@ -22,49 +22,48 @@
 # === Parameters
 #
 # [*backup_driver*]
-#   (optional) Which cinder backup driver to use
+#   (Optional) Which cinder backup driver to use
 #   Defaults to 'cinder.backup.drivers.ceph.CephBackupDriver'
 #
 # [*backup_ceph_conf*]
-#   (optional) Ceph config file to use.
+#   (Optional) Ceph config file to use.
 #   Should be a valid ceph configuration file
-#   Defaults to '/etc/ceph/ceph.conf'
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_ceph_user*]
-#   (optional) The Ceph user to connect with.
+#   (Optional) The Ceph user to connect with.
 #   Should be a valid user
-#   Defaults to 'cinder'
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_ceph_chunk_size*]
-#   (optional) The chunk size in bytes that a backup will be broken into
+#   (Optional) The chunk size in bytes that a backup will be broken into
 #   before transfer to backup store.
 #   Should be a valid integer
-#   Defaults to '134217728'
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_ceph_pool*]
-#   (optional) The Ceph pool to backup to.
+#   (Optional) The Ceph pool to backup to.
 #   Should be a valid ceph pool
-#   Defaults to 'backups'
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_ceph_stripe_unit*]
-#   (optional) RBD stripe unit to use when creating a backup image.
+#   (Optional) RBD stripe unit to use when creating a backup image.
 #   Should be a valid integer
-#   Defaults to '0'
+#   Defaults to $facts['os_service_default']
 #
 # [*backup_ceph_stripe_count*]
-#   (optional) RBD stripe count to use when creating a backup image.
+#   (Optional) RBD stripe count to use when creating a backup image.
 #   Should be a valid integer
-#   Defaults to '0'
+#   Defaults to $facts['os_service_default']
 #
-
 class cinder::backup::ceph (
   $backup_driver            = 'cinder.backup.drivers.ceph.CephBackupDriver',
-  $backup_ceph_conf         = '/etc/ceph/ceph.conf',
-  $backup_ceph_user         = 'cinder',
-  $backup_ceph_chunk_size   = '134217728',
-  $backup_ceph_pool         = 'backups',
-  $backup_ceph_stripe_unit  = '0',
-  $backup_ceph_stripe_count = '0'
+  $backup_ceph_conf         = $facts['os_service_default'],
+  $backup_ceph_user         = $facts['os_service_default'],
+  $backup_ceph_chunk_size   = $facts['os_service_default'],
+  $backup_ceph_pool         = $facts['os_service_default'],
+  $backup_ceph_stripe_unit  = $facts['os_service_default'],
+  $backup_ceph_stripe_count = $facts['os_service_default'],
 ) {
 
   include cinder::deps

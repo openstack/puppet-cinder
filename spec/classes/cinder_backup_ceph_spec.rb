@@ -20,63 +20,53 @@
 require 'spec_helper'
 
 describe 'cinder::backup::ceph' do
-  let :default_params do
-    { :backup_ceph_conf         => '/etc/ceph/ceph.conf',
-      :backup_ceph_user         => 'cinder',
-      :backup_ceph_chunk_size   => '134217728',
-      :backup_ceph_pool         => 'backups',
-      :backup_ceph_stripe_unit  => '0',
-      :backup_ceph_stripe_count => '0' }
-  end
-
   let :params do
     {}
   end
 
-  shared_examples 'cinder backup with ceph' do
-    let :p do
-      default_params.merge(params)
-    end
-
+  shared_examples 'cinder::backup::ceph' do
     it 'configures cinder.conf' do
       is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.ceph.CephBackupDriver')
-      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_conf').with_value(p[:backup_ceph_conf])
-      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_user').with_value(p[:backup_ceph_user])
-      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_chunk_size').with_value(p[:backup_ceph_chunk_size])
-      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_pool').with_value(p[:backup_ceph_pool])
-      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_unit').with_value(p[:backup_ceph_stripe_unit])
-      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_count').with_value(p[:backup_ceph_stripe_count])
+      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_conf').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_user').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_chunk_size').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_pool').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_unit').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_count').with_value('<SERVICE DEFAULT>')
     end
 
     context 'when overriding default parameters' do
-      before :each do
-        params.merge!(:backup_ceph_conf => '/tmp/ceph.conf')
-        params.merge!(:backup_ceph_user => 'toto')
-        params.merge!(:backup_ceph_chunk_size => '123')
-        params.merge!(:backup_ceph_pool => 'foo')
-        params.merge!(:backup_ceph_stripe_unit => '56')
-        params.merge!(:backup_ceph_stripe_count => '67')
+      before do
+        params.merge!(
+          :backup_ceph_conf         => '/tmp/ceph.conf',
+          :backup_ceph_user         => 'toto',
+          :backup_ceph_chunk_size   => '123',
+          :backup_ceph_pool         => 'foo',
+          :backup_ceph_stripe_unit  => '56',
+          :backup_ceph_stripe_count => '67'
+        )
       end
+
       it 'should replace default parameters with new values' do
-        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_conf').with_value(p[:backup_ceph_conf])
-        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_user').with_value(p[:backup_ceph_user])
-        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_chunk_size').with_value(p[:backup_ceph_chunk_size])
-        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_pool').with_value(p[:backup_ceph_pool])
-        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_unit').with_value(p[:backup_ceph_stripe_unit])
-        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_count').with_value(p[:backup_ceph_stripe_count])
+        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_conf').with_value(params[:backup_ceph_conf])
+        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_user').with_value(params[:backup_ceph_user])
+        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_chunk_size').with_value(params[:backup_ceph_chunk_size])
+        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_pool').with_value(params[:backup_ceph_pool])
+        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_unit').with_value(params[:backup_ceph_stripe_unit])
+        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_count').with_value(params[:backup_ceph_stripe_count])
       end
     end
   end
 
   on_supported_os({
-    :supported_os   => OSDefaults.get_supported_os
+    :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
         facts.merge(OSDefaults.get_facts())
       end
 
-      it_behaves_like 'cinder backup with ceph'
+      it_behaves_like 'cinder::backup::ceph'
     end
   end
 end
