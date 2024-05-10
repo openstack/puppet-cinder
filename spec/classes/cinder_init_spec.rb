@@ -45,22 +45,6 @@ describe 'cinder' do
           :rabbit_quorum_max_memory_length => '<SERVICE DEFAULT>',
           :rabbit_quorum_max_memory_bytes  => '<SERVICE DEFAULT>',
         )
-        is_expected.to contain_oslo__messaging__amqp('cinder_config').with(
-          :server_request_prefix => '<SERVICE DEFAULT>',
-          :broadcast_prefix      => '<SERVICE DEFAULT>',
-          :group_request_prefix  => '<SERVICE DEFAULT>',
-          :container_name        => '<SERVICE DEFAULT>',
-          :idle_timeout          => '<SERVICE DEFAULT>',
-          :trace                 => '<SERVICE DEFAULT>',
-          :ssl_ca_file           => '<SERVICE DEFAULT>',
-          :ssl_cert_file         => '<SERVICE DEFAULT>',
-          :ssl_key_file          => '<SERVICE DEFAULT>',
-          :sasl_mechanisms       => '<SERVICE DEFAULT>',
-          :sasl_config_dir       => '<SERVICE DEFAULT>',
-          :sasl_config_name      => '<SERVICE DEFAULT>',
-          :username              => '<SERVICE DEFAULT>',
-          :password              => '<SERVICE DEFAULT>',
-        )
         is_expected.to contain_oslo__messaging__notifications('cinder_config').with(
           :transport_url => '<SERVICE DEFAULT>',
           :driver        => '<SERVICE DEFAULT>',
@@ -203,29 +187,6 @@ describe 'cinder' do
 
       it { is_expected.to contain_oslo__messaging__rabbit('cinder_config').with(
         :amqp_durable_queues => true
-      ) }
-    end
-
-    context 'with amqp overrides' do
-      let :params do
-      {
-        :amqp_idle_timeout  => '60',
-        :amqp_trace         => true,
-        :amqp_ssl_ca_file   => '/path/to/ca.cert',
-        :amqp_ssl_cert_file => '/path/to/certfile',
-        :amqp_ssl_key_file  => '/path/to/key',
-        :amqp_username      => 'amqp_user',
-        :amqp_password      => 'password',
-      }
-      end
-
-      it { is_expected.to contain_oslo__messaging__amqp('cinder_config').with(
-        :idle_timeout  => '60',
-        :trace         => true,
-        :ssl_ca_file   => '/path/to/ca.cert',
-        :ssl_cert_file => '/path/to/certfile',
-        :username      => 'amqp_user',
-        :password      => 'password'
       ) }
     end
 
