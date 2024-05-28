@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added ``manage_package`` parameter to RBD backend to not install ceph-common
+    if set to false. (Default: true)

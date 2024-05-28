@@ -136,6 +136,15 @@ describe 'cinder::backend::rbd' do
           :properties => ['volume_backend_name=rbd-ssd']
         )}
       end
+      context 'rbd backend without managing package' do
+        before do
+          params.merge!( :manage_package => false )
+        end
+
+        it {
+          is_expected.to_not contain_package('ceph-common')
+        }
+      end
     end
   end
 

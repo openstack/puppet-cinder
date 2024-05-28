@@ -107,6 +107,10 @@
 #   with volume_backend_name=$volume_backend_name key/value.
 #   Defaults to false.
 #
+# [*manage_package*]
+#   (optional) Ensures ceph client package is installed if true.
+#   Defaults to: true
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -136,6 +140,7 @@ define cinder::backend::rbd (
   $deferred_deletion_purge_interval  = $facts['os_service_default'],
   $rbd_concurrent_flatten_operations = $facts['os_service_default'],
   Boolean $manage_volume_type        = false,
+  Boolean $manage_package            = true,
   Hash $extra_options                = {},
 ) {
 
@@ -190,10 +195,12 @@ define cinder::backend::rbd (
     }
   }
 
-  ensure_packages( 'ceph-common', {
-    ensure => present,
-    name   => $::cinder::params::ceph_common_package_name,
-    tag    => 'cinder-support-package'})
+  if $manage_package {
+    ensure_packages( 'ceph-common', {
+      ensure => present,
+      name   => $::cinder::params::ceph_common_package_name,
+      tag    => 'cinder-support-package'})
+  }
 
   create_resources('cinder_config', $extra_options)
 }
