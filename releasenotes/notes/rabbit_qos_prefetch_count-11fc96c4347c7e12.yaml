@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``cinder::rabbit_qos_prefetch_count`` parameter has been added.
