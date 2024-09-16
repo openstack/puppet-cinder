@@ -11,21 +11,9 @@
 #   (Optional) Email for Cinder user.
 #   Defaults to 'cinder@localhost'.
 #
-# [*password_user_v3*]
-#   (Optional) Password for Cinder v3 user.
-#   Defaults to undef.
-#
-# [*email_user_v3*]
-#   (Optional) Email for Cinder v3 user.
-#   Defaults to 'cinderv3@localhost'.
-#
 # [*auth_name*]
 #   (Optional) Username for Cinder service.
 #   Defaults to 'cinder'.
-#
-# [*auth_name_v3*]
-#   (Optional) Username for Cinder v3 service.
-#   Defaults to 'cinderv3'.
 #
 # [*configure_endpoint_v3*]
 #   (Optional) Should Cinder v3 endpoint be configured?
@@ -35,17 +23,9 @@
 #   (Optional) Should the service user be configured?
 #   Defaults to true
 #
-# [*configure_user_v3*]
-#   (Optional) Should the service user be configured for cinder v3?
-#   Defaults to false
-#
 # [*configure_user_role*]
 #   (Optional) Should the admin role be configured for the service user?
 #   Defaults to true
-#
-# [*configure_user_role_v3*]
-#   (Optional) Should the admin role be configured for the service user for cinder v3?
-#   Defaults to false
 #
 # [*service_name_v3*]
 #   (Optional) Name of the v3 service.
@@ -67,32 +47,16 @@
 #   (Optional) Tenant for Cinder user.
 #   Defaults to 'services'.
 #
-# [*tenant_user_v3*]
-#   (Optional) Tenant for Cinder v3 user.
-#   Defaults to 'services'.
-#
 # [*roles*]
 #   (Optional) List of roles assigned to Cinder user
-#   Defaults to ['admin']
-#
-# [*roles_v3*]
-#   (Optional) List of roles assigned to Cinder v3 user
 #   Defaults to ['admin']
 #
 # [*system_scope*]
 #   (Optional) Scope for system operations used by Cinder v3 user.
 #   Defaults to 'all'
 #
-# [*system_scope_v3*]
-#   (Optional) Scope for system operations used by Cinder v3 user.
-#   Defaults to 'all'
-#
 # [*system_roles*]
 #   (Optional) List of system roles assigned to Cinder user.
-#   Defaults to []
-#
-# [*system_roles_v3*]
-#   (Optional) List of system roles assigned to Cinder v3 user.
 #   Defaults to []
 #
 # [*public_url_v3*]
@@ -110,6 +74,44 @@
 #   This url should *not* contain any trailing '/'.
 #   Defaults to 'http://127.0.0.1:8776/v3'
 #
+# DEPRECATED PARAMETERS
+#
+# [*password_user_v3*]
+#   (Optional) Password for Cinder v3 user.
+#   Defaults to undef.
+#
+# [*auth_name_v3*]
+#   (Optional) Username for Cinder v3 service.
+#   Defaults to 'cinderv3'.
+#
+# [*email_user_v3*]
+#   (Optional) Email for Cinder v3 user.
+#   Defaults to 'cinderv3@localhost'.
+#
+# [*tenant_user_v3*]
+#   (Optional) Tenant for Cinder v3 user.
+#   Defaults to 'services'.
+#
+# [*roles_v3*]
+#   (Optional) List of roles assigned to Cinder v3 user
+#   Defaults to ['admin']
+#
+# [*system_scope_v3*]
+#   (Optional) Scope for system operations used by Cinder v3 user.
+#   Defaults to 'all'
+#
+# [*system_roles_v3*]
+#   (Optional) List of system roles assigned to Cinder v3 user.
+#   Defaults to []
+#
+# [*configure_user_v3*]
+#   (Optional) Should the service user be configured for cinder v3?
+#   Defaults to false
+#
+# [*configure_user_role_v3*]
+#   (Optional) Should the admin role be configured for the service user for cinder v3?
+#   Defaults to false
+#
 # === Examples
 #
 #  class { 'cinder::keystone::auth':
@@ -120,34 +122,40 @@
 #
 class cinder::keystone::auth (
   String[1] $password,
-  Optional[String[1]] $password_user_v3      = undef,
   String[1] $auth_name                       = 'cinder',
-  String[1] $auth_name_v3                    = 'cinderv3',
   String[1] $tenant                          = 'services',
-  String[1] $tenant_user_v3                  = 'services',
   Array[String[1]] $roles                    = ['admin'],
-  Array[String[1]] $roles_v3                 = ['admin'],
   String[1] $system_scope                    = 'all',
-  String[1] $system_scope_v3                 = 'all',
   Array[String[1]] $system_roles             = [],
-  Array[String[1]] $system_roles_v3          = [],
   String[1] $email                           = 'cinder@localhost',
-  String[1] $email_user_v3                   = 'cinderv3@localhost',
   Keystone::PublicEndpointUrl $public_url_v3 = 'http://127.0.0.1:8776/v3',
   Keystone::EndpointUrl $internal_url_v3     = 'http://127.0.0.1:8776/v3',
   Keystone::EndpointUrl $admin_url_v3        = 'http://127.0.0.1:8776/v3',
   Boolean $configure_endpoint_v3             = true,
   Boolean $configure_user                    = true,
-  Boolean $configure_user_v3                 = false,
   Boolean $configure_user_role               = true,
-  Boolean $configure_user_role_v3            = false,
   String[1] $service_name_v3                 = 'cinderv3',
   String[1] $service_type_v3                 = 'volumev3',
   String[1] $service_description_v3          = 'Cinder Service v3',
   String[1] $region                          = 'RegionOne',
+  # DPERECATED PARAMETERS
+  Optional[String[1]] $password_user_v3      = undef,
+  String[1] $auth_name_v3                    = 'cinderv3',
+  String[1] $email_user_v3                   = 'cinderv3@localhost',
+  String[1] $tenant_user_v3                  = 'services',
+  Array[String[1]] $roles_v3                 = ['admin'],
+  String[1] $system_scope_v3                 = 'all',
+  Array[String[1]] $system_roles_v3          = [],
+  Boolean $configure_user_v3                 = false,
+  Boolean $configure_user_role_v3            = false,
 ) {
 
   include cinder::deps
+
+  if $configure_user_v3 or $configure_user_role_v3 {
+    warning("Management of volume v3 user has been deprecated and will be removed \
+and will be removed in a future release.")
+  }
 
   Keystone::Resource::Service_identity['cinder'] -> Anchor['cinder::service::end']
   Keystone::Resource::Service_identity['cinderv3'] -> Anchor['cinder::service::end']
