@@ -27,6 +27,10 @@
 #   (Optional) Should the admin role be configured for the service user?
 #   Defaults to true
 #
+# [*configure_service_v3*]
+#   (Optional) Should the service be configured?
+#   Defaults to True
+#
 # [*service_name_v3*]
 #   (Optional) Name of the v3 service.
 #   Defaults to 'cinderv3'.
@@ -134,6 +138,7 @@ class cinder::keystone::auth (
   Boolean $configure_endpoint_v3             = true,
   Boolean $configure_user                    = true,
   Boolean $configure_user_role               = true,
+  Boolean $configure_service_v3              = true,
   String[1] $service_name_v3                 = 'cinderv3',
   String[1] $service_type_v3                 = 'volumev3',
   String[1] $service_description_v3          = 'Cinder Service v3',
@@ -181,6 +186,7 @@ and will be removed in a future release.")
     configure_user      => $configure_user_v3,
     configure_user_role => $configure_user_role_v3,
     configure_endpoint  => $configure_endpoint_v3,
+    configure_service   => $configure_service_v3,
     service_type        => $service_type_v3,
     service_description => $service_description_v3,
     service_name        => $service_name_v3,

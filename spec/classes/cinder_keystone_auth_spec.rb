@@ -30,6 +30,7 @@ describe 'cinder::keystone::auth' do
         :configure_user      => false,
         :configure_user_role => false,
         :configure_endpoint  => true,
+        :configure_service   => true,
         :service_name        => 'cinderv3',
         :service_type        => 'volumev3',
         :service_description => 'Cinder Service v3',
@@ -73,7 +74,9 @@ describe 'cinder::keystone::auth' do
           :public_url_v3          => 'https://10.10.10.10:80',
           :internal_url_v3        => 'http://10.10.10.11:81',
           :admin_url_v3           => 'http://10.10.10.12:81',
-          :configure_endpoint_v3  => false }
+          :configure_endpoint_v3  => false,
+          :configure_service_v3   => false
+        }
       end
 
       it { is_expected.to contain_keystone__resource__service_identity('cinder').with(
@@ -95,6 +98,7 @@ describe 'cinder::keystone::auth' do
         :configure_user      => true,
         :configure_user_role => true,
         :configure_endpoint  => false,
+        :configure_service   => false,
         :service_name        => 'alt_servicev3',
         :service_type        => 'alt_volumev3',
         :service_description => 'Alternative Cinder Service v3',

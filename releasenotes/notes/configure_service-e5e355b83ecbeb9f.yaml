@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``cinder::keystone::auth::configure_service_v3`` parameter has been
+    added.
