@@ -4,6 +4,9 @@
 #
 # === Parameters
 #
+# [*password*]
+#   (Required) Nova admin password.
+#
 # [*region_name*]
 #   (Optional) Name of nova region to use.
 #   Defaults to $facts['os_service_default']
@@ -48,12 +51,7 @@
 #
 # [*auth_type*]
 #   (Optional) Authentication type to load.
-#   Defaults to $facts['os_service_default']
-#
-# [*auth_section*]
-#   (Optional) Config Section from which to load plugin
-#   specific options.
-#   Defaults to $facts['os_service_default']
+#   Defaults to 'password'
 #
 # [*auth_url*]
 #   (Optional) Identity service url.
@@ -67,10 +65,6 @@
 #   (Optional) Nova admin user domain name.
 #   Defaults to 'Default'
 #
-# [*password*]
-#   (Optional) Nova admin password.
-#   Defaults to $facts['os_service_default']
-#
 # [*project_name*]
 #   (Optional) Nova admin project name.
 #   Defaults to 'services'
@@ -83,7 +77,15 @@
 #   (Optional) Scope for system operations
 #   Defaults to $facts['os_service_default']
 #
+# DEPRECATED PARAMETERS
+#
+# [*auth_section*]
+#   (Optional) Config Section from which to load plugin
+#   specific options.
+#   Defaults to undef
+#
 class cinder::nova (
+  $password,
   $region_name         = $facts['os_service_default'],
   $interface           = $facts['os_service_default'],
   $token_auth_url      = $facts['os_service_default'],
@@ -94,18 +96,22 @@ class cinder::nova (
   $timeout             = $facts['os_service_default'],
   $collect_timing      = $facts['os_service_default'],
   $split_loggers       = $facts['os_service_default'],
-  $auth_type           = $facts['os_service_default'],
-  $auth_section        = $facts['os_service_default'],
+  $auth_type           = 'password',
   $auth_url            = $facts['os_service_default'],
   $username            = 'nova',
   $user_domain_name    = 'Default',
-  $password            = $facts['os_service_default'],
   $project_name        = 'services',
   $project_domain_name = 'Default',
   $system_scope        = $facts['os_service_default'],
+  # DEPRECATED PARAMETERS
+  $auth_section        = undef,
 ) {
 
   include cinder::deps
+
+  if $auth_section {
+    warning('The auth_section parameter has been deprecated.')
+  }
 
   if is_service_default($system_scope) {
     $project_name_real = $project_name
@@ -127,7 +133,7 @@ class cinder::nova (
     'nova/collect_timing':      value => $collect_timing;
     'nova/split_loggers':       value => $split_loggers;
     'nova/auth_type':           value => $auth_type;
-    'nova/auth_section':        value => $auth_section;
+    'nova/auth_section':        value => pick($auth_section, $facts['os_service_default']);
     'nova/auth_url':            value => $auth_url;
     'nova/username':            value => $username;
     'nova/user_domain_name':    value => $user_domain_name;

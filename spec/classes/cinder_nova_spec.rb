@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe 'cinder::nova' do
   shared_examples 'cinder::nova' do
+    let :params do
+      { :password => 'novapass' }
+    end
+
     context 'with default parameters' do
       it {
         is_expected.to contain_cinder_config('nova/region_name').with_value('<SERVICE DEFAULT>')
@@ -14,12 +18,12 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/collect_timing').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/split_loggers').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('nova/auth_type').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nova/auth_type').with_value('password')
         is_expected.to contain_cinder_config('nova/auth_section').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/auth_url').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/username').with_value('nova')
         is_expected.to contain_cinder_config('nova/user_domain_name').with_value('Default')
-        is_expected.to contain_cinder_config('nova/password').with_value('<SERVICE DEFAULT>').with_secret(true)
+        is_expected.to contain_cinder_config('nova/password').with_value('novapass').with_secret(true)
         is_expected.to contain_cinder_config('nova/project_name').with_value('services')
         is_expected.to contain_cinder_config('nova/project_domain_name').with_value('Default')
         is_expected.to contain_cinder_config('nova/system_scope').with_value('<SERVICE DEFAULT>')
@@ -27,8 +31,8 @@ describe 'cinder::nova' do
     end
 
     context 'with specified parameters' do
-      let :params do
-        {
+      before :each do
+        params.merge!({
           :region_name    => 'RegionOne',
           :interface      => 'internal',
           :token_auth_url => 'http://127.0.0.1:5000/v3',
@@ -39,11 +43,10 @@ describe 'cinder::nova' do
           :timeout        => 30,
           :collect_timing => true,
           :split_loggers  => true,
-          :auth_type      => 'password',
+          :auth_type      => 'v3password',
           :auth_section   => 'my_section',
           :auth_url       => 'http://127.0.0.2:5000',
-          :password       => 'foo',
-        }
+        })
       end
 
       it {
@@ -57,12 +60,12 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/timeout').with_value(30)
         is_expected.to contain_cinder_config('nova/collect_timing').with_value(true)
         is_expected.to contain_cinder_config('nova/split_loggers').with_value(true)
-        is_expected.to contain_cinder_config('nova/auth_type').with_value('password')
+        is_expected.to contain_cinder_config('nova/auth_type').with_value('v3password')
         is_expected.to contain_cinder_config('nova/auth_section').with_value('my_section')
         is_expected.to contain_cinder_config('nova/auth_url').with_value('http://127.0.0.2:5000')
         is_expected.to contain_cinder_config('nova/username').with_value('nova')
         is_expected.to contain_cinder_config('nova/user_domain_name').with_value('Default')
-        is_expected.to contain_cinder_config('nova/password').with_value('foo').with_secret(true)
+        is_expected.to contain_cinder_config('nova/password').with_value('novapass').with_secret(true)
         is_expected.to contain_cinder_config('nova/project_name').with_value('services')
         is_expected.to contain_cinder_config('nova/project_domain_name').with_value('Default')
         is_expected.to contain_cinder_config('nova/system_scope').with_value('<SERVICE DEFAULT>')
@@ -70,10 +73,10 @@ describe 'cinder::nova' do
     end
 
     context 'with system_scope set' do
-      let :params do
-        {
+      before :each do
+        params.merge!({
           :system_scope => 'all'
-        }
+        })
       end
 
       it {
