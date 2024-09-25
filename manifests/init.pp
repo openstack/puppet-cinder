@@ -95,6 +95,11 @@
 #   (Optional) Limit the number of memory bytes used by the quorum queue.
 #   Defaults to $facts['os_service_default']
 #
+# [*rabbit_enable_cancel_on_failover*]
+#   (Optional) Enable x-cancel-on-ha-failover flag so that rabbitmq server will
+#   cancel and notify consumers when queue is down.
+#   Defaults to $facts['os_service_default']
+#
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
 #   Defaults to $facts['os_service_default']
@@ -242,6 +247,7 @@ class cinder (
   $rabbit_quorum_delivery_limit         = $facts['os_service_default'],
   $rabbit_quorum_max_memory_length      = $facts['os_service_default'],
   $rabbit_quorum_max_memory_bytes       = $facts['os_service_default'],
+  $rabbit_enable_cancel_on_failover     = $facts['os_service_default'],
   $rabbit_use_ssl                       = $facts['os_service_default'],
   $service_down_time                    = $facts['os_service_default'],
   $report_interval                      = $facts['os_service_default'],
@@ -305,6 +311,7 @@ class cinder (
     rabbit_quorum_delivery_limit    => $rabbit_quorum_delivery_limit,
     rabbit_quorum_max_memory_length => $rabbit_quorum_max_memory_length,
     rabbit_quorum_max_memory_bytes  => $rabbit_quorum_max_memory_bytes,
+    enable_cancel_on_failover       => $rabbit_enable_cancel_on_failover,
   }
 
   oslo::messaging::default { 'cinder_config':
