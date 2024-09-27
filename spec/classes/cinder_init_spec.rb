@@ -50,7 +50,8 @@ describe 'cinder' do
         is_expected.to contain_oslo__messaging__notifications('cinder_config').with(
           :transport_url => '<SERVICE DEFAULT>',
           :driver        => '<SERVICE DEFAULT>',
-          :topics        => '<SERVICE DEFAULT>'
+          :topics        => '<SERVICE DEFAULT>',
+          :retry         => '<SERVICE DEFAULT>',
         )
       }
 
@@ -256,6 +257,7 @@ describe 'cinder' do
           :notification_transport_url => 'rabbit://notif_user:password@localhost:5673',
           :notification_driver        => 'messagingv2',
           :notification_topics        => 'test',
+          :notification_retry         => 10,
         })
       end
 
@@ -263,6 +265,7 @@ describe 'cinder' do
         :transport_url => params[:notification_transport_url],
         :driver        => params[:notification_driver],
         :topics        => params[:notification_topics],
+        :retry         => params[:notification_retry],
       )}
     end
 
