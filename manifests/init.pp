@@ -267,8 +267,8 @@ class cinder (
   $amqp_durable_queues                  = $facts['os_service_default'],
   $package_ensure                       = 'present',
   $api_paste_config                     = '/etc/cinder/api-paste.ini',
-  $storage_availability_zone            = 'nova',
-  $default_availability_zone            = undef,
+  $storage_availability_zone            = $facts['os_service_default'],
+  $default_availability_zone            = $facts['os_service_default'],
   $allow_availability_zone_fallback     = $facts['os_service_default'],
   $lock_path                            = $::cinder::params::lock_path,
   $image_conversion_dir                 = $facts['os_service_default'],
@@ -334,22 +334,12 @@ class cinder (
     retry         => $notification_retry,
   }
 
-  if ! $default_availability_zone {
-    if $default_availability_zone != undef {
-      warning("Usage of a false value for the default_availability_zone parameter \
-is deprecated. Use undef instead.")
-    }
-    $default_availability_zone_real = $storage_availability_zone
-  } else {
-    $default_availability_zone_real = $default_availability_zone
-  }
-
   cinder_config {
     'DEFAULT/report_interval':                      value => $report_interval;
     'DEFAULT/service_down_time':                    value => $service_down_time;
     'DEFAULT/api_paste_config':                     value => $api_paste_config;
     'DEFAULT/storage_availability_zone':            value => $storage_availability_zone;
-    'DEFAULT/default_availability_zone':            value => $default_availability_zone_real;
+    'DEFAULT/default_availability_zone':            value => $default_availability_zone;
     'DEFAULT/allow_availability_zone_fallback':     value => $allow_availability_zone_fallback;
     'DEFAULT/image_conversion_dir':                 value => $image_conversion_dir;
     'DEFAULT/image_compress_on_upload':             value => $image_compress_on_upload;

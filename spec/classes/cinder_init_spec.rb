@@ -58,8 +58,8 @@ describe 'cinder' do
       it {
         is_expected.to contain_cinder_config('DEFAULT/report_interval').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/service_down_time').with(:value => '<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('DEFAULT/storage_availability_zone').with(:value => 'nova')
-        is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => 'nova')
+        is_expected.to contain_cinder_config('DEFAULT/storage_availability_zone').with(:value => '<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/default_availability_zone').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/allow_availability_zone_fallback').with(:value => '<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('DEFAULT/api_paste_config').with(:value => '/etc/cinder/api-paste.ini')
         is_expected.to contain_oslo__concurrency('cinder_config').with(
