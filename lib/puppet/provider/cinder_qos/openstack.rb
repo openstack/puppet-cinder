@@ -65,16 +65,13 @@ Puppet::Type.type(:cinder_qos).provide(
     list = request('volume qos', 'list')
     list.collect do |qos|
       properties = qos[:properties]
-      unless qos[:specs].nil?
-           properties = qos[:specs]
-      end
       new({
-        :name           => qos[:name],
-        :ensure         => :present,
-        :id             => qos[:id],
-        :properties     => parsestring(properties),
-        :consumer       => qos[:consumer],
-        :associations   => string2array(qos[:associations])
+        :name         => qos[:name],
+        :ensure       => :present,
+        :id           => qos[:id],
+        :properties   => pythondict2array(properties),
+        :consumer     => qos[:consumer],
+        :associations => string2array(qos[:associations])
       })
     end
   end
@@ -99,15 +96,5 @@ Puppet::Type.type(:cinder_qos).provide(
       output = output + ["#{k}=#{v}"]
     end
     return output
-  end
-
-  def self.parsestring(input)
-    if input[0] == '{'
-      # 4.0.0+ output, python dict
-      return self.pythondict2array(input)
-    else
-      # Pre-4.0.0 output, key=value
-      return self.string2array(input)
-    end
   end
 end
