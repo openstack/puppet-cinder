@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    Support for VMWare storage driver has been removed.
