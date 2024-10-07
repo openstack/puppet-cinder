@@ -57,7 +57,7 @@ properties="key1=\'value1\', key2=\'value2\'"
         it 'finds qos' do
           expect(provider_class).to receive(:openstack)
             .with('volume qos', 'list', '--quiet', '--format', 'csv', [])
-            .and_return('"ID","Name","Consumer","Associations","Specs"
+            .and_return('"ID","Name","Consumer","Associations","Properties"
 "28b632e8-6694-4bba-bf68-67b19f619019","qos-1","front-end","my_type1, my_type2","read_iops=\'value1\', write_iops=\'value2\'"
 "4f992f69-14ec-4132-9313-55cc06a6f1f6","qos-2","both","",""
 ')
@@ -72,14 +72,26 @@ properties="key1=\'value1\', key2=\'value2\'"
           expect(instances[1].associations).to eq([])
           expect(instances[1].properties).to eq([])
         end
-      end
 
-      #Test with python-openstackclient => 3.8.0 output (column header change from 'Specs' to 'Properties')
-      describe '#instances' do
-        it 'finds qos' do
+        it 'finds qos with a Properties hash' do
           expect(provider_class).to receive(:openstack)
             .with('volume qos', 'list', '--quiet', '--format', 'csv', [])
             .and_return('"ID","Name","Consumer","Associations","Properties"
+"28b632e8-6694-4bba-bf68-67b19f619019","qos-1","front-end","my_type1, my_type2","{\'read_iops\': \'value1\', \'write_iops\': \'value2\'}"
+"4f992f69-14ec-4132-9313-55cc06a6f1f6","qos-2","both","","{}"
+')
+          instances = provider_class.instances
+          expect(instances.count).to eq(2)
+          expect(instances[0].properties).to eq(['read_iops=value1', 'write_iops=value2'])
+          expect(instances[1].properties).to eq([])
+        end
+
+        #Test with python-openstackclient < 3.8.0 output
+        #(column header change from 'Specs' to 'Properties')
+        it 'finds qos with old field name' do
+          expect(provider_class).to receive(:openstack)
+            .with('volume qos', 'list', '--quiet', '--format', 'csv', [])
+            .and_return('"ID","Name","Consumer","Associations","Specs"
 "28b632e8-6694-4bba-bf68-67b19f619019","qos-1","front-end","my_type1","read_iops=\'value1\'"
 ')
           instances = provider_class.instances
@@ -95,6 +107,25 @@ properties="key1=\'value1\', key2=\'value2\'"
         it 'should return an array with key-value' do
           s = "key='value', key2='value2'"
           expect(provider_class.string2array(s)).to eq(['key=value', 'key2=value2'])
+        end
+      end
+
+      describe '#pythondict2array' do
+        it 'should return an array with key-value when provided with a python dict' do
+          s = "{'key': 'value', 'key2': 'value2'}"
+          expect(provider_class.pythondict2array(s)).to eq(['key=value', 'key2=value2'])
+        end
+      end
+
+      describe '#parsestring' do
+        it 'should call string2array when provided with a string' do
+          s = "key='value', key2='value2'"
+          expect(provider_class.parsestring(s)).to eq(['key=value', 'key2=value2'])
+        end
+
+        it 'should call pythondict2array when provided with a hash' do
+          s = "{'key': 'value', 'key2': 'value2'}"
+          expect(provider_class.parsestring(s)).to eq(['key=value', 'key2=value2'])
         end
       end
     end

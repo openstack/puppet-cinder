@@ -72,7 +72,7 @@ Puppet::Type.type(:cinder_qos).provide(
         :name           => qos[:name],
         :ensure         => :present,
         :id             => qos[:id],
-        :properties     => string2array(properties),
+        :properties     => parsestring(properties),
         :consumer       => qos[:consumer],
         :associations   => string2array(qos[:associations])
       })
@@ -90,5 +90,24 @@ Puppet::Type.type(:cinder_qos).provide(
 
   def self.string2array(input)
     return input.delete("'").split(/,\s/)
+  end
+
+  def self.pythondict2array(input)
+    json_input = JSON.parse(input.gsub(/'/, '"'))
+    output = []
+    json_input.each do | k, v |
+      output = output + ["#{k}=#{v}"]
+    end
+    return output
+  end
+
+  def self.parsestring(input)
+    if input[0] == '{'
+      # 4.0.0+ output, python dict
+      return self.pythondict2array(input)
+    else
+      # Pre-4.0.0 output, key=value
+      return self.string2array(input)
+    end
   end
 end
