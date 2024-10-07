@@ -101,7 +101,7 @@ define cinder::backend::dellemc_powerstore (
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => ["volume_backend_name=${volume_backend_name}"],
+      properties => {'volume_backend_name' => $volume_backend_name},
     }
   }
 

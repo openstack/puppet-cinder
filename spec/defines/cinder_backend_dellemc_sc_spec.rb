@@ -120,7 +120,10 @@ describe 'cinder::backend::dellemc_sc' do
         params.merge!({:manage_volume_type => true})
       end
 
-      it { is_expected.to contain_cinder_type('dellemc_sc').with(:ensure => :present, :properties => ['volume_backend_name=dellemc_sc']) }
+      it { is_expected.to contain_cinder_type('dellemc_sc').with(
+        :ensure     => :present,
+        :properties => {'volume_backend_name' => 'dellemc_sc'}
+      ) }
     end
   end
 

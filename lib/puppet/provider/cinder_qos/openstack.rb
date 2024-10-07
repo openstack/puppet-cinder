@@ -16,8 +16,10 @@ Puppet::Type.type(:cinder_qos).provide(
     unless resource[:consumer].empty?
       properties << '--consumer' << resource[:consumer]
     end
-    resource[:properties].each do |item|
-      properties << '--property' << item
+    if resource[:properties]
+      resource[:properties].each do |k, v|
+        properties << '--property' << "#{k}=#{v}"
+      end
     end
     properties << name
     self.class.request('volume qos', 'create', properties)
@@ -43,12 +45,14 @@ Puppet::Type.type(:cinder_qos).provide(
   end
 
   def properties=(value)
-    properties = []
-    (value - @property_hash[:properties]).each do |item|
-      properties << '--property' << item
+    added = []
+    @property_hash[:properties].each do |k, v|
+      if value[k] != v
+        added << '--property' << "#{k}=#{value[k]}"
+      end
     end
-    unless properties.empty?
-      self.class.request('volume qos', 'set', [properties, name])
+    unless added.empty?
+      self.class.request('volume type', 'set', [properties, added])
       @property_hash[:properties] = value
     end
   end
@@ -73,7 +77,7 @@ Puppet::Type.type(:cinder_qos).provide(
         :name         => qos[:name],
         :ensure       => :present,
         :id           => qos[:id],
-        :properties   => pythondict2array(properties),
+        :properties   => pythondict2hash(properties),
         :consumer     => qos[:consumer],
         :associations => string2array(qos[:associations])
       })
@@ -93,12 +97,7 @@ Puppet::Type.type(:cinder_qos).provide(
     return input.delete("'").split(/,\s/)
   end
 
-  def self.pythondict2array(input)
-    json_input = JSON.parse(input.gsub(/'/, '"'))
-    output = []
-    json_input.each do | k, v |
-      output = output + ["#{k}=#{v}"]
-    end
-    return output
+  def self.pythondict2hash(input)
+    return JSON.parse(input.gsub(/'/, '"'))
   end
 end

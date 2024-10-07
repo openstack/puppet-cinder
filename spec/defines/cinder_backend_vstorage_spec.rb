@@ -53,13 +53,13 @@ describe 'cinder::backend::vstorage' do
       end
 
       it { is_expected.to contain_cinder_type('vstorage').with(
-        :ensure => 'present',
-        :properties => ['vz:volume_format=qcow2']
+        :ensure     => 'present',
+        :properties => {'vz:volume_format' => 'qcow2'}
       )}
 
       it { is_expected.to contain_cinder_type('vstorage-ploop').with(
         :ensure => 'present',
-        :properties => ['vz:volume_format=ploop']
+        :properties => {'vz:volume_format' => 'ploop'}
       )}
     end
   end

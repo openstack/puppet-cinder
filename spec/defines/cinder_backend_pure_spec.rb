@@ -126,7 +126,7 @@ describe 'cinder::backend::pure' do
 
       it { is_expected.to contain_cinder_type('pure').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=pure']
+        :properties => {'volume_backend_name' => 'pure'}
       )}
     end
 

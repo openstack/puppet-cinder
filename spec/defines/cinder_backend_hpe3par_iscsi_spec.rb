@@ -69,7 +69,7 @@ describe 'cinder::backend::hpe3par_iscsi' do
 
       it { is_expected.to contain_cinder_type('hpe3par_iscsi').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=hpe3par_iscsi']
+        :properties => {'volume_backend_name' => 'hpe3par_iscsi'}
       )}
     end
   end

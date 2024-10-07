@@ -121,7 +121,7 @@ describe 'cinder::backend::dellemc_powermax' do
 
       it { is_expected.to contain_cinder_type('dellemc_powermax').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=dellemc_powermax']
+        :properties => {'volume_backend_name' => 'dellemc_powermax'}
       )}
     end
   end

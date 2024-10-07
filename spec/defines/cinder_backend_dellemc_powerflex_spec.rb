@@ -75,7 +75,7 @@ describe 'cinder::backend::dellemc_powerflex' do
 
       it { is_expected.to contain_cinder_type("#{title}").with(
         :ensure     => 'present',
-        :properties => ["volume_backend_name=#{title}"]
+        :properties => {'volume_backend_name' => title}
       )}
     end
   end

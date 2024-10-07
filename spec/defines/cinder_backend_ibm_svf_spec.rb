@@ -91,7 +91,7 @@ describe 'cinder::backend::ibm_svf' do
 
       it { is_expected.to contain_cinder_type('ibm_svf').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=ibm_svf']
+        :properties => {'volume_backend_name' => 'ibm_svf'}
       )}
     end
   end

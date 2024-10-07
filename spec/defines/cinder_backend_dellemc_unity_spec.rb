@@ -99,7 +99,7 @@ describe 'cinder::backend::dellemc_unity' do
 
       it { is_expected.to contain_cinder_type('dellemc_unity').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=dellemc_unity']
+        :properties => {'volume_backend_name' => 'dellemc_unity'}
       )}
     end
   end

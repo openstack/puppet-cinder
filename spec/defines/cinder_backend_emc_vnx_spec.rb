@@ -95,7 +95,7 @@ describe 'cinder::backend::emc_vnx' do
 
       it { is_expected.to contain_cinder_type('emc').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=emc']
+        :properties => {'volume_backend_name' => 'emc'}
       )}
     end
 

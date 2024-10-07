@@ -115,7 +115,7 @@ describe 'cinder::backend::solidfire' do
 
       it { is_expected.to contain_cinder_type('solidfire').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=solidfire']
+        :properties => {'volume_backend_name' => 'solidfire'}
       )}
     end
   end

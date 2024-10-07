@@ -12,17 +12,17 @@ describe Puppet::Type.type(:cinder_type) do
       :name       => 'test_type',
       :properties => ['some_key1 = some_value2']
     }
-    expect { Puppet::Type.type(:cinder_type).new(incorrect_input) }.to raise_error(Puppet::ResourceError, /Parameter properties failed/)
+    expect { Puppet::Type.type(:cinder_type).new(incorrect_input) }.to raise_error(Puppet::ResourceError, /Invalid properties/)
   end
 
   it 'should default to no properties' do
     catalog = Puppet::Resource::Catalog.new
     anchor = Puppet::Type.type(:anchor).new(:name => 'cinder::service::end')
     correct_input = {
-      :name       => 'test_type',
+      :name => 'test_type',
     }
     cinder_type = Puppet::Type.type(:cinder_type).new(correct_input)
-    expect(cinder_type[:properties]).to eq([])
+    expect(cinder_type[:properties]).to eq(nil)
 
     catalog.add_resource anchor, cinder_type
     dependency = cinder_type.autorequire
@@ -35,7 +35,7 @@ describe Puppet::Type.type(:cinder_type) do
   it 'should autorequire cinder-api service' do
     catalog = Puppet::Resource::Catalog.new
     anchor = Puppet::Type.type(:anchor).new(:name => 'cinder::service::end')
-    properties = ['some_key1=value', 'some_key2=value1,value2']
+    properties = {'some_key1' => 'value', 'some_key2' => 'value1,value2'}
     correct_input = {
       :name       => 'test_type',
       :properties => properties,

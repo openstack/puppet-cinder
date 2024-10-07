@@ -95,7 +95,7 @@ describe 'cinder::backend::nfs' do
 
       it { is_expected.to contain_cinder_type('hippo').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=hippo']
+        :properties => {'volume_backend_name' => 'hippo'}
       )}
     end
   end

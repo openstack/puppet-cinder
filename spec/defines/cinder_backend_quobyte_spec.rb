@@ -37,7 +37,7 @@ describe 'cinder::backend::quobyte' do
 
       it { is_expected.to contain_cinder_type('myquobyte').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=myquobyte']
+        :properties => {'volume_backend_name' => 'myquobyte'}
       )}
     end
   end

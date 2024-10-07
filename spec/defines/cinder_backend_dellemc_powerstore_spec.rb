@@ -107,8 +107,8 @@ describe 'cinder::backend::dellemc_powerstore' do
       end
 
       it { is_expected.to contain_cinder_type('dellemc_powerstore').with(
-        :ensure => 'present',
-        :properties => ['volume_backend_name=dellemc_powerstore']
+        :ensure     => 'present',
+        :properties => {'volume_backend_name' => 'dellemc_powerstore'}
       )}
     end
   end

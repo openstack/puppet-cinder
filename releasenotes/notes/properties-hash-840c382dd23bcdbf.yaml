@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``properties`` property of ``cinder_type`` resource and ``cinder_qos``
+    resource now accepts Hash values instead of Array values.

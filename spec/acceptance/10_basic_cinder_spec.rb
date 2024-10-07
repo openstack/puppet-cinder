@@ -16,7 +16,11 @@ describe 'basic cinder' do
       include openstack_integration::cinder
 
       cinder_type { 'testvolumetype' :
-        properties => ['k=v', 'key1=val1', 'key2=<is> True']
+        properties => {
+          'k'    => 'v',
+          'key1' => 'val1',
+          'key2' => '<is> True'
+        }
       }
       EOS
 

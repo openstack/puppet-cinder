@@ -16,7 +16,7 @@ describe provider_class do
       {
          :name       => 'QoS_1',
          :ensure     => :present,
-         :properties => ['key1=value1', 'key2=value2'],
+         :properties => {'key1' => 'value1', 'key2' => 'value2'},
       }
     end
 
@@ -66,11 +66,11 @@ properties="{\'key1\': \'value1\', \'key2\': \'value2\'}"
           expect(instances[0].name).to eq('qos-1')
           expect(instances[0].associations).to eq(['my_type1', 'my_type2'])
           expect(instances[0].consumer).to eq('front-end')
-          expect(instances[0].properties).to eq(['read_iops=value1', 'write_iops=value2'])
+          expect(instances[0].properties).to eq({'read_iops'=>'value1', 'write_iops'=>'value2'})
           expect(instances[1].name).to eq('qos-2')
           expect(instances[1].consumer).to eq('both')
           expect(instances[1].associations).to eq([])
-          expect(instances[1].properties).to eq([])
+          expect(instances[1].properties).to eq({})
         end
       end
 
@@ -81,10 +81,10 @@ properties="{\'key1\': \'value1\', \'key2\': \'value2\'}"
         end
       end
 
-      describe '#pythondict2array' do
-        it 'should return an array with key-value when provided with a python dict' do
+      describe '#pythondict2hash' do
+        it 'should return a hash when provided with a python dict' do
           s = "{'key': 'value', 'key2': 'value2'}"
-          expect(provider_class.pythondict2array(s)).to eq(['key=value', 'key2=value2'])
+          expect(provider_class.pythondict2hash(s)).to eq({'key'=>'value', 'key2'=>'value2'})
         end
       end
     end

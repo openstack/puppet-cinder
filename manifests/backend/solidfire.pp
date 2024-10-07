@@ -181,7 +181,7 @@ define cinder::backend::solidfire(
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => ["volume_backend_name=${volume_backend_name}"],
+      properties => {'volume_backend_name' => $volume_backend_name},
     }
   }
 

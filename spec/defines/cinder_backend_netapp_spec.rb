@@ -77,7 +77,7 @@ describe 'cinder::backend::netapp' do
 
       it { is_expected.to contain_cinder_type('netapp-cdot-nfs').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=netapp-cdot-nfs']
+        :properties => {'volume_backend_name' => 'netapp-cdot-nfs'}
       )}
     end
 

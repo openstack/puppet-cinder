@@ -59,7 +59,7 @@ describe 'cinder::backend::nexenta' do
 
       it { is_expected.to contain_cinder_type('nexenta').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=nexenta']
+        :properties => {'volume_backend_name' => 'nexenta'}
       )}
     end
   end

@@ -14,11 +14,15 @@ describe provider_class do
 
     let(:type_attributes) do
       {
-         :name               => 'Backend_1',
-         :ensure             => :present,
-         :properties         => ['key=value', 'new_key=a-new_value', 'multiattach="<is> True"'],
-         :is_public          => true,
-         :access_project_ids => [],
+        :name               => 'Backend_1',
+        :ensure             => :present,
+        :properties         => {
+          'key'         => 'value',
+          'new_key'     => 'a-new_value',
+          'multiattach' => '<is> True'
+        },
+        :is_public          => true,
+        :access_project_ids => [],
       }
     end
 
@@ -36,7 +40,7 @@ describe provider_class do
       describe '#create' do
         it 'creates a type' do
           expect(provider_class).to receive(:openstack)
-            .with('volume type', 'create', '--format', 'shell', ['--property', 'key=value', '--property', 'new_key=a-new_value', '--property', 'multiattach="<is> True"', '--public', 'Backend_1'])
+            .with('volume type', 'create', '--format', 'shell', ['--property', 'key=value', '--property', 'new_key=a-new_value', '--property', 'multiattach=<is> True', '--public', 'Backend_1'])
             .and_return('id="90e19aff-1b35-4d60-9ee3-383c530275ab"
 name="Backend_1"
 properties="{\'key\': \'value\', \'new_key\': \'a-new_value\', \'multiattach\': \'<is> True\'}"
@@ -82,8 +86,8 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
           expect(instances[1].is_public).to be false
           expect(instances[0].access_project_ids).to match_array([])
           expect(instances[1].access_project_ids).to match_array(['54f4d231201b4944a5fa4587a09bda23', '54f4d231201b4944a5fa4587a09bda28'])
-          expect(instances[0].properties).to eq(["key1=value1"])
-          expect(instances[1].properties).to eq(["key2=value2"])
+          expect(instances[0].properties).to eq({'key1'=>'value1'})
+          expect(instances[1].properties).to eq({'key2'=>'value2'})
         end
       end
 
@@ -94,10 +98,10 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
         end
       end
 
-      describe '#pythondict2array' do
-        it 'should return an array with key-value when provided with a python dict' do
+      describe '#pythondict2hash' do
+        it 'should return a hash when provided with a python dict' do
           s = "{'key': 'value', 'key2': 'value2'}"
-          expect(provider_class.pythondict2array(s)).to eq(['key=value', 'key2=value2'])
+          expect(provider_class.pythondict2hash(s)).to eq({'key'=>'value', 'key2'=>'value2'})
         end
       end
     end

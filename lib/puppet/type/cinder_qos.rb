@@ -20,15 +20,14 @@ Puppet::Type.newtype(:cinder_qos) do
     end
   end
 
-  newproperty(:properties, :array_matching => :all) do
-    desc 'The Properties of the cinder qos. Should be an array'
-    defaultto []
-    def insync?(is)
-      return false unless is.is_a? Array
-      is.sort == should.sort
-    end
+  newproperty(:properties) do
+    desc "The set of volume qos properties"
     validate do |value|
-      raise ArgumentError, "Properties doesn't match" unless value.match(/^\s*[^=\s]+=[^=\s]+$/)
+      if value.is_a?(Hash)
+        return true
+      else
+        raise ArgumentError, "Invalid properties #{value}. Requires a Hash, not a #{value.class}"
+      end
     end
   end
 

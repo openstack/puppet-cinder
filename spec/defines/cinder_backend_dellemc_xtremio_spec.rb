@@ -110,8 +110,8 @@ describe 'cinder::backend::dellemc_xtremio' do
       end
 
       it { is_expected.to contain_cinder_type('dellemc_xtremio').with(
-        :ensure => 'present',
-        :properties => ['volume_backend_name=dellemc_xtremio']
+        :ensure     => 'present',
+        :properties => {'volume_backend_name' => 'dellemc_xtremio'}
       )}
     end
   end

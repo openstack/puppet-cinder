@@ -13,8 +13,10 @@ Puppet::Type.type(:cinder_type).provide(
 
   def create
     properties = []
-    resource[:properties].each do |item|
-      properties << '--property' << item
+    if resource[:properties]
+      resource[:properties].each do |k, v|
+        properties << '--property' << "#{k}=#{v}"
+      end
     end
     properties << (@resource[:is_public] == :true ? '--public' : '--private')
     properties << name
@@ -40,8 +42,10 @@ Puppet::Type.type(:cinder_type).provide(
 
   def properties=(value)
     properties = []
-    (value - @property_hash[:properties]).each do |item|
-      properties << '--property' << item
+    @property_hash[:properties].each do |k, v|
+      if value[k] != v
+        properties << '--property' << "#{k}=#{value[k]}"
+      end
     end
     unless properties.empty?
       self.class.request('volume type', 'set', [properties, name])
@@ -93,7 +97,7 @@ Puppet::Type.type(:cinder_type).provide(
         :name               => type[:name],
         :ensure             => :present,
         :id                 => type[:id],
-        :properties         => pythondict2array(type[:properties]),
+        :properties         => pythondict2hash(type[:properties]),
         :is_public          => type[:is_public],
         :access_project_ids => type[:access_project_ids]
       })
@@ -113,12 +117,7 @@ Puppet::Type.type(:cinder_type).provide(
     return input.delete("'").split(/,\s/)
   end
 
-  def self.pythondict2array(input)
-    json_input = JSON.parse(input.gsub(/'/, '"'))
-    output = []
-    json_input.each do | k, v |
-      output = output + ["#{k}=#{v}"]
-    end
-    return output
+  def self.pythondict2hash(input)
+    return JSON.parse(input.gsub(/'/, '"'))
   end
 end

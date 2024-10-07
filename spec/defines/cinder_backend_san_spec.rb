@@ -85,7 +85,7 @@ describe 'cinder::backend::san' do
 
       it { is_expected.to contain_cinder_type('mysan').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=mysan']
+        :properties => {'volume_backend_name' => 'mysan'}
       )}
     end
   end

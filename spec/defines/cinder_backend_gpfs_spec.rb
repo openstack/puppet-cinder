@@ -113,7 +113,7 @@ describe 'cinder::backend::gpfs' do
 
       it { is_expected.to contain_cinder_type('gpfs').with(
         :ensure     => 'present',
-        :properties => ['volume_backend_name=gpfs']
+        :properties => {'volume_backend_name' => 'gpfs'}
       )}
     end
 

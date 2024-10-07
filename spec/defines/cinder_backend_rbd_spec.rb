@@ -133,7 +133,7 @@ describe 'cinder::backend::rbd' do
 
         it { is_expected.to contain_cinder_type('rbd-ssd').with(
           :ensure     => 'present',
-          :properties => ['volume_backend_name=rbd-ssd']
+          :properties => {'volume_backend_name' => 'rbd-ssd'}
         )}
       end
       context 'rbd backend without managing package' do
