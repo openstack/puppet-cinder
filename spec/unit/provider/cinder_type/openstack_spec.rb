@@ -116,11 +116,6 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
       end
 
       describe '#pythondict2array' do
-        it 'should return an array with key-value when provided with a unicode python dict' do
-          s = "{'key': 'value', 'key2': 'value2'}"
-          expect(provider_class.pythondict2array(s)).to eq(['key=value', 'key2=value2'])
-        end
-
         it 'should return an array with key-value when provided with a python dict' do
           s = "{'key': 'value', 'key2': 'value2'}"
           expect(provider_class.pythondict2array(s)).to eq(['key=value', 'key2=value2'])
