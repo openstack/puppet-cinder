@@ -39,7 +39,7 @@ describe provider_class do
             .with('volume type', 'create', '--format', 'shell', ['--property', 'key=value', '--property', 'new_key=a-new_value', '--property', 'multiattach="<is> True"', '--public', 'Backend_1'])
             .and_return('id="90e19aff-1b35-4d60-9ee3-383c530275ab"
 name="Backend_1"
-properties="key=\'value\', new_key=\'a-new_value\', multiattach=\'<is> True\'"
+properties="{\'key\': \'value\', \'new_key\': \'a-new_value\', \'multiattach\': \'<is> True\'}"
 is_public="True"
 access_project_ids=""
 ')
@@ -62,33 +62,6 @@ access_project_ids=""
           expect(provider_class).to receive(:openstack)
             .with('volume type', 'list', '--quiet', '--format', 'csv', '--long')
             .and_return('"ID","Name","Is Public","Properties"
-"28b632e8-6694-4bba-bf68-67b19f619019","type-1","True","key1=\'value1\'"
-"4f992f69-14ec-4132-9313-55cc06a6f1f6","type-2","False","key2=\'value2\'"
-')
-          expect(provider_class).to receive(:openstack)
-            .with('volume type', 'show', '--format', 'shell', '4f992f69-14ec-4132-9313-55cc06a6f1f6')
-            .and_return('
-id="4f992f69-14ec-4132-9313-55cc06a6f1f6"
-name="type-2"
-properties="key2=\'value2\'"
-is_public="False"
-access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a09bda28"
-')
-
-          instances = provider_class.instances
-          expect(instances.count).to eq(2)
-          expect(instances[0].name).to eq('type-1')
-          expect(instances[1].name).to eq('type-2')
-          expect(instances[0].is_public).to be true
-          expect(instances[1].is_public).to be false
-          expect(instances[0].access_project_ids).to match_array([])
-          expect(instances[1].access_project_ids).to match_array(['54f4d231201b4944a5fa4587a09bda23', '54f4d231201b4944a5fa4587a09bda28'])
-        end
-
-        it 'finds types with a Properties hash' do
-          expect(provider_class).to receive(:openstack)
-            .with('volume type', 'list', '--quiet', '--format', 'csv', '--long')
-            .and_return('"ID","Name","Is Public","Properties"
 "28b632e8-6694-4bba-bf68-67b19f619019","type-1","True","{\'key1\': \'value1\'}"
 "4f992f69-14ec-4132-9313-55cc06a6f1f6","type-2","False","{\'key2\': \'value2\'}"
 ')
@@ -97,12 +70,18 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
             .and_return('
 id="4f992f69-14ec-4132-9313-55cc06a6f1f6"
 name="type-2"
-properties="key2=\'value2\'"
+properties="{\'key2\': \'value2\'}"
 is_public="False"
 access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a09bda28"
 ')
           instances = provider_class.instances
           expect(instances.count).to eq(2)
+          expect(instances[0].name).to eq('type-1')
+          expect(instances[1].name).to eq('type-2')
+          expect(instances[0].is_public).to be true
+          expect(instances[1].is_public).to be false
+          expect(instances[0].access_project_ids).to match_array([])
+          expect(instances[1].access_project_ids).to match_array(['54f4d231201b4944a5fa4587a09bda23', '54f4d231201b4944a5fa4587a09bda28'])
           expect(instances[0].properties).to eq(["key1=value1"])
           expect(instances[1].properties).to eq(["key2=value2"])
         end
@@ -119,18 +98,6 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
         it 'should return an array with key-value when provided with a python dict' do
           s = "{'key': 'value', 'key2': 'value2'}"
           expect(provider_class.pythondict2array(s)).to eq(['key=value', 'key2=value2'])
-        end
-      end
-
-      describe '#parsestring' do
-        it 'should call string2array when provided with a string' do
-          s = "key='value', key2='value2'"
-          expect(provider_class.parsestring(s)).to eq(['key=value', 'key2=value2'])
-        end
-
-        it 'should call pythondict2array when provided with a hash' do
-          s = "{'key': 'value', 'key2': 'value2'}"
-          expect(provider_class.parsestring(s)).to eq(['key=value', 'key2=value2'])
         end
       end
     end
