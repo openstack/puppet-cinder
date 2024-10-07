@@ -54,11 +54,15 @@ Puppet::Type.type(:cinder_qos).provide(
   end
 
   def associations=(value)
-    properties = value - @property_hash[:associations]
-    properties.each do |item|
+    added = value - @property_hash[:associations]
+    removed = @property_hash[:associations] - value
+    added.each do |item|
       self.class.request('volume qos', 'associate', [name, item])
-      @property_hash[:associations] = value
     end
+    removed.each do |item|
+      self.class.request('volume qos', 'disassociate', [name, item])
+    end
+    @property_hash[:associations] = value
   end
 
   def self.instances
