@@ -221,17 +221,13 @@ running as a standalone service, or httpd for being run by a httpd server")
 
   # SSL Options
   if $use_ssl {
-    cinder_config {
-      'ssl/cert_file' : value => $cert_file;
-      'ssl/key_file' :  value => $key_file;
-      'ssl/ca_file' :   value => $ca_file;
+    oslo::service::ssl { 'cinder_config':
+      cert_file => $cert_file,
+      key_file  => $key_file,
+      ca_file   => $ca_file
     }
   } else {
-    cinder_config {
-      'ssl/cert_file' : value => $facts['os_service_default'];
-      'ssl/key_file' :  value => $facts['os_service_default'];
-      'ssl/ca_file' :   value => $facts['os_service_default'];
-    }
+    oslo::service::ssl { 'cinder_config': }
   }
 
   if (!is_service_default($ratelimits)) {
