@@ -22,6 +22,22 @@ describe 'basic cinder' do
           'key2' => '<is> True'
         }
       }
+
+      cinder_type { 'qostype1':
+        ensure => present
+      }
+      cinder_type { 'qostype2':
+        ensure => present
+      }
+      cinder_qos { 'testqos1':
+        properties   => {
+          'key1' => 'val1',
+          'key2' => 'val2',
+        }
+      }
+      cinder_qos { 'testqos2':
+        associations => ['qostype1', 'qostype2']
+      }
       EOS
 
 
