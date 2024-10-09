@@ -58,8 +58,8 @@ properties="{\'key1\': \'value1\', \'key2\': \'value2\'}"
           expect(provider_class).to receive(:openstack)
             .with('volume qos', 'list', '--quiet', '--format', 'csv', [])
             .and_return('"ID","Name","Consumer","Associations","Properties"
-"28b632e8-6694-4bba-bf68-67b19f619019","qos-1","front-end","my_type1, my_type2","{\'read_iops\': \'value1\', \'write_iops\':\'value2\'}"
-"4f992f69-14ec-4132-9313-55cc06a6f1f6","qos-2","both","","{}"
+"28b632e8-6694-4bba-bf68-67b19f619019","qos-1","front-end","[\'my_type1\', \'my_type2\']","{\'read_iops\': \'value1\', \'write_iops\':\'value2\'}"
+"4f992f69-14ec-4132-9313-55cc06a6f1f6","qos-2","both","[]","{}"
 ')
           instances = provider_class.instances
           expect(instances.count).to eq(2)
@@ -75,9 +75,9 @@ properties="{\'key1\': \'value1\', \'key2\': \'value2\'}"
       end
 
       describe '#string2array' do
-        it 'should return an array with key-value' do
-          s = "key='value', key2='value2'"
-          expect(provider_class.string2array(s)).to eq(['key=value', 'key2=value2'])
+        it 'should return an array' do
+          s = "['foo', 'bar']"
+          expect(provider_class.string2array(s)).to eq(['foo', 'bar'])
         end
       end
 
