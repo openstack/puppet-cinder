@@ -80,12 +80,5 @@ properties="{\'key1\': \'value1\', \'key2\': \'value2\'}"
           expect(provider_class.string2array(s)).to eq(['key=value', 'key2=value2'])
         end
       end
-
-      describe '#pythondict2hash' do
-        it 'should return a hash when provided with a python dict' do
-          s = "{'key': 'value', 'key2': 'value2'}"
-          expect(provider_class.pythondict2hash(s)).to eq({'key'=>'value', 'key2'=>'value2'})
-        end
-      end
     end
 end

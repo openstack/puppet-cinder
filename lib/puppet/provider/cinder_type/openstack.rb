@@ -97,7 +97,7 @@ Puppet::Type.type(:cinder_type).provide(
         :name               => type[:name],
         :ensure             => :present,
         :id                 => type[:id],
-        :properties         => pythondict2hash(type[:properties]),
+        :properties         => parse_python_dict(type[:properties]),
         :is_public          => type[:is_public],
         :access_project_ids => type[:access_project_ids]
       })
@@ -115,9 +115,5 @@ Puppet::Type.type(:cinder_type).provide(
 
   def self.string2array(input)
     return input.delete("'").split(/,\s/)
-  end
-
-  def self.pythondict2hash(input)
-    return JSON.parse(input.gsub(/'/, '"'))
   end
 end
