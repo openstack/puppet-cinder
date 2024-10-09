@@ -15,6 +15,10 @@
 #   (Optional) Username for Cinder service.
 #   Defaults to 'cinder'.
 #
+# [*configure_endpoint*]
+#   (Optional) Should Cinder endpoint be configured?
+#   Defaults to true
+#
 # [*configure_endpoint_v3*]
 #   (Optional) Should Cinder v3 endpoint be configured?
 #   Defaults to true
@@ -27,20 +31,36 @@
 #   (Optional) Should the admin role be configured for the service user?
 #   Defaults to true
 #
-# [*configure_service_v3*]
+# [*configure_service*]
 #   (Optional) Should the service be configured?
 #   Defaults to True
+#
+# [*configure_service_v3*]
+#   (Optional) Should the v3 service be configured?
+#   Defaults to True
+#
+# [*service_name*]
+#   (Optional) Name of the service.
+#   Defaults to 'cinder'.
 #
 # [*service_name_v3*]
 #   (Optional) Name of the v3 service.
 #   Defaults to 'cinderv3'.
 #
+# [*service_type*]
+#   (Optional) Type of the service.
+#   Defaults to 'block-storage'.
+#
 # [*service_type_v3*]
-#   (Optional) Type of API v3 service.
+#   (Optional) Type of the v3 service.
 #   Defaults to 'volumev3'.
 #
+# [*service_description*]
+#   (Optional) Description for the service.
+#   Defaults to 'OpenStack Block Storage Service'.
+#
 # [*service_description_v3*]
-#   (Optional) Description for keystone v3 service.
+#   (Optional) Description for the v3 service.
 #   Defaults to 'Cinder Service v3'.
 #
 # [*region*]
@@ -135,12 +155,17 @@ class cinder::keystone::auth (
   Keystone::PublicEndpointUrl $public_url_v3 = 'http://127.0.0.1:8776/v3',
   Keystone::EndpointUrl $internal_url_v3     = 'http://127.0.0.1:8776/v3',
   Keystone::EndpointUrl $admin_url_v3        = 'http://127.0.0.1:8776/v3',
+  Boolean $configure_endpoint                = true,
   Boolean $configure_endpoint_v3             = true,
   Boolean $configure_user                    = true,
   Boolean $configure_user_role               = true,
+  Boolean $configure_service                 = true,
   Boolean $configure_service_v3              = true,
+  String[1] $service_name                    = 'cinder',
   String[1] $service_name_v3                 = 'cinderv3',
+  String[1] $service_type                    = 'block-storage',
   String[1] $service_type_v3                 = 'volumev3',
+  String[1] $service_description             = 'OpenStack Block Storage Service',
   String[1] $service_description_v3          = 'Cinder Service v3',
   String[1] $region                          = 'RegionOne',
   # DPERECATED PARAMETERS
@@ -170,8 +195,11 @@ and will be removed in a future release.")
   keystone::resource::service_identity { 'cinder':
     configure_user      => $configure_user,
     configure_user_role => $configure_user_role,
-    configure_endpoint  => false,
-    configure_service   => false,
+    configure_endpoint  => $configure_endpoint,
+    configure_service   => $configure_service,
+    service_type        => $service_type,
+    service_description => $service_description,
+    service_name        => $service_name,
     region              => $region,
     auth_name           => $auth_name,
     password            => $password,
@@ -180,6 +208,9 @@ and will be removed in a future release.")
     roles               => $roles,
     system_scope        => $system_scope,
     system_roles        => $system_roles,
+    public_url          => $public_url_v3,
+    admin_url           => $admin_url_v3,
+    internal_url        => $internal_url_v3,
   }
 
   keystone::resource::service_identity { 'cinderv3':
