@@ -27,12 +27,10 @@ Puppet::Type.type(:cinder_qos).provide(
     @property_hash[:properties] = resource[:properties]
     @property_hash[:consumer] = resource[:consumer]
     @property_hash[:name] = name
-    unless resource[:associations].empty?
-      resource[:associations].each do |item|
-        self.class.request('volume qos', 'associate', [name, item])
-      end
-      @property_hash[:associations] = resource[:associations]
+    resource[:associations].each do |item|
+      self.class.request('volume qos', 'associate', [name, item])
     end
+    @property_hash[:associations] = resource[:associations]
   end
 
   def destroy
@@ -94,6 +92,6 @@ Puppet::Type.type(:cinder_qos).provide(
   end
 
   def self.string2array(input)
-    return input.delete("'").split(/,\s/)
+    return input[1..-2].delete("'").split(/,\s/)
   end
 end
