@@ -14,8 +14,11 @@ describe 'cinder::keystone::auth' do
       it { is_expected.to contain_keystone__resource__service_identity('cinder').with(
         :configure_user      => true,
         :configure_user_role => true,
-        :configure_endpoint  => false,
-        :configure_service   => false,
+        :configure_endpoint  => true,
+        :configure_service   => true,
+        :service_name        => 'cinder',
+        :service_type        => 'block-storage',
+        :service_description => 'OpenStack Block Storage Service',
         :region              => 'RegionOne',
         :auth_name           => 'cinder',
         :password            => 'cinder_password',
@@ -24,6 +27,9 @@ describe 'cinder::keystone::auth' do
         :roles               => ['admin'],
         :system_scope        => 'all',
         :system_roles        => [],
+        :public_url          => 'http://127.0.0.1:8776/v3',
+        :internal_url        => 'http://127.0.0.1:8776/v3',
+        :admin_url           => 'http://127.0.0.1:8776/v3',
       ) }
 
       it { is_expected.to contain_keystone__resource__service_identity('cinderv3').with(
@@ -67,14 +73,19 @@ describe 'cinder::keystone::auth' do
           :system_roles_v3        => ['adminv3', 'memberv3', 'readerv3'],
           :configure_user_v3      => true,
           :configure_user_role_v3 => true,
+          :service_description    => 'Alternative OpenStack Block Storage Service',
           :service_description_v3 => 'Alternative Cinder Service v3',
+          :service_name           => 'alt_service',
           :service_name_v3        => 'alt_servicev3',
+          :service_type           => 'alt_block-storage',
           :service_type_v3        => 'alt_volumev3',
           :region                 => 'RegionTwo',
           :public_url_v3          => 'https://10.10.10.10:80',
           :internal_url_v3        => 'http://10.10.10.11:81',
           :admin_url_v3           => 'http://10.10.10.12:81',
+          :configure_endpoint     => false,
           :configure_endpoint_v3  => false,
+          :configure_service      => false,
           :configure_service_v3   => false
         }
       end
@@ -84,6 +95,9 @@ describe 'cinder::keystone::auth' do
         :configure_user_role => false,
         :configure_endpoint  => false,
         :configure_service   => false,
+        :service_name        => 'alt_service',
+        :service_type        => 'alt_block-storage',
+        :service_description => 'Alternative OpenStack Block Storage Service',
         :region              => 'RegionTwo',
         :auth_name           => 'alt_cinder',
         :password            => 'cinder_password',
@@ -92,6 +106,9 @@ describe 'cinder::keystone::auth' do
         :roles               => ['admin', 'service'],
         :system_scope        => 'alt_all',
         :system_roles        => ['admin', 'member', 'reader'],
+        :public_url          => 'https://10.10.10.10:80',
+        :internal_url        => 'http://10.10.10.11:81',
+        :admin_url           => 'http://10.10.10.12:81',
       ) }
 
       it { is_expected.to contain_keystone__resource__service_identity('cinderv3').with(

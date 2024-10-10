@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``cinder::keystone::auth`` class now manages the block-storage service
+    type and its endpoints.
