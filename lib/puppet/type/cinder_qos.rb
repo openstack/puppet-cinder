@@ -36,6 +36,10 @@ Puppet::Type.newtype(:cinder_qos) do
     defaultto('')
   end
 
+  autorequire(:cinder_qos) do
+    self[:associations] if self[:associations]
+  end
+
   autorequire(:anchor) do
     ['cinder::service::end']
   end
