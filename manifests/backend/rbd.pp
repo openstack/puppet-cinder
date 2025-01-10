@@ -199,7 +199,8 @@ define cinder::backend::rbd (
     ensure_packages( 'ceph-common', {
       ensure => present,
       name   => $::cinder::params::ceph_common_package_name,
-      tag    => 'cinder-support-package'})
+    })
+    Package<| title == 'ceph-common' |> { tag +> 'cinder-support-package' }
   }
 
   create_resources('cinder_config', $extra_options)
