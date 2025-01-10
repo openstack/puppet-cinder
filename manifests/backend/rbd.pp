@@ -6,10 +6,11 @@
 # === Parameters
 #
 # [*rbd_pool*]
-#   (required) Specifies the pool name for the block device driver.
+#   (required) The RADOS pool where RBD volumes are stored.
 #
 # [*rbd_user*]
-#   (required) A required parameter to configure OS init scripts and cephx.
+#   (required) The RADOS client name for accessing RBD volumes - only set when
+#   using cephx authentication.
 #
 # [*backend_host*]
 #   (optional) Allows specifying the hostname/key used for the owner of volumes
