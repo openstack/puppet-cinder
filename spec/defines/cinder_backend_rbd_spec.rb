@@ -20,7 +20,10 @@ describe 'cinder::backend::rbd' do
 
     context 'rbd backend volume driver' do
       it {
-        is_expected.to contain_package('ceph-common').with_ensure('installed')
+        is_expected.to contain_package('ceph-common').with(
+          :name   => platform_params[:ceph_common_package_name],
+          :ensure => 'installed',
+        )
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_backend_name").with_value(req_params[:volume_backend_name])
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver')
         is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_ceph_conf").with_value('/etc/ceph/ceph.conf')
@@ -72,7 +75,10 @@ describe 'cinder::backend::rbd' do
         end
 
         it {
-          is_expected.to contain_package('ceph-common').with_ensure('installed')
+          is_expected.to contain_package('ceph-common').with(
+            :name   => platform_params[:ceph_common_package_name],
+            :ensure => 'installed',
+          )
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_backend_name").with_value(req_params[:volume_backend_name])
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/volume_driver").with_value('cinder.volume.drivers.rbd.RBDDriver')
           is_expected.to contain_cinder_config("#{req_params[:volume_backend_name]}/rbd_ceph_conf").with_value(params[:rbd_ceph_conf])
@@ -154,6 +160,15 @@ describe 'cinder::backend::rbd' do
     context "on #{os}" do
       let (:facts) do
         facts.merge!(OSDefaults.get_facts())
+      end
+
+      let :platform_params do
+        case facts[:os]['family']
+        when 'Debian'
+          { :ceph_common_package_name => 'ceph-common' }
+        when 'RedHat'
+          { :ceph_common_package_name => 'ceph-common' }
+        end
       end
 
       it_behaves_like 'cinder::backend::rbd'
