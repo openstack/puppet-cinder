@@ -1,72 +1,65 @@
 require 'spec_helper'
 
 describe 'cinder::scheduler::filter' do
-  let :default_params do
-    {
-      :scheduler_default_filters            => '<SERVICE DEFAULT>',
-      :capacity_weight_multiplier           => '<SERVICE DEFAULT>',
-      :allocated_capacity_weight_multiplier => '<SERVICE DEFAULT>',
-      :volume_number_multiplier             => '<SERVICE DEFAULT>',
-    }
-  end
+  shared_examples 'cinder::scheduler::filter' do
 
-  let :params do
-    {}
-  end
 
-  shared_examples 'cinder scheduler filter' do
-
-    let :p do
-      default_params.merge(params)
+    context 'with defaults' do
+      it 'contains default values' do
+        is_expected.to contain_cinder_config('DEFAULT/scheduler_default_filters').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/scheduler_default_weighers').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/scheduler_weight_handler').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/capacity_weight_multiplier').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/allocated_capacity_weight_multiplier').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('DEFAULT/volume_number_multiplier').with_value('<SERVICE DEFAULT>')
+      end
     end
 
-    it 'contains default values' do
-      is_expected.to contain_cinder_config('DEFAULT/scheduler_default_filters').with_value(p[:scheduler_default_filters])
-      is_expected.to contain_cinder_config('DEFAULT/capacity_weight_multiplier').with_value(p[:capacity_weight_multiplier])
-      is_expected.to contain_cinder_config('DEFAULT/allocated_capacity_weight_multiplier').with_value(p[:allocated_capacity_weight_multiplier])
-      is_expected.to contain_cinder_config('DEFAULT/volume_number_multiplier').with_value(p[:volume_number_multiplier])
-    end
-
-    context 'configure parameters' do
-      before :each do
-        params.merge!({
+    context 'with parmeters' do
+      let :params do
+        {
+          :default_filters                      => 'AvailabilityZoneFilter,CapacityFilter,CapabilitiesFilter',
+          :default_weighers                     => 'CapacityWeigher,AllocatedCapacityWeigher',
+          :weight_handler                       => 'cinder.scheduler.weights.OrderedHostWeightHandler',
           :capacity_weight_multiplier           => 1.0,
           :allocated_capacity_weight_multiplier => -1.0,
-          :volume_number_multiplier             => -1.0,
-        })
+          :volume_number_multiplier             => -1.1,
+        }
       end
 
       it 'contains overridden values' do
-        is_expected.to contain_cinder_config('DEFAULT/capacity_weight_multiplier').with_value(p[:capacity_weight_multiplier])
-        is_expected.to contain_cinder_config('DEFAULT/allocated_capacity_weight_multiplier').with_value(p[:allocated_capacity_weight_multiplier])
-        is_expected.to contain_cinder_config('DEFAULT/volume_number_multiplier').with_value(p[:volume_number_multiplier])
+        is_expected.to contain_cinder_config('DEFAULT/scheduler_default_filters').with_value(
+          'AvailabilityZoneFilter,CapacityFilter,CapabilitiesFilter'
+        )
+        is_expected.to contain_cinder_config('DEFAULT/scheduler_default_weighers').with_value(
+          'CapacityWeigher,AllocatedCapacityWeigher'
+        )
+        is_expected.to contain_cinder_config('DEFAULT/scheduler_weight_handler').with_value(
+          'cinder.scheduler.weights.OrderedHostWeightHandler'
+        )
+        is_expected.to contain_cinder_config('DEFAULT/capacity_weight_multiplier').with_value(1.0)
+        is_expected.to contain_cinder_config('DEFAULT/allocated_capacity_weight_multiplier').with_value(-1.0)
+        is_expected.to contain_cinder_config('DEFAULT/volume_number_multiplier').with_value(-1.1)
       end
     end
 
-    context 'configure filters with array' do
-      before :each do
-        params.merge!({
-          :scheduler_default_filters => ['AvailabilityZoneFilter', 'CapacityFilter', 'CapabilitiesFilter']
-        })
+    context 'with parameters (array values)' do
+      let :params do
+        {
+          :default_filters  => ['AvailabilityZoneFilter', 'CapacityFilter', 'CapabilitiesFilter'],
+          :default_weighers => ['CapacityWeigher', 'AllocatedCapacityWeigher'],
+        }
       end
 
       it 'contains overridden values' do
-        is_expected.to contain_cinder_config('DEFAULT/scheduler_default_filters').with_value(p[:scheduler_default_filters].join(','))
+        is_expected.to contain_cinder_config('DEFAULT/scheduler_default_filters').with_value(
+          'AvailabilityZoneFilter,CapacityFilter,CapabilitiesFilter'
+        )
+        is_expected.to contain_cinder_config('DEFAULT/scheduler_default_weighers').with_value(
+          'CapacityWeigher,AllocatedCapacityWeigher'
+        )
       end
     end
-
-    context 'configure filters with string' do
-      before :each do
-        params.merge!({
-          :scheduler_default_filters => 'AvailabilityZoneFilter,CapacityFilter,CapabilitiesFilter'
-        })
-      end
-
-      it 'contains overridden values' do
-        is_expected.to contain_cinder_config('DEFAULT/scheduler_default_filters').with_value(p[:scheduler_default_filters])
-      end
-    end
-
   end
 
   on_supported_os({
@@ -77,7 +70,7 @@ describe 'cinder::scheduler::filter' do
         facts.merge(OSDefaults.get_facts())
       end
 
-      it_behaves_like 'cinder scheduler filter'
+      it_behaves_like 'cinder::scheduler::filter'
     end
   end
 end
