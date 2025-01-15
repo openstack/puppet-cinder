@@ -1,0 +1,25 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``cinder::scheduler``
+    class.
+
+    - ``driver_init_wait_time``
+    - ``host_manager``
+    - ``max_attempts``
+
+  - |
+    The following parameters have been added to
+    the ``cinder::scheduler::filter`` class.
+
+    - ``default_weighers``
+    - ``weight_handler``
+
+deprecations:
+  - |
+    The ``cinder::scheduler::scheduler_driver`` parameter has been deprecated,
+    in favor of the new ``driver`` parameter.
+
+  - |
+    The ``cinder::scheduler::filter::scheduler_default_filters`` parameter has
+    been deprecated, in favor of the new ``default_filters`` parameter.
