@@ -103,7 +103,6 @@ define cinder::backend::dellemc_powermax (
 ) {
 
   include cinder::deps
-  include cinder::params
 
   $volume_driver = $powermax_storage_protocol ? {
     'FC'    => 'cinder.volume.drivers.dell_emc.powermax.fc.PowerMaxFCDriver',
@@ -141,11 +140,6 @@ define cinder::backend::dellemc_powermax (
       properties => ["volume_backend_name=${volume_backend_name}"],
     }
   }
-
-  ensure_packages( 'pywbem', {
-    ensure => present,
-    name   => $::cinder::params::pywbem_package_name,
-    tag    => 'cinder-support-package'})
 
   create_resources('cinder_config', $extra_options)
 
