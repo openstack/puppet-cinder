@@ -37,12 +37,6 @@ describe 'cinder::backend::dellemc_powermax' do
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_count").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/rest_api_connect_timeout").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/rest_api_read_timeout").with_value('<SERVICE DEFAULT>')
-
-        is_expected.to contain_package('pywbem').with(
-          :ensure => 'installed',
-          :name   => platform_params[:pywbem_package_name],
-          :tag    => 'cinder-support-package',
-        )
       end
     end
 
@@ -132,19 +126,6 @@ describe 'cinder::backend::dellemc_powermax' do
     context "on #{os}" do
       let (:facts) do
         facts.merge!(OSDefaults.get_facts())
-      end
-
-      let :platform_params do
-        case facts[:os]['family']
-        when 'Debian'
-          {
-            :pywbem_package_name => 'python-pywbem'
-          }
-        when 'RedHat'
-          {
-            :pywbem_package_name => 'pywbem'
-          }
-        end
       end
 
       it_behaves_like 'cinder::backend::dellemc_powermax'
