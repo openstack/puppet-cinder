@@ -1,5 +1,6 @@
-# == Class: cinder::backend::vstorage
+# == Define: cinder::backend::vstorage
 #
+# DEPRECATED !!
 # Configures Cinder to use VStorage volume driver.
 #
 # === Parameters
@@ -81,6 +82,9 @@ define cinder::backend::vstorage (
 
   include cinder::deps
   include cinder::params
+
+  warning("Support for VZStorageDriver has been deprecated because the driver \
+is now marked unsupported.")
 
   $mount_user_real = pick($mount_user, $::cinder::params::user)
 

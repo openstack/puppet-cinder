@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    Support for VZStorageDriver has been deprecated. The driver has
+    been marked unsupported in cinder for multiple releases.
