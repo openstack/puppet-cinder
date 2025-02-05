@@ -56,26 +56,32 @@
 #   Should be a valid integer
 #   Defaults to $facts['os_service_default']
 #
+# [*backup_ceph_max_snapshots*]
+#   (Optional) Number of the most recent snapshots to keep.
+#   Defaults to $facts['os_service_default']
+#
 class cinder::backup::ceph (
-  $backup_driver            = 'cinder.backup.drivers.ceph.CephBackupDriver',
-  $backup_ceph_conf         = $facts['os_service_default'],
-  $backup_ceph_user         = $facts['os_service_default'],
-  $backup_ceph_chunk_size   = $facts['os_service_default'],
-  $backup_ceph_pool         = $facts['os_service_default'],
-  $backup_ceph_stripe_unit  = $facts['os_service_default'],
-  $backup_ceph_stripe_count = $facts['os_service_default'],
+  $backup_driver             = 'cinder.backup.drivers.ceph.CephBackupDriver',
+  $backup_ceph_conf          = $facts['os_service_default'],
+  $backup_ceph_user          = $facts['os_service_default'],
+  $backup_ceph_chunk_size    = $facts['os_service_default'],
+  $backup_ceph_pool          = $facts['os_service_default'],
+  $backup_ceph_stripe_unit   = $facts['os_service_default'],
+  $backup_ceph_stripe_count  = $facts['os_service_default'],
+  $backup_ceph_max_snapshots = $facts['os_service_default'],
 ) {
 
   include cinder::deps
 
   cinder_config {
-    'DEFAULT/backup_driver':            value => $backup_driver;
-    'DEFAULT/backup_ceph_conf':         value => $backup_ceph_conf;
-    'DEFAULT/backup_ceph_user':         value => $backup_ceph_user;
-    'DEFAULT/backup_ceph_chunk_size':   value => $backup_ceph_chunk_size;
-    'DEFAULT/backup_ceph_pool':         value => $backup_ceph_pool;
-    'DEFAULT/backup_ceph_stripe_unit':  value => $backup_ceph_stripe_unit;
-    'DEFAULT/backup_ceph_stripe_count': value => $backup_ceph_stripe_count;
+    'DEFAULT/backup_driver':             value => $backup_driver;
+    'DEFAULT/backup_ceph_conf':          value => $backup_ceph_conf;
+    'DEFAULT/backup_ceph_user':          value => $backup_ceph_user;
+    'DEFAULT/backup_ceph_chunk_size':    value => $backup_ceph_chunk_size;
+    'DEFAULT/backup_ceph_pool':          value => $backup_ceph_pool;
+    'DEFAULT/backup_ceph_stripe_unit':   value => $backup_ceph_stripe_unit;
+    'DEFAULT/backup_ceph_stripe_count':  value => $backup_ceph_stripe_count;
+    'DEFAULT/backup_ceph_max_snapshots': value => $backup_ceph_max_snapshots;
   }
 
 }

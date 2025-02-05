@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``cinder::backup::backup_ceph_max_snapshots`` parameter has been
+    added.
