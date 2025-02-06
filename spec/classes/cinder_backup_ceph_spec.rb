@@ -33,17 +33,19 @@ describe 'cinder::backup::ceph' do
       is_expected.to contain_cinder_config('DEFAULT/backup_ceph_pool').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_unit').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_count').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('DEFAULT/backup_ceph_max_snapshots').with_value('<SERVICE DEFAULT>')
     end
 
     context 'when overriding default parameters' do
       before do
         params.merge!(
-          :backup_ceph_conf         => '/tmp/ceph.conf',
-          :backup_ceph_user         => 'toto',
-          :backup_ceph_chunk_size   => '123',
-          :backup_ceph_pool         => 'foo',
-          :backup_ceph_stripe_unit  => '56',
-          :backup_ceph_stripe_count => '67'
+          :backup_ceph_conf          => '/tmp/ceph.conf',
+          :backup_ceph_user          => 'toto',
+          :backup_ceph_chunk_size    => 134217728,
+          :backup_ceph_pool          => 'foo',
+          :backup_ceph_stripe_unit   => 256,
+          :backup_ceph_stripe_count  => 128,
+          :backup_ceph_max_snapshots => 10,
         )
       end
 
@@ -54,6 +56,7 @@ describe 'cinder::backup::ceph' do
         is_expected.to contain_cinder_config('DEFAULT/backup_ceph_pool').with_value(params[:backup_ceph_pool])
         is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_unit').with_value(params[:backup_ceph_stripe_unit])
         is_expected.to contain_cinder_config('DEFAULT/backup_ceph_stripe_count').with_value(params[:backup_ceph_stripe_count])
+        is_expected.to contain_cinder_config('DEFAULT/backup_ceph_max_snapshots').with_value(params[:backup_ceph_max_snapshots])
       end
     end
   end
