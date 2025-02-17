@@ -34,7 +34,7 @@ class cinder::db::postgresql(
 
   include cinder::deps
 
-  ::openstacklib::db::postgresql { 'cinder':
+  openstacklib::db::postgresql { 'cinder':
     password   => $password,
     dbname     => $dbname,
     user       => $user,

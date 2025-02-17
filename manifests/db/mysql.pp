@@ -44,7 +44,7 @@ class cinder::db::mysql (
 
   include cinder::deps
 
-  ::openstacklib::db::mysql { 'cinder':
+  openstacklib::db::mysql { 'cinder':
     user          => $user,
     password      => $password,
     dbname        => $dbname,

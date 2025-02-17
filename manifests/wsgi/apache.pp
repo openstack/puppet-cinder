@@ -168,7 +168,7 @@ class cinder::wsgi::apache (
 
   Anchor['cinder::install::end'] -> Class['apache']
 
-  ::openstacklib::wsgi::apache { 'cinder_wsgi':
+  openstacklib::wsgi::apache { 'cinder_wsgi':
     bind_host                   => $bind_host,
     bind_port                   => $port,
     group                       => $::cinder::params::group,
