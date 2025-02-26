@@ -36,8 +36,8 @@ describe 'cinder::backend::hpe3par_iscsi' do
         is_expected.to contain_cinder_config('hpe3par_iscsi/san_ip').with_value('172.0.0.2')
         is_expected.to contain_cinder_config('hpe3par_iscsi/san_login').with_value('3paradm')
         is_expected.to contain_cinder_config('hpe3par_iscsi/san_password').with_value('password').with_secret(true)
-        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_iscsi_chap_enabled').with_value(false)
-        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_cpg_snap').with_value('userCPG')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_iscsi_chap_enabled').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_cpg_snap').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_snapshot_retention').with_value(48)
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_snapshot_expiration').with_value(72)
       }
