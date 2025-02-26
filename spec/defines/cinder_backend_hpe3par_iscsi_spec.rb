@@ -54,6 +54,17 @@ describe 'cinder::backend::hpe3par_iscsi' do
       }
     end
 
+    context 'with arrays' do
+      before :each do
+        params.merge!({
+          :hpe3par_iscsi_ips => ['172.0.0.3', '172.0.0.4', '172.0.0.5']
+        })
+      end
+      it {
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_iscsi_ips').with_value('172.0.0.3,172.0.0.4,172.0.0.5')
+      }
+    end
+
     context 'hpe3par_iscsi backend with additional configuration' do
       before :each do
         params.merge!( :extra_options => {'hpe3par_iscsi/param1' => {'value' => 'value1'}} )
