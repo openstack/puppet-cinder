@@ -1,5 +1,6 @@
 # == Class: cinder::backend::san
 #
+# DEPRECATED !!
 # Configures Cinder volume SAN driver.
 # Parameters are particular to each volume driver.
 #
@@ -115,6 +116,8 @@ define cinder::backend::san (
 ) {
 
   include cinder::deps
+
+  warning('The cinder::backend::san defined resource type is deprecated.')
 
   cinder_config {
     "${name}/volume_backend_name":            value => $volume_backend_name;

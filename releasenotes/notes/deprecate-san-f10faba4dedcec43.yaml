@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``cinder::backend::san`` defined resource type has been deprecated and
+    will be removed in a future release.
