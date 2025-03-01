@@ -31,11 +31,15 @@ describe 'cinder::backend::hpe3par_iscsi' do
         is_expected.to contain_cinder_config('hpe3par_iscsi/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_api_url').with_value('https://172.0.0.2:8080/api/v1')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_username').with_value('3paradm')
-        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_password').with_value('password')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_password').with_value('password').with_secret(true)
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_iscsi_ips').with_value('172.0.0.3')
         is_expected.to contain_cinder_config('hpe3par_iscsi/san_ip').with_value('172.0.0.2')
         is_expected.to contain_cinder_config('hpe3par_iscsi/san_login').with_value('3paradm')
-        is_expected.to contain_cinder_config('hpe3par_iscsi/san_password').with_value('password')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/san_password').with_value('password').with_secret(true)
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_iscsi_chap_enabled').with_value(false)
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_cpg_snap').with_value('userCPG')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_snapshot_retention').with_value(48)
+        is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_snapshot_expiration').with_value(72)
       }
     end
 

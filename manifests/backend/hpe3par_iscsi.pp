@@ -139,9 +139,14 @@ define cinder::backend::hpe3par_iscsi(
     "${name}/hpe3par_iscsi_ips":              value => join(any2array($hpe3par_iscsi_ips), ',');
     "${name}/hpe3par_api_url":                value => $hpe3par_api_url;
     "${name}/hpe3par_iscsi_chap_enabled":     value => $hpe3par_iscsi_chap_enabled;
-    "${name}/hpe3par_snap_cpg":               value => $hpe3par_cpg_snap;
+    "${name}/hpe3par_cpg_snap":               value => $hpe3par_cpg_snap;
     "${name}/hpe3par_snapshot_retention":     value => $hpe3par_snapshot_retention;
     "${name}/hpe3par_snapshot_expiration":    value => $hpe3par_snapshot_expiration;
+  }
+
+  # TODO(tkajinam): Remove this after 2025.1 release
+  cinder_config {
+    "${name}/hpe3par_snap_cpg": ensure => absent;
   }
 
   if $manage_volume_type {
