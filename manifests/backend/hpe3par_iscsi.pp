@@ -64,11 +64,11 @@
 #
 # [*hpe3par_iscsi_chap_enabled*]
 #   (optional) setting to false by default
-#   Defaults to false.
+#   Defaults to $facts['os_service_default'].
 #
 # [*hpe3par_cpg_snap*]
 #   (optional) set to hpe3par_cfg by default in the cinder driver
-#   Defaults to 'userCPG'.
+#   Defaults to $facts['os_service_default'].
 #
 # [*hpe3par_snapshot_retention*]
 #   (required) Time in hours for snapshot retention. Must be less
@@ -108,8 +108,8 @@ define cinder::backend::hpe3par_iscsi(
   $reserved_percentage            = $facts['os_service_default'],
   $max_over_subscription_ratio    = $facts['os_service_default'],
   $volume_driver                  = 'cinder.volume.drivers.hpe.hpe_3par_iscsi.HPE3PARISCSIDriver',
-  $hpe3par_iscsi_chap_enabled     = false,
-  $hpe3par_cpg_snap               = 'userCPG',
+  $hpe3par_iscsi_chap_enabled     = $facts['os_service_default'],
+  $hpe3par_cpg_snap               = $facts['os_service_default'],
   $hpe3par_snapshot_retention     = 48,
   $hpe3par_snapshot_expiration    = 72,
   Boolean $manage_volume_type     = false,
