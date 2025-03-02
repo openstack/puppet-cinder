@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    The ``cinder::backup::nfs`` class now ensures that the nfs client package
+    is installed. The new ``package_ensure`` parameter has been added so that
+    the package state can be customized.
+

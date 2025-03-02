@@ -47,6 +47,9 @@
 #   (optional) Compression algorithm to use when writing backup data.
 #   Defaults to $facts['os_service_default']
 #
+# [*package_ensure*]
+#   (optional) Ensure state for package. Defaults to 'present'.
+#
 # === Author(s)
 #
 # Ryan Hefner <ryan.hefner@netapp.com>
@@ -78,9 +81,11 @@ class cinder::backup::nfs (
   $backup_mount_options         = $facts['os_service_default'],
   $backup_container             = $facts['os_service_default'],
   $backup_compression_algorithm = $facts['os_service_default'],
+  $package_ensure               = 'present',
 ) {
 
   include cinder::deps
+  include cinder::params
 
   cinder_config {
     'DEFAULT/backup_mount_options':         value => $backup_mount_options;
@@ -94,4 +99,9 @@ class cinder::backup::nfs (
     'DEFAULT/backup_compression_algorithm': value => $backup_compression_algorithm;
   }
 
+  ensure_packages('nfs-client', {
+    name   => $::cinder::params::nfs_client_package_name,
+    ensure => $package_ensure,
+  })
+  Package<| title == 'nfs-client' |> { tag +> 'cinder-support-package' }
 }

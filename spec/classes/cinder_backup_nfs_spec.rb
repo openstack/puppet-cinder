@@ -52,6 +52,13 @@ describe 'cinder::backup::nfs' do
       end
     end
 
+    it 'installs nfs client' do
+      is_expected.to contain_package('nfs-client').with(
+        :name   => platform_params[:nfs_client_package_name],
+        :ensure => 'installed',
+      )
+    end
+
     context 'with optional parameters' do
       let (:all_params) { params.merge!({
         :backup_mount_options => 'sec=sys',
@@ -71,6 +78,15 @@ describe 'cinder::backup::nfs' do
     context "on #{os}" do
       let (:facts) do
         facts.merge(OSDefaults.get_facts())
+      end
+
+      let :platform_params do
+        case facts[:os]['family']
+        when 'Debian'
+          { :nfs_client_package_name => 'nfs-common' }
+        when 'RedHat'
+          { :nfs_client_package_name => 'nfs-utils' }
+        end
       end
 
       it_behaves_like 'cinder backup with nfs'
