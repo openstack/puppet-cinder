@@ -99,6 +99,9 @@
 #   (Optional) Create volumes as QCOW2 files rather than raw files.
 #   Defaults to $facts['os_service_default']
 #
+# [*package_ensure*]
+#   (optional) Ensure state for package. Defaults to 'present'.
+#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -124,11 +127,13 @@ define cinder::backend::nfs (
   $nas_secure_file_permissions            = $facts['os_service_default'],
   $nfs_snapshot_support                   = $facts['os_service_default'],
   $nfs_qcow2_volumes                      = $facts['os_service_default'],
+  $package_ensure                         = 'present',
   Boolean $manage_volume_type             = false,
   Hash $extra_options                     = {},
 ) {
 
   include cinder::deps
+  include cinder::params
 
   file { $nfs_shares_config:
     content => join($nfs_servers, "\n"),
@@ -163,6 +168,12 @@ define cinder::backend::nfs (
       properties => {'volume_backend_name' => $volume_backend_name},
     }
   }
+
+  ensure_packages('nfs-client', {
+    name   => $::cinder::params::nfs_client_package_name,
+    ensure => $package_ensure,
+  })
+  Package<| title == 'nfs-client' |> { tag +> 'cinder-support-package' }
 
   create_resources('cinder_config', $extra_options)
 

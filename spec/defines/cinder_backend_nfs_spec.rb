@@ -29,6 +29,13 @@ describe 'cinder::backend::nfs' do
         is_expected.to contain_cinder_config('hippo/nfs_qcow2_volumes').with_value('<SERVICE DEFAULT>')
       }
 
+      it {
+        is_expected.to contain_package('nfs-client').with(
+          :name   => platform_params[:nfs_client_package_name],
+          :ensure => 'installed',
+        )
+      }
+
       it { is_expected.to contain_file('/etc/cinder/shares.conf').with(
         :content => "10.10.10.10:/shares\n10.10.10.10:/shares2",
         :require => 'Anchor[cinder::install::end]',
@@ -106,6 +113,15 @@ describe 'cinder::backend::nfs' do
     context "on #{os}" do
       let (:facts) do
         facts.merge!(OSDefaults.get_facts())
+      end
+
+      let :platform_params do
+        case facts[:os]['family']
+        when 'Debian'
+          { :nfs_client_package_name => 'nfs-common' }
+        when 'RedHat'
+          { :nfs_client_package_name => 'nfs-utils' }
+        end
       end
 
       it_behaves_like 'cinder::backend::nfs'
