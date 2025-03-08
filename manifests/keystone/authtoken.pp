@@ -244,7 +244,7 @@ class cinder::keystone::authtoken(
 
   keystone::resource::authtoken {
     'cinder_config':
-      *                              => $params;
+      * => $params;
     default:
       username                       => $username,
       password                       => $password,
