@@ -76,6 +76,14 @@
 #   (Optional) Use quorum queues for transients queues in RabbitMQ.
 #   Defaults to $facts['os_service_default']
 #
+# [*rabbit_transient_queues_ttl*]
+#   (Optional) Positive integer representing duration in seconds for
+#   queue TTL (x-expires). Queues which are unused for the duration
+#   of the TTL are automatically deleted.
+#   The parameter affects only reply and fanout queues. (integer value)
+#   Min to 1
+#   Defaults to $facts['os_service_default']
+#
 # [*rabbit_quorum_delivery_limit*]
 #   (Optional) Each time a message is rdelivered to a consumer, a counter is
 #   incremented. Once the redelivery count exceeds the delivery limit
@@ -142,6 +150,10 @@
 #   (optional) Possible values are: gzip, bz2. If not set compression will not
 #   be used. This option may not be available in future versions. EXPERIMENTAL.
 #   (string value)
+#   Defaults to $facts['os_service_default']
+#
+# [*amqp_auto_delete*]
+#   (Optional) Define if transient queues should be auto-deleted (boolean value)
 #   Defaults to $facts['os_service_default']
 #
 # [*amqp_durable_queues*]
@@ -251,6 +263,7 @@ class cinder (
   $rabbit_qos_prefetch_count            = $facts['os_service_default'],
   $rabbit_quorum_queue                  = $facts['os_service_default'],
   $rabbit_transient_quorum_queue        = $facts['os_service_default'],
+  $rabbit_transient_queues_ttl          = $facts['os_service_default'],
   $rabbit_quorum_delivery_limit         = $facts['os_service_default'],
   $rabbit_quorum_max_memory_length      = $facts['os_service_default'],
   $rabbit_quorum_max_memory_bytes       = $facts['os_service_default'],
@@ -266,6 +279,7 @@ class cinder (
   $kombu_failover_strategy              = $facts['os_service_default'],
   $kombu_compression                    = $facts['os_service_default'],
   $amqp_durable_queues                  = $facts['os_service_default'],
+  $amqp_auto_delete                     = $facts['os_service_default'],
   $package_ensure                       = 'present',
   $api_paste_config                     = '/etc/cinder/api-paste.ini',
   $storage_availability_zone            = $facts['os_service_default'],
@@ -314,9 +328,11 @@ class cinder (
     kombu_ssl_certfile              => $kombu_ssl_certfile,
     kombu_ssl_ca_certs              => $kombu_ssl_ca_certs,
     amqp_durable_queues             => $amqp_durable_queues,
+    amqp_auto_delete                => $amqp_auto_delete,
     kombu_compression               => $kombu_compression,
     rabbit_quorum_queue             => $rabbit_quorum_queue,
     rabbit_transient_quorum_queue   => $rabbit_transient_quorum_queue,
+    rabbit_transient_queues_ttl     => $rabbit_transient_queues_ttl,
     rabbit_quorum_delivery_limit    => $rabbit_quorum_delivery_limit,
     rabbit_quorum_max_memory_length => $rabbit_quorum_max_memory_length,
     rabbit_quorum_max_memory_bytes  => $rabbit_quorum_max_memory_bytes,
