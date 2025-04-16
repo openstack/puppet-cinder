@@ -29,7 +29,6 @@ describe 'cinder::logging' do
      :log_facility                   => 'LOG_FOO',
      :log_dir                        => '/var/log',
      :log_file                       => '/var/log/cinder/cinder.log',
-     :watch_log_file                 => true,
      :debug                          => true,
     }
   end
@@ -80,7 +79,6 @@ describe 'cinder::logging' do
         :syslog_log_facility => 'LOG_FOO',
         :log_dir             => '/var/log',
         :log_file            => '/var/log/cinder/cinder.log',
-        :watch_log_file      => true,
         :debug               => true,
       )
     end
