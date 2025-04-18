@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``cinder::nova::auth_section`` parameter has been removed.
