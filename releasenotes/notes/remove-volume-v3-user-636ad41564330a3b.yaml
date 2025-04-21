@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    Management of cinder v3 user by the ``cinder::keystone::auth`` class has
+    been removed. Because of the removal, the following parameters of the auth
+    class have been removed.
+
+    - ``password_user_v3``
+    - ``email_user_v3``
+    - ``auth_name_v3``
+    - ``tenant_user_v3``
+    - ``roles_v3``
+    - ``system_scope_v3``
+    - ``system_roles_v3``
+    - ``configure_user_v3``
+    - ``configure_user_role_v3``

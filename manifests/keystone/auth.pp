@@ -98,44 +98,6 @@
 #   This url should *not* contain any trailing '/'.
 #   Defaults to 'http://127.0.0.1:8776/v3'
 #
-# DEPRECATED PARAMETERS
-#
-# [*password_user_v3*]
-#   (Optional) Password for Cinder v3 user.
-#   Defaults to undef.
-#
-# [*auth_name_v3*]
-#   (Optional) Username for Cinder v3 service.
-#   Defaults to 'cinderv3'.
-#
-# [*email_user_v3*]
-#   (Optional) Email for Cinder v3 user.
-#   Defaults to 'cinderv3@localhost'.
-#
-# [*tenant_user_v3*]
-#   (Optional) Tenant for Cinder v3 user.
-#   Defaults to 'services'.
-#
-# [*roles_v3*]
-#   (Optional) List of roles assigned to Cinder v3 user
-#   Defaults to ['admin']
-#
-# [*system_scope_v3*]
-#   (Optional) Scope for system operations used by Cinder v3 user.
-#   Defaults to 'all'
-#
-# [*system_roles_v3*]
-#   (Optional) List of system roles assigned to Cinder v3 user.
-#   Defaults to []
-#
-# [*configure_user_v3*]
-#   (Optional) Should the service user be configured for cinder v3?
-#   Defaults to false
-#
-# [*configure_user_role_v3*]
-#   (Optional) Should the admin role be configured for the service user for cinder v3?
-#   Defaults to false
-#
 # === Examples
 #
 #  class { 'cinder::keystone::auth':
@@ -168,30 +130,13 @@ class cinder::keystone::auth (
   String[1] $service_description             = 'OpenStack Block Storage Service',
   String[1] $service_description_v3          = 'Cinder Service v3',
   String[1] $region                          = 'RegionOne',
-  # DPERECATED PARAMETERS
-  Optional[String[1]] $password_user_v3      = undef,
-  String[1] $auth_name_v3                    = 'cinderv3',
-  String[1] $email_user_v3                   = 'cinderv3@localhost',
-  String[1] $tenant_user_v3                  = 'services',
-  Array[String[1]] $roles_v3                 = ['admin'],
-  String[1] $system_scope_v3                 = 'all',
-  Array[String[1]] $system_roles_v3          = [],
-  Boolean $configure_user_v3                 = false,
-  Boolean $configure_user_role_v3            = false,
 ) {
 
   include cinder::deps
 
-  if $configure_user_v3 or $configure_user_role_v3 {
-    warning("Management of volume v3 user has been deprecated and will be removed \
-and will be removed in a future release.")
-  }
-
   Keystone::Resource::Service_identity['cinder'] -> Anchor['cinder::service::end']
   Keystone::Resource::Service_identity['cinderv3'] -> Anchor['cinder::service::end']
 
-  # Always configure the original user and user roles, as these
-  # can be used by the v3 service.
   keystone::resource::service_identity { 'cinder':
     configure_user      => $configure_user,
     configure_user_role => $configure_user_role,
@@ -214,21 +159,14 @@ and will be removed in a future release.")
   }
 
   keystone::resource::service_identity { 'cinderv3':
-    configure_user      => $configure_user_v3,
-    configure_user_role => $configure_user_role_v3,
+    configure_user      => false,
+    configure_user_role => false,
     configure_endpoint  => $configure_endpoint_v3,
     configure_service   => $configure_service_v3,
     service_type        => $service_type_v3,
     service_description => $service_description_v3,
     service_name        => $service_name_v3,
     region              => $region,
-    auth_name           => $auth_name_v3,
-    password            => $password_user_v3,
-    email               => $email_user_v3,
-    tenant              => $tenant_user_v3,
-    roles               => $roles_v3,
-    system_scope        => $system_scope_v3,
-    system_roles        => $system_roles_v3,
     public_url          => $public_url_v3,
     admin_url           => $admin_url_v3,
     internal_url        => $internal_url_v3,
