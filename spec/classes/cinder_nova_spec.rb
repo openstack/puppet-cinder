@@ -19,7 +19,6 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/collect_timing').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/split_loggers').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/auth_type').with_value('password')
-        is_expected.to contain_cinder_config('nova/auth_section').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/auth_url').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/username').with_value('nova')
         is_expected.to contain_cinder_config('nova/user_domain_name').with_value('Default')
@@ -44,7 +43,6 @@ describe 'cinder::nova' do
           :collect_timing => true,
           :split_loggers  => true,
           :auth_type      => 'v3password',
-          :auth_section   => 'my_section',
           :auth_url       => 'http://127.0.0.2:5000',
         })
       end
@@ -61,7 +59,6 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/collect_timing').with_value(true)
         is_expected.to contain_cinder_config('nova/split_loggers').with_value(true)
         is_expected.to contain_cinder_config('nova/auth_type').with_value('v3password')
-        is_expected.to contain_cinder_config('nova/auth_section').with_value('my_section')
         is_expected.to contain_cinder_config('nova/auth_url').with_value('http://127.0.0.2:5000')
         is_expected.to contain_cinder_config('nova/username').with_value('nova')
         is_expected.to contain_cinder_config('nova/user_domain_name').with_value('Default')

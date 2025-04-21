@@ -77,13 +77,6 @@
 #   (Optional) Scope for system operations
 #   Defaults to $facts['os_service_default']
 #
-# DEPRECATED PARAMETERS
-#
-# [*auth_section*]
-#   (Optional) Config Section from which to load plugin
-#   specific options.
-#   Defaults to undef
-#
 class cinder::nova (
   $password,
   $region_name         = $facts['os_service_default'],
@@ -103,15 +96,9 @@ class cinder::nova (
   $project_name        = 'services',
   $project_domain_name = 'Default',
   $system_scope        = $facts['os_service_default'],
-  # DEPRECATED PARAMETERS
-  $auth_section        = undef,
 ) {
 
   include cinder::deps
-
-  if $auth_section {
-    warning('The auth_section parameter has been deprecated.')
-  }
 
   if is_service_default($system_scope) {
     $project_name_real = $project_name
@@ -133,7 +120,6 @@ class cinder::nova (
     'nova/collect_timing':      value => $collect_timing;
     'nova/split_loggers':       value => $split_loggers;
     'nova/auth_type':           value => $auth_type;
-    'nova/auth_section':        value => pick($auth_section, $facts['os_service_default']);
     'nova/auth_url':            value => $auth_url;
     'nova/username':            value => $username;
     'nova/user_domain_name':    value => $user_domain_name;
