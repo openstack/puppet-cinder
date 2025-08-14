@@ -169,7 +169,7 @@ define cinder::backend::nfs (
     }
   }
 
-  ensure_packages('nfs-client', {
+  stdlib::ensure_packages('nfs-client', {
     name   => $::cinder::params::nfs_client_package_name,
     ensure => $package_ensure,
   })

@@ -99,7 +99,7 @@ class cinder::backup::nfs (
     'DEFAULT/backup_compression_algorithm': value => $backup_compression_algorithm;
   }
 
-  ensure_packages('nfs-client', {
+  stdlib::ensure_packages('nfs-client', {
     name   => $::cinder::params::nfs_client_package_name,
     ensure => $package_ensure,
   })

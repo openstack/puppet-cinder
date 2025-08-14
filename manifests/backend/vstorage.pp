@@ -111,7 +111,7 @@ is now marked unsupported.")
   }
 
   if $manage_package {
-    ensure_packages( 'vstorage-client', {
+    stdlib::ensure_packages( 'vstorage-client', {
       ensure => present,
       tag    => 'cinder-support-package',
     })

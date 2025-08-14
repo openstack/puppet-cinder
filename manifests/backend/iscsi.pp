@@ -104,7 +104,7 @@ define cinder::backend::iscsi (
   # NOTE(mnaser): Cinder requires /usr/sbin/thin_check to create volumes which
   #               does not get installed with Cinder (see LP#1615134).
   if $facts['os']['family'] == 'Debian' {
-    ensure_packages( 'thin-provisioning-tools', {
+    stdlib::ensure_packages( 'thin-provisioning-tools', {
       ensure => present,
       tag    => 'cinder-support-package',
     })
@@ -138,7 +138,7 @@ define cinder::backend::iscsi (
 
   case $target_helper_real {
     'tgtadm': {
-      ensure_packages('tgt', {
+      stdlib::ensure_packages('tgt', {
         'ensure' => present,
         'name'   => $::cinder::params::tgt_package_name,
         'tag'    => 'cinder-support-package',
@@ -167,7 +167,7 @@ define cinder::backend::iscsi (
         'tag'    => 'cinder-support-service',
       })
 
-      ensure_packages('targetcli', {
+      stdlib::ensure_packages('targetcli', {
         'ensure' => present,
         'name'   => $::cinder::params::lio_package_name,
         'tag'    => 'cinder-support-package',

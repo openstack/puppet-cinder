@@ -29,7 +29,7 @@ class cinder::setup_test_volume(
 
   include cinder::deps
 
-  ensure_packages ( 'lvm2', {
+  stdlib::ensure_packages ( 'lvm2', {
     ensure => present,
   })
   Package<| title == 'lvm2' |> { tag +> 'cinder-support-package' }

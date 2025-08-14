@@ -133,7 +133,7 @@ define cinder::backend::nvmeof (
   }
 
   if $::cinder::params::nvmetcli_package_name {
-    ensure_packages ( 'nvmetcli', {
+    stdlib::ensure_packages ( 'nvmetcli', {
       ensure => present,
       name   => $::cinder::params::nvmetcli_package_name,
       tag    => 'cinder-support-package',
@@ -142,7 +142,7 @@ define cinder::backend::nvmeof (
     warning('The nvmetcli package is not available in this operating system.')
   }
 
-  ensure_packages ( 'nvme-cli', {
+  stdlib::ensure_packages ( 'nvme-cli', {
     ensure => present,
     name   => $::cinder::params::nvme_cli_package_name,
     tag    => 'cinder-support-package',
