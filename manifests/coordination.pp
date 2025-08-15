@@ -15,7 +15,7 @@ class cinder::coordination (
   include cinder::deps
 
   oslo::coordination{ 'cinder_config':
-    backend_url => $backend_url
+    backend_url => $backend_url,
   }
 
   # all coordination settings should be applied and all packages should be

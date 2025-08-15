@@ -62,7 +62,7 @@ class cinder::policy (
     policies     => $policies,
     policy_path  => $policy_path,
     file_user    => 'root',
-    file_group   => $::cinder::params::group,
+    file_group   => $cinder::params::group,
     file_format  => 'yaml',
     purge_config => $purge_config,
     tag          => 'cinder',

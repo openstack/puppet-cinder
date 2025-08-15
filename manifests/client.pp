@@ -17,7 +17,7 @@ class cinder::client(
 
   package { 'python-cinderclient':
     ensure => $package_ensure,
-    name   => $::cinder::params::client_package,
+    name   => $cinder::params::client_package,
     tag    => 'openstack',
   }
 

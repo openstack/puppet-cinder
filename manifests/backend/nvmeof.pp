@@ -132,10 +132,10 @@ define cinder::backend::nvmeof (
     "${name}/lvm_type":                       value => $lvm_type;
   }
 
-  if $::cinder::params::nvmetcli_package_name {
+  if $cinder::params::nvmetcli_package_name {
     stdlib::ensure_packages ( 'nvmetcli', {
       ensure => present,
-      name   => $::cinder::params::nvmetcli_package_name,
+      name   => $cinder::params::nvmetcli_package_name,
       tag    => 'cinder-support-package',
     })
   } else {
@@ -144,7 +144,7 @@ define cinder::backend::nvmeof (
 
   stdlib::ensure_packages ( 'nvme-cli', {
     ensure => present,
-    name   => $::cinder::params::nvme_cli_package_name,
+    name   => $cinder::params::nvme_cli_package_name,
     tag    => 'cinder-support-package',
   })
 }

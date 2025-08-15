@@ -136,6 +136,7 @@ define cinder::backend::nfs (
   include cinder::params
 
   file { $nfs_shares_config:
+    ensure  => file,
     content => join($nfs_servers, "\n"),
     require => Anchor['cinder::install::end'],
     notify  => Anchor['cinder::service::begin'],
@@ -170,7 +171,7 @@ define cinder::backend::nfs (
   }
 
   stdlib::ensure_packages('nfs-client', {
-    name   => $::cinder::params::nfs_client_package_name,
+    name   => $cinder::params::nfs_client_package_name,
     ensure => $package_ensure,
   })
   Package<| title == 'nfs-client' |> { tag +> 'cinder-support-package' }

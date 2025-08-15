@@ -49,7 +49,7 @@
 #
 # [*mount_user*]
 #   (optional) Mount user.
-#   Defaults to: $::cinder::params::user
+#   Defaults to: $cinder::params::user
 #
 # [*mount_group*]
 #   (optional) Mount group.
@@ -86,7 +86,7 @@ define cinder::backend::vstorage (
   warning("Support for VZStorageDriver has been deprecated because the driver \
 is now marked unsupported.")
 
-  $mount_user_real = pick($mount_user, $::cinder::params::user)
+  $mount_user_real = pick($mount_user, $cinder::params::user)
 
   cinder_config {
     "${name}/volume_backend_name":             value => $volume_backend_name;
@@ -120,9 +120,10 @@ is now marked unsupported.")
   $mount_opts = ['-u', $mount_user_real, '-g', $mount_group, '-m', $mount_permissions]
 
   file { $shares_config_path:
+    ensure  => 'file',
     content => inline_template("${cluster_name}:${cluster_password} <%= @mount_opts %>"),
     owner   => 'root',
-    group   => $::cinder::params::group,
+    group   => $cinder::params::group,
     mode    => '0640',
     require => Anchor['cinder::install::end'],
     notify  => Anchor['cinder::service::begin'],

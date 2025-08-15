@@ -69,10 +69,10 @@ Use the driver parameter instead")
     'DEFAULT/scheduler_max_attempts':          value => $max_attempts;
   }
 
-  if $::cinder::params::scheduler_package {
+  if $cinder::params::scheduler_package {
     package { 'cinder-scheduler':
       ensure => $package_ensure,
-      name   => $::cinder::params::scheduler_package,
+      name   => $cinder::params::scheduler_package,
       tag    => ['openstack', 'cinder-package'],
     }
   }
@@ -86,7 +86,7 @@ Use the driver parameter instead")
 
     service { 'cinder-scheduler':
       ensure    => $ensure,
-      name      => $::cinder::params::scheduler_service,
+      name      => $cinder::params::scheduler_service,
       enable    => $enabled,
       hasstatus => true,
       tag       => 'cinder-service',

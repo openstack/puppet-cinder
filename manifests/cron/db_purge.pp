@@ -38,7 +38,7 @@
 #
 #  [*user*]
 #    (optional) User with access to cinder files.
-#    Defaults to $::cinder::params::user.
+#    Defaults to $cinder::params::user.
 #
 #  [*age*]
 #    (optional) Number of days prior to today for deletion,
@@ -66,7 +66,7 @@ class cinder::cron::db_purge (
   $monthday                         = '*',
   $month                            = '*',
   $weekday                          = '*',
-  $user                             = $::cinder::params::user,
+  $user                             = $cinder::params::user,
   $age                              = 30,
   $destination                      = '/var/log/cinder/cinder-rowsflush.log',
   Integer[0] $maxdelay              = 0,

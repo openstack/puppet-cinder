@@ -75,10 +75,10 @@ class cinder::volume (
   include cinder::deps
   include cinder::params
 
-  if $::cinder::params::volume_package {
+  if $cinder::params::volume_package {
     package { 'cinder-volume':
       ensure => $package_ensure,
-      name   => $::cinder::params::volume_package,
+      name   => $cinder::params::volume_package,
       tag    => ['openstack', 'cinder-package'],
     }
   }
@@ -92,7 +92,7 @@ class cinder::volume (
 
     service { 'cinder-volume':
       ensure    => $ensure,
-      name      => $::cinder::params::volume_service,
+      name      => $cinder::params::volume_service,
       enable    => $enabled,
       hasstatus => true,
       tag       => 'cinder-service',

@@ -52,7 +52,7 @@
 #
 # [*target_helper*]
 #   (Optional) iSCSI target user-land tool to use.
-#   Defaults to $::cinder::params::target_helper.
+#   Defaults to $cinder::params::target_helper.
 #
 # [*target_protocol*]
 #   (Optional) Protocol to use as iSCSI driver
@@ -97,7 +97,7 @@ define cinder::backend::iscsi (
   include cinder::params
 
   $target_helper_real = $target_helper ? {
-    undef   => $::cinder::params::target_helper,
+    undef   => $cinder::params::target_helper,
     default => $target_helper,
   }
 
@@ -140,7 +140,7 @@ define cinder::backend::iscsi (
     'tgtadm': {
       stdlib::ensure_packages('tgt', {
         'ensure' => present,
-        'name'   => $::cinder::params::tgt_package_name,
+        'name'   => $cinder::params::tgt_package_name,
         'tag'    => 'cinder-support-package',
       })
 
@@ -154,7 +154,7 @@ define cinder::backend::iscsi (
 
       ensure_resource('service', 'tgtd', {
         'ensure' => running,
-        'name'   => $::cinder::params::tgt_service_name,
+        'name'   => $cinder::params::tgt_service_name,
         'enable' => true,
         'tag'    => 'cinder-support-service',
       })
@@ -169,7 +169,7 @@ define cinder::backend::iscsi (
 
       stdlib::ensure_packages('targetcli', {
         'ensure' => present,
-        'name'   => $::cinder::params::lio_package_name,
+        'name'   => $cinder::params::lio_package_name,
         'tag'    => 'cinder-support-package',
       })
     }

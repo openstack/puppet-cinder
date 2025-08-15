@@ -228,7 +228,8 @@ and will be removed in a future release.")
   }
 
   if $nfs_shares {
-    file {$nfs_shares_config:
+    file { $nfs_shares_config:
+      ensure  => file,
       content => join($nfs_shares, "\n"),
       require => Anchor['cinder::install::end'],
       notify  => Anchor['cinder::service::begin'],

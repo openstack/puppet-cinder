@@ -189,7 +189,7 @@
 # [*lock_path*]
 #   (optional) Where to store lock files. This directory must be writeable
 #   by the user executing the agent
-#   Defaults to: $::cinder::params::lock_path
+#   Defaults to: $cinder::params::lock_path
 #
 # [*image_conversion_dir*]
 #   (optional) Location to store temporary image files if the volume
@@ -295,7 +295,7 @@ class cinder (
   $storage_availability_zone            = $facts['os_service_default'],
   $default_availability_zone            = $facts['os_service_default'],
   $allow_availability_zone_fallback     = $facts['os_service_default'],
-  $lock_path                            = $::cinder::params::lock_path,
+  $lock_path                            = $cinder::params::lock_path,
   $image_conversion_dir                 = $facts['os_service_default'],
   $image_compress_on_upload             = $facts['os_service_default'],
   $image_conversion_cpu_limit           = $facts['os_service_default'],
@@ -316,7 +316,7 @@ class cinder (
 
   package { 'cinder':
     ensure => $package_ensure,
-    name   => $::cinder::params::package_name,
+    name   => $cinder::params::package_name,
     tag    => ['openstack', 'cinder-package'],
   }
 
@@ -385,6 +385,6 @@ class cinder (
   }
 
   oslo::concurrency { 'cinder_config':
-    lock_path => $lock_path
+    lock_path => $lock_path,
   }
 }

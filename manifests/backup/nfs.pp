@@ -100,7 +100,7 @@ class cinder::backup::nfs (
   }
 
   stdlib::ensure_packages('nfs-client', {
-    name   => $::cinder::params::nfs_client_package_name,
+    name   => $cinder::params::nfs_client_package_name,
     ensure => $package_ensure,
   })
   Package<| title == 'nfs-client' |> { tag +> 'cinder-support-package' }

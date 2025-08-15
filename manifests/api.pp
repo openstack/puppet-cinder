@@ -63,7 +63,7 @@
 #   service, and you must use another class to configure that
 #   web service. For example, use class { 'cinder::wsgi::apache'...}
 #   to make cinder-api be a web app using apache mod_wsgi.
-#   Defaults to '$::cinder::params::api_service'
+#   Defaults to '$cinder::params::api_service'
 #
 # [*enable_proxy_headers_parsing*]
 #   (optional) This determines if the HTTPProxyToWSGI
@@ -119,7 +119,7 @@ class cinder::api (
   $public_endpoint                = $facts['os_service_default'],
   $osapi_volume_base_url          = $facts['os_service_default'],
   $osapi_max_limit                = $facts['os_service_default'],
-  $service_name                   = $::cinder::params::api_service,
+  $service_name                   = $cinder::params::api_service,
   $enable_proxy_headers_parsing   = $facts['os_service_default'],
   $max_request_body_size          = $facts['os_service_default'],
   Boolean $use_ssl                = false,
@@ -144,10 +144,10 @@ class cinder::api (
     }
   }
 
-  if $::cinder::params::api_package {
+  if $cinder::params::api_package {
     package { 'cinder-api':
       ensure => $package_ensure,
-      name   => $::cinder::params::api_package,
+      name   => $cinder::params::api_package,
       tag    => ['openstack', 'cinder-package'],
     }
   }
@@ -163,10 +163,10 @@ class cinder::api (
       $ensure = 'stopped'
     }
 
-    if $service_name == $::cinder::params::api_service {
+    if $service_name == $cinder::params::api_service {
       service { 'cinder-api':
         ensure    => $ensure,
-        name      => $::cinder::params::api_service,
+        name      => $cinder::params::api_service,
         enable    => $enabled,
         hasstatus => true,
         tag       => 'cinder-service',
@@ -180,7 +180,7 @@ class cinder::api (
     } elsif $service_name == 'httpd' {
       service { 'cinder-api':
         ensure => 'stopped',
-        name   => $::cinder::params::api_service,
+        name   => $cinder::params::api_service,
         enable => false,
         tag    => ['cinder-service'],
       }
@@ -224,7 +224,7 @@ running as a standalone service, or httpd for being run by a httpd server")
     oslo::service::ssl { 'cinder_config':
       cert_file => $cert_file,
       key_file  => $key_file,
-      ca_file   => $ca_file
+      ca_file   => $ca_file,
     }
   } else {
     oslo::service::ssl { 'cinder_config': }

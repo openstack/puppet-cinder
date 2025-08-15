@@ -71,10 +71,10 @@ class cinder::backup (
   include cinder::deps
   include cinder::params
 
-  if $::cinder::params::backup_package {
+  if $cinder::params::backup_package {
     package { 'cinder-backup':
       ensure => $package_ensure,
-      name   => $::cinder::params::backup_package,
+      name   => $cinder::params::backup_package,
       tag    => ['openstack', 'cinder-package'],
     }
   }
@@ -88,7 +88,7 @@ class cinder::backup (
 
     service { 'cinder-backup':
       ensure    => $ensure,
-      name      => $::cinder::params::backup_service,
+      name      => $cinder::params::backup_service,
       enable    => $enabled,
       hasstatus => true,
       tag       => 'cinder-service',

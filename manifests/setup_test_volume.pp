@@ -39,7 +39,7 @@ class cinder::setup_test_volume(
     path      => ['/bin','/usr/bin','/sbin','/usr/sbin'],
     unless    => "stat ${volume_path}/${volume_name}",
     require   => Anchor['cinder::install::end'],
-    subscribe => Package['lvm2']
+    subscribe => Package['lvm2'],
   }
   ~> file { "${volume_path}/${volume_name}":
     mode => '0640',
