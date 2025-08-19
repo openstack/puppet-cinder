@@ -92,7 +92,7 @@
 #   Example :
 #     { 'h3par_iscsi_backend/param1' => { 'value' => value1 } }
 #
-define cinder::backend::hpe3par_iscsi(
+define cinder::backend::hpe3par_iscsi (
   $hpe3par_api_url,
   $hpe3par_username,
   $hpe3par_password,
@@ -115,7 +115,6 @@ define cinder::backend::hpe3par_iscsi(
   Boolean $manage_volume_type     = false,
   Hash $extra_options             = {},
 ) {
-
   include cinder::deps
 
   if ($hpe3par_snapshot_expiration <= $hpe3par_snapshot_retention) {
@@ -147,10 +146,9 @@ define cinder::backend::hpe3par_iscsi(
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 
   create_resources('cinder_config', $extra_options)
-
 }

@@ -199,7 +199,7 @@
 #  (Optional) Hash of additional parameters to pass through to the keystone
 #  authtoken class. Values set here override the individual parameters above.
 #
-class cinder::keystone::authtoken(
+class cinder::keystone::authtoken (
   String[1] $password,
   $username                       = 'cinder',
   $auth_url                       = 'http://localhost:5000',
@@ -239,7 +239,6 @@ class cinder::keystone::authtoken(
   $interface                      = $facts['os_service_default'],
   $params                         = {},
 ) {
-
   include cinder::deps
 
   keystone::resource::authtoken {

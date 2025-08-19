@@ -70,7 +70,6 @@ class cinder::backup::ceph (
   $backup_ceph_stripe_count  = $facts['os_service_default'],
   $backup_ceph_max_snapshots = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   cinder_config {
@@ -83,5 +82,4 @@ class cinder::backup::ceph (
     'DEFAULT/backup_ceph_stripe_count':  value => $backup_ceph_stripe_count;
     'DEFAULT/backup_ceph_max_snapshots': value => $backup_ceph_max_snapshots;
   }
-
 }

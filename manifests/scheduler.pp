@@ -50,7 +50,6 @@ class cinder::scheduler (
   # DEPRECATED PARAMETERS
   $scheduler_driver       = undef
 ) {
-
   include cinder::deps
   include cinder::params
 

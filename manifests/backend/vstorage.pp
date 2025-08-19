@@ -79,7 +79,6 @@ define cinder::backend::vstorage (
   $mount_permissions                       = '0770',
   Boolean $manage_package                  = true,
 ) {
-
   include cinder::deps
   include cinder::params
 
@@ -102,11 +101,11 @@ is now marked unsupported.")
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'vz:volume_format' => 'qcow2'},
+      properties => { 'vz:volume_format' => 'qcow2' },
     }
     cinder_type { "${volume_backend_name}-ploop":
       ensure     => present,
-      properties => {'vz:volume_format' => 'ploop'},
+      properties => { 'vz:volume_format' => 'ploop' },
     }
   }
 
@@ -128,5 +127,4 @@ is now marked unsupported.")
     require => Anchor['cinder::install::end'],
     notify  => Anchor['cinder::service::begin'],
   }
-
 }

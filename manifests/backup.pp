@@ -67,7 +67,6 @@ class cinder::backup (
   $backup_workers         = $facts['os_service_default'],
   $backup_max_operations  = $facts['os_service_default'],
 ) {
-
   include cinder::deps
   include cinder::params
 
@@ -102,5 +101,4 @@ class cinder::backup (
     'DEFAULT/backup_workers':        value => $backup_workers;
     'DEFAULT/backup_max_operations': value => $backup_max_operations;
   }
-
 }

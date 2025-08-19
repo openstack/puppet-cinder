@@ -131,7 +131,6 @@ define cinder::backend::nfs (
   Boolean $manage_volume_type             = false,
   Hash $extra_options                     = {},
 ) {
-
   include cinder::deps
   include cinder::params
 
@@ -166,7 +165,7 @@ define cinder::backend::nfs (
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 
@@ -177,5 +176,4 @@ define cinder::backend::nfs (
   Package<| title == 'nfs-client' |> { tag +> 'cinder-support-package' }
 
   create_resources('cinder_config', $extra_options)
-
 }

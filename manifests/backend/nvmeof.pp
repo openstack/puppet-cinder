@@ -105,7 +105,6 @@ define cinder::backend::nvmeof (
   $target_secondary_ip_addresses  = $facts['os_service_default'],
   $lvm_type                       = $facts['os_service_default'],
 ) {
-
   include cinder::deps
   include cinder::params
 

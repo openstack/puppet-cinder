@@ -11,7 +11,6 @@
 class cinder::key_manager (
   $backend = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   oslo::key_manager { 'cinder_config':

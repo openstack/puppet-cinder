@@ -41,7 +41,6 @@ class cinder::db::mysql (
   $charset       = 'utf8',
   $collate       = 'utf8_general_ci',
 ) {
-
   include cinder::deps
 
   openstacklib::db::mysql { 'cinder':

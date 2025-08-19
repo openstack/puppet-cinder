@@ -97,7 +97,6 @@ class cinder::nova (
   $project_domain_name = 'Default',
   $system_scope        = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   if is_service_default($system_scope) {

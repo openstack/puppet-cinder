@@ -162,7 +162,6 @@ class cinder::wsgi::apache (
   $request_headers             = undef,
   $vhost_custom_fragment       = undef,
 ) {
-
   include cinder::deps
   include cinder::params
 

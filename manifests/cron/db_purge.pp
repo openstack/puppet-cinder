@@ -72,7 +72,6 @@ class cinder::cron::db_purge (
   Integer[0] $maxdelay              = 0,
   Enum['present', 'absent'] $ensure = 'present',
 ) inherits cinder::params {
-
   include cinder::deps
 
   if $maxdelay == 0 {

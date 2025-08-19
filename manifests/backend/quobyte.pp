@@ -77,7 +77,6 @@ define cinder::backend::quobyte (
   $image_volume_cache_max_count   = $facts['os_service_default'],
   Boolean $manage_volume_type     = false,
 ) {
-
   include cinder::deps
 
   warning("Support for Quobyte volume driver has been deprecated because \
@@ -100,8 +99,7 @@ the driver is now marked unsupported.")
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
-
 }

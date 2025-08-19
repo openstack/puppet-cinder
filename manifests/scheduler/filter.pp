@@ -44,7 +44,6 @@ class cinder::scheduler::filter (
   # DEPRECATED PARAMETERS
   $scheduler_default_filters            = undef,
 ) {
-
   include cinder::deps
 
   if $scheduler_default_filters != undef {

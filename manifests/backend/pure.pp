@@ -108,7 +108,7 @@
 #   Example :
 #     { 'pure_backend/param1' => { 'value' => value1 } }
 #
-define cinder::backend::pure(
+define cinder::backend::pure (
   $san_ip,
   $pure_api_token,
   $volume_backend_name                               = $name,
@@ -131,7 +131,6 @@ define cinder::backend::pure(
   Boolean $manage_volume_type                        = false,
   Hash $extra_options                                = {},
 ) {
-
   include cinder::deps
 
   $volume_driver = $pure_storage_protocol ? {
@@ -165,7 +164,7 @@ define cinder::backend::pure(
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 

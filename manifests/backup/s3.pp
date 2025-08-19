@@ -130,7 +130,6 @@ class cinder::backup::s3 (
   $backup_s3_sse_customer_key       = $facts['os_service_default'],
   $backup_s3_sse_customer_algorithm = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   cinder_config {
@@ -155,5 +154,4 @@ class cinder::backup::s3 (
     'DEFAULT/backup_s3_sse_customer_key':       value => $backup_s3_sse_customer_key, secret => true;
     'DEFAULT/backup_s3_sse_customer_algorithm': value => $backup_s3_sse_customer_algorithm;
   }
-
 }

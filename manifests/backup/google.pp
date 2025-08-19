@@ -102,7 +102,6 @@ class cinder::backup::google (
   $backup_gcs_user_agent            = $facts['os_service_default'],
   $backup_gcs_enable_progress_timer = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   cinder_config {
@@ -121,5 +120,4 @@ class cinder::backup::google (
     'DEFAULT/backup_gcs_user_agent':           value => $backup_gcs_user_agent;
     'DEFAULT/backup_gcs_enable_project_timer': value => $backup_gcs_enable_progress_timer;
   }
-
 }

@@ -24,14 +24,13 @@
 #    (Optional) Privileges given to the database user.
 #    Default to 'ALL'
 #
-class cinder::db::postgresql(
+class cinder::db::postgresql (
   $password,
   $dbname     = 'cinder',
   $user       = 'cinder',
   $encoding   = undef,
   $privileges = 'ALL',
 ) {
-
   include cinder::deps
 
   openstacklib::db::postgresql { 'cinder':

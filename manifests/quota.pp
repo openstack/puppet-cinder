@@ -42,7 +42,6 @@ class cinder::quota (
   $quota_driver           = $facts['os_service_default'],
   $per_volume_size_limit  = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   cinder_config {

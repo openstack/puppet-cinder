@@ -117,7 +117,7 @@
 #    powerflex_storage_pools => 'domain1:pool1',
 #  }
 #
-define cinder::backend::dellemc_powerflex(
+define cinder::backend::dellemc_powerflex (
   $san_login,
   $san_password,
   $san_ip,
@@ -142,7 +142,6 @@ define cinder::backend::dellemc_powerflex(
   Boolean $manage_volume_type               = false,
   Hash $extra_options                       = {},
 ) {
-
   include cinder::deps
 
   cinder_config {
@@ -169,13 +168,13 @@ define cinder::backend::dellemc_powerflex(
     "${name}/driver_ssl_cert_verify":                   value => $driver_ssl_cert_verify;
     "${name}/driver_ssl_cert_path":                     value => $driver_ssl_cert_path;
   }
+
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 
   create_resources('cinder_config', $extra_options)
-
 }

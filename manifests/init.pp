@@ -310,7 +310,6 @@ class cinder (
   # DEPRECATED PARAMETERS
   $rabbit_heartbeat_in_pthread          = undef,
 ) inherits cinder::params {
-
   include cinder::deps
   include cinder::db
 

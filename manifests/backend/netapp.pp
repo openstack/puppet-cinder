@@ -219,7 +219,6 @@ define cinder::backend::netapp (
   # DEPRECATED PARAMETERS
   $netapp_copyoffload_tool_path           = undef,
 ) {
-
   include cinder::deps
 
   if $netapp_copyoffload_tool_path != undef {
@@ -269,10 +268,9 @@ and will be removed in a future release.")
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 
   create_resources('cinder_config', $extra_options)
-
 }

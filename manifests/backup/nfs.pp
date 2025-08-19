@@ -83,7 +83,6 @@ class cinder::backup::nfs (
   $backup_compression_algorithm = $facts['os_service_default'],
   $package_ensure               = 'present',
 ) {
-
   include cinder::deps
   include cinder::params
 
