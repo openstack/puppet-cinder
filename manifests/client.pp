@@ -8,10 +8,9 @@
 #   (Optional) Ensure state for package.
 #   Defaults to 'present'.
 #
-class cinder::client(
+class cinder::client (
   $package_ensure = 'present'
 ) {
-
   include cinder::deps
   include cinder::params
 

@@ -163,7 +163,6 @@ define cinder::backend::emc_vnx (
   $naviseccli_path                  = $facts['os_service_default'],
   Boolean $manage_volume_type       = false,
 ) {
-
   include cinder::deps
 
   warning('Support for Dell VNX storage driver options has been deprecated.')
@@ -200,10 +199,9 @@ define cinder::backend::emc_vnx (
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 
   create_resources('cinder_config', $extra_options)
-
 }

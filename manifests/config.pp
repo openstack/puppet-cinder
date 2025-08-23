@@ -36,7 +36,6 @@ class cinder::config (
   Hash $api_paste_ini_config   = {},
   Hash $cinder_rootwrap_config = {},
 ) {
-
   include cinder::deps
 
   create_resources('cinder_config', $cinder_config)

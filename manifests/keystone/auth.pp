@@ -131,7 +131,6 @@ class cinder::keystone::auth (
   String[1] $service_description_v3          = 'Cinder Service v3',
   String[1] $region                          = 'RegionOne',
 ) {
-
   include cinder::deps
 
   Keystone::Resource::Service_identity['cinder'] -> Anchor['cinder::service::end']
@@ -171,5 +170,4 @@ class cinder::keystone::auth (
     admin_url           => $admin_url_v3,
     internal_url        => $internal_url_v3,
   }
-
 }

@@ -85,7 +85,6 @@ define cinder::backend::dellemc_unity (
   Boolean $manage_volume_type     = false,
   Hash $extra_options             = {},
 ) {
-
   include cinder::deps
 
   $driver = 'dell_emc.unity.Driver'
@@ -109,10 +108,9 @@ define cinder::backend::dellemc_unity (
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 
   create_resources('cinder_config', $extra_options)
-
 }

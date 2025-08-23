@@ -120,7 +120,7 @@
 #   Example :
 #     { 'solidfire_backend/param1' => { 'value' => value1 } }
 #
-define cinder::backend::solidfire(
+define cinder::backend::solidfire (
   $san_ip,
   $san_login,
   $san_password,
@@ -148,7 +148,6 @@ define cinder::backend::solidfire(
   Boolean $manage_volume_type     = false,
   Hash $extra_options             = {},
 ) {
-
   include cinder::deps
 
   cinder_config {
@@ -181,10 +180,9 @@ define cinder::backend::solidfire(
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 
   create_resources('cinder_config', $extra_options)
-
 }

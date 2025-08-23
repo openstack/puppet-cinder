@@ -27,7 +27,6 @@ class cinder::backend::defaults (
   $image_volume_cache_max_size_gb = $facts['os_service_default'],
   $image_volume_cache_max_count   = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   cinder_config {

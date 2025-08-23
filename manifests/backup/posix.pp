@@ -63,7 +63,6 @@ class cinder::backup::posix (
   $backup_posix_path            = $facts['os_service_default'],
   $backup_container             = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   cinder_config {
@@ -74,5 +73,4 @@ class cinder::backup::posix (
     'DEFAULT/backup_posix_path':            value => $backup_posix_path;
     'DEFAULT/backup_container':             value => $backup_container;
   }
-
 }

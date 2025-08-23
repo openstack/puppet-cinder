@@ -71,7 +71,6 @@ class cinder::volume (
   $init_host_max_objects_retrieval      = $facts['os_service_default'],
   $backend_stats_polling_interval       = $facts['os_service_default'],
 ) {
-
   include cinder::deps
   include cinder::params
 

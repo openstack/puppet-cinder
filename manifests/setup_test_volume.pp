@@ -20,13 +20,12 @@
 #   (Optional) Volume image location.
 #   Defaults to '/var/lib/cinder'.
 #
-class cinder::setup_test_volume(
+class cinder::setup_test_volume (
   String[1] $volume_name            = 'cinder-volumes',
   Stdlib::Absolutepath $volume_path = '/var/lib/cinder',
   $size                             = '4G',
   $loopback_device                  = '/dev/loop2'
 ) {
-
   include cinder::deps
 
   stdlib::ensure_packages ( 'lvm2', {

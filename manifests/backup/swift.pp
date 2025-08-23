@@ -102,7 +102,6 @@ class cinder::backup::swift (
   $backup_compression_algorithm       = $facts['os_service_default'],
   $backup_swift_service_auth          = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   cinder_config {
@@ -121,5 +120,4 @@ class cinder::backup::swift (
     'DEFAULT/backup_compression_algorithm':       value => $backup_compression_algorithm;
     'DEFAULT/backup_swift_service_auth':          value => $backup_swift_service_auth;
   }
-
 }

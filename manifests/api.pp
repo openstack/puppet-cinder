@@ -130,7 +130,6 @@ class cinder::api (
   $osapi_volume_listen_port       = $facts['os_service_default'],
   $use_forwarded_for              = $facts['os_service_default'],
 ) inherits cinder::params {
-
   include cinder::deps
   include cinder::params
   include cinder::policy
@@ -176,7 +175,6 @@ class cinder::api (
       Cinder_api_paste_ini<||> ~> Service['cinder-api']
       # On any uwsgi config change, we must restart Cinder API.
       Cinder_api_uwsgi_config<||> ~> Service['cinder-api']
-
     } elsif $service_name == 'httpd' {
       service { 'cinder-api':
         ensure => 'stopped',
@@ -191,7 +189,6 @@ class cinder::api (
 
       # On any api-paste.ini config change, we must restart Cinder API.
       Cinder_api_paste_ini<||> ~> Service[$service_name]
-
     } else {
       fail("Invalid service_name. Either cinder-api/openstack-cinder-api for \
 running as a standalone service, or httpd for being run by a httpd server")
@@ -210,7 +207,7 @@ running as a standalone service, or httpd for being run by a httpd server")
     'DEFAULT/use_forwarded_for':        value => $use_forwarded_for;
   }
 
-  oslo::middleware {'cinder_config':
+  oslo::middleware { 'cinder_config':
     enable_proxy_headers_parsing => $enable_proxy_headers_parsing,
     max_request_body_size        => $max_request_body_size,
   }

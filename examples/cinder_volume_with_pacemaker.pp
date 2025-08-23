@@ -36,4 +36,3 @@ class { 'cinder::scheduler':
   enabled        => false,
   manage_service => false,
 }
-

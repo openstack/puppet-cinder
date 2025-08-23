@@ -44,7 +44,6 @@ class cinder::cors (
   $allow_methods     = $facts['os_service_default'],
   $allow_headers     = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   oslo::cors { 'cinder_config':

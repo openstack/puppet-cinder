@@ -57,7 +57,6 @@ define cinder::quota_set (
   $class_name      = 'default',
   $volume_type     = $name,
 ) {
-
   include cinder::deps
 
   if $os_region_name {
@@ -68,8 +67,7 @@ define cinder::quota_set (
       "OS_AUTH_URL=${os_auth_url}",
       "OS_REGION_NAME=${os_region_name}",
     ]
-  }
-  else {
+  } else {
     $cinder_env = [
       "OS_TENANT_NAME=${os_tenant_name}",
       "OS_USERNAME=${os_username}",
@@ -78,7 +76,7 @@ define cinder::quota_set (
     ]
   }
 
-  exec {"openstack quota set --class ${class_name}":
+  exec { "openstack quota set --class ${class_name}":
     # lint:ignore:140chars
     command     => "openstack quota set --class ${class_name} --volumes ${quota_volumes} --snapshots ${quota_snapshots} --gigabytes ${quota_gigabytes} --volume-type '${volume_type}'",
     # lint:endignore

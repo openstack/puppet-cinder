@@ -67,7 +67,7 @@
 #  (Optional) The region in which the identity server can be found.
 #  Defaults to $facts['os_service_default'].
 #
-class cinder::keystone::service_user(
+class cinder::keystone::service_user (
   $username                = 'cinder',
   $password                = $facts['os_service_default'],
   $auth_url                = 'http://localhost:5000',
@@ -84,7 +84,6 @@ class cinder::keystone::service_user(
   $keyfile                 = $facts['os_service_default'],
   $region_name             = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   keystone::resource::service_user { 'cinder_config':

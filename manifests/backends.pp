@@ -19,7 +19,6 @@ class cinder::backends (
   Array[String[1], 1] $enabled_backends,
   $backend_host     = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   # Maybe this could be extended to dynamically find the enabled names

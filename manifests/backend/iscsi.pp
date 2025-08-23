@@ -92,7 +92,6 @@ define cinder::backend::iscsi (
   Boolean $manage_volume_type     = false,
   Hash $extra_options             = {},
 ) {
-
   include cinder::deps
   include cinder::params
 
@@ -130,7 +129,7 @@ define cinder::backend::iscsi (
   if $manage_volume_type {
     cinder_type { $volume_backend_name:
       ensure     => present,
-      properties => {'volume_backend_name' => $volume_backend_name},
+      properties => { 'volume_backend_name' => $volume_backend_name },
     }
   }
 
@@ -178,5 +177,4 @@ define cinder::backend::iscsi (
       fail("Unsupported target helper: ${target_helper_real}.")
     }
   }
-
 }

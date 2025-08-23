@@ -78,7 +78,6 @@ class cinder::glance (
   $glance_catalog_info        = $facts['os_service_default'],
   $glance_core_properties     = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
   cinder_config {
@@ -92,5 +91,4 @@ class cinder::glance (
     'DEFAULT/glance_catalog_info':        value => $glance_catalog_info;
     'DEFAULT/glance_core_properties':     value => join(any2array($glance_core_properties), ',');
   }
-
 }

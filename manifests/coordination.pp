@@ -11,10 +11,9 @@
 class cinder::coordination (
   $backend_url = $facts['os_service_default'],
 ) {
-
   include cinder::deps
 
-  oslo::coordination{ 'cinder_config':
+  oslo::coordination { 'cinder_config':
     backend_url => $backend_url,
   }
 
