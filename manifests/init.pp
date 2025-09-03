@@ -244,18 +244,6 @@
 #   internal tenant.
 #   Defaults to $facts['os_service_default'].
 #
-# DEPRECATED PARAMETERS
-#
-# [*rabbit_heartbeat_in_pthread*]
-#   (Optional) EXPERIMENTAL: Run the health check heartbeat thread
-#   through a native python thread. By default if this
-#   option isn't provided the  health check heartbeat will
-#   inherit the execution model from the parent process. By
-#   example if the parent process have monkey patched the
-#   stdlib by using eventlet/greenlet then the heartbeat
-#   will be run through a green thread.
-#   Defaults to undef.
-#
 class cinder (
   $default_transport_url                = $facts['os_service_default'],
   $rpc_response_timeout                 = $facts['os_service_default'],
@@ -307,8 +295,6 @@ class cinder (
   $enable_force_upload                  = $facts['os_service_default'],
   $cinder_internal_tenant_project_id    = $facts['os_service_default'],
   $cinder_internal_tenant_user_id       = $facts['os_service_default'],
-  # DEPRECATED PARAMETERS
-  $rabbit_heartbeat_in_pthread          = undef,
 ) inherits cinder::params {
   include cinder::deps
   include cinder::db
@@ -327,7 +313,6 @@ class cinder (
     rabbit_ha_queues                => $rabbit_ha_queues,
     heartbeat_timeout_threshold     => $rabbit_heartbeat_timeout_threshold,
     heartbeat_rate                  => $rabbit_heartbeat_rate,
-    heartbeat_in_pthread            => $rabbit_heartbeat_in_pthread,
     rabbit_qos_prefetch_count       => $rabbit_qos_prefetch_count,
     rabbit_use_ssl                  => $rabbit_use_ssl,
     kombu_reconnect_delay           => $kombu_reconnect_delay,

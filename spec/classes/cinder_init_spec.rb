@@ -28,7 +28,6 @@ describe 'cinder' do
           :rabbit_use_ssl                  => '<SERVICE DEFAULT>',
           :heartbeat_timeout_threshold     => '<SERVICE DEFAULT>',
           :heartbeat_rate                  => '<SERVICE DEFAULT>',
-          :heartbeat_in_pthread            => nil,
           :rabbit_qos_prefetch_count       => '<SERVICE DEFAULT>',
           :kombu_reconnect_delay           => '<SERVICE DEFAULT>',
           :kombu_failover_strategy         => '<SERVICE DEFAULT>',
@@ -102,7 +101,6 @@ describe 'cinder' do
         req_params.merge(
           :rabbit_heartbeat_timeout_threshold => '60',
           :rabbit_heartbeat_rate              => '10',
-          :rabbit_heartbeat_in_pthread        => true,
           :rabbit_qos_prefetch_count          => 0,
           :rabbit_quorum_queue                => true,
           :rabbit_transient_quorum_queue      => true,
@@ -119,7 +117,6 @@ describe 'cinder' do
       it { is_expected.to contain_oslo__messaging__rabbit('cinder_config').with(
         :heartbeat_timeout_threshold     => '60',
         :heartbeat_rate                  => '10',
-        :heartbeat_in_pthread            => true,
         :rabbit_qos_prefetch_count       => 0,
         :rabbit_quorum_queue             => true,
         :rabbit_transient_quorum_queue   => true,

@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``cinder::rabbit_heartbeat_in_pthread`` parameter has been removed.
