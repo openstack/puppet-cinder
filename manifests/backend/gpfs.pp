@@ -8,6 +8,10 @@
 #   (required) Specifies the path of the GPFS directory where Block Storage
 #   volume and snapshot files are stored.
 #
+# [*volume_driver*]
+#   (Optional) Driver to use for volume creation
+#   Defaults to 'cinder.volume.drivers.ibm.gpfs.GPFSDriver'.
+#
 # [*volume_backend_name*]
 #   (optional) The name of the cinder::backend::gpfs resource
 #   Defaults to $name.
@@ -68,6 +72,34 @@
 #   (optional) SSH port to use to connect to NAS system.
 #   Defaults to $facts['os_service_default']
 #
+# [*gpfs_hosts*]
+#   (optional) List of IP addresses or hostnames of GPFS nodes.
+#   Defaults to $facts['os_service_default']
+#
+# [*gpfs_user_login*]
+#   (optional) Username for GPFS nodes.
+#   Defaults to $facts['os_service_default']
+#
+# [*gpfs_user_password*]
+#   (optional) Password for GPFS node user.
+#   Defaults to $facts['os_service_default']
+#
+# [*gpfs_private_key*]
+#   (optional) Filename of private key to use for SSH authentication.
+#   Defaults to $facts['os_service_default']
+#
+# [*gpfs_ssh_port*]
+#   (optional) SSH port to use.
+#   Defaults to $facts['os_service_default']
+#
+# [*gpfs_hosts_key_file*]
+#   (optional) File containing SSH host keys for the GPFS nodes.
+#   Defaults to $facts['os_service_default']
+#
+# [*gpfs_strict_host_key_policy*]
+#   (optional) Enable strict GPFS host key checking
+#   Defaults to $facts['os_service_default']
+#
 # [*backend_availability_zone*]
 #   (Optional) Availability zone for this volume backend.
 #   If not set, the storage_availability_zone option value
@@ -108,6 +140,7 @@
 #
 define cinder::backend::gpfs (
   $gpfs_mount_point_base,
+  $volume_driver                  = 'cinder.volume.drivers.ibm.gpfs.GPFSDriver',
   $volume_backend_name            = $name,
   $gpfs_images_dir                = $facts['os_service_default'],
   $gpfs_images_share_mode         = $facts['os_service_default'],
@@ -119,6 +152,13 @@ define cinder::backend::gpfs (
   $nas_password                   = $facts['os_service_default'],
   $nas_private_key                = $facts['os_service_default'],
   $nas_ssh_port                   = $facts['os_service_default'],
+  $gpfs_hosts                     = $facts['os_service_default'],
+  $gpfs_user_login                = $facts['os_service_default'],
+  $gpfs_user_password             = $facts['os_service_default'],
+  $gpfs_private_key               = $facts['os_service_default'],
+  $gpfs_ssh_port                  = $facts['os_service_default'],
+  $gpfs_hosts_key_file            = $facts['os_service_default'],
+  $gpfs_strict_host_key_policy    = $facts['os_service_default'],
   $backend_availability_zone      = $facts['os_service_default'],
   $image_volume_cache_enabled     = $facts['os_service_default'],
   $image_volume_cache_max_size_gb = $facts['os_service_default'],
@@ -136,7 +176,7 @@ define cinder::backend::gpfs (
   }
 
   cinder_config {
-    "${name}/volume_driver":                  value => 'cinder.volume.drivers.ibm.gpfs.GPFSDriver';
+    "${name}/volume_driver":                  value => $volume_driver;
     "${name}/volume_backend_name":            value => $volume_backend_name;
     "${name}/gpfs_max_clone_depth":           value => $gpfs_max_clone_depth;
     "${name}/gpfs_mount_point_base":          value => $gpfs_mount_point_base;
@@ -149,6 +189,13 @@ define cinder::backend::gpfs (
     "${name}/nas_password":                   value => $nas_password, secret => true;
     "${name}/nas_private_key":                value => $nas_private_key;
     "${name}/nas_ssh_port":                   value => $nas_ssh_port;
+    "${name}/gpfs_hosts":                     value => join(any2array($gpfs_hosts), ',');
+    "${name}/gpfs_user_login":                value => $gpfs_user_login;
+    "${name}/gpfs_user_password":             value => $gpfs_user_password, secret => true;
+    "${name}/gpfs_private_key":               value => $gpfs_private_key;
+    "${name}/gpfs_ssh_port":                  value => $gpfs_ssh_port;
+    "${name}/gpfs_hosts_key_file":            value => $gpfs_hosts_key_file;
+    "${name}/gpfs_strict_host_key_policy":    value => $gpfs_strict_host_key_policy;
     "${name}/backend_availability_zone":      value => $backend_availability_zone;
     "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
     "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;

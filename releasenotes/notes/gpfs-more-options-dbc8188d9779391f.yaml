@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The ``cinder::backend::gpfs`` defined resource type now supports
+    the ``volume_driver`` parameter to use different volume drivers.
+
+  - |
+    The ``cinder::backend::gpfs`` defined resource type now supports
+    the options for GPFSRemoteDriver .
