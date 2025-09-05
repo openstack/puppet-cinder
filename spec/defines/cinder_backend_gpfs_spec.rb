@@ -11,6 +11,7 @@ describe 'cinder::backend::gpfs' do
 
   let :default_params do
     {
+      :volume_driver                  => 'cinder.volume.drivers.ibm.gpfs.GPFSDriver',
       :backend_availability_zone      => '<SERVICE DEFAULT>',
       :image_volume_cache_enabled     => '<SERVICE DEFAULT>',
       :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
@@ -25,11 +26,19 @@ describe 'cinder::backend::gpfs' do
       :nas_password                   => '<SERVICE DEFAULT>',
       :nas_private_key                => '<SERVICE DEFAULT>',
       :nas_ssh_port                   => '<SERVICE DEFAULT>',
+      :gpfs_hosts                     => '<SERVICE DEFAULT>',
+      :gpfs_user_login                => '<SERVICE DEFAULT>',
+      :gpfs_user_password             => '<SERVICE DEFAULT>',
+      :gpfs_private_key               => '<SERVICE DEFAULT>',
+      :gpfs_ssh_port                  => '<SERVICE DEFAULT>',
+      :gpfs_hosts_key_file            => '<SERVICE DEFAULT>',
+      :gpfs_strict_host_key_policy    => '<SERVICE DEFAULT>',
     }
   end
 
   let :custom_params do
     {
+      :volume_driver                  => 'cinder.volume.drivers.ibm.gpfs.GPFSNFSDriver',
       :backend_availability_zone      => 'my_zone',
       :image_volume_cache_enabled     => true,
       :image_volume_cache_max_size_gb => 100,
@@ -42,6 +51,13 @@ describe 'cinder::backend::gpfs' do
       :nas_password                   => 'nas_password',
       :nas_private_key                => '/path/to/private_key',
       :nas_ssh_port                   => '22',
+      :gpfs_hosts                     => 'localhost',
+      :gpfs_user_login                => 'root',
+      :gpfs_user_password             => 'rootpass',
+      :gpfs_private_key               => '/path/to/private_key',
+      :gpfs_ssh_port                  => 22,
+      :gpfs_hosts_key_file            => '/path/to/host_key',
+      :gpfs_strict_host_key_policy    => false,
     }
   end
 
@@ -50,15 +66,13 @@ describe 'cinder::backend::gpfs' do
       default_params.merge(params)
     end
 
-    it { is_expected.to contain_cinder_config('gpfs/volume_driver').with_value(
-      'cinder.volume.drivers.ibm.gpfs.GPFSDriver'
-    )}
     it { is_expected.to contain_cinder_config('gpfs/volume_backend_name').with_value('gpfs') }
 
     it {
       params_hash.each_pair do |config,value|
         is_expected.to contain_cinder_config("gpfs/#{config}").with_value( value )
       end
+      is_expected.to contain_cinder_config('gpfs/gpfs_user_password').with_secret(true)
     }
   end
 
