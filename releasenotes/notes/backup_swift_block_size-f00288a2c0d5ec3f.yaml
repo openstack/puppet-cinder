@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``cinder::backup::swift::backup_swift_block_size`` parameter has
+    been added.

@@ -29,6 +29,7 @@ describe 'cinder::backup::swift' do
       :backup_swift_container             => 'volumebackups',
       :backup_swift_create_storage_policy => '<SERVICE DEFAULT>',
       :backup_swift_object_size           => '<SERVICE DEFAULT>',
+      :backup_swift_block_size            => '<SERVICE DEFAULT>',
       :backup_swift_retry_attempts        => '<SERVICE DEFAULT>',
       :backup_swift_retry_backoff         => '<SERVICE DEFAULT>',
       :backup_swift_user_domain           => '<SERVICE DEFAULT>',
@@ -56,6 +57,7 @@ describe 'cinder::backup::swift' do
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_container').with_value(p[:backup_swift_container])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_create_storage_policy').with_value(p[:backup_swift_create_storage_policy])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_object_size').with_value(p[:backup_swift_object_size])
+      is_expected.to contain_cinder_config('DEFAULT/backup_swift_block_size').with_value(p[:backup_swift_block_size])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_attempts').with_value(p[:backup_swift_retry_attempts])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_backoff').with_value(p[:backup_swift_retry_backoff])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_user_domain').with_value(p[:backup_swift_user_domain])
@@ -67,16 +69,19 @@ describe 'cinder::backup::swift' do
 
     context 'when overriding default parameters' do
       before :each do
-        params.merge!(:backup_swift_url => 'https://controller2:8080/v1/AUTH_')
-        params.merge!(:backup_swift_auth_url => 'https://controller2:5000')
-        params.merge!(:swift_catalog_info => 'object-store:swift:internalURL')
-        params.merge!(:backup_swift_container => 'toto')
-        params.merge!(:backup_swift_create_storage_policy => 'foo')
-        params.merge!(:backup_swift_object_size => '123')
-        params.merge!(:backup_swift_retry_attempts => '99')
-        params.merge!(:backup_swift_retry_backoff => '56')
-        params.merge!(:backup_compression_algorithm => 'None')
-        params.merge!(:backup_swift_service_auth => true)
+        params.merge!({
+          :backup_swift_url                   => 'https://controller2:8080/v1/AUTH_',
+          :backup_swift_auth_url              => 'https://controller2:5000',
+          :swift_catalog_info                 => 'object-store:swift:internalURL',
+          :backup_swift_container             => 'toto',
+          :backup_swift_create_storage_policy => 'foo',
+          :backup_swift_object_size           => 52428800,
+          :backup_swift_block_size            => 32768,
+          :backup_swift_retry_attempts        => 3,
+          :backup_swift_retry_backoff         => 2,
+          :backup_compression_algorithm       => 'none',
+          :backup_swift_service_auth          => true,
+        })
       end
       it 'should replace default parameters with new values' do
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_url').with_value(p[:backup_swift_url])
@@ -85,6 +90,7 @@ describe 'cinder::backup::swift' do
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_container').with_value(p[:backup_swift_container])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_create_storage_policy').with_value(p[:backup_swift_create_storage_policy])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_object_size').with_value(p[:backup_swift_object_size])
+        is_expected.to contain_cinder_config('DEFAULT/backup_swift_block_size').with_value(p[:backup_swift_block_size])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_attempts').with_value(p[:backup_swift_retry_attempts])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_backoff').with_value(p[:backup_swift_retry_backoff])
         is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
