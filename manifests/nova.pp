@@ -55,7 +55,7 @@
 #
 # [*auth_url*]
 #   (Optional) Identity service url.
-#   Defaults to $facts['os_service_default']
+#   Defaults to 'http://127.0.0.1:5000'
 #
 # [*username*]
 #   (Optional) Nova admin username.
@@ -90,7 +90,7 @@ class cinder::nova (
   $collect_timing      = $facts['os_service_default'],
   $split_loggers       = $facts['os_service_default'],
   $auth_type           = 'password',
-  $auth_url            = $facts['os_service_default'],
+  $auth_url            = 'http://127.0.0.1:5000',
   $username            = 'nova',
   $user_domain_name    = 'Default',
   $project_name        = 'services',

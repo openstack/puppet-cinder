@@ -19,7 +19,7 @@ describe 'cinder::nova' do
         is_expected.to contain_cinder_config('nova/collect_timing').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/split_loggers').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nova/auth_type').with_value('password')
-        is_expected.to contain_cinder_config('nova/auth_url').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nova/auth_url').with_value('http://127.0.0.1:5000')
         is_expected.to contain_cinder_config('nova/username').with_value('nova')
         is_expected.to contain_cinder_config('nova/user_domain_name').with_value('Default')
         is_expected.to contain_cinder_config('nova/password').with_value('novapass').with_secret(true)
