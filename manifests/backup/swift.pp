@@ -33,6 +33,11 @@
 #   (optional) The size in bytes of Swift backup objects.
 #   Defaults to $facts['os_service_default']
 #
+# [*backup_swift_block_size*]
+#   (optional) The size in bytes that changes are tracked for incremental
+#   backups.
+#   Defaults to $facts['os_service_default']
+#
 # [*backup_swift_retry_attempts*]
 #   (optional) The number of retries to make for Swift operations.
 #   Defaults to $facts['os_service_default']
@@ -94,6 +99,7 @@ class cinder::backup::swift (
   $backup_swift_container             = 'volumebackups',
   $backup_swift_create_storage_policy = $facts['os_service_default'],
   $backup_swift_object_size           = $facts['os_service_default'],
+  $backup_swift_block_size            = $facts['os_service_default'],
   $backup_swift_retry_attempts        = $facts['os_service_default'],
   $backup_swift_retry_backoff         = $facts['os_service_default'],
   $backup_swift_user_domain           = $facts['os_service_default'],
@@ -112,6 +118,7 @@ class cinder::backup::swift (
     'DEFAULT/backup_swift_container':             value => $backup_swift_container;
     'DEFAULT/backup_swift_create_storage_policy': value => $backup_swift_create_storage_policy;
     'DEFAULT/backup_swift_object_size':           value => $backup_swift_object_size;
+    'DEFAULT/backup_swift_block_size':            value => $backup_swift_block_size;
     'DEFAULT/backup_swift_retry_attempts':        value => $backup_swift_retry_attempts;
     'DEFAULT/backup_swift_retry_backoff':         value => $backup_swift_retry_backoff;
     'DEFAULT/backup_swift_user_domain':           value => $backup_swift_user_domain;
