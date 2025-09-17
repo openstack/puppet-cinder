@@ -13,6 +13,11 @@ describe 'cinder::key_manager::barbican' do
           :barbican_endpoint_type  => '<SERVICE DEFAULT>',
           :barbican_region_name    => '<SERVICE DEFAULT>',
           :send_service_user_token => '<SERVICE DEFAULT>',
+          :insecure                => '<SERVICE DEFAULT>',
+          :cafile                  => '<SERVICE DEFAULT>',
+          :certfile                => '<SERVICE DEFAULT>',
+          :keyfile                 => '<SERVICE DEFAULT>',
+          :timeout                 => '<SERVICE DEFAULT>',
         )
       }
     end
@@ -28,6 +33,11 @@ describe 'cinder::key_manager::barbican' do
           :barbican_endpoint_type  => 'public',
           :barbican_region_name    => 'regionOne',
           :send_service_user_token => true,
+          :insecure                => false,
+          :cafile                  => 'cafile.pem',
+          :certfile                => 'certfile.crt',
+          :keyfile                 => 'somekey.key',
+          :timeout                 => 60,
         }
       end
 
@@ -41,6 +51,11 @@ describe 'cinder::key_manager::barbican' do
           :barbican_endpoint_type  => 'public',
           :barbican_region_name    => 'regionOne',
           :send_service_user_token => true,
+          :insecure                => false,
+          :cafile                  => 'cafile.pem',
+          :certfile                => 'certfile.crt',
+          :keyfile                 => 'somekey.key',
+          :timeout                 => 60,
         )
       }
     end
