@@ -100,7 +100,8 @@
 #   Defaults to $facts['os_service_default']
 #
 # [*package_ensure*]
-#   (optional) Ensure state for package. Defaults to 'present'.
+#   (optional) Ensure state for package.
+#   Defaults to 'present'.
 #
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
@@ -127,7 +128,7 @@ define cinder::backend::nfs (
   $nas_secure_file_permissions            = $facts['os_service_default'],
   $nfs_snapshot_support                   = $facts['os_service_default'],
   $nfs_qcow2_volumes                      = $facts['os_service_default'],
-  $package_ensure                         = 'present',
+  Stdlib::Ensure::Package $package_ensure = 'present',
   Boolean $manage_volume_type             = false,
   Hash $extra_options                     = {},
 ) {

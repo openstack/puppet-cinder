@@ -40,15 +40,15 @@
 #   Defaults to undef
 #
 class cinder::scheduler (
-  $driver                 = $facts['os_service_default'],
-  $driver_init_wait_time  = $facts['os_service_default'],
-  $host_manager           = $facts['os_service_default'],
-  $max_attempts           = $facts['os_service_default'],
-  $package_ensure         = 'present',
-  Boolean $enabled        = true,
-  Boolean $manage_service = true,
+  $driver                                 = $facts['os_service_default'],
+  $driver_init_wait_time                  = $facts['os_service_default'],
+  $host_manager                           = $facts['os_service_default'],
+  $max_attempts                           = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = 'present',
+  Boolean $enabled                        = true,
+  Boolean $manage_service                 = true,
   # DEPRECATED PARAMETERS
-  $scheduler_driver       = undef
+  $scheduler_driver                       = undef
 ) {
   include cinder::deps
   include cinder::params

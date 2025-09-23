@@ -48,7 +48,8 @@
 #   Defaults to $facts['os_service_default']
 #
 # [*package_ensure*]
-#   (optional) Ensure state for package. Defaults to 'present'.
+#   (optional) Ensure state for package.
+#   Defaults to 'present'.
 #
 # === Author(s)
 #
@@ -73,15 +74,15 @@
 #
 class cinder::backup::nfs (
   String[1] $backup_share,
-  $backup_driver                = 'cinder.backup.drivers.nfs.NFSBackupDriver',
-  $backup_file_size             = $facts['os_service_default'],
-  $backup_sha_block_size_bytes  = $facts['os_service_default'],
-  $backup_enable_progress_timer = $facts['os_service_default'],
-  $backup_mount_point_base      = $facts['os_service_default'],
-  $backup_mount_options         = $facts['os_service_default'],
-  $backup_container             = $facts['os_service_default'],
-  $backup_compression_algorithm = $facts['os_service_default'],
-  $package_ensure               = 'present',
+  $backup_driver                          = 'cinder.backup.drivers.nfs.NFSBackupDriver',
+  $backup_file_size                       = $facts['os_service_default'],
+  $backup_sha_block_size_bytes            = $facts['os_service_default'],
+  $backup_enable_progress_timer           = $facts['os_service_default'],
+  $backup_mount_point_base                = $facts['os_service_default'],
+  $backup_mount_options                   = $facts['os_service_default'],
+  $backup_container                       = $facts['os_service_default'],
+  $backup_compression_algorithm           = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = 'present',
 ) {
   include cinder::deps
   include cinder::params

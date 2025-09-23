@@ -58,18 +58,18 @@
 #   Defaults to $facts['os_service_default'].
 #
 class cinder::volume (
-  $package_ensure                       = 'present',
-  Boolean $enabled                      = true,
-  Boolean $manage_service               = true,
-  $cluster                              = $facts['os_service_default'],
-  $volume_clear                         = $facts['os_service_default'],
-  $volume_clear_size                    = $facts['os_service_default'],
-  $volume_clear_ionice                  = $facts['os_service_default'],
-  $migration_create_volume_timeout_secs = $facts['os_service_default'],
-  $volume_service_inithost_offload      = $facts['os_service_default'],
-  $reinit_driver_count                  = $facts['os_service_default'],
-  $init_host_max_objects_retrieval      = $facts['os_service_default'],
-  $backend_stats_polling_interval       = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = 'present',
+  Boolean $enabled                        = true,
+  Boolean $manage_service                 = true,
+  $cluster                                = $facts['os_service_default'],
+  $volume_clear                           = $facts['os_service_default'],
+  $volume_clear_size                      = $facts['os_service_default'],
+  $volume_clear_ionice                    = $facts['os_service_default'],
+  $migration_create_volume_timeout_secs   = $facts['os_service_default'],
+  $volume_service_inithost_offload        = $facts['os_service_default'],
+  $reinit_driver_count                    = $facts['os_service_default'],
+  $init_host_max_objects_retrieval        = $facts['os_service_default'],
+  $backend_stats_polling_interval         = $facts['os_service_default'],
 ) {
   include cinder::deps
   include cinder::params
