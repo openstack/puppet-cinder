@@ -58,10 +58,6 @@
 #   (optional) Default max number of LUNs in a storage group.
 #   Defaults to: '256'
 #
-# [*package_ensure*]
-#   (optional) The state of the package
-#   Defaults to: 'present'
-#
 # [*extra_options*]
 #   (optional) Hash of extra options to pass to the backend stanza
 #   Defaults to: {}
@@ -126,6 +122,10 @@
 #   (optional) Naviseccli Path.
 #   Defaults to $facts['os_service_default']
 #
+# [*package_ensure*]
+#   (optional) The state of the package
+#   Defaults to: 'present'
+#
 # [*manage_volume_type*]
 #   (Optional) Whether or not manage Cinder Volume type.
 #   If set to true, a Cinder Volume type will be created
@@ -136,32 +136,32 @@ define cinder::backend::emc_vnx (
   $san_ip,
   $san_password,
   $storage_vnx_pool_names,
-  $default_timeout                  = '10',
-  $max_luns_per_storage_group       = '256',
-  $package_ensure                   = 'present',
-  $san_login                        = 'admin',
-  $volume_backend_name              = $name,
-  $backend_availability_zone        = $facts['os_service_default'],
-  $image_volume_cache_enabled       = $facts['os_service_default'],
-  $image_volume_cache_max_size_gb   = $facts['os_service_default'],
-  $image_volume_cache_max_count     = $facts['os_service_default'],
-  $reserved_percentage              = $facts['os_service_default'],
-  $max_over_subscription_ratio      = $facts['os_service_default'],
-  Hash $extra_options               = {},
-  $volume_driver                    = 'cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver',
-  $storage_protocol                 = 'iscsi',
-  $destroy_empty_storage_group      = $facts['os_service_default'],
-  $iscsi_initiators                 = $facts['os_service_default'],
-  $io_port_list                     = $facts['os_service_default'],
-  $initiator_auto_registration      = $facts['os_service_default'],
-  $initiator_auto_deregistration    = $facts['os_service_default'],
-  $force_delete_lun_in_storagegroup = $facts['os_service_default'],
-  $ignore_pool_full_threshold       = $facts['os_service_default'],
-  $vnx_async_migrate                = $facts['os_service_default'],
-  $storage_vnx_auth_type            = $facts['os_service_default'],
-  $storage_vnx_security_file_dir    = $facts['os_service_default'],
-  $naviseccli_path                  = $facts['os_service_default'],
-  Boolean $manage_volume_type       = false,
+  $default_timeout                        = '10',
+  $max_luns_per_storage_group             = '256',
+  $san_login                              = 'admin',
+  $volume_backend_name                    = $name,
+  $backend_availability_zone              = $facts['os_service_default'],
+  $image_volume_cache_enabled             = $facts['os_service_default'],
+  $image_volume_cache_max_size_gb         = $facts['os_service_default'],
+  $image_volume_cache_max_count           = $facts['os_service_default'],
+  $reserved_percentage                    = $facts['os_service_default'],
+  $max_over_subscription_ratio            = $facts['os_service_default'],
+  Hash $extra_options                     = {},
+  $volume_driver                          = 'cinder.volume.drivers.dell_emc.vnx.driver.VNXDriver',
+  $storage_protocol                       = 'iscsi',
+  $destroy_empty_storage_group            = $facts['os_service_default'],
+  $iscsi_initiators                       = $facts['os_service_default'],
+  $io_port_list                           = $facts['os_service_default'],
+  $initiator_auto_registration            = $facts['os_service_default'],
+  $initiator_auto_deregistration          = $facts['os_service_default'],
+  $force_delete_lun_in_storagegroup       = $facts['os_service_default'],
+  $ignore_pool_full_threshold             = $facts['os_service_default'],
+  $vnx_async_migrate                      = $facts['os_service_default'],
+  $storage_vnx_auth_type                  = $facts['os_service_default'],
+  $storage_vnx_security_file_dir          = $facts['os_service_default'],
+  $naviseccli_path                        = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = 'present',
+  Boolean $manage_volume_type             = false,
 ) {
   include cinder::deps
 

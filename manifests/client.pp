@@ -9,7 +9,7 @@
 #   Defaults to 'present'.
 #
 class cinder::client (
-  $package_ensure = 'present'
+  Stdlib::Ensure::Package $package_ensure = 'present',
 ) {
   include cinder::deps
   include cinder::params

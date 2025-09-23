@@ -58,14 +58,14 @@
 # under the License.
 #
 class cinder::backup (
-  Boolean $enabled        = true,
-  Boolean $manage_service = true,
-  $package_ensure         = 'present',
-  $backup_manager         = $facts['os_service_default'],
-  $backup_api_class       = $facts['os_service_default'],
-  $backup_name_template   = $facts['os_service_default'],
-  $backup_workers         = $facts['os_service_default'],
-  $backup_max_operations  = $facts['os_service_default'],
+  Boolean $enabled                        = true,
+  Boolean $manage_service                 = true,
+  Stdlib::Ensure::Package $package_ensure = 'present',
+  $backup_manager                         = $facts['os_service_default'],
+  $backup_api_class                       = $facts['os_service_default'],
+  $backup_name_template                   = $facts['os_service_default'],
+  $backup_workers                         = $facts['os_service_default'],
+  $backup_max_operations                  = $facts['os_service_default'],
 ) {
   include cinder::deps
   include cinder::params
