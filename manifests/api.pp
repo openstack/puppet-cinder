@@ -155,42 +155,42 @@ class cinder::api (
   }
 
   if $manage_service {
-    if $enabled {
-      $ensure = 'running'
-    } else {
-      $ensure = 'stopped'
-    }
+    case $service_name {
+      'httpd': {
+        Service <| title == 'httpd' |> { tag +> 'cinder-service' }
 
-    if $service_name == $cinder::params::api_service {
-      service { 'cinder-api':
-        ensure    => $ensure,
-        name      => $cinder::params::api_service,
-        enable    => $enabled,
-        hasstatus => true,
-        tag       => 'cinder-service',
+        service { 'cinder-api':
+          ensure => 'stopped',
+          name   => $cinder::params::api_service,
+          enable => false,
+          tag    => ['cinder-service'],
+        }
+
+        # we need to make sure cinder-api/eventlet is stopped before trying to start apache
+        Service['cinder-api'] -> Service['httpd']
+
+        # On any api-paste.ini config change, we must restart Cinder API.
+        Cinder_api_paste_ini<||> ~> Service['httpd']
       }
+      default: {
+        $service_ensure = $enabled ? {
+          true    => 'running',
+          default => 'stopped',
+        }
 
-      # On any api-paste.ini config change, we must restart Cinder API.
-      Cinder_api_paste_ini<||> ~> Service['cinder-api']
-      # On any uwsgi config change, we must restart Cinder API.
-      Cinder_api_uwsgi_config<||> ~> Service['cinder-api']
-    } elsif $service_name == 'httpd' {
-      service { 'cinder-api':
-        ensure => 'stopped',
-        name   => $cinder::params::api_service,
-        enable => false,
-        tag    => ['cinder-service'],
+        service { 'cinder-api':
+          ensure    => $service_ensure,
+          name      => $service_name,
+          enable    => $enabled,
+          hasstatus => true,
+          tag       => 'cinder-service',
+        }
+
+        # On any api-paste.ini config change, we must restart Cinder API.
+        Cinder_api_paste_ini<||> ~> Service['cinder-api']
+        # On any uwsgi config change, we must restart Cinder API.
+        Cinder_api_uwsgi_config<||> ~> Service['cinder-api']
       }
-      Service <| title == 'httpd' |> { tag +> 'cinder-service' }
-
-      # we need to make sure cinder-api/eventlet is stopped before trying to start apache
-      Service['cinder-api'] -> Service[$service_name]
-
-      # On any api-paste.ini config change, we must restart Cinder API.
-      Cinder_api_paste_ini<||> ~> Service[$service_name]
-    } else {
-      fail("Invalid service_name. Either cinder-api/openstack-cinder-api for \
-running as a standalone service, or httpd for being run by a httpd server")
     }
   }
 
