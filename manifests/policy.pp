@@ -46,13 +46,13 @@
 #    Defaults to false.
 #
 class cinder::policy (
-  $enforce_scope        = $facts['os_service_default'],
-  $enforce_new_defaults = $facts['os_service_default'],
-  Hash $policies        = {},
-  $policy_path          = '/etc/cinder/policy.yaml',
-  $policy_default_rule  = $facts['os_service_default'],
-  $policy_dirs          = $facts['os_service_default'],
-  Boolean $purge_config = false,
+  $enforce_scope                    = $facts['os_service_default'],
+  $enforce_new_defaults             = $facts['os_service_default'],
+  Openstacklib::Policies $policies  = {},
+  Stdlib::Absolutepath $policy_path = '/etc/cinder/policy.yaml',
+  $policy_default_rule              = $facts['os_service_default'],
+  $policy_dirs                      = $facts['os_service_default'],
+  Boolean $purge_config             = false,
 ) {
   include cinder::deps
   include cinder::params
@@ -64,7 +64,6 @@ class cinder::policy (
     file_group   => $cinder::params::group,
     file_format  => 'yaml',
     purge_config => $purge_config,
-    tag          => 'cinder',
   }
 
   create_resources('openstacklib::policy', { $policy_path => $policy_parameters })
