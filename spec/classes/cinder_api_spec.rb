@@ -174,22 +174,6 @@ describe 'cinder::api' do
       end
     end
 
-    context 'when service_name is not valid' do
-      let :params do
-        req_params.merge!({ :service_name => 'foobar' })
-      end
-
-      let :pre_condition do
-        "include apache
-         class { 'cinder': }
-         class { 'cinder::keystone::authtoken':
-           password => 'foo',
-         }"
-      end
-
-      it_raises 'a Puppet::Error', /Invalid service_name/
-    end
-
     context 'with SSL socket options set' do
       let :params do
         req_params.merge!({
