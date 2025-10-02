@@ -38,6 +38,9 @@ describe 'basic cinder' do
       cinder_qos { 'testqos2':
         associations => ['qostype1', 'qostype2']
       }
+      cinder_qos { 'testqos3':
+        consumer => 'front-end',
+      }
       EOS
 
 

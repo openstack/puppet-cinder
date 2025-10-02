@@ -19,10 +19,10 @@ Puppet::Type.newtype(:cinder_type) do
     end
   end
 
-  newparam(:is_public, :boolean => true) do
+  newproperty(:is_public, :boolean => true) do
     desc 'Whether the type is public or not. Default to `true`'
     newvalues(:true, :false)
-    defaultto true
+    defaultto :true
   end
 
   newproperty(:access_project_ids,  :array_matching => :all) do
