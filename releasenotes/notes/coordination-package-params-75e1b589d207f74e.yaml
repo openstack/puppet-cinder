@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The following parameters have been added to the ``cinder::coordination``
+    class.
+
+    - ``manage_backend_package``
+    - ``package_ensure``
