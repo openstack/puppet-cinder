@@ -31,9 +31,10 @@ Puppet::Type.newtype(:cinder_qos) do
     end
   end
 
-  newparam(:consumer) do
+  newproperty(:consumer) do
     desc 'The consumer QOS'
-    defaultto('')
+    newvalues('front-end', 'back-end', 'both')
+    defaultto('both')
   end
 
   autorequire(:cinder_qos) do

@@ -82,8 +82,8 @@ access_project_ids="54f4d231201b4944a5fa4587a09bda23, 54f4d231201b4944a5fa4587a0
           expect(instances.count).to eq(2)
           expect(instances[0].name).to eq('type-1')
           expect(instances[1].name).to eq('type-2')
-          expect(instances[0].is_public).to be true
-          expect(instances[1].is_public).to be false
+          expect(instances[0].is_public).to be :true
+          expect(instances[1].is_public).to be :false
           expect(instances[0].access_project_ids).to match_array([])
           expect(instances[1].access_project_ids).to match_array(['54f4d231201b4944a5fa4587a09bda23', '54f4d231201b4944a5fa4587a09bda28'])
           expect(instances[0].properties).to eq({'key1'=>'value1'})

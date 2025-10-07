@@ -34,7 +34,7 @@ describe provider_class do
       describe '#create' do
         it 'creates a qos' do
           expect(provider_class).to receive(:openstack)
-            .with('volume qos', 'create', '--format', 'shell', ['--property', 'key1=value1', '--property', 'key2=value2', 'QoS_1'])
+            .with('volume qos', 'create', '--format', 'shell', ['--consumer', 'both', '--property', 'key1=value1', '--property', 'key2=value2', 'QoS_1'])
             .and_return('id="e0df397a-72d5-4494-9e26-4ac37632ff04"
 name="QoS_1"
 properties="{\'key1\': \'value1\', \'key2\': \'value2\'}"

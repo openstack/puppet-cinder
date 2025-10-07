@@ -13,9 +13,7 @@ Puppet::Type.type(:cinder_qos).provide(
 
   def create
     properties = []
-    unless resource[:consumer].empty?
-      properties << '--consumer' << resource[:consumer]
-    end
+    properties << '--consumer' << resource[:consumer].to_s
     if resource[:properties]
       resource[:properties].each do |k, v|
         properties << '--property' << "#{k}=#{v}"
@@ -76,7 +74,7 @@ Puppet::Type.type(:cinder_qos).provide(
         :ensure       => :present,
         :id           => qos[:id],
         :properties   => parse_python_dict(properties),
-        :consumer     => qos[:consumer],
+        :consumer     => qos[:consumer].downcase,
         :associations => string2array(qos[:associations])
       })
     end

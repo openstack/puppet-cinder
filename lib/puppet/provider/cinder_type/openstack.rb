@@ -23,7 +23,7 @@ Puppet::Type.type(:cinder_type).provide(
     self.class.request('volume type', 'create', properties)
     @property_hash[:ensure] = :present
     @property_hash[:properties] = resource[:properties]
-    @property_hash[:is_public] = resource[:is_public]
+    @property_hash[:is_public] = resource[:is_public].downcase.to_sym
     @property_hash[:name] = name
     unless @resource[:access_project_ids].nil?
       set_access_project_ids(resource[:access_project_ids])
@@ -85,10 +85,10 @@ Puppet::Type.type(:cinder_type).provide(
       if type[:is_public] == 'False'
         type_details = request('volume type', 'show', type[:id])
         type[:access_project_ids] = string2array(type_details[:access_project_ids])
-        type[:is_public] = false
+        type[:is_public] = :false
       else
         type[:access_project_ids] = []
-        type[:is_public] = true
+        type[:is_public] = :true
       end
     end
 
