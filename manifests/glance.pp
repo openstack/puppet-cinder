@@ -47,6 +47,67 @@
 #   (optional) Default core properties of image
 #   Defaults to $facts['os_service_default']
 #
+# [*cafile*]
+#   (optional) PEM encoded Certificate Authority to use
+#   when verifying HTTPs connections.
+#   Defaults to $facts['os_service_default']
+#
+# [*certfile*]
+#   (optional) PEM encoded client certificate cert file.
+#   Defaults to $facts['os_service_default']
+#
+# [*keyfile*]
+#   (optional) PEM encoded client certificate key file.
+#   Defaults to $facts['os_service_default']
+#
+# [*insecure*]
+#   (optional) Verify HTTPS connections.
+#   Defaults to $facts['os_service_default']
+#
+# [*timeout*]
+#   (optional) Timeout value for http requests.
+#   Defaults to $facts['os_service_default']
+#
+# [*collect_timing*]
+#   (optional) Collect per-API call timing information.
+#   Defaults to $facts['os_service_default']
+#
+# [*split_loggers*]
+#   (optional) Log requests to multiple loggers.
+#   Defaults to $facts['os_service_default']
+#
+# [*auth_type*]
+#   (optional) Authentication type to load.
+#   Defaults to undef
+#
+# [*auth_url*]
+#   (optional) Identity service url.
+#   Defaults to 'http://127.0.0.1:5000'
+#
+# [*username*]
+#   (optional) Glance admin username.
+#   Defaults to 'glance'
+#
+# [*password*]
+#   (optional) Nova admin password.
+#   Defaults to $facts['os_service_default']
+#
+# [*user_domain_name*]
+#   (optional) Glance admin user domain name.
+#   Defaults to 'Default'
+#
+# [*project_name*]
+#   (optional) Glance admin project name.
+#   Defaults to 'services'
+#
+# [*project_domain_name*]
+#   (optional) Glance admin project domain name.
+#   Defaults to 'Default'
+#
+# [*system_scope*]
+#   (optional) Scope for system operations
+#   Defaults to $facts['os_service_default']
+#
 # === Author(s)
 #
 # Emilien Macchi <emilien.macchi@enovance.com>
@@ -77,8 +138,31 @@ class cinder::glance (
   $verify_glance_signatures   = $facts['os_service_default'],
   $glance_catalog_info        = $facts['os_service_default'],
   $glance_core_properties     = $facts['os_service_default'],
+  $cafile                     = $facts['os_service_default'],
+  $certfile                   = $facts['os_service_default'],
+  $keyfile                    = $facts['os_service_default'],
+  $insecure                   = $facts['os_service_default'],
+  $timeout                    = $facts['os_service_default'],
+  $collect_timing             = $facts['os_service_default'],
+  $split_loggers              = $facts['os_service_default'],
+  $auth_type                  = undef,
+  $auth_url                   = 'http://127.0.0.1:5000',
+  $username                   = 'glance',
+  $password                   = $facts['os_service_default'],
+  $user_domain_name           = 'Default',
+  $project_name               = 'services',
+  $project_domain_name        = 'Default',
+  $system_scope               = $facts['os_service_default'],
 ) {
   include cinder::deps
+
+  if $auth_type == undef {
+    warning("The auth_type parameter will defaults to 'password' in a future release. \
+Make sure parameters such as password are properly set.")
+    $auth_type_real = $facts['os_service_default']
+  } else {
+    $auth_type_real = $auth_type
+  }
 
   cinder_config {
     'DEFAULT/glance_api_servers':         value => join(any2array($glance_api_servers), ',');
@@ -90,5 +174,31 @@ class cinder::glance (
     'DEFAULT/verify_glance_signatures':   value => $verify_glance_signatures;
     'DEFAULT/glance_catalog_info':        value => $glance_catalog_info;
     'DEFAULT/glance_core_properties':     value => join(any2array($glance_core_properties), ',');
+  }
+
+  if is_service_default($system_scope) {
+    $project_name_real = $project_name
+    $project_domain_name_real = $project_domain_name
+  } else {
+    $project_name_real = $facts['os_service_default']
+    $project_domain_name_real = $facts['os_service_default']
+  }
+
+  cinder_config {
+    'glance/cafile':              value => $cafile;
+    'glance/certfile':            value => $certfile;
+    'glance/keyfile':             value => $keyfile;
+    'glance/insecure':            value => $insecure;
+    'glance/timeout':             value => $timeout;
+    'glance/collect_timing':      value => $collect_timing;
+    'glance/split_loggers':       value => $split_loggers;
+    'glance/auth_type':           value => $auth_type_real;
+    'glance/auth_url':            value => $auth_url;
+    'glance/username':            value => $username;
+    'glance/user_domain_name':    value => $user_domain_name;
+    'glance/password':            value => $password, secret => true;
+    'glance/project_name':        value => $project_name_real;
+    'glance/project_domain_name': value => $project_domain_name_real;
+    'glance/system_scope':        value => $system_scope;
   }
 }
