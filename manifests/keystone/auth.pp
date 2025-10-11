@@ -73,7 +73,7 @@
 #
 # [*roles*]
 #   (Optional) List of roles assigned to Cinder user
-#   Defaults to ['admin']
+#   Defaults to ['admin', 'service']
 #
 # [*system_scope*]
 #   (Optional) Scope for system operations used by Cinder v3 user.
@@ -110,7 +110,7 @@ class cinder::keystone::auth (
   String[1] $password,
   String[1] $auth_name                       = 'cinder',
   String[1] $tenant                          = 'services',
-  Array[String[1]] $roles                    = ['admin'],
+  Array[String[1]] $roles                    = ['admin', 'service'],
   String[1] $system_scope                    = 'all',
   Array[String[1]] $system_roles             = [],
   String[1] $email                           = 'cinder@localhost',
