@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    The ``glance::cinder`` class now supports parameters to configure options
+    for service-to-service communication between cinder and glance.
+
+upgrade:
+  - |
+    The default value of ``glance::cinder::auth_type`` will be changed to
+    ``password`` in the future release. Make sure the ``glance::cinder``
+    class parameters such as ``password`` is set properly.
