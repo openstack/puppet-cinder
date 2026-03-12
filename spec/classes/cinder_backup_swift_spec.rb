@@ -37,6 +37,7 @@ describe 'cinder::backup::swift' do
       :backup_swift_project               => '<SERVICE DEFAULT>',
       :backup_compression_algorithm       => '<SERVICE DEFAULT>',
       :backup_swift_service_auth          => '<SERVICE DEFAULT>',
+      :backup_swift_region_name           => '<SERVICE DEFAULT>',
     }
   end
 
@@ -65,6 +66,7 @@ describe 'cinder::backup::swift' do
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_project').with_value(p[:backup_swift_project])
       is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_service_auth').with_value(p[:backup_swift_service_auth])
+      is_expected.to contain_cinder_config('DEFAULT/backup_swift_region_name').with_value(p[:backup_swift_region_name])
     end
 
     context 'when overriding default parameters' do
@@ -81,6 +83,7 @@ describe 'cinder::backup::swift' do
           :backup_swift_retry_backoff         => 2,
           :backup_compression_algorithm       => 'none',
           :backup_swift_service_auth          => true,
+          :backup_swift_region_name           => 'regionOne',
         })
       end
       it 'should replace default parameters with new values' do
@@ -95,6 +98,7 @@ describe 'cinder::backup::swift' do
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_retry_backoff').with_value(p[:backup_swift_retry_backoff])
         is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
         is_expected.to contain_cinder_config('DEFAULT/backup_swift_service_auth').with_value(p[:backup_swift_service_auth])
+        is_expected.to contain_cinder_config('DEFAULT/backup_swift_region_name').with_value(p[:backup_swift_region_name])
       end
     end
   end
