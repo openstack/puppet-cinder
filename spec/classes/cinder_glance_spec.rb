@@ -51,6 +51,7 @@ describe 'cinder::glance' do
         is_expected.to contain_cinder_config('glance/project_name').with_value('services')
         is_expected.to contain_cinder_config('glance/project_domain_name').with_value('Default')
         is_expected.to contain_cinder_config('glance/system_scope').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('glance/region_name').with_value('<SERVICE DEFAULT>')
       end
     end
 
@@ -80,6 +81,7 @@ describe 'cinder::glance' do
           :user_domain_name           => 'UserDomain',
           :project_name               => 'alt_service',
           :project_domain_name        => 'ProjectDomain',
+          :region_name                => 'regionOne',
         })
       end
 
@@ -108,6 +110,7 @@ describe 'cinder::glance' do
         is_expected.to contain_cinder_config('glance/project_name').with_value('alt_service')
         is_expected.to contain_cinder_config('glance/project_domain_name').with_value('ProjectDomain')
         is_expected.to contain_cinder_config('glance/system_scope').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('glance/region_name').with_value('regionOne')
       end
     end
 

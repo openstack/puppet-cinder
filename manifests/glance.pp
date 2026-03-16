@@ -108,6 +108,10 @@
 #   (optional) Scope for system operations
 #   Defaults to $facts['os_service_default']
 #
+# [*region_name*]
+#   (optional) Name of glance region to use.
+#   Defaults to $facts['os_service_default']
+#
 # === Author(s)
 #
 # Emilien Macchi <emilien.macchi@enovance.com>
@@ -153,6 +157,7 @@ class cinder::glance (
   $project_name               = 'services',
   $project_domain_name        = 'Default',
   $system_scope               = $facts['os_service_default'],
+  $region_name                = $facts['os_service_default'],
 ) {
   include cinder::deps
 
@@ -200,5 +205,6 @@ Make sure parameters such as password are properly set.")
     'glance/project_name':        value => $project_name_real;
     'glance/project_domain_name': value => $project_domain_name_real;
     'glance/system_scope':        value => $system_scope;
+    'glance/region_name':         value => $region_name;
   }
 }

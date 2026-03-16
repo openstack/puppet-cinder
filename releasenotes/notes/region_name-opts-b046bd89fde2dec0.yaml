@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The new ``cinder::glance::region_name`` parameter has been added.
+
+  - |
+    The new ``cinder::backup::swift::backup_swift_region_name`` paraemter has
+    been added.
