@@ -158,7 +158,7 @@ describe 'cinder::wsgi::apache' do
         when 'Debian'
           {
             :wsgi_script_path   => '/usr/lib/cgi-bin/cinder',
-            :wsgi_script_source => '/usr/bin/cinder-wsgi'
+            :wsgi_script_source => '/usr/lib/python3/dist-packages/cinder/wsgi/api.py',
           }
         when 'RedHat'
           {

@@ -5,7 +5,7 @@
 class cinder::params {
   include openstacklib::defaults
 
-  $pyver3 = $openstacklib::defaults::pyver3
+  $pybasedir = $openstacklib::defaults::pybasedir
 
   $client_package            = 'python3-cinderclient'
   $user                      = 'cinder'
@@ -31,7 +31,7 @@ class cinder::params {
       $lio_package_name          = 'targetcli'
       $lock_path                 = '/var/lock/cinder'
       $cinder_wsgi_script_path   = '/usr/lib/cgi-bin/cinder'
-      $cinder_wsgi_script_source = '/usr/bin/cinder-wsgi'
+      $cinder_wsgi_script_source = "${pybasedir}/cinder/wsgi/api.py"
       $nvme_cli_package_name     = 'nvme-cli'
       $nvmetcli_package_name     = undef
     }
@@ -54,7 +54,7 @@ class cinder::params {
       $lio_package_name          = 'targetcli'
       $lock_path                 = '/var/lib/cinder/tmp'
       $cinder_wsgi_script_path   = '/var/www/cgi-bin/cinder'
-      $cinder_wsgi_script_source = "/usr/lib/python${pyver3}/site-packages/cinder/wsgi/api.py"
+      $cinder_wsgi_script_source = "${pybasedir}/cinder/wsgi/api.py"
       $nvme_cli_package_name     = 'nvme-cli'
       $nvmetcli_package_name     = 'nvmetcli'
     }
