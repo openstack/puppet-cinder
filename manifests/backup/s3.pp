@@ -21,6 +21,10 @@
 #   (optional) Compression algorithm to use for volume backups.
 #   Defaults to $facts['os_service_default']
 #
+# [*backup_create_containers*]
+#   (optional) Attempt to create new container for supported drivers.
+#   Defaults to $facts['os_service_default']
+#
 # [*backup_s3_store_bucket*]
 #   (optional) The S3 bucket to be used to store the Cinder backup data.
 #   Defaults to $facts['os_service_default']
@@ -113,6 +117,7 @@ class cinder::backup::s3 (
   $backup_s3_store_secret_key,
   $backup_driver                    = 'cinder.backup.drivers.s3.S3BackupDriver',
   $backup_compression_algorithm     = $facts['os_service_default'],
+  $backup_create_containers         = $facts['os_service_default'],
   $backup_s3_store_bucket           = $facts['os_service_default'],
   $backup_s3_object_size            = $facts['os_service_default'],
   $backup_s3_block_size             = $facts['os_service_default'],
@@ -137,6 +142,7 @@ class cinder::backup::s3 (
     'DEFAULT/backup_s3_store_secret_key':       value => $backup_s3_store_secret_key, secret => true;
     'DEFAULT/backup_driver':                    value => $backup_driver;
     'DEFAULT/backup_compression_algorithm':     value => $backup_compression_algorithm;
+    'DEFAULT/backup_create_containers':         value => $backup_create_containers;
     'DEFAULT/backup_s3_store_bucket':           value => $backup_s3_store_bucket;
     'DEFAULT/backup_s3_object_size':            value => $backup_s3_object_size;
     'DEFAULT/backup_s3_block_size':             value => $backup_s3_block_size;

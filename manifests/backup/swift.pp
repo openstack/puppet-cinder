@@ -65,6 +65,10 @@
 #   (optional) The compression algorithm for the chunks sent to swift
 #   Defaults to $facts['os_service_default']
 #
+# [*backup_create_containers*]
+#   (optional) Attempt to create new container for supported drivers.
+#   Defaults to $facts['os_service_default']
+#
 # [*backup_swift_service_auth*]
 #   (optional) Send a X-Service-Token header with service auth credentials.
 #   Defaults to $facts['os_service_default']
@@ -109,6 +113,7 @@ class cinder::backup::swift (
   $backup_swift_project_domain        = $facts['os_service_default'],
   $backup_swift_project               = $facts['os_service_default'],
   $backup_compression_algorithm       = $facts['os_service_default'],
+  $backup_create_containers           = $facts['os_service_default'],
   $backup_swift_service_auth          = $facts['os_service_default'],
   $backup_swift_region_name           = $facts['os_service_default'],
 ) {
@@ -129,6 +134,7 @@ class cinder::backup::swift (
     'DEFAULT/backup_swift_project_domain':        value => $backup_swift_project_domain;
     'DEFAULT/backup_swift_project':               value => $backup_swift_project;
     'DEFAULT/backup_compression_algorithm':       value => $backup_compression_algorithm;
+    'DEFAULT/backup_create_containers':           value => $backup_create_containers;
     'DEFAULT/backup_swift_service_auth':          value => $backup_swift_service_auth;
     'DEFAULT/backup_swift_region_name':           value => $backup_swift_region_name;
   }

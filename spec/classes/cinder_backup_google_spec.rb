@@ -23,6 +23,7 @@ describe 'cinder::backup::google' do
   let :default_params do
     {
       :backup_compression_algorithm     => '<SERVICE DEFAULT>',
+      :backup_create_containers         => '<SERVICE DEFAULT>',
       :backup_gcs_bucket                => '<SERVICE DEFAULT>',
       :backup_gcs_object_size           => '<SERVICE DEFAULT>',
       :backup_gcs_block_size            => '<SERVICE DEFAULT>',
@@ -51,6 +52,7 @@ describe 'cinder::backup::google' do
     it 'configures cinder.conf' do
       is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.google.GoogleBackupDriver')
       is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
+      is_expected.to contain_cinder_config('DEFAULT/backup_create_containers').with_value(p[:backup_create_containers])
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_bucket').with_value(p[:backup_gcs_bucket])
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_object_size').with_value(p[:backup_gcs_object_size])
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_block_size').with_value(p[:backup_gcs_block_size])
@@ -70,6 +72,7 @@ describe 'cinder::backup::google' do
       before :each do
         params.merge!({
           :backup_compression_algorithm     => 'none',
+          :backup_create_containers         => true,
           :backup_gcs_bucket                => 'bigbucket',
           :backup_gcs_object_size           => '1992',
           :backup_gcs_block_size            => '12',
@@ -87,6 +90,7 @@ describe 'cinder::backup::google' do
       end
       it 'should replace default parameters with new values' do
         is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
+        is_expected.to contain_cinder_config('DEFAULT/backup_create_containers').with_value(p[:backup_create_containers])
         is_expected.to contain_cinder_config('DEFAULT/backup_gcs_bucket').with_value(p[:backup_gcs_bucket])
         is_expected.to contain_cinder_config('DEFAULT/backup_gcs_object_size').with_value(p[:backup_gcs_object_size])
         is_expected.to contain_cinder_config('DEFAULT/backup_gcs_block_size').with_value(p[:backup_gcs_block_size])

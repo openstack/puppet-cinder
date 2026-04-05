@@ -16,6 +16,10 @@
 #   (optional) Compression algorithm to use for volume backups.
 #   Defaults to $facts['os_service_default']
 #
+# [*backup_create_containers*]
+#   (optional) Attempt to create new container for supported drivers.
+#   Defaults to $facts['os_service_default']
+#
 # [*backup_file_size*]
 #   (optional) The maximum size in bytes of the files used to hold
 #   backups. If the volume being backed up exceeds this size, then
@@ -76,6 +80,7 @@ class cinder::backup::nfs (
   String[1] $backup_share,
   $backup_driver                          = 'cinder.backup.drivers.nfs.NFSBackupDriver',
   $backup_compression_algorithm           = $facts['os_service_default'],
+  $backup_create_containers               = $facts['os_service_default'],
   $backup_file_size                       = $facts['os_service_default'],
   $backup_sha_block_size_bytes            = $facts['os_service_default'],
   $backup_enable_progress_timer           = $facts['os_service_default'],
@@ -92,6 +97,7 @@ class cinder::backup::nfs (
     'DEFAULT/backup_share':                 value => $backup_share;
     'DEFAULT/backup_driver':                value => $backup_driver;
     'DEFAULT/backup_compression_algorithm': value => $backup_compression_algorithm;
+    'DEFAULT/backup_create_containers':     value => $backup_create_containers;
     'DEFAULT/backup_file_size':             value => $backup_file_size;
     'DEFAULT/backup_sha_block_size_bytes':  value => $backup_sha_block_size_bytes;
     'DEFAULT/backup_enable_progress_timer': value => $backup_enable_progress_timer;

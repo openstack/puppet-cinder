@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    The new ``backup_create_containers`` parameter has been added to
+    the following classes.
+
+    - ``cinder::backup::google``
+    - ``cinder::backup::nfs``
+    - ``cinder::backup::posix``
+    - ``cinder::backup::s3``
+    - ``cinder::backup::swift``

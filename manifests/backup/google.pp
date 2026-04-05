@@ -12,6 +12,10 @@
 #   (optional) Compression algorithm to use for volume backups.
 #   Defaults to $facts['os_service_default']
 #
+# [*backup_create_containers*]
+#   (optional) Attempt to create new container for supported drivers.
+#   Defaults to $facts['os_service_default']
+#
 # [*backup_gcs_bucket*]
 #   (optional) The GCS bucket to use.
 #   Defaults to $facts['os_service_default']
@@ -93,6 +97,7 @@
 class cinder::backup::google (
   $backup_driver                    = 'cinder.backup.drivers.google.GoogleBackupDriver',
   $backup_compression_algorithm     = $facts['os_service_default'],
+  $backup_create_containers         = $facts['os_service_default'],
   $backup_gcs_bucket                = $facts['os_service_default'],
   $backup_gcs_object_size           = $facts['os_service_default'],
   $backup_gcs_block_size            = $facts['os_service_default'],
@@ -112,6 +117,7 @@ class cinder::backup::google (
   cinder_config {
     'DEFAULT/backup_driver':                   value => $backup_driver;
     'DEFAULT/backup_compression_algorithm':    value => $backup_compression_algorithm;
+    'DEFAULT/backup_create_containers':        value => $backup_create_containers;
     'DEFAULT/backup_gcs_bucket':               value => $backup_gcs_bucket;
     'DEFAULT/backup_gcs_object_size':          value => $backup_gcs_object_size;
     'DEFAULT/backup_gcs_block_size':           value => $backup_gcs_block_size;

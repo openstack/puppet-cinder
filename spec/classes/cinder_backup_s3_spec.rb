@@ -32,6 +32,7 @@ describe 'cinder::backup::s3' do
     {
       :backup_driver                    => 'cinder.backup.drivers.s3.S3BackupDriver',
       :backup_compression_algorithm     => '<SERVICE DEFAULT>',
+      :backup_create_containers         => '<SERVICE DEFAULT>',
       :backup_s3_store_bucket           => '<SERVICE DEFAULT>',
       :backup_s3_object_size            => '<SERVICE DEFAULT>',
       :backup_s3_block_size             => '<SERVICE DEFAULT>',
@@ -53,6 +54,7 @@ describe 'cinder::backup::s3' do
   let :custom_params do
     {
       :backup_compression_algorithm     => 'bz2',
+      :backup_create_containers         => true,
       :backup_s3_store_bucket           => 'my_backups',
       :backup_s3_object_size            => '26214400',
       :backup_s3_block_size             => '16536',
