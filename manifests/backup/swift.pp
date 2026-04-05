@@ -64,7 +64,6 @@
 # [*backup_compression_algorithm*]
 #   (optional) The compression algorithm for the chunks sent to swift
 #   Defaults to $facts['os_service_default']
-#   set to None to disable compression
 #
 # [*backup_swift_service_auth*]
 #   (optional) Send a X-Service-Token header with service auth credentials.

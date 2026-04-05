@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The ``backup_compression_algorithm`` parameter has been added to
+    the following classes.
+
+    - ``cinder::backup::google``
+    - ``cinder::backup::posix``

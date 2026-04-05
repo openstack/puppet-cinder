@@ -12,6 +12,10 @@
 #   (optional) The backup driver for NFS back-end.
 #   Defaults to 'cinder.backup.drivers.nfs.NFSBackupDriver'.
 #
+# [*backup_compression_algorithm*]
+#   (optional) Compression algorithm to use for volume backups.
+#   Defaults to $facts['os_service_default']
+#
 # [*backup_file_size*]
 #   (optional) The maximum size in bytes of the files used to hold
 #   backups. If the volume being backed up exceeds this size, then
@@ -43,10 +47,6 @@
 #   (optional) Custom container to use for backups.
 #   Defaults to $facts['os_service_default']
 #
-# [*backup_compression_algorithm*]
-#   (optional) Compression algorithm to use when writing backup data.
-#   Defaults to $facts['os_service_default']
-#
 # [*package_ensure*]
 #   (optional) Ensure state for package.
 #   Defaults to 'present'.
@@ -75,13 +75,13 @@
 class cinder::backup::nfs (
   String[1] $backup_share,
   $backup_driver                          = 'cinder.backup.drivers.nfs.NFSBackupDriver',
+  $backup_compression_algorithm           = $facts['os_service_default'],
   $backup_file_size                       = $facts['os_service_default'],
   $backup_sha_block_size_bytes            = $facts['os_service_default'],
   $backup_enable_progress_timer           = $facts['os_service_default'],
   $backup_mount_point_base                = $facts['os_service_default'],
   $backup_mount_options                   = $facts['os_service_default'],
   $backup_container                       = $facts['os_service_default'],
-  $backup_compression_algorithm           = $facts['os_service_default'],
   Stdlib::Ensure::Package $package_ensure = 'present',
 ) {
   include cinder::deps
@@ -91,12 +91,12 @@ class cinder::backup::nfs (
     'DEFAULT/backup_mount_options':         value => $backup_mount_options;
     'DEFAULT/backup_share':                 value => $backup_share;
     'DEFAULT/backup_driver':                value => $backup_driver;
+    'DEFAULT/backup_compression_algorithm': value => $backup_compression_algorithm;
     'DEFAULT/backup_file_size':             value => $backup_file_size;
     'DEFAULT/backup_sha_block_size_bytes':  value => $backup_sha_block_size_bytes;
     'DEFAULT/backup_enable_progress_timer': value => $backup_enable_progress_timer;
     'DEFAULT/backup_mount_point_base':      value => $backup_mount_point_base;
     'DEFAULT/backup_container':             value => $backup_container;
-    'DEFAULT/backup_compression_algorithm': value => $backup_compression_algorithm;
   }
 
   stdlib::ensure_packages('nfs-client', {

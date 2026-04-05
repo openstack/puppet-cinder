@@ -23,6 +23,7 @@ require 'spec_helper'
 describe 'cinder::backup::posix' do
   let :default_params do
     {
+      :backup_compression_algorithm => '<SERVICE DEFAULT>',
       :backup_file_size             => '<SERVICE DEFAULT>',
       :backup_sha_block_size_bytes  => '<SERVICE DEFAULT>',
       :backup_enable_progress_timer => '<SERVICE DEFAULT>',
@@ -42,6 +43,7 @@ describe 'cinder::backup::posix' do
 
     it 'configures cinder.conf' do
       is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.posix.PosixBackupDriver')
+      is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
       is_expected.to contain_cinder_config('DEFAULT/backup_file_size').with_value(p[:backup_file_size])
       is_expected.to contain_cinder_config('DEFAULT/backup_sha_block_size_bytes').with_value(p[:backup_sha_block_size_bytes])
       is_expected.to contain_cinder_config('DEFAULT/backup_enable_progress_timer').with_value(p[:backup_sha_block_size_bytes])
@@ -51,15 +53,18 @@ describe 'cinder::backup::posix' do
 
     context 'when overriding default parameters' do
       before :each do
-        params.merge!(
-          { :backup_file_size             => '4',
-            :backup_sha_block_size_bytes  => '2',
-            :backup_enable_progress_timer => true,
-            :backup_posix_path            => '/etc/backup',
-            :backup_container             => 'mycontainer' })
+        params.merge!({
+          :backup_compression_algorithm => 'none',
+          :backup_file_size             => '4',
+          :backup_sha_block_size_bytes  => '2',
+          :backup_enable_progress_timer => true,
+          :backup_posix_path            => '/etc/backup',
+          :backup_container             => 'mycontainer',
+        })
       end
 
       it 'should replace default parameters with new values' do
+        is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
         is_expected.to contain_cinder_config('DEFAULT/backup_file_size').with_value(p[:backup_file_size])
         is_expected.to contain_cinder_config('DEFAULT/backup_sha_block_size_bytes').with_value(p[:backup_sha_block_size_bytes])
         is_expected.to contain_cinder_config('DEFAULT/backup_enable_progress_timer').with_value(p[:backup_enable_progress_timer])

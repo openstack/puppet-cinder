@@ -8,6 +8,10 @@
 #   (Optional) The backup driver for posix backend.
 #   Defaults to 'cinder.backup.drivers.posix.PosixBackupDriver'.
 #
+# [*backup_compression_algorithm*]
+#   (optional) Compression algorithm to use for volume backups.
+#   Defaults to $facts['os_service_default']
+#
 # [*backup_file_size*]
 #   (optional) The maximum size in bytes of the files used to hold backups.
 #   If the volume being backed up exceeds this size, then it will be backed
@@ -57,6 +61,7 @@
 #
 class cinder::backup::posix (
   $backup_driver                = 'cinder.backup.drivers.posix.PosixBackupDriver',
+  $backup_compression_algorithm = $facts['os_service_default'],
   $backup_file_size             = $facts['os_service_default'],
   $backup_sha_block_size_bytes  = $facts['os_service_default'],
   $backup_enable_progress_timer = $facts['os_service_default'],
@@ -67,6 +72,7 @@ class cinder::backup::posix (
 
   cinder_config {
     'DEFAULT/backup_driver':                value => $backup_driver;
+    'DEFAULT/backup_compression_algorithm': value => $backup_compression_algorithm;
     'DEFAULT/backup_file_size':             value => $backup_file_size;
     'DEFAULT/backup_sha_block_size_bytes':  value => $backup_sha_block_size_bytes;
     'DEFAULT/backup_enable_progress_timer': value => $backup_enable_progress_timer;

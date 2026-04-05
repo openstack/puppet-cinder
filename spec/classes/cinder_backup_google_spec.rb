@@ -22,6 +22,7 @@ require 'spec_helper'
 describe 'cinder::backup::google' do
   let :default_params do
     {
+      :backup_compression_algorithm     => '<SERVICE DEFAULT>',
       :backup_gcs_bucket                => '<SERVICE DEFAULT>',
       :backup_gcs_object_size           => '<SERVICE DEFAULT>',
       :backup_gcs_block_size            => '<SERVICE DEFAULT>',
@@ -49,6 +50,7 @@ describe 'cinder::backup::google' do
 
     it 'configures cinder.conf' do
       is_expected.to contain_cinder_config('DEFAULT/backup_driver').with_value('cinder.backup.drivers.google.GoogleBackupDriver')
+      is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_bucket').with_value(p[:backup_gcs_bucket])
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_object_size').with_value(p[:backup_gcs_object_size])
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_block_size').with_value(p[:backup_gcs_block_size])
@@ -66,21 +68,25 @@ describe 'cinder::backup::google' do
 
     context 'when overriding default parameters' do
       before :each do
-        params.merge!(:backup_gcs_bucket => 'bigbucket')
-        params.merge!(:backup_gcs_object_size => '1992')
-        params.merge!(:backup_gcs_block_size => '12')
-        params.merge!(:backup_gcs_reader_chunk_size => '27')
-        params.merge!(:backup_gcs_writer_chunk_size => '-1')
-        params.merge!(:backup_gcs_num_retries => '42')
-        params.merge!(:backup_gcs_retry_error_codes => '430')
-        params.merge!(:backup_gcs_bucket_location => 'NO')
-        params.merge!(:backup_gcs_storage_class => 'FARLINE')
-        params.merge!(:backup_gcs_credential_file => '/etc/file')
-        params.merge!(:backup_gcs_project_id => 'me')
-        params.merge!(:backup_gcs_user_agent => '007')
-        params.merge!(:backup_gcs_enable_progress_timer => 'false')
+        params.merge!({
+          :backup_compression_algorithm     => 'none',
+          :backup_gcs_bucket                => 'bigbucket',
+          :backup_gcs_object_size           => '1992',
+          :backup_gcs_block_size            => '12',
+          :backup_gcs_reader_chunk_size     => '27',
+          :backup_gcs_writer_chunk_size     => '-1',
+          :backup_gcs_num_retries           => '42',
+          :backup_gcs_retry_error_codes     => '430',
+          :backup_gcs_bucket_location       => 'NO',
+          :backup_gcs_storage_class         => 'FARLINE',
+          :backup_gcs_credential_file       => '/etc/file',
+          :backup_gcs_project_id            => 'me',
+          :backup_gcs_user_agent            => '007',
+          :backup_gcs_enable_progress_timer => 'false',
+        })
       end
       it 'should replace default parameters with new values' do
+        is_expected.to contain_cinder_config('DEFAULT/backup_compression_algorithm').with_value(p[:backup_compression_algorithm])
         is_expected.to contain_cinder_config('DEFAULT/backup_gcs_bucket').with_value(p[:backup_gcs_bucket])
         is_expected.to contain_cinder_config('DEFAULT/backup_gcs_object_size').with_value(p[:backup_gcs_object_size])
         is_expected.to contain_cinder_config('DEFAULT/backup_gcs_block_size').with_value(p[:backup_gcs_block_size])

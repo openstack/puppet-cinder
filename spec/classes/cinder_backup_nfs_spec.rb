@@ -31,13 +31,13 @@ describe 'cinder::backup::nfs' do
   let :default_params do
     {
       :backup_driver                => 'cinder.backup.drivers.nfs.NFSBackupDriver',
+      :backup_compression_algorithm => '<SERVICE DEFAULT>',
       :backup_file_size             => '<SERVICE DEFAULT>',
       :backup_sha_block_size_bytes  => '<SERVICE DEFAULT>',
       :backup_enable_progress_timer => '<SERVICE DEFAULT>',
       :backup_mount_point_base      => '<SERVICE DEFAULT>',
       :backup_mount_options         => '<SERVICE DEFAULT>',
       :backup_container             => '<SERVICE DEFAULT>',
-      :backup_compression_algorithm => '<SERVICE DEFAULT>',
     }
   end
 

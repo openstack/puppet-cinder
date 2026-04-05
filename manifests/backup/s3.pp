@@ -19,7 +19,6 @@
 #
 # [*backup_compression_algorithm*]
 #   (optional) Compression algorithm to use for volume backups.
-#   Supported options are: None (to disable), zlib, bz2 and zstd.
 #   Defaults to $facts['os_service_default']
 #
 # [*backup_s3_store_bucket*]
