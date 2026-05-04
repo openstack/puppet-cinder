@@ -40,6 +40,8 @@ describe 'cinder::backend::emc_vnx' do
         is_expected.to contain_cinder_config('emc/image_volume_cache_enabled').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/image_upload_use_cinder_backend').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('emc/image_upload_use_internal_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('emc/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
       }
@@ -66,6 +68,8 @@ describe 'cinder::backend::emc_vnx' do
           :image_volume_cache_enabled       => true,
           :image_volume_cache_max_size_gb   => 100,
           :image_volume_cache_max_count     => 101,
+          :image_upload_use_cinder_backend  => false,
+          :image_upload_use_internal_tenant => false,
           :reserved_percentage              => 10,
           :max_over_subscription_ratio      => 1.5,
         })
@@ -89,6 +93,8 @@ describe 'cinder::backend::emc_vnx' do
         is_expected.to contain_cinder_config('emc/image_volume_cache_enabled').with_value(params[:image_volume_cache_enabled])
         is_expected.to contain_cinder_config('emc/image_volume_cache_max_size_gb').with_value(params[:image_volume_cache_max_size_gb])
         is_expected.to contain_cinder_config('emc/image_volume_cache_max_count').with_value(params[:image_volume_cache_max_count])
+        is_expected.to contain_cinder_config('emc/image_upload_use_cinder_backend').with_value(false)
+        is_expected.to contain_cinder_config('emc/image_upload_use_internal_tenant').with_value(false)
         is_expected.to contain_cinder_config('emc/reserved_percentage').with_value(params[:reserved_percentage])
         is_expected.to contain_cinder_config('emc/max_over_subscription_ratio').with_value(1.5)
       }

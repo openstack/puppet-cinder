@@ -28,6 +28,8 @@ describe 'cinder::backend::quobyte' do
       is_expected.to contain_cinder_config('myquobyte/image_volume_cache_enabled').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('myquobyte/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
       is_expected.to contain_cinder_config('myquobyte/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('myquobyte/image_upload_use_cinder_backend').with_value('<SERVICE DEFAULT>')
+      is_expected.to contain_cinder_config('myquobyte/image_upload_use_internal_tenant').with_value('<SERVICE DEFAULT>')
     }
 
     context 'quobyte backend with cinder type' do

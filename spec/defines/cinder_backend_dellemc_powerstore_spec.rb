@@ -15,25 +15,29 @@ describe 'cinder::backend::dellemc_powerstore' do
 
   let :default_params do
     {
-      :powerstore_ports               => '<SERVICE DEFAULT>',
-      :backend_availability_zone      => '<SERVICE DEFAULT>',
-      :image_volume_cache_enabled     => '<SERVICE DEFAULT>',
-      :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
-      :image_volume_cache_max_count   => '<SERVICE DEFAULT>',
-      :max_over_subscription_ratio    => '<SERVICE DEFAULT>',
-      :storage_protocol               => 'iSCSI' ,
+      :powerstore_ports                 => '<SERVICE DEFAULT>',
+      :backend_availability_zone        => '<SERVICE DEFAULT>',
+      :image_volume_cache_enabled       => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_size_gb   => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_count     => '<SERVICE DEFAULT>',
+      :image_upload_use_cinder_backend  => '<SERVICE DEFAULT>',
+      :image_upload_use_internal_tenant => '<SERVICE DEFAULT>',
+      :max_over_subscription_ratio      => '<SERVICE DEFAULT>',
+      :storage_protocol                 => 'iSCSI' ,
     }
   end
 
   let :custom_params do
     {
-      :powerstore_ports               => '58:cc:f0:98:49:22:07:02,58:cc:f0:98:49:23:07:02',
-      :backend_availability_zone      => 'my_zone',
-      :image_volume_cache_enabled     => true,
-      :image_volume_cache_max_size_gb => 100,
-      :image_volume_cache_max_count   => 101,
-      :max_over_subscription_ratio    => 1.5,
-      :storage_protocol               => 'iSCSI' ,
+      :powerstore_ports                 => '58:cc:f0:98:49:22:07:02,58:cc:f0:98:49:23:07:02',
+      :backend_availability_zone        => 'my_zone',
+      :image_volume_cache_enabled       => true,
+      :image_volume_cache_max_size_gb   => 100,
+      :image_volume_cache_max_count     => 101,
+      :image_upload_use_cinder_backend  => false,
+      :image_upload_use_internal_tenant => false,
+      :max_over_subscription_ratio      => 1.5,
+      :storage_protocol                 => 'iSCSI' ,
     }
   end
 

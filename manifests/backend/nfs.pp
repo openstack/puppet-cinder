@@ -27,6 +27,15 @@
 #   (Optional) Max number of entries allowed in the image volume cache.
 #   Defaults to $facts['os_service_default'],
 #
+# [*image_upload_use_cinder_backend*]
+#   (Optional) Create a cloned volume and register its location to the image
+#   service during upload-to-image in raw format.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_upload_use_internal_tenant*]
+#   (Optional) Place the image volume in the internal tenant.
+#   Defaults to $facts['os_service_default'],
+#
 # [*max_over_subscription_ratio*]
 #   (Optional) Representation of the over subscription ratio when thin
 #   provisionig is involved.
@@ -116,6 +125,8 @@ define cinder::backend::nfs (
   $image_volume_cache_enabled             = $facts['os_service_default'],
   $image_volume_cache_max_size_gb         = $facts['os_service_default'],
   $image_volume_cache_max_count           = $facts['os_service_default'],
+  $image_upload_use_cinder_backend        = $facts['os_service_default'],
+  $image_upload_use_internal_tenant       = $facts['os_service_default'],
   $max_over_subscription_ratio            = $facts['os_service_default'],
   $nfs_mount_attempts                     = $facts['os_service_default'],
   $nfs_mount_options                      = $facts['os_service_default'],
@@ -143,24 +154,26 @@ define cinder::backend::nfs (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":            value => $volume_backend_name;
-    "${name}/backend_availability_zone":      value => $backend_availability_zone;
-    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
-    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
-    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
-    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
-    "${name}/volume_driver":                  value => 'cinder.volume.drivers.nfs.NfsDriver';
-    "${name}/nfs_shares_config":              value => $nfs_shares_config;
-    "${name}/nfs_mount_attempts":             value => $nfs_mount_attempts;
-    "${name}/nfs_mount_options":              value => $nfs_mount_options;
-    "${name}/nfs_sparsed_volumes":            value => $nfs_sparsed_volumes;
-    "${name}/nfs_mount_point_base":           value => $nfs_mount_point_base;
-    "${name}/nfs_used_ratio":                 value => $nfs_used_ratio;
-    "${name}/nfs_oversub_ratio":              value => $nfs_oversub_ratio;
-    "${name}/nfs_snapshot_support":           value => $nfs_snapshot_support;
-    "${name}/nfs_qcow2_volumes":              value => $nfs_qcow2_volumes;
-    "${name}/nas_secure_file_operations":     value => $nas_secure_file_operations;
-    "${name}/nas_secure_file_permissions":    value => $nas_secure_file_permissions;
+    "${name}/volume_backend_name":              value => $volume_backend_name;
+    "${name}/backend_availability_zone":        value => $backend_availability_zone;
+    "${name}/image_volume_cache_enabled":       value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb":   value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":     value => $image_volume_cache_max_count;
+    "${name}/image_upload_use_cinder_backend":  value => $image_upload_use_cinder_backend;
+    "${name}/image_upload_use_internal_tenant": value => $image_upload_use_internal_tenant;
+    "${name}/max_over_subscription_ratio":      value => $max_over_subscription_ratio;
+    "${name}/volume_driver":                    value => 'cinder.volume.drivers.nfs.NfsDriver';
+    "${name}/nfs_shares_config":                value => $nfs_shares_config;
+    "${name}/nfs_mount_attempts":               value => $nfs_mount_attempts;
+    "${name}/nfs_mount_options":                value => $nfs_mount_options;
+    "${name}/nfs_sparsed_volumes":              value => $nfs_sparsed_volumes;
+    "${name}/nfs_mount_point_base":             value => $nfs_mount_point_base;
+    "${name}/nfs_used_ratio":                   value => $nfs_used_ratio;
+    "${name}/nfs_oversub_ratio":                value => $nfs_oversub_ratio;
+    "${name}/nfs_snapshot_support":             value => $nfs_snapshot_support;
+    "${name}/nfs_qcow2_volumes":                value => $nfs_qcow2_volumes;
+    "${name}/nas_secure_file_operations":       value => $nas_secure_file_operations;
+    "${name}/nas_secure_file_permissions":      value => $nas_secure_file_permissions;
   }
 
   if $manage_volume_type {

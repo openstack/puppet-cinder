@@ -37,6 +37,15 @@
 #   (Optional) Max number of entries allowed in the image volume cache.
 #   Defaults to $facts['os_service_default'],
 #
+# [*image_upload_use_cinder_backend*]
+#   (Optional) Create a cloned volume and register its location to the image
+#   service during upload-to-image in raw format.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_upload_use_internal_tenant*]
+#   (Optional) Place the image volume in the internal tenant.
+#   Defaults to $facts['os_service_default'],
+#
 # [*reserved_percentage*]
 #   (Optional) The percentage of backend capacity is reserved.
 #   Defaults to $facts['os_service_default'].
@@ -144,6 +153,8 @@ define cinder::backend::emc_vnx (
   $image_volume_cache_enabled             = $facts['os_service_default'],
   $image_volume_cache_max_size_gb         = $facts['os_service_default'],
   $image_volume_cache_max_count           = $facts['os_service_default'],
+  $image_upload_use_cinder_backend        = $facts['os_service_default'],
+  $image_upload_use_internal_tenant       = $facts['os_service_default'],
   $reserved_percentage                    = $facts['os_service_default'],
   $max_over_subscription_ratio            = $facts['os_service_default'],
   Hash $extra_options                     = {},
@@ -180,6 +191,8 @@ define cinder::backend::emc_vnx (
     "${name}/image_volume_cache_enabled":       value => $image_volume_cache_enabled;
     "${name}/image_volume_cache_max_size_gb":   value => $image_volume_cache_max_size_gb;
     "${name}/image_volume_cache_max_count":     value => $image_volume_cache_max_count;
+    "${name}/image_upload_use_cinder_backend":  value => $image_upload_use_cinder_backend;
+    "${name}/image_upload_use_internal_tenant": value => $image_upload_use_internal_tenant;
     "${name}/reserved_percentage":              value => $reserved_percentage;
     "${name}/max_over_subscription_ratio":      value => $max_over_subscription_ratio;
     "${name}/volume_driver":                    value => $volume_driver;

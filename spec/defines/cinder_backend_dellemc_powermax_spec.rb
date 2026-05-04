@@ -35,6 +35,8 @@ describe 'cinder::backend::dellemc_powermax' do
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_enabled").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_size_gb").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/image_volume_cache_max_count").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/image_upload_use_cinder_backend").with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config("#{title}/image_upload_use_internal_tenant").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/rest_api_connect_timeout").with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config("#{title}/rest_api_read_timeout").with_value('<SERVICE DEFAULT>')
       end

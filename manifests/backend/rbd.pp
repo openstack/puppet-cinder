@@ -37,6 +37,15 @@
 #   provisionig is involved.
 #   Defaults to $facts['os_service_default'].
 #
+# [*image_upload_use_cinder_backend*]
+#   (Optional) Create a cloned volume and register its location to the image
+#   service during upload-to-image in raw format.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_upload_use_internal_tenant*]
+#   (Optional) Place the image volume in the internal tenant.
+#   Defaults to $facts['os_service_default'],
+#
 # [*rbd_ceph_conf*]
 #   (optional) Path to the ceph configuration file to use
 #   Defaults to '/etc/ceph/ceph.conf'
@@ -126,6 +135,8 @@ define cinder::backend::rbd (
   $backend_availability_zone         = $facts['os_service_default'],
   $reserved_percentage               = $facts['os_service_default'],
   $max_over_subscription_ratio       = $facts['os_service_default'],
+  $image_upload_use_cinder_backend   = $facts['os_service_default'],
+  $image_upload_use_internal_tenant  = $facts['os_service_default'],
   Cinder::CephConf $rbd_ceph_conf    = '/etc/ceph/ceph.conf',
   $rbd_flatten_volume_from_snapshot  = $facts['os_service_default'],
   $rbd_secret_uuid                   = $facts['os_service_default'],
@@ -154,6 +165,8 @@ define cinder::backend::rbd (
     "${name}/backend_availability_zone":         value => $backend_availability_zone;
     "${name}/reserved_percentage":               value => $reserved_percentage;
     "${name}/max_over_subscription_ratio":       value => $max_over_subscription_ratio;
+    "${name}/image_upload_use_cinder_backend":   value => $image_upload_use_cinder_backend;
+    "${name}/image_upload_use_internal_tenant":  value => $image_upload_use_internal_tenant;
     "${name}/volume_driver":                     value => 'cinder.volume.drivers.rbd.RBDDriver';
     "${name}/rbd_ceph_conf":                     value => $rbd_ceph_conf;
     "${name}/rbd_user":                          value => $rbd_user;

@@ -27,6 +27,8 @@ describe 'cinder::backend::hpe3par_iscsi' do
         is_expected.to contain_cinder_config('hpe3par_iscsi/image_volume_cache_enabled').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/image_upload_use_cinder_backend').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('hpe3par_iscsi/image_upload_use_internal_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('hpe3par_iscsi/hpe3par_api_url').with_value('https://172.0.0.2:8080/api/v1')

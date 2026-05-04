@@ -29,6 +29,8 @@ describe 'cinder::backend::nvmeof' do
         is_expected.to contain_cinder_config('nvme-backend/image_volume_cache_enabled').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nvme-backend/image_upload_use_cinder_backend').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('nvme-backend/image_upload_use_internal_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('nvme-backend/volume_driver').with_value('cinder.volume.drivers.lvm.LVMVolumeDriver')

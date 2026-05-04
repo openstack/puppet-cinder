@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Support for the following options have been added. See descriptions of
+    the ``cinder::backend::*`` defined resource types.
+
+    - ``image_upload_use_cinder_backend``
+    - ``image_upload_use_internal_tenant``

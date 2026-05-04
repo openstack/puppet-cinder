@@ -22,6 +22,8 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_upload_use_cinder_backend').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_upload_use_internal_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/max_over_subscription_ratio').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
@@ -52,6 +54,8 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_upload_use_cinder_backend').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_upload_use_internal_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/reserved_percentage').with_value(10)
         is_expected.to contain_cinder_config('pure/max_over_subscription_ratio').with_value(1.5)
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
@@ -76,6 +80,8 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_upload_use_cinder_backend').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_upload_use_internal_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
@@ -97,6 +103,8 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value('true')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_upload_use_cinder_backend').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('pure/image_upload_use_internal_tenant').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/reserved_percentage').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('pure/san_ip').with_value('127.0.0.2')
         is_expected.to contain_cinder_config('pure/pure_api_token').with_value('abc123def456ghi789')
@@ -143,6 +151,20 @@ describe 'cinder::backend::pure' do
         is_expected.to contain_cinder_config('pure/image_volume_cache_enabled').with_value(false)
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_size_gb').with_value(100)
         is_expected.to contain_cinder_config('pure/image_volume_cache_max_count').with_value(101)
+      }
+    end
+
+    context 'pure volume driver with image upload options' do
+      let :params do
+        req_params.merge({
+          :image_upload_use_cinder_backend  => true,
+          :image_upload_use_internal_tenant => false,
+        })
+      end
+
+      it {
+        is_expected.to contain_cinder_config('pure/image_upload_use_cinder_backend').with_value(true)
+        is_expected.to contain_cinder_config('pure/image_upload_use_internal_tenant').with_value(false)
       }
     end
 

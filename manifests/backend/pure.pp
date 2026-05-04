@@ -56,6 +56,15 @@
 #   (Optional) Max number of entries allowed in the image volume cache.
 #   Defaults to $facts['os_service_default'],
 #
+# [*image_upload_use_cinder_backend*]
+#   (Optional) Create a cloned volume and register its location to the image
+#   service during upload-to-image in raw format.
+#   Defaults to $facts['os_service_default'],
+#
+# [*image_upload_use_internal_tenant*]
+#   (Optional) Place the image volume in the internal tenant.
+#   Defaults to $facts['os_service_default'],
+#
 # [*pure_host_personality*]
 #   (Optional) Determines how the Purity system tunes the protocol used between
 #   the array and the initiator.
@@ -121,6 +130,8 @@ define cinder::backend::pure (
   $image_volume_cache_enabled                        = true,
   $image_volume_cache_max_size_gb                    = $facts['os_service_default'],
   $image_volume_cache_max_count                      = $facts['os_service_default'],
+  $image_upload_use_cinder_backend                   = $facts['os_service_default'],
+  $image_upload_use_internal_tenant                  = $facts['os_service_default'],
   $pure_host_personality                             = $facts['os_service_default'],
   $pure_eradicate_on_delete                          = $facts['os_service_default'],
   $pure_nvme_transport                               = $facts['os_service_default'],
@@ -140,25 +151,27 @@ define cinder::backend::pure (
   }
 
   cinder_config {
-    "${name}/volume_backend_name":            value => $volume_backend_name;
-    "${name}/backend_availability_zone":      value => $backend_availability_zone;
-    "${name}/reserved_percentage":            value => $reserved_percentage;
-    "${name}/max_over_subscription_ratio":    value => $max_over_subscription_ratio;
-    "${name}/volume_driver":                  value => $volume_driver;
-    "${name}/san_ip":                         value => $san_ip;
-    "${name}/pure_api_token":                 value => $pure_api_token, secret => true;
-    "${name}/use_chap_auth":                  value => $use_chap_auth;
-    "${name}/use_multipath_for_image_xfer":   value => $use_multipath_for_image_xfer;
-    "${name}/image_volume_cache_enabled":     value => $image_volume_cache_enabled;
-    "${name}/image_volume_cache_max_size_gb": value => $image_volume_cache_max_size_gb;
-    "${name}/image_volume_cache_max_count":   value => $image_volume_cache_max_count;
-    "${name}/pure_host_personality":          value => $pure_host_personality;
-    "${name}/pure_eradicate_on_delete":       value => $pure_eradicate_on_delete;
-    "${name}/pure_nvme_transport":            value => $pure_nvme_transport;
-    "${name}/pure_nvme_cidr":                 value => $pure_nvme_cidr;
-    "${name}/pure_nvme_cidr_list":            value => join(any2array($pure_nvme_cidr_list), ',');
-    "${name}/pure_iscsi_cidr":                value => $pure_iscsi_cidr;
-    "${name}/pure_iscsi_cidr_list":           value => join(any2array($pure_iscsi_cidr_list), ',');
+    "${name}/volume_backend_name":              value => $volume_backend_name;
+    "${name}/backend_availability_zone":        value => $backend_availability_zone;
+    "${name}/reserved_percentage":              value => $reserved_percentage;
+    "${name}/max_over_subscription_ratio":      value => $max_over_subscription_ratio;
+    "${name}/volume_driver":                    value => $volume_driver;
+    "${name}/san_ip":                           value => $san_ip;
+    "${name}/pure_api_token":                   value => $pure_api_token, secret => true;
+    "${name}/use_chap_auth":                    value => $use_chap_auth;
+    "${name}/use_multipath_for_image_xfer":     value => $use_multipath_for_image_xfer;
+    "${name}/image_volume_cache_enabled":       value => $image_volume_cache_enabled;
+    "${name}/image_volume_cache_max_size_gb":   value => $image_volume_cache_max_size_gb;
+    "${name}/image_volume_cache_max_count":     value => $image_volume_cache_max_count;
+    "${name}/image_upload_use_cinder_backend":  value => $image_upload_use_cinder_backend;
+    "${name}/image_upload_use_internal_tenant": value => $image_upload_use_internal_tenant;
+    "${name}/pure_host_personality":            value => $pure_host_personality;
+    "${name}/pure_eradicate_on_delete":         value => $pure_eradicate_on_delete;
+    "${name}/pure_nvme_transport":              value => $pure_nvme_transport;
+    "${name}/pure_nvme_cidr":                   value => $pure_nvme_cidr;
+    "${name}/pure_nvme_cidr_list":              value => join(any2array($pure_nvme_cidr_list), ',');
+    "${name}/pure_iscsi_cidr":                  value => $pure_iscsi_cidr;
+    "${name}/pure_iscsi_cidr_list":             value => join(any2array($pure_iscsi_cidr_list), ',');
   }
 
   if $manage_volume_type {

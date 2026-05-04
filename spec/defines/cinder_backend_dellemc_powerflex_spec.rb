@@ -20,6 +20,8 @@ describe 'cinder::backend::dellemc_powerflex' do
       :image_volume_cache_enabled               => true,
       :image_volume_cache_max_size_gb           => 100,
       :image_volume_cache_max_count             => 101,
+      :image_upload_use_cinder_backend          => false,
+      :image_upload_use_internal_tenant         => false,
       :powerflex_allow_migration_during_rebuild => 'true',
       :powerflex_allow_non_padded_volumes       => 'false',
       :powerflex_max_over_subscription_ratio    => '6.0',

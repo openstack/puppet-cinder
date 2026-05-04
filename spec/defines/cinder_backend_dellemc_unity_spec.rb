@@ -16,27 +16,31 @@ describe 'cinder::backend::dellemc_unity' do
 
   let :default_params do
     {
-      :backend_availability_zone      => '<SERVICE DEFAULT>',
-      :image_volume_cache_enabled     => '<SERVICE DEFAULT>',
-      :image_volume_cache_max_size_gb => '<SERVICE DEFAULT>',
-      :image_volume_cache_max_count   => '<SERVICE DEFAULT>',
-      :reserved_percentage            => '<SERVICE DEFAULT>',
-      :max_over_subscription_ratio    => '<SERVICE DEFAULT>',
-      :unity_io_ports                 => '<SERVICE DEFAULT>',
-      :unity_storage_pool_names       => '<SERVICE DEFAULT>',
+      :backend_availability_zone        => '<SERVICE DEFAULT>',
+      :image_volume_cache_enabled       => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_size_gb   => '<SERVICE DEFAULT>',
+      :image_volume_cache_max_count     => '<SERVICE DEFAULT>',
+      :image_upload_use_cinder_backend  => '<SERVICE DEFAULT>',
+      :image_upload_use_internal_tenant => '<SERVICE DEFAULT>',
+      :reserved_percentage              => '<SERVICE DEFAULT>',
+      :max_over_subscription_ratio      => '<SERVICE DEFAULT>',
+      :unity_io_ports                   => '<SERVICE DEFAULT>',
+      :unity_storage_pool_names         => '<SERVICE DEFAULT>',
     }
   end
 
   let :custom_params do
     {
-      :backend_availability_zone      => 'my_zone',
-      :image_volume_cache_enabled     => true,
-      :image_volume_cache_max_size_gb => 100,
-      :image_volume_cache_max_count   => 101,
-      :reserved_percentage            => 10,
-      :max_over_subscription_ratio    => 1.5,
-      :unity_io_ports                 => '1,42,66',
-      :unity_storage_pool_names       => 'pool_1,pool_2',
+      :backend_availability_zone        => 'my_zone',
+      :image_volume_cache_enabled       => true,
+      :image_volume_cache_max_size_gb   => 100,
+      :image_volume_cache_max_count     => 101,
+      :image_upload_use_cinder_backend  => false,
+      :image_upload_use_internal_tenant => false,
+      :reserved_percentage              => 10,
+      :max_over_subscription_ratio      => 1.5,
+      :unity_io_ports                   => '1,42,66',
+      :unity_storage_pool_names         => 'pool_1,pool_2',
     }
   end
 
