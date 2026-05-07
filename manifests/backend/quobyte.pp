@@ -1,6 +1,5 @@
 # == Define: cinder::backend::quobyte
 #
-# DEPRECATED !!
 # Configures Cinder to use Quobyte USP as a volume driver
 #
 # === Parameters
@@ -89,9 +88,6 @@ define cinder::backend::quobyte (
   Boolean $manage_volume_type       = false,
 ) {
   include cinder::deps
-
-  warning("Support for Quobyte volume driver has been deprecated because \
-the driver is now marked unsupported.")
 
   cinder_config {
     "${name}/volume_backend_name":              value => $volume_backend_name;

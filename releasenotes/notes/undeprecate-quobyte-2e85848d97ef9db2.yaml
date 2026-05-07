@@ -1,0 +1,4 @@
+---
+other:
+  - |
+    Support for the Quobyte Driver options is no longer deprecated.
