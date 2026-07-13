@@ -1,0 +1,4 @@
+---
+deprecations:
+  - |
+    The ``cinder::policy::enforce_scope`` parameter has been deprecated.
