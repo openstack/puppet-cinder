@@ -73,6 +73,15 @@
 #   volume to the GCS backend storage.
 #   Defaults to $facts['os_service_default']
 #
+# [*manage_packages*]
+#   Optional. Whether we should manage the packages.
+#   Defaults to true,
+#
+# [*package_ensure*]
+#   Optional. Desired ensure state of packages.
+#   accepts latest or specific versions.
+#   Defaults to present.
+#
 # === Author(s)
 #
 # Nate Potter <nathaniel.potter@intel.com>
@@ -95,24 +104,35 @@
 #
 #
 class cinder::backup::google (
-  $backup_driver                    = 'cinder.backup.drivers.google.GoogleBackupDriver',
-  $backup_compression_algorithm     = $facts['os_service_default'],
-  $backup_create_containers         = $facts['os_service_default'],
-  $backup_gcs_bucket                = $facts['os_service_default'],
-  $backup_gcs_object_size           = $facts['os_service_default'],
-  $backup_gcs_block_size            = $facts['os_service_default'],
-  $backup_gcs_reader_chunk_size     = $facts['os_service_default'],
-  $backup_gcs_writer_chunk_size     = $facts['os_service_default'],
-  $backup_gcs_num_retries           = $facts['os_service_default'],
-  $backup_gcs_retry_error_codes     = $facts['os_service_default'],
-  $backup_gcs_bucket_location       = $facts['os_service_default'],
-  $backup_gcs_storage_class         = $facts['os_service_default'],
-  $backup_gcs_credential_file       = $facts['os_service_default'],
-  $backup_gcs_project_id            = $facts['os_service_default'],
-  $backup_gcs_user_agent            = $facts['os_service_default'],
-  $backup_gcs_enable_progress_timer = $facts['os_service_default'],
+  $backup_driver                          = 'cinder.backup.drivers.google.GoogleBackupDriver',
+  $backup_compression_algorithm           = $facts['os_service_default'],
+  $backup_create_containers               = $facts['os_service_default'],
+  $backup_gcs_bucket                      = $facts['os_service_default'],
+  $backup_gcs_object_size                 = $facts['os_service_default'],
+  $backup_gcs_block_size                  = $facts['os_service_default'],
+  $backup_gcs_reader_chunk_size           = $facts['os_service_default'],
+  $backup_gcs_writer_chunk_size           = $facts['os_service_default'],
+  $backup_gcs_num_retries                 = $facts['os_service_default'],
+  $backup_gcs_retry_error_codes           = $facts['os_service_default'],
+  $backup_gcs_bucket_location             = $facts['os_service_default'],
+  $backup_gcs_storage_class               = $facts['os_service_default'],
+  $backup_gcs_credential_file             = $facts['os_service_default'],
+  $backup_gcs_project_id                  = $facts['os_service_default'],
+  $backup_gcs_user_agent                  = $facts['os_service_default'],
+  $backup_gcs_enable_progress_timer       = $facts['os_service_default'],
+  Boolean $manage_packages                = true,
+  Stdlib::Ensure::Package $package_ensure = 'present',
 ) {
   include cinder::deps
+  include cinder::params
+
+  if $manage_packages {
+    package { 'python-google-api-client':
+      ensure => $package_ensure,
+      name   => $cinder::params::google_api_client_package_name,
+      tag    => ['openstack', 'cinder-support-package'],
+    }
+  }
 
   cinder_config {
     'DEFAULT/backup_driver':                   value => $backup_driver;

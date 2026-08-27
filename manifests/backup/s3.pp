@@ -90,6 +90,15 @@
 #   (optional) The SSECustomerAlgorithm.
 #   Defaults to $facts['os_service_default']
 #
+# [*manage_packages*]
+#   Optional. Whether we should manage the packages.
+#   Defaults to true,
+#
+# [*package_ensure*]
+#   Optional. Desired ensure state of packages.
+#   accepts latest or specific versions.
+#   Defaults to present.
+#
 # === Author(s)
 #
 # Alan Bishop <abishop@redhat.com>
@@ -115,26 +124,37 @@ class cinder::backup::s3 (
   $backup_s3_endpoint_url,
   $backup_s3_store_access_key,
   $backup_s3_store_secret_key,
-  $backup_driver                    = 'cinder.backup.drivers.s3.S3BackupDriver',
-  $backup_compression_algorithm     = $facts['os_service_default'],
-  $backup_create_containers         = $facts['os_service_default'],
-  $backup_s3_store_bucket           = $facts['os_service_default'],
-  $backup_s3_object_size            = $facts['os_service_default'],
-  $backup_s3_block_size             = $facts['os_service_default'],
-  $backup_s3_enable_progress_timer  = $facts['os_service_default'],
-  $backup_s3_http_proxy             = $facts['os_service_default'],
-  $backup_s3_https_proxy            = $facts['os_service_default'],
-  $backup_s3_timeout                = $facts['os_service_default'],
-  $backup_s3_max_pool_connections   = $facts['os_service_default'],
-  $backup_s3_retry_max_attempts     = $facts['os_service_default'],
-  $backup_s3_retry_mode             = $facts['os_service_default'],
-  $backup_s3_verify_ssl             = $facts['os_service_default'],
-  $backup_s3_ca_cert_file           = $facts['os_service_default'],
-  $backup_s3_md5_validation         = $facts['os_service_default'],
-  $backup_s3_sse_customer_key       = $facts['os_service_default'],
-  $backup_s3_sse_customer_algorithm = $facts['os_service_default'],
+  $backup_driver                          = 'cinder.backup.drivers.s3.S3BackupDriver',
+  $backup_compression_algorithm           = $facts['os_service_default'],
+  $backup_create_containers               = $facts['os_service_default'],
+  $backup_s3_store_bucket                 = $facts['os_service_default'],
+  $backup_s3_object_size                  = $facts['os_service_default'],
+  $backup_s3_block_size                   = $facts['os_service_default'],
+  $backup_s3_enable_progress_timer        = $facts['os_service_default'],
+  $backup_s3_http_proxy                   = $facts['os_service_default'],
+  $backup_s3_https_proxy                  = $facts['os_service_default'],
+  $backup_s3_timeout                      = $facts['os_service_default'],
+  $backup_s3_max_pool_connections         = $facts['os_service_default'],
+  $backup_s3_retry_max_attempts           = $facts['os_service_default'],
+  $backup_s3_retry_mode                   = $facts['os_service_default'],
+  $backup_s3_verify_ssl                   = $facts['os_service_default'],
+  $backup_s3_ca_cert_file                 = $facts['os_service_default'],
+  $backup_s3_md5_validation               = $facts['os_service_default'],
+  $backup_s3_sse_customer_key             = $facts['os_service_default'],
+  $backup_s3_sse_customer_algorithm       = $facts['os_service_default'],
+  Boolean $manage_packages                = true,
+  Stdlib::Ensure::Package $package_ensure = 'present',
 ) {
   include cinder::deps
+  include cinder::params
+
+  if $manage_packages {
+    stdlib::ensure_packages('python-boto3', {
+      'ensure' => $package_ensure,
+      'name'   => $cinder::params::boto3_package_name,
+    })
+    Package<| title == 'python-boto3' |> { tag +> 'cinder-support-package' }
+  }
 
   cinder_config {
     'DEFAULT/backup_s3_endpoint_url':           value => $backup_s3_endpoint_url;

@@ -89,6 +89,13 @@ describe 'cinder::backup::s3' do
       is_expected.to contain_cinder_config('DEFAULT/backup_s3_store_secret_key').with_secret(true)
       is_expected.to contain_cinder_config('DEFAULT/backup_s3_sse_customer_key').with_secret(true)
     end
+
+    it 'installs the required library' do
+      is_expected.to contain_package('python-boto3').with(
+        :ensure => 'installed',
+        :name   => 'python3-boto3',
+      )
+    end
   end
 
   shared_examples 'cinder::backup::s3' do

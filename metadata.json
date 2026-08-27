@@ -20,6 +20,10 @@
         {
             "name": "openstack/oslo",
             "version_requirement": ">=29.0.0 <30.0.0"
+        },
+        {
+            "name": "openstack/swift",
+            "version_requirement": ">=29.0.0 <30.0.0"
         }
     ],
     "description": "Installs and configures OpenStack Cinder (Block Storage).",

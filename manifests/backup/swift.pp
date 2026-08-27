@@ -118,6 +118,9 @@ class cinder::backup::swift (
   $backup_swift_region_name           = $facts['os_service_default'],
 ) {
   include cinder::deps
+  include swift::client
+
+  Class['swift::client'] -> Anchor['cinder::install::end']
 
   cinder_config {
     'DEFAULT/backup_driver':                      value => $backup_driver;

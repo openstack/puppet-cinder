@@ -71,6 +71,10 @@ describe 'cinder::backup::swift' do
       is_expected.to contain_cinder_config('DEFAULT/backup_swift_region_name').with_value(p[:backup_swift_region_name])
     end
 
+    it 'installs the required library' do
+      is_expected.to contain_class('swift::client')
+    end
+
     context 'when overriding default parameters' do
       before :each do
         params.merge!({

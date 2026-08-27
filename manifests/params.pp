@@ -13,50 +13,54 @@ class cinder::params {
 
   case $facts['os']['family'] {
     'Debian': {
-      $package_name              = 'cinder-common'
-      $api_package               = 'cinder-api'
-      $api_service               = 'cinder-api'
-      $backup_package            = 'cinder-backup'
-      $backup_service            = 'cinder-backup'
-      $scheduler_package         = 'cinder-scheduler'
-      $scheduler_service         = 'cinder-scheduler'
-      $volume_package            = 'cinder-volume'
-      $volume_service            = 'cinder-volume'
-      $db_sync_command           = 'cinder-manage db sync'
-      $tgt_package_name          = 'tgt'
-      $tgt_service_name          = 'tgt'
-      $nfs_client_package_name   = 'nfs-common'
-      $ceph_common_package_name  = 'ceph-common'
-      $target_helper             = 'tgtadm'
-      $lio_package_name          = 'targetcli'
-      $lock_path                 = '/var/lock/cinder'
-      $cinder_wsgi_script_path   = '/usr/lib/cgi-bin/cinder'
-      $cinder_wsgi_script_source = "${pybasedir}/cinder/wsgi/api.py"
-      $nvme_cli_package_name     = 'nvme-cli'
-      $nvmetcli_package_name     = undef
+      $package_name                   = 'cinder-common'
+      $api_package                    = 'cinder-api'
+      $api_service                    = 'cinder-api'
+      $backup_package                 = 'cinder-backup'
+      $backup_service                 = 'cinder-backup'
+      $scheduler_package              = 'cinder-scheduler'
+      $scheduler_service              = 'cinder-scheduler'
+      $volume_package                 = 'cinder-volume'
+      $volume_service                 = 'cinder-volume'
+      $db_sync_command                = 'cinder-manage db sync'
+      $tgt_package_name               = 'tgt'
+      $tgt_service_name               = 'tgt'
+      $nfs_client_package_name        = 'nfs-common'
+      $ceph_common_package_name       = 'ceph-common'
+      $target_helper                  = 'tgtadm'
+      $lio_package_name               = 'targetcli'
+      $lock_path                      = '/var/lock/cinder'
+      $cinder_wsgi_script_path        = '/usr/lib/cgi-bin/cinder'
+      $cinder_wsgi_script_source      = "${pybasedir}/cinder/wsgi/api.py"
+      $nvme_cli_package_name          = 'nvme-cli'
+      $nvmetcli_package_name          = undef
+      $boto3_package_name             = 'python3-boto3'
+      $google_api_client_package_name = 'python3-google-api-client'
     }
     'RedHat': {
-      $package_name              = 'openstack-cinder'
-      $api_package               = undef
-      $api_service               = 'openstack-cinder-api'
-      $backup_package            = undef
-      $backup_service            = 'openstack-cinder-backup'
-      $scheduler_package         = undef
-      $scheduler_service         = 'openstack-cinder-scheduler'
-      $volume_package            = undef
-      $volume_service            = 'openstack-cinder-volume'
-      $db_sync_command           = 'cinder-manage db sync'
-      $tgt_package_name          = 'scsi-target-utils'
-      $tgt_service_name          = 'tgtd'
-      $nfs_client_package_name   = 'nfs-utils'
-      $ceph_common_package_name  = 'ceph-common'
-      $target_helper             = 'lioadm'
-      $lio_package_name          = 'targetcli'
-      $lock_path                 = '/var/lib/cinder/tmp'
-      $cinder_wsgi_script_path   = '/var/www/cgi-bin/cinder'
-      $cinder_wsgi_script_source = "${pybasedir}/cinder/wsgi/api.py"
-      $nvme_cli_package_name     = 'nvme-cli'
-      $nvmetcli_package_name     = 'nvmetcli'
+      $package_name                   = 'openstack-cinder'
+      $api_package                    = undef
+      $api_service                    = 'openstack-cinder-api'
+      $backup_package                 = undef
+      $backup_service                 = 'openstack-cinder-backup'
+      $scheduler_package              = undef
+      $scheduler_service              = 'openstack-cinder-scheduler'
+      $volume_package                 = undef
+      $volume_service                 = 'openstack-cinder-volume'
+      $db_sync_command                = 'cinder-manage db sync'
+      $tgt_package_name               = 'scsi-target-utils'
+      $tgt_service_name               = 'tgtd'
+      $nfs_client_package_name        = 'nfs-utils'
+      $ceph_common_package_name       = 'ceph-common'
+      $target_helper                  = 'lioadm'
+      $lio_package_name               = 'targetcli'
+      $lock_path                      = '/var/lib/cinder/tmp'
+      $cinder_wsgi_script_path        = '/var/www/cgi-bin/cinder'
+      $cinder_wsgi_script_source      = "${pybasedir}/cinder/wsgi/api.py"
+      $nvme_cli_package_name          = 'nvme-cli'
+      $nvmetcli_package_name          = 'nvmetcli'
+      $boto3_package_name             = 'python3-boto3'
+      $google_api_client_package_name = 'python3-google-api-client'
     }
     default: {
       fail("Unsupported osfamily: ${facts['os']['family']}")

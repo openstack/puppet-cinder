@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    The following clases now installs the optional dependencies.
+
+    - ``cinder::backup::google``
+    - ``cinder::backup::s3``
+    - ``cinder::backup::swift``
+
+  - |
+    The following classes now supports the new parameters to customize
+    package resources to install the optional dependencies.
+
+    - ``cinder::backup::google``
+    - ``cinder::backup::s3``

@@ -68,6 +68,14 @@ describe 'cinder::backup::google' do
       is_expected.to contain_cinder_config('DEFAULT/backup_gcs_enable_project_timer').with_value(p[:backup_gcs_enable_progress_timer])
     end
 
+    it 'installs the required library' do
+      is_expected.to contain_package('python-google-api-client').with(
+        :ensure => 'present',
+        :name   => 'python3-google-api-client',
+        :tag    => ['openstack', 'cinder-support-package'],
+      )
+    end
+
     context 'when overriding default parameters' do
       before :each do
         params.merge!({
