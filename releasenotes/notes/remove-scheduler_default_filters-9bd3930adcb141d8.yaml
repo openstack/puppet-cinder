@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``cinder::scheduler::filter::scheduler_default_filters`` parameter
+    has been removed. Use the ``defualt_filters`` parameter.
