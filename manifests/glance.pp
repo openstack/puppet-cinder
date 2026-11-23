@@ -4,6 +4,9 @@
 #
 # === Parameters
 #
+# [*password*]
+#   (required) Cinder admin password.
+#
 # [*glance_api_servers*]
 #   (optional) A list of the glance api servers available to cinder.
 #   Should be an array with [hostname|ip]:port
@@ -78,7 +81,7 @@
 #
 # [*auth_type*]
 #   (optional) Authentication type to load.
-#   Defaults to undef
+#   Defaults to 'password'
 #
 # [*auth_url*]
 #   (optional) Identity service url.
@@ -87,10 +90,6 @@
 # [*username*]
 #   (optional) Glance admin username.
 #   Defaults to 'glance'
-#
-# [*password*]
-#   (optional) Nova admin password.
-#   Defaults to $facts['os_service_default']
 #
 # [*user_domain_name*]
 #   (optional) Glance admin user domain name.
@@ -133,6 +132,7 @@
 # under the License.
 #
 class cinder::glance (
+  $password,
   $glance_api_servers         = $facts['os_service_default'],
   $glance_num_retries         = $facts['os_service_default'],
   $glance_api_insecure        = $facts['os_service_default'],
@@ -149,10 +149,9 @@ class cinder::glance (
   $timeout                    = $facts['os_service_default'],
   $collect_timing             = $facts['os_service_default'],
   $split_loggers              = $facts['os_service_default'],
-  $auth_type                  = undef,
+  $auth_type                  = 'password',
   $auth_url                   = 'http://127.0.0.1:5000',
   $username                   = 'glance',
-  $password                   = $facts['os_service_default'],
   $user_domain_name           = 'Default',
   $project_name               = 'services',
   $project_domain_name        = 'Default',
@@ -160,14 +159,6 @@ class cinder::glance (
   $region_name                = $facts['os_service_default'],
 ) {
   include cinder::deps
-
-  if $auth_type == undef {
-    warning("The auth_type parameter will defaults to 'password' in a future release. \
-Make sure parameters such as password are properly set.")
-    $auth_type_real = $facts['os_service_default']
-  } else {
-    $auth_type_real = $auth_type
-  }
 
   cinder_config {
     'DEFAULT/glance_api_servers':         value => join(any2array($glance_api_servers), ',');
@@ -197,7 +188,7 @@ Make sure parameters such as password are properly set.")
     'glance/timeout':             value => $timeout;
     'glance/collect_timing':      value => $collect_timing;
     'glance/split_loggers':       value => $split_loggers;
-    'glance/auth_type':           value => $auth_type_real;
+    'glance/auth_type':           value => $auth_type;
     'glance/auth_url':            value => $auth_url;
     'glance/username':            value => $username;
     'glance/user_domain_name':    value => $user_domain_name;
