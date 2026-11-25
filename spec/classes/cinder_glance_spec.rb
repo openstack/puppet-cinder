@@ -22,7 +22,7 @@ require 'spec_helper'
 describe 'cinder::glance' do
   shared_examples 'cinder::glance' do
     let :params do
-      {}
+      {:password => 'glancepass'}
     end
 
     context 'with defaults' do
@@ -43,11 +43,11 @@ describe 'cinder::glance' do
         is_expected.to contain_cinder_config('glance/timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('glance/collect_timing').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_cinder_config('glance/split_loggers').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_cinder_config('glance/auth_type').with_value('<SERVICE DEFAULT>')
+        is_expected.to contain_cinder_config('glance/auth_type').with_value('password')
         is_expected.to contain_cinder_config('glance/auth_url').with_value('http://127.0.0.1:5000')
         is_expected.to contain_cinder_config('glance/username').with_value('glance')
         is_expected.to contain_cinder_config('glance/user_domain_name').with_value('Default')
-        is_expected.to contain_cinder_config('glance/password').with_value('<SERVICE DEFAULT>').with_secret(true)
+        is_expected.to contain_cinder_config('glance/password').with_value('glancepass').with_secret(true)
         is_expected.to contain_cinder_config('glance/project_name').with_value('services')
         is_expected.to contain_cinder_config('glance/project_domain_name').with_value('Default')
         is_expected.to contain_cinder_config('glance/system_scope').with_value('<SERVICE DEFAULT>')
@@ -74,10 +74,9 @@ describe 'cinder::glance' do
           :timeout                    => 30,
           :collect_timing             => true,
           :split_loggers              => true,
-          :auth_type                  => 'password',
+          :auth_type                  => 'v3password',
           :auth_url                   => 'http://127.0.0.2:5000',
           :username                   => 'alt_glance',
-          :password                   => 'glancepass',
           :user_domain_name           => 'UserDomain',
           :project_name               => 'alt_service',
           :project_domain_name        => 'ProjectDomain',
@@ -102,7 +101,7 @@ describe 'cinder::glance' do
         is_expected.to contain_cinder_config('glance/timeout').with_value(30)
         is_expected.to contain_cinder_config('glance/collect_timing').with_value(true)
         is_expected.to contain_cinder_config('glance/split_loggers').with_value(true)
-        is_expected.to contain_cinder_config('glance/auth_type').with_value('password')
+        is_expected.to contain_cinder_config('glance/auth_type').with_value('v3password')
         is_expected.to contain_cinder_config('glance/auth_url').with_value('http://127.0.0.2:5000')
         is_expected.to contain_cinder_config('glance/username').with_value('alt_glance')
         is_expected.to contain_cinder_config('glance/user_domain_name').with_value('UserDomain')
